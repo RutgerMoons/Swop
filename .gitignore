@@ -1,1 +1,9 @@
 .metadata
+*.jar
+*.class
+.classpath
+bin/
+.settings/
+.metadata/*
+
+doc/
