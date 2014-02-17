@@ -7,6 +7,7 @@ public class Test_Yoh {
 	public static void main(String[] args) {
 		System.out.println("Testing");
 		System.out.println("Finished testing!!");
+		System.out.println("Toch nog verder testen");
 
 	}
 
