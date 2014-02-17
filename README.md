@@ -1,4 +1,8 @@
 Swop
 ====
+Eerste iteratie:
 
-SWOP for the wizzle
+Design verantwoordelijke : Faes
+Test verantwoordelijke : Rutger
+Domain verantwoordelijke : Karen
+Alle overige shizzle : Stef
