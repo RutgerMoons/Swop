@@ -1,13 +1,6 @@
-optie 1:
-    order houdt de description bij,
-    order controller geeft een aantal tasks aan de assembly line   
-    assembly line fungeert als task controller en verdeelt de tasks onder de workbenches, n keer
-    assembly line geeft estimated value for completion
-
-optie 2:
-    order wordt geplaatst met description, 
-    order controller houdt order bij,
-    
-    assembly line vraagt na afwerken van order een nieuwe op bij order controller
-    en stelt dan de taken van de workbenches bij afhankelijk van de description in de order 
-    
+job - splitting:
+    assembly line houdt alle jobs bij,
+    workbench is een type, voorgesteld door een enumeration,
+    assembly line neemt jobs, neemt de enumerations en 
+    bepaalt welke sub-job uit de jobs gehaald moet worden 
+    en aan elke workbench gegeven moet worden.
