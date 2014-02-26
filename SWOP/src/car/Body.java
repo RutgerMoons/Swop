@@ -1,3 +1,4 @@
+package car;
 public enum Body {
 
 	SEDAN(1), BREAK(2);

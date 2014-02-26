@@ -1,3 +1,4 @@
+package car;
 
 public enum Gearbox {
 	MANUAL(1, 6), AUTOMATIC(2, 5);

@@ -1,3 +1,4 @@
+package car;
 
 public enum Wheel {
 	COMFORT(1),SPORTS(2);

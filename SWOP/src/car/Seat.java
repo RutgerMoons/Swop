@@ -1,3 +1,4 @@
+package car;
 
 public enum Seat {
 	LEATHER_BLACK(1,Color.BLACK), VINYL(2,Color.GREY), LEATHER_WHITE(3,Color.WHITE);

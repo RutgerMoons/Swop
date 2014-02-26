@@ -1,3 +1,4 @@
+package car;
 
 public enum Color {
 	RED(1),BLUE(2),BLACK(3),WHITE(4), GREY(5);

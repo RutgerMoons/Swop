@@ -1,3 +1,4 @@
+package car;
 
 public enum Engine {
 	STANDARD(1,2,4), PERFORMANCE(2,2.5,6);
