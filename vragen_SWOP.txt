@@ -1,0 +1,25 @@
+24/02 Vragen aan de assistent 
+-----------------------------
+* Actions:        Is het een goede aanpak dat we de Actions als een enum hebben genomen of heeft u hier opmerkingen over?
+
+
+* AssemblyLine :  zou alles moeten weten over splitJob => information Expert
+                  werkt samen met Information expert van Order nl Order_Controller => omzetting van Orders naar Jobs
+                  Integer wordt nu gebruikt als onderscheid tussen de workbenches (Enum). Deze worden gebruikt in splitJob algoritme.
+                  Vraag: Zou het beter zijn om de workbenches voor te stellen als constantes in AssemblyLine ofwel zoals nu Enums voor workbenches?
+							We denken dat Enums meer uitbreidbaar zijn dan met constantes te werken.
+	
+	
+	* Is het maken van communication, sequence diagrams nodig voor beter inzicht of is het beter om te beginnen met programmeren?
+
+
+	* Om 19u komt de laatste auto op de band, wat gebeurt er met de werkers van workbench 1 als die auto aan hun workbench af is? 
+	Gaan ze gaan werken aan de andere workbenches of doen ze niets voorlopig, want ze kunnen niet eerder stoppen? 
+
+	
+	* Overtime is nu attribuut van AssemblyLine want alle werkers gaan overwerken(? zie eerdere vraag). Maar wat als er de volgende dag
+    nieuwe werkers bijkomen? Deze hebben geen overtijd gedaan, hoe maak je het onderscheid? 
+
+	
+	
+	* Moet de UI in het klassediagram staan of niet?
