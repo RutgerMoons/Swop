@@ -24,7 +24,7 @@ public enum Color {
 		case 4:
 			return "white";
 		case 5:
-			return "gray";
+			return "grey";
 		default: return "no code found";
 		}
 	}
