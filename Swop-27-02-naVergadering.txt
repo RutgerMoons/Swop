@@ -1,0 +1,238 @@
+interfaces -> handlers 
+
+handlers -> andere packages 
+
+Faes zei iets van camelToes ofzoiets
+
+Catalog klasse
+
+controllers -> worden Clock en OrderBook
+controller package renamen
+
+fuck enums
+
+responsibility jobverdeling in Workbench leggen
+
+UML -> pijltjes en shit
+
+Task moet een completed-veldje hebben
+
+-------------------------------------------
+VANAF NU OVERLOPEN WE DE USE CASES:
+-------------------------------------------
+
+use case: Order new car
+
+    pre.    login: userUI               // user krijgt attribuut naam
+                                        // users bijhouden in een klasse: UserBook of iets beter dat Stef gaat bedenken
+    
+    1.      present overview of previous order with estimated completion times: 
+                OrderBook -> 2 HashMaps (Key = Garage Holder, Value : List of Orders) // 2: 1 pending, 1 completed
+                Order -> attribuut toevoegen: GarageHolder derp
+                Order -> attribuut toevoegen: completedCars (initial value == quantity)
+                Order -> attribuut toevoegen: estimatedTime
+                Job -> attribuut toevoegen: Order
+                // nu is het mogelijk na het vervolledigen van een job, na te kijken of het order
+                // ook volledig afgewerkt is, 
+                    zo ja (completedCars == 0) -> move Order van pending naar completed (sorted most recent first // voeg vooraan toe)
+                    zo nee -> completedCars--  
+                
+                 
+    
+    2.      user indicates he wants to place a new order:
+                // Handler wordt opgeroepen OF user logt uit
+                Handler vraagt user wat deze wil doen,
+                wil je bestellen of uitloggen?
+                confirm : ga verder                
+                
+                alternate : logout 
+
+    3.      Systeem geeft lijst met mogelijke modellen aan de garageHolder:
+                geeft lijst met mogelijke modellen uit Catalog
+            
+                Catalog -> nieuwe klasse
+    
+    4.      user indicates car model he wants to order:
+                user types correct sequence to order Car
+            
+    4b.     systeem vraagt een aantal:
+                Handler vraagt om aantal
+                user typt aantal
+
+    5.      systeem geeft formulier weer:
+                Handler drukt order af op scherm
+
+    6/7.    user bevestigt order of cancelt:
+                bevestiging -> 
+                    Order wordt aangemaakt door handler,
+                    Order wordt doorgegeven aan OrderBook,
+                    OrderBook voegt Order toe aan pending,
+                    Orderbook geeft nu Order door aan JobController,
+                    JobController zet om in jobs en schat de tijd en update estimatedTime,
+                    JobController geeft jobs door aan AssemblyLine
+
+                cancel -> go to step 1
+
+    8.      present estimated time:
+                Handler displays time on screen
+
+
+use case: perform assembly tasks
+
+    pre:    worker logs in:
+                UI logs in and starts correct Handler
+
+    1.      system ask at which workbench he currently resides:
+                Handler prints question
+
+    2.      user selects Workbench:
+                user returns index of Workbench in list of Workbenches in Assemblyline
+
+    3.      System returns a list of all the pending tasks:
+                Handler vraagt van de Workbench de currentJob op en geeft die heel pretty weer op het scherm
+                // Faes says: "is dat lijst" ja "cool kunnen we afdrukken met het nummerke en handig voor het selecteren"
+
+    4.      User selects:
+                user prints index of the task
+
+
+    5.      System shows the task and actions:
+                Handler shows the task and prints all the actions
+                Task -> getActions()
+
+    6.      user performs and indicates when it is finished:
+                User finishes task and types Done
+
+    7.      System stores changes and presents updated overview:
+                remove task and go to 3 if any tasks are remaining
+                            else: say workbench is done
+                                  go to 8
+
+    8.      Handler prints: "Still wanna work or log out and chill and shit.."
+            work: go to 1
+            stop: go to 9
+
+    9.      log user out
+
+
+use case: advance assembly line
+
+    pre.    manager logs in:
+                wordt afgehandeld door UI
+                correcte Handler wordt opgeroepen
+
+    1.      user indicates he wants to advance the assembly line:
+                Handler asks advance?
+                    yes: go to 2
+                    no: logout
+
+    2.      System presents overview of assemblyline:
+                Handler vraagt aan assemblyLine de workbenches
+                Handler presents per workbench de tasks
+                    -> zet erbij completed of niet
+
+            also present an overview of the future assemblyline
+
+    3.      System asks :"really want to?"
+                confirm: 
+                    ask time:
+                        return time + go to 4
+                cancel:
+                    log out
+
+    4.      advance assembly line:
+                check if it can be advanced:
+                    Handler: check all currentjobs in all workbenches in assemblyline and see if they're all completed
+                
+                regular flow:    
+                    Handler: Assemblyline.advance()
+                    Handler: Clock.addTime(time)
+
+                Alternate: 
+                    if can't be advanced return which Workbench is blocking all the things
+                    go to 6
+
+    5.      System presents overview
+
+    6.      System done?
+                yes: logout
+                
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
