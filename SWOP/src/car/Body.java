@@ -1,27 +1,18 @@
 package car;
-public enum Body {
 
-	SEDAN(1), BREAK(2);
+import java.util.ArrayList;
 
-	private int code;
+public class Body extends CarPart {
 
-	private Body(int body_code) {
-		code = body_code;
+	public Body() {
+		super();
 	}
-
-	public int getCode() {
-		return this.code;
+	
+	public Body(ArrayList<String> types) {
+		super(types);
 	}
-
-	public String toString() {
-		switch (this.getCode()) {
-		case 1:
-			return "sedan";
-		case 2:
-			return "break";
-
-		default: return "no code found";
-		}
-	}
-
+	
+	
+	
+	
 }

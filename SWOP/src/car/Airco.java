@@ -1,26 +1,15 @@
 package car;
 
-public enum Airco {
+import java.util.ArrayList;
 
-	MANUAL(1),AUTOMATIC(2);
+public class Airco extends CarPart {
 	
-	private int code;
-	
-	private Airco(int code){
-		this.code=code;
+	public Airco() {
+		super();
 	}
 	
-	public int getCode(){
-		return this.code;
+	public Airco(ArrayList<String> types) {
+		super(types);
 	}
-	
-	public String toString(){
-		switch(this.getCode()){
-		case 1: 
-			return "manual";
-		case 2:
-			return "automatic climate control";
-		default: return "No such code";
-		}
-	}
+	 
 }
