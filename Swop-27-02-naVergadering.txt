@@ -29,13 +29,13 @@ use case: Order new car
     1.      present overview of previous order with estimated completion times: 
                 OrderBook -> 2 HashMaps (Key = Garage Holder, Value : List of Orders) // 2: 1 pending, 1 completed
                 Order -> attribuut toevoegen: GarageHolder derp
-                Order -> attribuut toevoegen: completedCars (initial value == quantity)
+                Order -> attribuut toevoegen: pendingCars (initial value == quantity)
                 Order -> attribuut toevoegen: estimatedTime
                 Job -> attribuut toevoegen: Order
                 // nu is het mogelijk na het vervolledigen van een job, na te kijken of het order
                 // ook volledig afgewerkt is, 
-                    zo ja (completedCars == 0) -> move Order van pending naar completed (sorted most recent first // voeg vooraan toe)
-                    zo nee -> completedCars--  
+                    zo ja (pendingCars == 0) -> move Order van pending naar completed (sorted most recent first // voeg vooraan toe)
+                    zo nee -> pendingCars--  
                 
                  
     
