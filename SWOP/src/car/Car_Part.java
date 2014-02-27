@@ -1,8 +1,6 @@
 package car;
 
-public class Car_Part {
+public abstract class Car_Part {
 	
-	public Car_Part(){
-		
-	}
+	public abstract String toSring();
 }
