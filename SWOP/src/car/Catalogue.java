@@ -5,13 +5,16 @@ import java.util.HashMap;
 
 public class Catalogue {
 	
-	private HashMap<String, ArrayList<String>> catalogue;
-	public Catalogue(){
-		
-		
-	}
-	public HashMap<String, ArrayList<String>> getCatalogue() {
+	private HashMap<String, ArrayList<CarPart>> catalogue;
+	
+	public HashMap<String, ArrayList<CarPart>> getCatalogue() {
 		return catalogue;
+	}
+	
+	public void initializeCatalogue(ArrayList<CarModel> models){
+		for(CarModel model : models){
+			catalogue.put(model.getDescription(), model.getCarParts());
+		}
 	}
 	
 }
