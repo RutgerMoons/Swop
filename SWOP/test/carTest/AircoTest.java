@@ -22,7 +22,11 @@ public class AircoTest {
 	@Test
 	public void testConstructor() {
 		assertNotNull(airco);
-		assertFalse(airco.getTypes().hasNext()); // isEmpty
+		Iterator<String> aircoTypes = airco.getTypes();
+		assertTrue(aircoTypes.hasNext()); 
+		assertEquals("manual", aircoTypes.next());
+		assertEquals("automatic climate control", aircoTypes.next());
+		assertFalse(aircoTypes.hasNext());
 		ArrayList<String> types = new ArrayList<String>();
 		types.add("manual");
 		types.add("automatic climate control");
@@ -33,7 +37,7 @@ public class AircoTest {
 		assertEquals("manual", airco2types.next());
 		assertTrue(airco2types.hasNext()); 
 		assertEquals("automatic climate control", airco2types.next());
-		assertFalse(airco.getTypes().hasNext()); // in totaal 2 elementen
+		assertFalse(airco2types.hasNext()); // in totaal 2 elementen
 	}
 	
 	

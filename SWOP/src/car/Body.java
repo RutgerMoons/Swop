@@ -3,7 +3,7 @@ package car;
 import java.util.ArrayList;
 
 public class Body extends CarPart {
-
+	
 	public Body() {
 		super();
 	}
