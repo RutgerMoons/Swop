@@ -16,9 +16,12 @@ public abstract class CarPart {
 		this.possibleTypes = types;
 	}
 		
-	protected void setDescription(String type){
-		if((!type.equals(null)) && possibleTypes.contains(type))
-			this.description=type;
+	public void setDescription(String type){
+		if(type == null || !possibleTypes.contains(type)) {
+			throw new IllegalArgumentException(); 
+		} else {
+			this.description = type; 
+		}
 	}
 	
 	public String getDescription(){
