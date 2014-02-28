@@ -1,16 +1,16 @@
 package carTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import car.CarDescription;
+import car.CarModel;
 
 public class CarModelTest {
 
 	@Test
 	public void test() {
-		CarDescription carDes = new CarDescription("Description");
+		CarModel carDes = new CarModel("Description");
 		assertNull(carDes);
 	}
 

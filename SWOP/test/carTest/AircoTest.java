@@ -20,7 +20,7 @@ public class AircoTest {
 	}
 
 	@Test
-	public void testConstructor() {
+	public void test1Constructor() {
 		assertNotNull(airco);
 		Iterator<String> aircoTypes = airco.getTypes();
 		assertTrue(aircoTypes.hasNext()); 
@@ -40,6 +40,37 @@ public class AircoTest {
 		assertFalse(airco2types.hasNext()); // in totaal 2 elementen
 	}
 	
+	@Test
+	public void test2Add() {
+		assertNotNull(airco);
+		Airco.addPossibleAirco("test");
+		Airco a = new Airco();
+		Iterator<String> i = a.getTypes();
+		assertTrue(i.hasNext());
+		assertEquals("manual", i.next());
+		assertTrue(i.hasNext());
+		assertEquals("automatic climate control", i.next());
+		assertTrue(i.hasNext());
+		assertEquals("test", i.next());
+	}
 	
-
+	@Test (expected = IllegalArgumentException.class)
+	public void test3Description() {
+		airco.setDescription("not a possible type");
+		assertNull(airco.getDescription());
+	}
+	
+	@Test
+	public void test4Description() {
+		airco.setDescription("manual");
+		assertEquals("manual", airco.getDescription());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test5Description() {
+		airco.setDescription(null);
+		assertNull(airco.getDescription());
+	}
+	
+	 
 }
