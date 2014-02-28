@@ -12,14 +12,10 @@ public class BodyTest {
 
 	@Test
 	public void test() {
-		Body body = new Body();
+		Body body = new Body("sedan");
 		assertNotNull(body);
 		
-		ArrayList<String> types = new ArrayList<String>();
-		types.add("break");
-		types.add("sedan");
-		Body body2 = new Body(types);
-		assertNotNull(body2);
-	}
+		
+	} 
 
 }

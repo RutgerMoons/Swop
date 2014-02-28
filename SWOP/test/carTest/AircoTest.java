@@ -16,42 +16,35 @@ public class AircoTest {
 	
 	@Before
 	public void setup() {
-		this.airco = new Airco();
+		this.airco = new Airco("manual");
 	}
-
+	
 	@Test
-	public void test1Constructor() {
+	public void testConstructor() {
 		assertNotNull(airco);
-		Iterator<String> aircoTypes = airco.getTypes();
-		assertTrue(aircoTypes.hasNext()); 
-		assertEquals("manual", aircoTypes.next());
-		assertEquals("automatic climate control", aircoTypes.next());
-		assertFalse(aircoTypes.hasNext());
-		ArrayList<String> types = new ArrayList<String>();
-		types.add("manual");
-		types.add("automatic climate control");
-		Airco airco2 = new Airco(types);
-		assertNotNull(airco2);
-		Iterator<String> airco2types = airco2.getTypes();
-		assertTrue(airco2types.hasNext()); 
-		assertEquals("manual", airco2types.next());
-		assertTrue(airco2types.hasNext()); 
-		assertEquals("automatic climate control", airco2types.next());
-		assertFalse(airco2types.hasNext()); // in totaal 2 elementen
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testNullConstructor() {
+		Airco a = new Airco(null);
 	}
 	
 	@Test
 	public void test2Add() {
 		assertNotNull(airco);
 		Airco.addPossibleAirco("test");
-		Airco a = new Airco();
-		Iterator<String> i = a.getTypes();
+		Iterator<String> i = Airco.getPossibleAirco();
 		assertTrue(i.hasNext());
 		assertEquals("manual", i.next());
 		assertTrue(i.hasNext());
 		assertEquals("automatic climate control", i.next());
 		assertTrue(i.hasNext());
 		assertEquals("test", i.next());
+	}
+	  
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddNullToTypes() {
+		Airco.addPossibleAirco(null);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
