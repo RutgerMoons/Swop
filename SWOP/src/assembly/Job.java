@@ -33,4 +33,11 @@ public class Job {
 	public void addTask(Task task){
 		getTasks().add(task);
 	}
+	
+	public boolean isCompleted(){
+		for(Task task: taskList)
+			if(!task.isCompleted())
+				return false;		
+		return true;
+	}
 }
