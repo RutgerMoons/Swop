@@ -13,9 +13,10 @@ public class Order {
 	}
 
 	private void setGarageHolder(String holder) {
-		if(holder !=null && !holder.equals(" ")){
-			this.garageholder=holder;
+		if(holder == null  || holder.equals(" ")){
+			throw new IllegalArgumentException();
 		}
+		this.garageholder=holder;
 	}
 
 	public String getGarageHolder(){
@@ -23,15 +24,21 @@ public class Order {
 	}
 
 	private void setPendingCars(int quantity2) {
-		if(quantity2 >=0){
-			this.pendingCars=quantity2;
+		if(quantity2 <0){
+			throw new IllegalArgumentException();
 		}
+		this.pendingCars=quantity2;
+	}
+
+	public int getPendingCars(){
+		return this.pendingCars;
 	}
 
 	private void setQuantity(int quantity) {
-		if(quantity !=0){
-			this.quantity=quantity;
+		if(quantity <=0){
+			throw new IllegalArgumentException();
 		}
+		this.quantity=quantity;
 	}
 
 	public int getQuantity(){
@@ -39,9 +46,10 @@ public class Order {
 	}
 
 	private void setDescription(String description) {
-		if(description != null){
-			this.description=description;
+		if(description == null || description.equals(" ")){
+			throw new IllegalArgumentException();
 		}
+		this.description=description;
 	}
 
 	public String getDescription(){
@@ -53,9 +61,12 @@ public class Order {
 	}
 
 	public void setEstimatedTime(int time){
+		if(time <0){
+			throw new IllegalArgumentException();
+		}
 		this.estimatedTime = time;
 	}
-	
+
 	public void CarCompleted(){
 		this.setPendingCars(--pendingCars);
 	}

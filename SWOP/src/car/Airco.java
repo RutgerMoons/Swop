@@ -23,6 +23,7 @@ public class Airco extends CarPart {
 		this.setDescription(description);
 	}
 	
+	@Override
 	public void setDescription(String description) {
 		if (description == null || !possibleAircos.contains(description)) {
 			throw new IllegalArgumentException();

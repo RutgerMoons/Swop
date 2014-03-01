@@ -10,8 +10,7 @@ public class CarModelTest {
 
 	@Test
 	public void test() {
-		CarModel carDes = new CarModel("Description");
-		assertNull(carDes);
+		
 	}
 
 }

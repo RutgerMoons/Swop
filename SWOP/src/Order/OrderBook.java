@@ -4,34 +4,69 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OrderBook {
-	private HashMap<String, ArrayList<Order>> pendingOrders;
-	private HashMap<String, ArrayList<Order>> completedOrders;
+	/**
+	 * String = naam van de garagehoulder
+	 * ArrayList<Order> : alle orders besteld door deze garagehoulder
+	 */
+	private static HashMap<String, ArrayList<Order>> pendingOrders;
+	private static HashMap<String, ArrayList<Order>> completedOrders;
 
-	public OrderBook(){
-		setPendingOrders(new HashMap<String, ArrayList<Order>>());
+	/**
+	 * public OrderBook(){
+  		setPendingOrders(new HashMap<String, ArrayList<Order>>());
 		setCompletedOrders(new HashMap<String, ArrayList<Order>>());
 	}
+	 */
 
-	public HashMap<String, ArrayList<Order>> getPendingOrders() {
+	public static HashMap<String, ArrayList<Order>> getPendingOrders() {
 		return pendingOrders;
 	}
 
-	private void setPendingOrders(HashMap<String, ArrayList<Order>> pendingOrders) {
-		this.pendingOrders = pendingOrders;
-	}
+	//	private void setPendingOrders(HashMap<String, ArrayList<Order>> pendingOrders) {
+	//		this.pendingOrders = pendingOrders;
+	//	}
 
-	public HashMap<String, ArrayList<Order>> getCompletedOrders() {
+	public static HashMap<String, ArrayList<Order>> getCompletedOrders() {
 		return completedOrders;
 	}
 
-	private void setCompletedOrders(HashMap<String, ArrayList<Order>> completedOrders) {
-		this.completedOrders = completedOrders;
+	//	private void setCompletedOrders(HashMap<String, ArrayList<Order>> completedOrders) {
+	//		this.completedOrders = completedOrders;
+	//	}
+
+	// Ik denk dat de prof in de les zei dat van die lange oproepen gelijk hieronder
+	// niet goed waren... Hoe veranderen?
+	public static void updateOrderBook(Order order){
+		if(order != null && OrderBook.getPendingOrders().get(order.getGarageHolder()).contains(order)){
+			OrderBook.getPendingOrders().get(order.getGarageHolder()).remove(order);
+			if(!OrderBook.getCompletedOrders().containsKey(order.getGarageHolder())){
+				ArrayList<Order> firstCompletedOrder = new ArrayList<Order>();
+				firstCompletedOrder.add(order);
+				OrderBook.getCompletedOrders().put(order.getGarageHolder(),firstCompletedOrder);
+			}
+			else{
+				OrderBook.getCompletedOrders().get(order.getGarageHolder()).add(0, order);
+			}
+		}
+		else{
+			throw new IllegalArgumentException();
+		}
 	}
-	
-	public void updateOrderBook(Order order){
-		if(order != null && pendingOrders.get(order.getGarageHolder()).contains(order)){
-			pendingOrders.get(order.getGarageHolder()).remove(order);
-			completedOrders.get(order.getGarageHolder()).add(0, order);
+
+	public static void initializeBook(){
+		pendingOrders = new HashMap<String, ArrayList<Order>>();
+		completedOrders = new HashMap<String, ArrayList<Order>>();
+	}
+
+	// mss wordt in de arraylist geen orders maar description van orders geadd.. Not sure anymore
+	public static void addOrder(Order order){
+		if(!OrderBook.getPendingOrders().containsKey(order.getGarageHolder())){
+			ArrayList<Order> firstPendingOrder = new ArrayList<Order>();
+			firstPendingOrder.add(order);
+			OrderBook.getPendingOrders().put(order.getGarageHolder(),firstPendingOrder);
+		}
+		else {
+			OrderBook.getPendingOrders().get(order.getGarageHolder()).add(order);
 		}
 	}
 }

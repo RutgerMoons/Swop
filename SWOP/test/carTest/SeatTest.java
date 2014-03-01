@@ -1,23 +1,73 @@
 package carTest;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import car.Seat;
 
 public class SeatTest {
 
-	@Test
-	public void test() {
-		Seat s1 = new Seat();
-		assertNotNull(s1);
-		
-		ArrayList<String> types = new ArrayList<>();
-		Seat s2 = new Seat(types);
-		assertNotNull(s2);
+private Seat seat;
+	
+	@Before
+	public void setup() {
+		this.seat = new Seat("leather black");
 	}
+	
+	@Test
+	public void testConstructor() {
+		assertNotNull(seat);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testNullConstructor() {
+		Seat alibaba = new Seat(null);
+	}
+	
+	@Test
+	public void test2Add() {
+		assertNotNull(seat);
+		Seat.addPossibleSeat("testshizzle");
+		Iterator<String> i = Seat.getPossibleSeats();
+		assertTrue(i.hasNext());
+		assertEquals("leather black", i.next());
+		assertTrue(i.hasNext());
+		assertEquals("leather white", i.next());
+		assertTrue(i.hasNext());
+		assertEquals("vinyl grey", i.next());
+		assertTrue(i.hasNext());
+		assertEquals("testshizzle", i.next());
+	}
+	  
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddNullToTypes() {
+		Seat.addPossibleSeat(null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test3Description() {
+		seat.setDescription("not a possible type of seat");
+		assertNull(seat.getDescription());
+	}
+	
+	@Test
+	public void test4Description() {
+		seat.setDescription("leather black");
+		assertEquals("leather black", seat.getDescription());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test5Description() {
+		seat.setDescription(null);
+		assertNull(seat.getDescription());
+	}
+	
 
 }
