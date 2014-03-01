@@ -28,7 +28,7 @@ public class TaskTest {
 	}
 	
 	@Test
-	public void TestCompletedOneElement(){
+	public void TestCompletedOneAction(){
 		Action action = new Action();
 		task.addAction(action);
 		assertFalse(task.isCompleted());
@@ -39,7 +39,7 @@ public class TaskTest {
 	}
 	
 	@Test
-	public void TestCompletedTwoElements(){
+	public void TestCompletedTwoActions(){
 		Action action1 = new Action();
 		Action action2 = new Action();
 		task.addAction(action1);
