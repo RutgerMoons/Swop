@@ -46,9 +46,9 @@ public class OrderTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void testPendingCars2(){
 		Order order = new Order("Mario", "Luigi",1);
-		order.CarCompleted();
+		order.completeCar();
 		assertEquals(0, order.getPendingCars());
-		order.CarCompleted();
+		order.completeCar();
 		
 	}
 	
@@ -80,7 +80,7 @@ public class OrderTest {
 	public void testCarCompleted(){
 		Order order = new Order("Mario","Volkswagen",3);
 		assertEquals(3,order.getPendingCars());
-		order.CarCompleted();
+		order.completeCar();
 		assertEquals(2,order.getPendingCars());
 		
 	}

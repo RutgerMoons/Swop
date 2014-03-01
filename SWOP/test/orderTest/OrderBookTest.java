@@ -7,12 +7,13 @@ import org.junit.Test;
 import Order.Order;
 import Order.OrderBook;
 
+/*
+ * Geen 100% code coverage bij OrderBook maar vind niet hoe ik het kan fixen.
+ */
 public class OrderBookTest {
 
 	@Test
-	public void test() {
-		assertNull(OrderBook.getCompletedOrders());
-		assertNull(OrderBook.getPendingOrders());
+	public void test1() {
 		OrderBook.initializeBook();
 		assertNotNull(OrderBook.getCompletedOrders());
 		assertNotNull(OrderBook.getPendingOrders());
@@ -25,15 +26,24 @@ public class OrderBookTest {
 		assertEquals(2,OrderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		OrderBook.updateOrderBook(order2);
 		assertEquals(1,OrderBook.getPendingOrders().get(order.getGarageHolder()).size());
+		assertEquals(1,OrderBook.getCompletedOrders().get(order.getGarageHolder()).size());
 		OrderBook.updateOrderBook(order);
 		assertEquals(0,OrderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		assertEquals(2,OrderBook.getCompletedOrders().get(order.getGarageHolder()).size());
 	}
 
-	@Test (expected = IllegalArgumentException.class)
-	public void testUpdateOrdrerIfCondition(){
+	@Test
+	public void test2(){
 		OrderBook.initializeBook();
-		Order order = new Order(null,null,1);
+		assertNotNull(OrderBook.getCompletedOrders());
+		assertNotNull(OrderBook.getPendingOrders());
+	}
+	
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test3(){
+		OrderBook.initializeBook();
+		Order order = new Order(null,null,0);
 		OrderBook.updateOrderBook(order);
 		
 	}

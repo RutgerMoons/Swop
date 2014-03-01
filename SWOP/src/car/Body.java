@@ -15,7 +15,7 @@ public class Body extends CarPart {
 		possibleBodies.add(type); 
 	}
 	
-	public static Iterator<String> getPossibleAirco() {
+	public static Iterator<String> getPossibleBody() {
 		return possibleBodies.iterator();		
 	}
 	
