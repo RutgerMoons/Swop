@@ -6,16 +6,16 @@ public class CarModel {
 
 	private String description;
 	private ArrayList<CarPart> carParts;
-
+	
 	public CarModel(String description, Airco airco, Body body, Color color, Engine engine, Gearbox gear, Seat seat, Wheel wheel){
+		carParts = new ArrayList<CarPart>();
 		this.setDescription(description);
 		this.setCarParts(airco,body,color,engine,gear,seat,wheel);
 	}
 
 	private void setCarParts(Airco airco, Body body, Color color,
 			Engine engine, Gearbox gear, Seat seat, Wheel wheel) {
-		if(!airco.equals(null) && !body.equals(null) && !color.equals(null) && 
-				!engine.equals(null) && !gear.equals(null) && !seat.equals(null) && !wheel.equals(null)){
+		if(airco!= null && body!=null && color != null && engine != null && gear != null && seat != null && wheel != null){
 			this.carParts.add(wheel);
 			this.carParts.add(seat);
 			this.carParts.add(gear);

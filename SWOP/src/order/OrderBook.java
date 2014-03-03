@@ -1,4 +1,4 @@
-package Order;
+package order;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,45 +11,37 @@ public class OrderBook {
 	private static HashMap<String, ArrayList<Order>> pendingOrders;
 	private static HashMap<String, ArrayList<Order>> completedOrders;
 
-	/**
-	 * public OrderBook(){
-  		setPendingOrders(new HashMap<String, ArrayList<Order>>());
-		setCompletedOrders(new HashMap<String, ArrayList<Order>>());
-	}
-	 */
 
+	/*
+	 * Geen clone() van pendingOrders want java doet moeilijk.
+	 */
 	public static HashMap<String, ArrayList<Order>> getPendingOrders() {
 		return pendingOrders;
 	}
 
-	//	private void setPendingOrders(HashMap<String, ArrayList<Order>> pendingOrders) {
-	//		this.pendingOrders = pendingOrders;
-	//	}
 
 	public static HashMap<String, ArrayList<Order>> getCompletedOrders() {
 		return completedOrders;
 	}
 
-	//	private void setCompletedOrders(HashMap<String, ArrayList<Order>> completedOrders) {
-	//		this.completedOrders = completedOrders;
-	//	}
-
 	// Ik denk dat de prof in de les zei dat van die lange oproepen gelijk hieronder
 	// niet goed waren... Hoe veranderen?
 	public static void updateOrderBook(Order order){
-		if(order != null && OrderBook.getPendingOrders().get(order.getGarageHolder()).contains(order)){
-			OrderBook.getPendingOrders().get(order.getGarageHolder()).remove(order);
-			if(!OrderBook.getCompletedOrders().containsKey(order.getGarageHolder())){
+		if(order == null){
+			throw new IllegalArgumentException();
+		}
+		
+		ArrayList<Order> pending = getPendingOrders().get(order.getGarageHolder());
+		if(pending.contains(order)){
+			pending.remove(order);
+			if(!getCompletedOrders().containsKey(order.getGarageHolder())){
 				ArrayList<Order> firstCompletedOrder = new ArrayList<Order>();
 				firstCompletedOrder.add(order);
-				OrderBook.getCompletedOrders().put(order.getGarageHolder(),firstCompletedOrder);
+				getCompletedOrders().put(order.getGarageHolder(),firstCompletedOrder);
 			}
 			else{
-				OrderBook.getCompletedOrders().get(order.getGarageHolder()).add(0, order);
+				getCompletedOrders().get(order.getGarageHolder()).add(0, order);
 			}
-		}
-		else{
-			throw new IllegalArgumentException();
 		}
 	}
 

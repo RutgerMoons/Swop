@@ -12,6 +12,7 @@ public class Catalogue {
 	}
 	
 	public void initializeCatalogue(ArrayList<CarModel> models){
+		catalogue = new HashMap<String,ArrayList<CarPart>>();
 		for(CarModel model : models){
 			catalogue.put(model.getDescription(), model.getCarParts());
 		}

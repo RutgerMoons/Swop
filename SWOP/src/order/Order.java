@@ -1,4 +1,4 @@
-package Order;
+package order;
 
 public class Order {
 
@@ -67,7 +67,7 @@ public class Order {
 		this.estimatedTime = time;
 	}
 
-	public void CarCompleted(){
+	public void completeCar(){
 		this.setPendingCars(--pendingCars);
 	}
 }
