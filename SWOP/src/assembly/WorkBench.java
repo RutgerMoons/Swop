@@ -1,5 +1,6 @@
 package assembly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorkBench {
@@ -7,9 +8,10 @@ public class WorkBench {
 	private List<String> responsibilities;
 	private Job currentJob;
 	private Task currentTask;
-	
+	private List<Task> currentTasks;
 	public WorkBench(List<String> responsibilities){
 		this.setResponsibilities(responsibilities);
+		setCurrentTasks(new ArrayList<Task>());
 	}
 	public Job getCurrentJob() {
 		return currentJob;
@@ -37,21 +39,23 @@ public class WorkBench {
 		getResponsibilities().add(responibility);
 	}
 	
-	public Task getCurrentTask() {
-		return currentTask;
-	}
-	public void setCurrentTask(Task currentTask) {
-		if(currentTask==null)
-			throw new IllegalArgumentException();
-		this.currentTask = currentTask;
+	public List<Task> getCurrentTasks() {
+		return currentTasks;
 	}
 	
-	public void chooseNextTask(){
+	public void setCurrentTasks(List<Task> currentTasks) {
+		if(currentTasks==null)
+			throw new IllegalArgumentException();
+		this.currentTasks = currentTasks;
+	}
+	
+	public void chooseTasksOutOfJob(){
+		List<Task> tasks = new ArrayList<>();
 		for(Task task: getCurrentJob().getTasks())
 			if(getResponsibilities().contains(task.getTaskDescription()) && !task.isCompleted()){
-				setCurrentTask(task);
-				break;
+				tasks.add(task);
 			}
-			
+		setCurrentTasks(tasks);
 	}
+	
 }
