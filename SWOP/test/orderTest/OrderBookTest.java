@@ -9,7 +9,7 @@ import org.junit.Test;
 
 
 /*
- * Geen 100% code coverage bij OrderBook maar vind niet hoe ik het kan fixen.
+ * Geen 100% code coverage bij OrderBook maar vind niet hoe ik het kan fixen. Bla
  */
 public class OrderBookTest {
 
