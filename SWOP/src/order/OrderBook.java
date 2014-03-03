@@ -1,4 +1,4 @@
-package Order;
+package order;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,15 +31,16 @@ public class OrderBook {
 			throw new IllegalArgumentException();
 		}
 		
-		if(OrderBook.getPendingOrders().get(order.getGarageHolder()).contains(order)){
-			OrderBook.getPendingOrders().get(order.getGarageHolder()).remove(order);
-			if(!OrderBook.getCompletedOrders().containsKey(order.getGarageHolder())){
+		ArrayList<Order> pending = getPendingOrders().get(order.getGarageHolder());
+		if(pending.contains(order)){
+			pending.remove(order);
+			if(!getCompletedOrders().containsKey(order.getGarageHolder())){
 				ArrayList<Order> firstCompletedOrder = new ArrayList<Order>();
 				firstCompletedOrder.add(order);
-				OrderBook.getCompletedOrders().put(order.getGarageHolder(),firstCompletedOrder);
+				getCompletedOrders().put(order.getGarageHolder(),firstCompletedOrder);
 			}
 			else{
-				OrderBook.getCompletedOrders().get(order.getGarageHolder()).add(0, order);
+				getCompletedOrders().get(order.getGarageHolder()).add(0, order);
 			}
 		}
 	}

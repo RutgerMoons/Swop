@@ -24,6 +24,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestConstructor() {
 		assertNotNull(line);
+		assertNotNull(line.getClock());
 		assertNotNull(line.getCurrentJobs());
 		assertNotNull(line.getOvertime());
 		assertNotNull(line.getWorkbenches());
@@ -63,8 +64,8 @@ public class AssemblyLineTest{
 	@Test
 	public void TestSetValidWorkBenches(){
 		List<WorkBench> workbenches = new ArrayList<WorkBench>();
-		workbenches.add(new WorkBench());
-		workbenches.add(new WorkBench());
+		workbenches.add(new WorkBench(new ArrayList<String>()));
+		workbenches.add(new WorkBench(new ArrayList<String>()));
 		line.setWorkbenches(workbenches);
 		assertEquals(2, line.getWorkbenches().size());
 		assertEquals(workbenches, line.getWorkbenches());
@@ -118,7 +119,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestAddOneValidWorkBench(){
-		WorkBench workBench = new WorkBench();
+		WorkBench workBench = new WorkBench(new ArrayList<String>());
 		line.addWorkBench(workBench);
 		assertEquals(1, line.getWorkbenches().size());
 		assertEquals(workBench, line.getWorkbenches().get(0));
@@ -132,8 +133,8 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestAddTwoValidWorkBenchs(){
-		WorkBench bench1 = new WorkBench();
-		WorkBench bench2 = new WorkBench();
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		assertEquals(2, line.getWorkbenches().size());
@@ -143,7 +144,7 @@ public class AssemblyLineTest{
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void TestAddOneValidWorkBenchOneInvalidWorkBench(){
-		WorkBench bench = new WorkBench();
+		WorkBench bench = new WorkBench(new ArrayList<String>());
 		line.addWorkBench(bench);
 		assertEquals(1, line.getWorkbenches().size());
 		assertEquals(bench, line.getWorkbenches().get(0));

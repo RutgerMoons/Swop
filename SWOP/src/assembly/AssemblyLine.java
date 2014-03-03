@@ -47,6 +47,10 @@ public class AssemblyLine {
 		this.overtime = overtime;
 	}
 
+	public Clock getClock() {
+		return clock;
+	}
+
 	public void addJob(Job job){
 		if(job==null)
 			throw new IllegalArgumentException();

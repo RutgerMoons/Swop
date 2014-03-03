@@ -2,9 +2,10 @@ package orderTest;
 
 import static org.junit.Assert.*;
 
+import order.Order;
+
 import org.junit.Test;
 
-import Order.Order;
 
 
 public class OrderTest {

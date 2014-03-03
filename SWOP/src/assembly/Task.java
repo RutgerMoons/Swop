@@ -6,9 +6,11 @@ import java.util.List;
 public class Task {
 
 	private List<Action> actionList;
+	private String taskDescription;
 
-	public Task(){
+	public Task(String taskDescription){
 		setActions(new ArrayList<Action>());
+		this.setTaskDescription(taskDescription);
 	}
 
 	public List<Action> getActions() {
@@ -34,5 +36,15 @@ public class Task {
 			if(!action.isCompleted())
 				return false;
 		return true;
+	}
+
+	public String getTaskDescription() {
+		return taskDescription;
+	}
+
+	public void setTaskDescription(String taskDescription) {
+		if(taskDescription==null || taskDescription.equals(""))
+			throw new IllegalArgumentException();
+		this.taskDescription = taskDescription;
 	}
 }

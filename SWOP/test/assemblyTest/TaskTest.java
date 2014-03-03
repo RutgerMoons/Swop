@@ -16,11 +16,12 @@ public class TaskTest {
 	private Task task;
 	@Before
 	public void initialize(){
-		task = new Task();
+		task = new Task("Paint");
 	}
 	@Test
 	public void TestConstructor(){
 		assertNotNull(task.getActions());
+		assertNotNull(task.getTaskDescription());
 	}
 
 	@Test
@@ -48,6 +49,24 @@ public class TaskTest {
 		assertEquals(0, task.getActions().size());
 		task.addAction(null);
 		assertEquals(1, task.getActions().size());
+	}
+	
+	@Test
+	public void TestSetDescription(){
+		task.setTaskDescription("Body");
+		assertEquals("Body", task.getTaskDescription());
+	}
+	
+	@Test(expected= IllegalArgumentException.class)
+	public void TestSetEmptyDescription(){
+		task.setTaskDescription("");
+		assertEquals("", task.getTaskDescription());
+	}
+	
+	@Test(expected= IllegalArgumentException.class)
+	public void TestSetInvalidDescription(){
+		task.setTaskDescription(null);
+		assertEquals(null, task.getTaskDescription());
 	}
 	
 	@Test
