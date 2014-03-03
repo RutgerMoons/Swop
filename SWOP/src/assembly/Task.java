@@ -6,7 +6,7 @@ import java.util.List;
 public class Task {
 
 	private List<Action> actionList;
-	
+
 	public Task(){
 		setActions(new ArrayList<Action>());
 	}
@@ -16,13 +16,19 @@ public class Task {
 	}
 
 	public void setActions(List<Action> actions) {
-		this.actionList = actions;
+		if(actions==null)
+			throw new IllegalArgumentException();
+		else
+			this.actionList = actions;
 	}
-	
+
 	public void addAction(Action action){
-		getActions().add(action);
+		if(action==null)
+			throw new IllegalArgumentException();
+		else
+			getActions().add(action);
 	}
-	
+
 	public boolean isCompleted(){
 		for(Action action: getActions())
 			if(!action.isCompleted())
