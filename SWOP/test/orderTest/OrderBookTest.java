@@ -2,10 +2,11 @@ package orderTest;
 
 import static org.junit.Assert.*;
 
+import order.Order;
+import order.OrderBook;
+
 import org.junit.Test;
 
-import Order.Order;
-import Order.OrderBook;
 
 /*
  * Geen 100% code coverage bij OrderBook maar vind niet hoe ik het kan fixen.

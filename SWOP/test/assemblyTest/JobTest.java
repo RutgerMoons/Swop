@@ -2,9 +2,10 @@ package assemblyTest;
 
 import static org.junit.Assert.*;
 
+import order.Order;
+
 import org.junit.Test;
 
-import Order.Order;
 import assembly.Action;
 import assembly.Job;
 import assembly.Task;
