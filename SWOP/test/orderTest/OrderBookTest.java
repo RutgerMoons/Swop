@@ -10,7 +10,7 @@ import Order.OrderBook;
 public class OrderBookTest {
 
 	@Test
-	public void test() {
+	public void test1() {
 		assertNull(OrderBook.getCompletedOrders());
 		assertNull(OrderBook.getPendingOrders());
 		OrderBook.initializeBook();
@@ -31,7 +31,7 @@ public class OrderBookTest {
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void testUpdateOrdrerIfCondition(){
+	public void test2UpdateOrdrerIfCondition(){
 		OrderBook.initializeBook();
 		Order order = new Order(null,null,1);
 		OrderBook.updateOrderBook(order);
