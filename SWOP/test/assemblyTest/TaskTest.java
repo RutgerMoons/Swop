@@ -2,6 +2,9 @@ package assemblyTest;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,9 +24,29 @@ public class TaskTest {
 	}
 
 	@Test
+	public void setActions(){
+		List<Action> actions = new ArrayList<>();
+		task.setActions(actions);
+		assertEquals(actions, task.getActions());
+	}
+	
+	@Test(expected= IllegalArgumentException.class)
+	public void setInvalidActions(){
+		task.setActions(null);
+		assertEquals(null, task.getActions());
+	}
+	
+	@Test
 	public void TestAdd(){
 		assertEquals(0, task.getActions().size());
 		task.addAction(new Action());
+		assertEquals(1, task.getActions().size());
+	}
+	
+	@Test(expected= IllegalArgumentException.class)
+	public void TestInvalidAdd(){
+		assertEquals(0, task.getActions().size());
+		task.addAction(null);
 		assertEquals(1, task.getActions().size());
 	}
 	

@@ -19,6 +19,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestContstructor(){
 		assertNotNull(workBench);
+		assertNotNull(workBench.getType());
 	}
 
 	@Test
@@ -28,5 +29,11 @@ public class WorkBenchTest {
 		workBench.setCurrentJob(job);
 		assertNotNull(workBench.getCurrentJob());
 		assertEquals(job, workBench.getCurrentJob());
+	}
+	
+	@Test
+	public void TestType(){
+		workBench.setType(...);
+		assertEquals(..., workBench.getType());
 	}
 }

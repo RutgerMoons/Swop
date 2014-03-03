@@ -9,9 +9,9 @@ public class Job {
 
 	private Order order;
 	private List<Task> taskList;
-	
+
 	public Job(Order order){
-		this.order = order;
+		setOrder(order);
 		setTasks(new ArrayList<Task>());
 	}
 	public Order getOrder() {
@@ -19,21 +19,30 @@ public class Job {
 	}
 
 	public void setOrder(Order order) {
-		this.order = order;
+		if(order==null)
+			throw new IllegalArgumentException();
+		else
+			this.order = order;
 	}
-	
+
 	public List<Task> getTasks() {
 		return taskList;
 	}
-	
+
 	public void setTasks(List<Task> tasks) {
-		this.taskList = tasks;
+		if(tasks==null)
+			throw new IllegalArgumentException();
+		else
+			this.taskList = tasks;
 	}
-	
+
 	public void addTask(Task task){
-		getTasks().add(task);
+		if(task==null)
+			throw new IllegalArgumentException();
+		else
+			getTasks().add(task);
 	}
-	
+
 	public boolean isCompleted(){
 		for(Task task: taskList)
 			if(!task.isCompleted())

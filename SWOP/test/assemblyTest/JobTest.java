@@ -2,6 +2,9 @@ package assemblyTest;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import Order.Order;
@@ -29,6 +32,29 @@ public class JobTest {
 		assertEquals(order2, job.getOrder());
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestSetInvalidOrder(){
+		Job job = new Job(null);
+		assertEquals(null, job.getOrder());
+	}
+	
+	@Test
+	public void setTasks(){
+		List<Task> tasks = new ArrayList<>();
+		Order order = new Order("Jef", "Car", 1);
+		Job job = new Job(order);
+		job.setTasks(tasks);
+		assertEquals(tasks, job.getTasks());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void setInvalidTasks(){
+		Order order = new Order("Jef", "Car", 1);
+		Job job = new Job(order);
+		job.setTasks(null);
+		assertEquals(null, job.getTasks());
+	}
+	
 	@Test
 	public void TestAdd(){
 		Order order = new Order("Jef", "Car", 1);
@@ -36,6 +62,31 @@ public class JobTest {
 		Task task = new Task();
 		assertEquals(0, job.getTasks().size());
 		job.addTask(task);
+		assertEquals(1, job.getTasks().size());
+		assertEquals(task, job.getTasks().get(0));
+	}
+	
+	@Test
+	public void TestTwoAdd(){
+		Order order = new Order("Jef", "Car", 1);
+		Job job = new Job(order);
+		Task task = new Task();
+		assertEquals(0, job.getTasks().size());
+		job.addTask(task);
+		assertEquals(1, job.getTasks().size());
+		assertEquals(task, job.getTasks().get(0));
+		Task task2 = new Task();
+		job.addTask(task2);
+		assertEquals(2, job.getTasks().size());
+		assertEquals(task2, job.getTasks().get(1));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestInvalidAdd(){
+		Order order = new Order("Jef", "Car", 1);
+		Job job = new Job(order);
+		assertEquals(0, job.getTasks().size());
+		job.addTask(null);
 		assertEquals(1, job.getTasks().size());
 	}
 	
