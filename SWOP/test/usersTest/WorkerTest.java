@@ -2,6 +2,8 @@ package usersTest;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +26,7 @@ public class WorkerTest {
 	@Test
 	public void TestWorkbench() {
 		assertNull(worker.getCurrentWorkBench());
-		WorkBench workBench = new WorkBench();
+		WorkBench workBench = new WorkBench(new ArrayList<String>());
 		worker.setCurrentWorkBench(workBench);
 		assertEquals(workBench, worker.getCurrentWorkBench());
 	}

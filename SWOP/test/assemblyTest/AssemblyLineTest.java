@@ -1,14 +1,16 @@
 package assemblyTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import order.Order;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import Order.Order;
 import assembly.AssemblyLine;
 import assembly.Job;
 import assembly.WorkBench;

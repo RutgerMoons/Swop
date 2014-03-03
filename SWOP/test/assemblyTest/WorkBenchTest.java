@@ -1,15 +1,20 @@
 package assemblyTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import order.Order;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import Order.Order;
+import assembly.Action;
 import assembly.Job;
+import assembly.Task;
 import assembly.WorkBench;
 
 public class WorkBenchTest {
@@ -101,5 +106,88 @@ public class WorkBenchTest {
 		assertEquals(2, workBench.getResponsibilities().size());
 		assertEquals("Montage", workBench.getResponsibilities().get(0));
 		assertEquals(null, workBench.getResponsibilities().get(1));
+	}
+	
+	@Test
+	public void TestSetCurrentTask(){
+		Task task = new Task("Body");
+		workBench.setCurrentTask(task);
+		assertEquals(task, workBench.getCurrentTask());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void TestSetInvalidCurrentTask(){
+		workBench.setCurrentTask(null);
+		assertEquals(null, workBench.getCurrentTask());
+	}
+	
+	@Test
+	public void TestChooseNextTask(){
+		workBench.addResponsibility("Paint");
+		Job job = new Job(new Order("Jef", "Car", 1));
+		Task task = new Task("Paint");
+		task.addAction(new Action());
+		job.addTask(task);
+		workBench.setCurrentJob(job);
+		workBench.chooseNextTask();
+		assertEquals(task, workBench.getCurrentTask());
+	}
+	
+	@Test
+	public void TestChooseNextTaskTwoTasksTaskCompleted(){
+		workBench.addResponsibility("Paint");
+		workBench.addResponsibility("Body");
+		Job job = new Job(new Order("Jef", "Car", 1));
+		Task task1 = new Task("Paint");
+		Action action1 = new Action();
+		task1.addAction(action1);
+		Task task2 = new Task("Body");
+		task2.addAction(new Action());
+		job.addTask(task1);
+		job.addTask(task2);
+		workBench.setCurrentJob(job);
+		workBench.chooseNextTask();
+		assertEquals(task1, workBench.getCurrentTask());
+		action1.setCompleted(true);
+		workBench.chooseNextTask();
+		assertEquals(task2, workBench.getCurrentTask());
+	}
+	
+	@Test
+	public void TestChooseNextTaskTwoTasksTaskNotCompleted(){
+		workBench.addResponsibility("Paint");
+		workBench.addResponsibility("Body");
+		Job job = new Job(new Order("Jef", "Car", 1));
+		Task task1 = new Task("Paint");
+		Action action1 = new Action();
+		task1.addAction(action1);
+		Task task2 = new Task("Body");
+		task2.addAction(new Action());
+		job.addTask(task1);
+		job.addTask(task2);
+		workBench.setCurrentJob(job);
+		workBench.chooseNextTask();
+		assertEquals(task1, workBench.getCurrentTask());
+		workBench.chooseNextTask();
+		assertEquals(task1, workBench.getCurrentTask());
+	}
+	
+	@Test
+	public void TestChooseNextTaskTwoTasksTaskCompletedOneIncompatibleTask(){
+		workBench.addResponsibility("Paint");
+		Job job = new Job(new Order("Jef", "Car", 1));
+		Task task1 = new Task("Paint");
+		Action action1 = new Action();
+		task1.addAction(action1);
+		Task task2 = new Task("Body");
+		task2.addAction(new Action());
+		job.addTask(task1);
+		job.addTask(task2);
+		workBench.setCurrentJob(job);
+		workBench.chooseNextTask();
+		assertEquals(task1, workBench.getCurrentTask());
+		action1.setCompleted(true);
+		workBench.chooseNextTask();
+		assertEquals(task1, workBench.getCurrentTask());
 	}
 }
