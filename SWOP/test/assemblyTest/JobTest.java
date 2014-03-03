@@ -59,7 +59,7 @@ public class JobTest {
 	public void TestAdd(){
 		Order order = new Order("Jef", "Car", 1);
 		Job job = new Job(order);
-		Task task = new Task();
+		Task task = new Task("Paint");
 		assertEquals(0, job.getTasks().size());
 		job.addTask(task);
 		assertEquals(1, job.getTasks().size());
@@ -70,12 +70,12 @@ public class JobTest {
 	public void TestTwoAdd(){
 		Order order = new Order("Jef", "Car", 1);
 		Job job = new Job(order);
-		Task task = new Task();
+		Task task = new Task("Paint");
 		assertEquals(0, job.getTasks().size());
 		job.addTask(task);
 		assertEquals(1, job.getTasks().size());
 		assertEquals(task, job.getTasks().get(0));
-		Task task2 = new Task();
+		Task task2 = new Task("Paint");
 		job.addTask(task2);
 		assertEquals(2, job.getTasks().size());
 		assertEquals(task2, job.getTasks().get(1));
@@ -94,7 +94,7 @@ public class JobTest {
 	public void TestCompletedOneTask(){
 		Order order = new Order("Jef", "Car", 1);
 		Job job = new Job(order);
-		Task task = new Task();
+		Task task = new Task("Paint");
 		assertTrue(job.isCompleted());
 		Action action = new Action();
 		task.addAction(action);
@@ -108,8 +108,8 @@ public class JobTest {
 	public void TestCompletedTwoTasks(){
 		Order order = new Order("Jef", "Car", 1);
 		Job job = new Job(order);
-		Task task1 = new Task();
-		Task task2 = new Task();
+		Task task1 = new Task("Paint");
+		Task task2 = new Task("Paint");
 		assertTrue(job.isCompleted());
 		
 		Action action1 = new Action();
