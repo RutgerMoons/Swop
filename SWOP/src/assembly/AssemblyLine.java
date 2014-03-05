@@ -62,35 +62,35 @@ public class AssemblyLine {
 			throw new IllegalArgumentException();
 		else getWorkbenches().add(bench);
 	}	
-	
+
 	public void advance(){
+		//kijken of alle workbenches completed zijn, anders moogt ge ni advancen.
 		for(WorkBench bench: getWorkbenches())
 			if(!bench.isCompleted())
 				return;
-		
+
 		Job lastJob = null;
 		for(int i=0; i<getWorkbenches().size(); i++){
-			WorkBench bench = getWorkbenches().get(i);
-			if(i==0){
+			WorkBench bench = getWorkbenches().get(i);	
+			if(i==0){	//als het de eerste workbench is (de meest linkse op tekeningen, dan moet je een nieuwe job nemen.
 				lastJob = bench.getCurrentJob();
-				if(bench.getCurrentJob()==null){
-					bench.setCurrentJob(getCurrentJobs().get(0));
+				if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
+					bench.setCurrentJob(getCurrentJobs().get(0));	//de eerste uit de lijst halen dus.
 				}else{
-					int index = getCurrentJobs().indexOf(bench.getCurrentJob());
-					if((index+1)<getCurrentJobs().size()){
+					int index = getCurrentJobs().indexOf(bench.getCurrentJob());	
+					if((index+1)<getCurrentJobs().size()){		//om indexoutofbounds te voorkomen
 						bench.setCurrentJob(getCurrentJobs().get(index+1));
-					}
+					}else bench.setCurrentJob(null);	//als er geen nieuwe jobs meer zijn, dan moet je zeggen dat de workbench niets te doen heeft
 				}
-			}else{
+			}else{ //Als het niet de eerste is, moet je de job van de vorige workbench nemen.
 				Job prev = bench.getCurrentJob();
-				if(lastJob!=null)
-					bench.setCurrentJob(lastJob);
+				bench.setCurrentJob(lastJob);
 				lastJob = prev;
 			}
-			bench.chooseTasksOutOfJob();
+			bench.chooseTasksOutOfJob();	//dan de taken laten selecteren door de workbench
 		}
 		if(lastJob !=null && lastJob.isCompleted())
-			getCurrentJobs().remove(lastJob);
+			getCurrentJobs().remove(lastJob);	//als de job completed is, dus de auto('s), dan moet je de job natuurlijk removen.
 	}
 
 }

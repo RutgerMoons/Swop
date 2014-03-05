@@ -38,13 +38,6 @@ public class WorkBenchTest {
 		assertEquals(job, workBench.getCurrentJob());
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void TestSetInvalidCurrentJob(){
-		assertNull(workBench.getCurrentJob());
-		workBench.setCurrentJob(null);
-		assertNotNull(workBench.getCurrentJob());
-	}
-	
 	@Test
 	public void TestSetType(){
 		List<String> list = new ArrayList<>();

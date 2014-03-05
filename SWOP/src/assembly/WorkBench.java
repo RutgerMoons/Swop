@@ -17,8 +17,6 @@ public class WorkBench {
 	}
 
 	public void setCurrentJob(Job currentJob) {
-		if(currentJob==null)
-			throw new IllegalArgumentException();
 		this.currentJob = currentJob;
 	}
 	
