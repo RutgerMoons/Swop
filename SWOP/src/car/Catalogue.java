@@ -2,19 +2,26 @@ package car;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Catalogue {
 	
-	private HashMap<String, ArrayList<CarPart>> catalogue;
-	
-	public HashMap<String, ArrayList<CarPart>> getCatalogue() {
-		return catalogue;
+	private Map<String, List<CarPart>> data;
+
+	public Catalogue(){
+		initializeCatalogue(new CatalogueFiller().getInitialModels());
+	}
+
+
+	public Map<String, List<CarPart>> getCatalogue() {
+		return data;
 	}
 	
 	public void initializeCatalogue(ArrayList<CarModel> models){
-		catalogue = new HashMap<String,ArrayList<CarPart>>();
+		data = new HashMap<String,List<CarPart>>();
 		for(CarModel model : models){
-			catalogue.put(model.getDescription(), model.getCarParts());
+			data.put(model.getDescription(), model.getCarParts());
 		}
 	}
 	

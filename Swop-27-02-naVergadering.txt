@@ -26,7 +26,7 @@ use case: Order new car
     pre.    login: userUI               // user krijgt attribuut naam
                                         // users bijhouden in een klasse: UserBook of iets beter dat Stef gaat bedenken
     
-    1.      present overview of previous order with estimated completion times: 
+    1.      present overview of previous orders with estimated completion times: 
                 OrderBook -> 2 HashMaps (Key = Garage Holder, Value : List of Orders) // 2: 1 pending, 1 completed
                 Order -> attribuut toevoegen: GarageHolder derp
                 Order -> attribuut toevoegen: pendingCars (initial value == quantity)

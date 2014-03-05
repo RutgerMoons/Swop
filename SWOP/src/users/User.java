@@ -1,6 +1,10 @@
 package users;
 
-public class User {
+import java.util.ArrayList;
+
+import ui.*;
+
+public abstract class User {
 
 	private String name;
 	
@@ -14,5 +18,12 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public UseCaseHandler getRightHandler(ArrayList<UseCaseHandler> handlers){
+		for (int i = 0; i < handlers.size(); i++) {
+			if (handlers.get(i).mayUseThisHandler(this)) return handlers.get(i);
+		}
+		return null;
 	}
 }
