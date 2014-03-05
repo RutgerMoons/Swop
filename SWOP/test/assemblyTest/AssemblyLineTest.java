@@ -11,8 +11,10 @@ import order.Order;
 import org.junit.Before;
 import org.junit.Test;
 
+import assembly.Action;
 import assembly.AssemblyLine;
 import assembly.Job;
+import assembly.Task;
 import assembly.WorkBench;
 import clock.Clock;
 
@@ -152,5 +154,101 @@ public class AssemblyLineTest{
 		assertEquals(bench, line.getWorkbenches().get(0));
 		line.addWorkBench(null);
 		assertEquals(2, line.getCurrentJobs().size());
+	}
+	
+	
+	
+	
+	@Test
+	public void TestAdvanceOneWorkbench(){
+		WorkBench bench = new WorkBench(new ArrayList<String>());
+		Order order1 = new Order("Jef", "Car", 1);
+		Job job = new Job(order1);
+		line.addJob(job);
+		line.addWorkBench(bench);
+		line.advance();
+		assertEquals(job, bench.getCurrentJob());
+	}
+	
+	@Test
+	public void TestAdvanceTwoWorkbenches(){
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		Order order1 = new Order("Jef", "Car", 1);
+		Job job = new Job(order1);
+		line.addJob(job);
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		line.advance();
+		assertEquals(job, bench1.getCurrentJob());
+		line.advance();
+		assertEquals(job, bench2.getCurrentJob());
+	}
+	
+	
+	@Test
+	public void TestAdvanceTwoWorkbenchesTwoJobs(){
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		Order order1 = new Order("Jef", "Car", 1);
+		Job job1 = new Job(order1);
+		Job job2 = new Job(order1);
+		line.addJob(job1);
+		line.addJob(job2);
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		line.advance();
+		assertEquals(job1, bench1.getCurrentJob());
+		line.advance();
+		assertEquals(job2, bench1.getCurrentJob());
+		assertEquals(job1, bench2.getCurrentJob());
+	}
+	
+	
+	
+	@Test
+	public void TestAdvanceTwoWorkbenchesIncompleteJob(){
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		bench1.addResponsibility("Body");
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		Order order1 = new Order("Jef", "Car", 1);
+		Job job = new Job(order1);
+		Task task = new Task("Body");
+		task.addAction(new Action());
+		job.addTask(task);
+		line.addJob(job);
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		line.advance();
+		assertEquals(job, bench1.getCurrentJob());
+		line.advance();
+		assertEquals(job, bench1.getCurrentJob());
+		assertEquals(null, bench2.getCurrentJob());
+	}
+	
+	/**
+	 * Check if the job is completed it will be removed from currentjobs. 
+	 */
+	@Test
+	public void TestAdvanceTwoWorkbenchesCompleteFullJob(){
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		bench2.addResponsibility("Body");
+		Order order1 = new Order("Jef", "Car", 1);
+		Job job = new Job(order1);
+		Task task = new Task("Body");
+		Action action = new Action();
+		task.addAction(action);
+		job.addTask(task);
+		line.addJob(job);
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		line.advance();
+		assertEquals(job, bench1.getCurrentJob());
+		line.advance();
+		assertEquals(job, bench2.getCurrentJob());
+		action.setCompleted(true);
+		line.advance();
+		assertEquals(0, line.getCurrentJobs().size());
 	}
 }

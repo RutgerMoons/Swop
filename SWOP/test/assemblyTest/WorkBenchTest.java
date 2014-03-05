@@ -1,8 +1,6 @@
 package assemblyTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +36,6 @@ public class WorkBenchTest {
 		workBench.setCurrentJob(job);
 		assertNotNull(workBench.getCurrentJob());
 		assertEquals(job, workBench.getCurrentJob());
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void TestSetInvalidCurrentJob(){
-		assertNull(workBench.getCurrentJob());
-		workBench.setCurrentJob(null);
-		assertNotNull(workBench.getCurrentJob());
 	}
 	
 	@Test
@@ -168,5 +159,63 @@ public class WorkBenchTest {
 		workBench.chooseTasksOutOfJob();
 		assertEquals(1, workBench.getCurrentTasks().size());
 		assertEquals(task1, workBench.getCurrentTasks().get(0));
+	}
+	
+	
+	@Test
+	public void TestNotCompleted(){
+		workBench.addResponsibility("Paint");
+		workBench.addResponsibility("Body");
+		Job job = new Job(new Order("Jef", "Car", 1));
+		Task task1 = new Task("Paint");
+		task1.addAction(new Action());
+		Task task2 = new Task("Body");
+		task2.addAction(new Action());
+		
+		job.addTask(task1);
+		job.addTask(task2);
+		workBench.setCurrentJob(job);
+		workBench.chooseTasksOutOfJob();
+		assertFalse(workBench.isCompleted());
+	}
+	
+	@Test
+	public void TestOneCompletedOneIncompleted(){
+		workBench.addResponsibility("Paint");
+		workBench.addResponsibility("Body");
+		Job job = new Job(new Order("Jef", "Car", 1));
+		Task task1 = new Task("Paint");
+		Action action1 = new Action();
+		task1.addAction(action1);
+		Task task2 = new Task("Body");
+		task2.addAction(new Action());
+		
+		job.addTask(task1);
+		job.addTask(task2);
+		workBench.setCurrentJob(job);
+		workBench.chooseTasksOutOfJob();
+		action1.setCompleted(true);
+		assertFalse(workBench.isCompleted());
+	}
+	
+	@Test
+	public void TestTwoCompleted(){
+		workBench.addResponsibility("Paint");
+		workBench.addResponsibility("Body");
+		Job job = new Job(new Order("Jef", "Car", 1));
+		Task task1 = new Task("Paint");
+		Action action1 = new Action();
+		task1.addAction(action1);
+		Task task2 = new Task("Body");
+		Action action2 = new Action();
+		task2.addAction(action2);
+		
+		job.addTask(task1);
+		job.addTask(task2);
+		workBench.setCurrentJob(job);
+		workBench.chooseTasksOutOfJob();
+		action1.setCompleted(true);
+		action2.setCompleted(true);
+		assertTrue(workBench.isCompleted());
 	}
 }
