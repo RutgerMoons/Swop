@@ -41,7 +41,6 @@ public class runProgram {
 		orderBook = new OrderBook();
 		userBook = new UserBook();
 		userInterface = new UserInterface();
-		
 		orderHandler = new OrderHandler(userInterface,orderBook,catalogue);
 		assembleHandler = new AssembleHandler();
 		advanceAssemblyLineHandler = new AdvanceAssemblyLineHandler();

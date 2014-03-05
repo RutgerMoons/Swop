@@ -27,7 +27,7 @@ public class CatalogueFiller {
 					new Engine("performance 2.5l 6 cilinders"),
 					new Gearbox("5 speed automatic"),
 					new Seat("leather white"),
-					new Wheel("sports")));
+					new Wheel("sports (low profile)")));
 		return initialModels;
 	}
 }

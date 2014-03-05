@@ -36,12 +36,12 @@ public class OrderHandler extends UseCaseHandler{
 		ArrayList<Order> pendingOrders;
 		ArrayList<Order> completedOrders;
 		
-		if(this.orderBook.getPendingOrders().containsKey(user) && !this.orderBook.getPendingOrders().get(user).isEmpty()) 
-			pendingOrders = this.orderBook.getPendingOrders().get(user);
+		if(this.orderBook.getPendingOrders().containsKey(user.getName()) && !this.orderBook.getPendingOrders().get(user.getName()).isEmpty()) 
+			pendingOrders = this.orderBook.getPendingOrders().get(user.getName());
 		else pendingOrders = null;
 		
-		if(this.orderBook.getCompletedOrders().containsKey(user))
-			completedOrders = this.orderBook.getCompletedOrders().get(user);
+		if(this.orderBook.getCompletedOrders().containsKey(user.getName()))
+			completedOrders = this.orderBook.getCompletedOrders().get(user.getName());
 		else completedOrders = null;
 		
 		this.UIFacade.showPendingOrders(pendingOrders);

@@ -9,4 +9,6 @@ public abstract class UseCaseHandler {
 	}
 	
 	public abstract boolean mayUseThisHandler(User user);
+	
+	public abstract void executeUseCase(User user);
 }

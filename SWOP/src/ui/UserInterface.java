@@ -69,12 +69,16 @@ public class UserInterface implements UIFacade{
 		
 		ordersInString.add("Your pending orders:");
 		
-		for (int i = 0; i < pendingOrders.size(); i++) {
-			orderInString = pendingOrders.get(i).getQuantity() + " " + pendingOrders.get(i).getDescription() + " Estimated completion time:" + pendingOrders.get(i).getEstimatedTime();
-			ordersInString.add(orderInString);
+		if(pendingOrders != null){
+			for (int i = 0; i < pendingOrders.size(); i++) {
+				orderInString = pendingOrders.get(i).getQuantity() + " " + pendingOrders.get(i).getDescription() + " Estimated completion time:" + pendingOrders.get(i).getEstimatedTime();
+				ordersInString.add(orderInString);
+			}
+			show(ordersInString);
 		}
+		else show(new ArrayList<String>(Arrays.asList("You have no pending Orders")));
 		
-		show(ordersInString);
+		
 		
 	}
 
@@ -85,12 +89,15 @@ public class UserInterface implements UIFacade{
 		
 		ordersInString.add("Your completed orders:");
 		
-		for (int i = 0; i < completedOrders.size(); i++) {
-			orderInString = completedOrders.get(i).getQuantity() + " " + completedOrders.get(i).getDescription();
-			ordersInString.add(orderInString);
+		if(completedOrders != null){
+			for (int i = 0; i < completedOrders.size(); i++) {
+				orderInString = completedOrders.get(i).getQuantity() + " " + completedOrders.get(i).getDescription();
+				ordersInString.add(orderInString);
+			}
+			
+			show(ordersInString);
 		}
-		
-		show(ordersInString);
+		else show(new ArrayList<String>(Arrays.asList("You have no completed Orders")));
 		
 	}
 
@@ -104,8 +111,14 @@ public class UserInterface implements UIFacade{
 	
 	@Override
 	public boolean askContinue() {
-		// TODO Auto-generated method stub
-		return false;
+		String answer = askQuestion("Do you want to continue? Y/N");
+		if(answer.equals("Y")){
+			return true;
+		}
+		else if(answer == "N"){
+			return false;
+		}
+		else return false;
 	}
 
 
