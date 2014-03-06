@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Set;
 
+import assembly.Task;
 import order.Order;
 import users.*;
 
@@ -26,6 +27,18 @@ public class UserInterface implements UIFacade{
 			System.out.println(message.get(i));
 		}
 		System.out.println("");
+	}
+	
+	@Override
+	public boolean askContinue() {
+		String answer = askQuestion("Do you want to continue? Y/N");
+		if(answer.equals("Y")){
+			return true;
+		}
+		else if(answer == "N"){
+			return false;
+		}
+		else return false;
 	}
 	
 	public String getName(){
@@ -78,8 +91,6 @@ public class UserInterface implements UIFacade{
 		}
 		else show(new ArrayList<String>(Arrays.asList("You have no pending Orders")));
 		
-		
-		
 	}
 
 	@Override
@@ -109,17 +120,28 @@ public class UserInterface implements UIFacade{
 		
 	}
 	
-	@Override
-	public boolean askContinue() {
-		String answer = askQuestion("Do you want to continue? Y/N");
-		if(answer.equals("Y")){
-			return true;
-		}
-		else if(answer == "N"){
-			return false;
-		}
-		else return false;
+	public int getWorkBench(){
+		return Integer.parseInt(askQuestion("What's the number of the workbench you're currently residing at?"));
 	}
-
-
+	
+	public int chooseTask(ArrayList<Task> tasks){
+		ArrayList<String> taskInStrings = new ArrayList<String>();
+		
+		taskInStrings.add("Tasks:");
+		for (int i = 0; i <tasks.size(); i++) {
+			taskInStrings.add(i + ". " + tasks.get(i).getTaskDescription());
+		}
+		
+		show(taskInStrings);
+		
+		return Integer.parseInt(askQuestion("Which taskNumber do you choose?"));		
+	}
+	
+	public String askFinished(){
+		return askQuestion("Type 'done' when your task is finished");
+	}
+	
+	public void showWorkBenchCompleted(){
+		show(new ArrayList<String>(Arrays.asList("All the tasks at this workbench are completed")));
+	}
 }

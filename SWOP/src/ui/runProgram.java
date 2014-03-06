@@ -42,7 +42,7 @@ public class runProgram {
 		userBook = new UserBook();
 		userInterface = new UserInterface();
 		orderHandler = new OrderHandler(userInterface,orderBook,catalogue);
-		assembleHandler = new AssembleHandler();
+		assembleHandler = new AssembleHandler(userInterface,assemblyLine);
 		advanceAssemblyLineHandler = new AdvanceAssemblyLineHandler();
 		
 		ArrayList<UseCaseHandler> handlers = new ArrayList<UseCaseHandler>();

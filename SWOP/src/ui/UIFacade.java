@@ -3,6 +3,7 @@ package ui;
 import java.util.ArrayList;
 import java.util.Set;
 
+import assembly.Task;
 import order.*;
 
 public interface UIFacade {
@@ -13,7 +14,13 @@ public interface UIFacade {
 	
 	public String getModel(Set<String> catalogue);
 	
+	public String askFinished();
+	
 	public int getQuantity();
+	
+	public int getWorkBench();
+	
+	public int chooseTask(ArrayList<Task> tasks);
 	
 	public boolean askContinue();
 	
@@ -25,6 +32,8 @@ public interface UIFacade {
 	
 	public void showCompletedOrders(ArrayList<Order> completedOrders);
 	
-	//estimatedTime kan null zijn!! --> dan moet de estimatedTime niet geprint worden 
+	public void showWorkBenchCompleted();
+	
+	//estimatedTime kan -1 zijn!! --> dan moet de estimatedTime niet geprint worden 
 	public void showOrder(int quantity, String model, int estimatedTime);
 }

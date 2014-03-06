@@ -1,5 +1,7 @@
 package ui;
 
+import java.util.ArrayList;
+
 import order.OrderBook;
 import users.GarageHolder;
 import users.User;
@@ -13,8 +15,12 @@ import clock.Clock;
 
 public class AssembleHandler extends UseCaseHandler{
 	
-	public AssembleHandler(){
-		
+	private UIFacade UIFacade;
+	private AssemblyLine assemblyLine;
+	
+	public AssembleHandler(UIFacade UIFacade, AssemblyLine assemblyLine){
+		this.UIFacade = UIFacade;
+		this.assemblyLine = assemblyLine;
 	}
 
 	public boolean mayUseThisHandler(User user){
@@ -24,22 +30,38 @@ public class AssembleHandler extends UseCaseHandler{
 	
 	public void executeUseCase(User user){
 		WorkBench workBench = chooseWorkBench(user);
-		Task task = chooseTask(user,workBench);
-		endTask(user,task);
+		chooseTask(user,workBench);
 	}
 	
 	private WorkBench chooseWorkBench(User user){
-		//TODO implement
-		return null;
+		int workbenchIndex = this.UIFacade.getWorkBench();
+		return this.assemblyLine.getWorkbenches().get(workbenchIndex);
 	}
 	
-	private Task chooseTask(User user, WorkBench workbench){
-		//TODO implement
-		return null;
+	private void chooseTask(User user, WorkBench workbench){
+		if(workbench.isCompleted()){
+			UIFacade.showWorkBenchCompleted();
+			if(UIFacade.askContinue())
+				executeUseCase(user);
+		}
+		else{		
+			ArrayList<Task> tasks = new ArrayList<>();
+			for (int i = 0; i < workbench.getCurrentTasks().size(); i++) {
+				if(!workbench.getCurrentTasks().get(i).isCompleted())
+					tasks.add(workbench.getCurrentTasks().get(i));
+			}	
+		int chosenTaskNumber = this.UIFacade.chooseTask(tasks);
+		endTask(user, tasks.get(chosenTaskNumber), workbench);
+		}
 	}
 	
-	private void endTask(User user, Task task){
-		//TODO implement
+	private void endTask(User user, Task task, WorkBench workbench){
+		this.UIFacade.askFinished();
+		
+		for (int i = 0; i < task.getActions().size(); i++) {
+			task.getActions().get(i).setCompleted(true);
+		}
+		chooseTask(user, workbench);
 	}
 	
 }
