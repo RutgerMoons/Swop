@@ -8,7 +8,7 @@ class ThreadedServer {
 		while (true) {
 			Socket connectionSocket = clientSocket.accept();
 			if (connectionSocket != null) {
-				Handler11 h = new Handler11(connectionSocket);
+				Handler h = new Handler(connectionSocket);
 				Thread thread = new Thread(h);
 				thread.start();
 			}

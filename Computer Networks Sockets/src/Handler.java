@@ -1,24 +1,109 @@
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
-public class Handler11 implements Runnable { 
+public class Handler implements Runnable { 
 	Socket connectionSocket;
 	String escapeSequence = "^]";
+	Boolean connectionOpen;
 
 	// connectionsSocket != null:
 	// this is forced in ThreadedServer
-	public Handler11(Socket socket) {
+	public Handler(Socket socket) {
 		this.connectionSocket = socket;
+		connectionOpen = true;
 	}
 	
+	public void writeToClient(PrintWriter outToClient, String message) {
+		outToClient.println(message + "\r\n");
+		outToClient.println(System.lineSeparator());
+		outToClient.flush();
+	}
 	
-	public void handleRequest(String clientSentence, BufferedReader inFromClient, DataOutputStream outToClient) {
+	public String readFromClient(BufferedReader inFromClient) throws IOException {
+		return inFromClient.readLine();
+	}
+	
+	public boolean isHTTP0(String protocol) {
+		return (protocol.substring(protocol.length() - 1).equals("0"));
+	}
+	
+	public String getDate() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		return dateFormat.format(date);
+	}
+	
+	public String getContentLengthAsString(String pathToFile) throws FileNotFoundException, IOException {
+		try(BufferedReader br = new BufferedReader(new FileReader("src" + pathToFile))) {
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+
+	        while (line != null) {
+	            sb.append(line);
+	            sb.append(System.lineSeparator());
+	            line = br.readLine();
+	        }
+	        String everything = sb.toString();
+	        return(Integer.toString(everything.length()));
+	    }
+	}
+	
+	public String getContentFromFile(String pathToFile) throws FileNotFoundException, IOException {
+		try(BufferedReader br = new BufferedReader(new FileReader("src" + pathToFile))) {
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+ 
+	        while (line != null) {
+	            sb.append(line);
+	            sb.append(System.lineSeparator());
+	            line = br.readLine();
+	        }
+	        return sb.toString();
+	    }
+	}
+	
+	/*
+	 * date
+	 * content type
+	 * content length
+	 */
+	public void handleHead(String protocol, String pathToFile, PrintWriter outToClient) throws IOException {
+		String toWrite;
+		try {
+			toWrite = 		protocol + 
+							" 200 OK\n" + 
+							"Date: " + getDate() + "\n" + 
+							"Content Type: text/html; charset=UTF-8\n"+
+							"Content length: " + getContentLengthAsString(pathToFile);
+			writeToClient(outToClient, toWrite);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			writeToClient(outToClient, "error 404: File not found");
+		}
+	}
+	
+	public void handleGet(String protocol, String pathToFile, PrintWriter outToClient) throws IOException {
+		String toWrite;
+		try {
+			toWrite = 		protocol + 
+							getContentFromFile(pathToFile);
+			writeToClient(outToClient, toWrite);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			writeToClient(outToClient, "error 404: File not found");
+		}
+	}
+	
+	public void handleRequest(String clientSentence, BufferedReader inFromClient, PrintWriter outToClient) {
 		// 0: Command
 		// 1: resource
 		// 2: protocol
@@ -29,14 +114,20 @@ public class Handler11 implements Runnable {
 			 * Requests a representation of the specified resource.
 			 */
 			case "GET":
-				
+				handleGet(parsedCommand[2], parsedCommand[1], outToClient);
+				if (isHTTP0(parsedCommand[2])) {
+					connectionSocket.close();
+				}
 				break;
 			
 			/*
 			 * zie de Header op wikipedia
 			 */
 			case "HEAD":
-				
+				handleHead(parsedCommand[2], parsedCommand[1], outToClient);
+				if (isHTTP0(parsedCommand[2])) {
+					connectionSocket.close();
+				}
 				break;
 			/*
 			 * 	Requests that the enclosed entity be stored under the supplied URI.
@@ -45,7 +136,7 @@ public class Handler11 implements Runnable {
 			 */
 			case "PUT":
 				System.out.println("Received PUT statement");
-				outToClient.writeBytes("Please type your HTML-page");
+				//outToClient.writeBytes("Please type your HTML-page");
 				String html = inFromClient.readLine();
 				PrintWriter outToFile = new PrintWriter(parsedCommand[1]);
 				outToFile.write(html);
@@ -62,7 +153,7 @@ public class Handler11 implements Runnable {
 			 * Malformed expression
 			 */
 			default:
-				outToClient.writeBytes("Malformed expression.");
+				writeToClient(outToClient, "Error 400: Bad Request");
 				break;
 			}
 		} catch (IOException e) {
@@ -75,35 +166,24 @@ public class Handler11 implements Runnable {
 	public void run() {
 
 		try {
-			while (true) {
-				
-				//input from client
+			while (!connectionSocket.isClosed()) {
+				// prepare streams
 				BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-				DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-				String clientSentence = inFromClient.readLine();
+				PrintWriter outToClient = new PrintWriter(connectionSocket.getOutputStream());
 				
+				// read input from user
+				String clientSentence = readFromClient(inFromClient);
 				System.out.println("Received: " + clientSentence);
 				
-				// if protocol == HTTP/1.0 -> Close connection after sending response
-				if (clientSentence.substring(clientSentence.length() - 1).equals("0")) {
-					String capsSentence = clientSentence.toUpperCase() + '\n';
-					outToClient.writeBytes(capsSentence);
-					outToClient.close();
-					return;
-				} 
-				
 				// if client message == escapeSequence -> close connection
-				if (clientSentence.equals(escapeSequence)) {
-					outToClient.writeBytes(escapeSequence);
-					outToClient.close();
-					System.out.println("Received escape sequence: closing connection");
-					return;
-				}
+//				if (clientSentence.equals(escapeSequence)) {
+//					System.out.println("Received escape sequence: closing connection");
+//					connectionSocket.close();
+//					return; 
+//				}
 				
 				// process message and respond to client
-				handleRequest(clientSentence, inFromClient, outToClient);
-				String capsSentence = clientSentence.toUpperCase() + '\n';
-				outToClient.writeBytes(capsSentence);
+				handleRequest(clientSentence, inFromClient, outToClient);				
 			}
 		} catch (IOException error1) {
 			error1.printStackTrace();
