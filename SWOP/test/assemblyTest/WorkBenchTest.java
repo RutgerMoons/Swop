@@ -117,7 +117,7 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Paint");
 		Job job = new Job(new Order("Jef", "Car", 1));
 		Task task = new Task("Paint");
-		task.addAction(new Action());
+		task.addAction(new Action("Spray Colour"));
 		job.addTask(task);
 		workBench.setCurrentJob(job);
 		workBench.chooseTasksOutOfJob();;
@@ -131,9 +131,9 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Body");
 		Job job = new Job(new Order("Jef", "Car", 1));
 		Task task1 = new Task("Paint");
-		task1.addAction(new Action());
+		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
-		task2.addAction(new Action());
+		task2.addAction(new Action("Spray Colour"));
 		
 		job.addTask(task1);
 		job.addTask(task2);
@@ -149,9 +149,9 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Paint");
 		Job job = new Job(new Order("Jef", "Car", 1));
 		Task task1 = new Task("Paint");
-		task1.addAction(new Action());
+		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
-		task2.addAction(new Action());
+		task2.addAction(new Action("Spray Colour"));
 		
 		job.addTask(task1);
 		job.addTask(task2);
@@ -168,9 +168,9 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Body");
 		Job job = new Job(new Order("Jef", "Car", 1));
 		Task task1 = new Task("Paint");
-		task1.addAction(new Action());
+		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
-		task2.addAction(new Action());
+		task2.addAction(new Action("Spray Colour"));
 		
 		job.addTask(task1);
 		job.addTask(task2);
@@ -185,10 +185,10 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Body");
 		Job job = new Job(new Order("Jef", "Car", 1));
 		Task task1 = new Task("Paint");
-		Action action1 = new Action();
+		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
 		Task task2 = new Task("Body");
-		task2.addAction(new Action());
+		task2.addAction(new Action("Spray Colour"));
 		
 		job.addTask(task1);
 		job.addTask(task2);
@@ -204,10 +204,10 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Body");
 		Job job = new Job(new Order("Jef", "Car", 1));
 		Task task1 = new Task("Paint");
-		Action action1 = new Action();
+		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
 		Task task2 = new Task("Body");
-		Action action2 = new Action();
+		Action action2 = new Action("Spray Colour");
 		task2.addAction(action2);
 		
 		job.addTask(task1);

@@ -12,7 +12,7 @@ public class ActionTest {
 	private Action action;
 	@Before
 	public void initialize(){
-		action = new Action();
+		action = new Action("Spray Colour");
 	}
 	@Test
 	public void TestCompleted(){
@@ -22,4 +22,9 @@ public class ActionTest {
 		assertFalse(action.isCompleted());
 	}
 
+	@Test
+	public void TestSetDescription(){
+		action.setDescription("Mix Colours");
+		assertEquals("Mix Colours", action.getDescription());
+	}
 }

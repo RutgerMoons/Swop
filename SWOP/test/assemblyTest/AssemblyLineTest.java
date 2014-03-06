@@ -24,6 +24,7 @@ public class AssemblyLineTest{
 	@Before
 	public void initialize(){
 		line = new AssemblyLine(new Clock());
+		line.setWorkbenches(new ArrayList<WorkBench>()); //DIT MOET GEBEUREN OMDAT ER ANDERS AL 3 WORKBENCHES AANWEZIG ZIJN!!
 	}
 	@Test
 	public void TestConstructor() {
@@ -79,7 +80,7 @@ public class AssemblyLineTest{
 	public void TestSetInvalidWorkBenches(){
 		List<WorkBench> workbenches = null;
 		line.setWorkbenches(workbenches);
-		assertEquals(2, line.getWorkbenches().size());
+		assertEquals(0, line.getWorkbenches().size());
 		assertEquals(workbenches, line.getWorkbenches());
 	}
 	
@@ -214,7 +215,7 @@ public class AssemblyLineTest{
 		Order order1 = new Order("Jef", "Car", 1);
 		Job job = new Job(order1);
 		Task task = new Task("Body");
-		task.addAction(new Action());
+		task.addAction(new Action("Spray Colour"));
 		job.addTask(task);
 		line.addJob(job);
 		line.addWorkBench(bench1);
@@ -237,7 +238,7 @@ public class AssemblyLineTest{
 		Order order1 = new Order("Jef", "Car", 1);
 		Job job = new Job(order1);
 		Task task = new Task("Body");
-		Action action = new Action();
+		Action action = new Action("Spray Colour");
 		task.addAction(action);
 		job.addTask(task);
 		line.addJob(job);
@@ -250,5 +251,29 @@ public class AssemblyLineTest{
 		action.setCompleted(true);
 		line.advance();
 		assertEquals(0, line.getCurrentJobs().size());
+	}
+	
+	
+	@Test
+	public void TestConvertOrderToJobOneCar(){
+		Order order = new Order("Stef", "auto", 1);
+		List<Job> jobs = line.convertOrderToJob(order);
+		assertEquals(1, jobs.size());
+		assertEquals(7, jobs.get(0).getTasks().size());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestConvertIllegalOrderToJobOneCar(){
+		List<Job> jobs = line.convertOrderToJob(null);
+		assertEquals(1, jobs.size());
+		assertEquals(7, jobs.get(0).getTasks().size());
+	}
+	
+	@Test
+	public void TestConvertOrderToJobTwoCars(){
+		Order order = new Order("Stef", "auto", 2);
+		List<Job> jobs = line.convertOrderToJob(order);
+		assertEquals(2, jobs.size());
+		assertEquals(7, jobs.get(0).getTasks().size());
 	}
 }

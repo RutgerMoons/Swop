@@ -100,7 +100,7 @@ public class JobTest {
 		Job job = new Job(order);
 		Task task = new Task("Paint");
 		assertTrue(job.isCompleted());
-		Action action = new Action();
+		Action action = new Action("Spray Colour");
 		task.addAction(action);
 		job.addTask(task);
 		assertFalse(job.isCompleted());
@@ -116,13 +116,13 @@ public class JobTest {
 		Task task2 = new Task("Paint");
 		assertTrue(job.isCompleted());
 		
-		Action action1 = new Action();
+		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
 		job.addTask(task1);
 		assertFalse(job.isCompleted());
 		action1.setCompleted(true);
 		
-		Action action2 = new Action();
+		Action action2 = new Action("Spray Colour");
 		task2.addAction(action2);
 		job.addTask(task2);
 		

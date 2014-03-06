@@ -40,7 +40,7 @@ public class TaskTest {
 	@Test
 	public void TestAdd(){
 		assertEquals(0, task.getActions().size());
-		task.addAction(new Action());
+		task.addAction(new Action("Spray Colour"));
 		assertEquals(1, task.getActions().size());
 	}
 	
@@ -71,7 +71,7 @@ public class TaskTest {
 	
 	@Test
 	public void TestCompletedOneAction(){
-		Action action = new Action();
+		Action action = new Action("Spray Colour");
 		task.addAction(action);
 		assertFalse(task.isCompleted());
 		action.setCompleted(true);
@@ -82,8 +82,8 @@ public class TaskTest {
 	
 	@Test
 	public void TestCompletedTwoActions(){
-		Action action1 = new Action();
-		Action action2 = new Action();
+		Action action1 = new Action("Spray Colour");
+		Action action2 = new Action("Spray Colour");
 		task.addAction(action1);
 		task.addAction(action2);
 		assertFalse(task.isCompleted());
