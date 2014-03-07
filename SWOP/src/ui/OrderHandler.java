@@ -2,7 +2,7 @@ package ui;
 
 import java.util.ArrayList;
 
-import car.Catalogue;
+import car.CarModelCatalogue;
 import order.Order;
 import order.OrderBook;
 import users.GarageHolder;
@@ -12,9 +12,9 @@ public class OrderHandler extends UseCaseHandler{
 	
 	private OrderBook orderBook;
 	private UIFacade UIFacade;
-	private Catalogue catalogue;
+	private CarModelCatalogue catalogue;
 	
-	public OrderHandler (UIFacade UIFacade, OrderBook orderBook, Catalogue catalogue){
+	public OrderHandler (UIFacade UIFacade, OrderBook orderBook, CarModelCatalogue catalogue){
 		this.UIFacade = UIFacade;
 		this.orderBook = orderBook;
 		this.catalogue = catalogue;

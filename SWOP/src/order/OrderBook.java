@@ -2,6 +2,9 @@ package order;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class OrderBook {
 	/**
@@ -19,31 +22,50 @@ public class OrderBook {
 	 * Geen clone() van pendingOrders want java doet moeilijk.
 	 */
 	public HashMap<String, ArrayList<Order>> getPendingOrders() {
-		return pendingOrders;
+		return clone(pendingOrders);
 	}
 
+
+	public HashMap<String, ArrayList<Order>> clone(HashMap<String, ArrayList<Order>> map){
+		HashMap<String, ArrayList<Order>> newMap = new HashMap<String,ArrayList<Order>>();
+		Set<Entry<String,ArrayList<Order>>> set1 = map.entrySet();
+		//newMap.putAll(map);
+
+		for (Entry<String, ArrayList<Order>> entry : set1){
+			ArrayList<Order> test = new ArrayList<Order>();
+			for(Order ord : entry.getValue()){
+				test.add(ord);
+				//newMap.put(entry.getKey(), test);
+			}
+			newMap.put(entry.getKey(),test);
+//			for(Order ord : m){
+//				newMap.get(entry.getKey()).add(ord);
+//			}
+
+		}
+
+		return newMap;
+	}
 
 	public HashMap<String, ArrayList<Order>> getCompletedOrders() {
-		return completedOrders;
+		return clone(completedOrders);
 	}
 
-	// Ik denk dat de prof in de les zei dat van die lange oproepen gelijk hieronder
-	// niet goed waren... Hoe veranderen?
 	public void updateOrderBook(Order order){
 		if(order == null){
 			throw new IllegalArgumentException();
 		}
-		
-		ArrayList<Order> pending = getPendingOrders().get(order.getGarageHolder());
+
+		ArrayList<Order> pending = this.pendingOrders.get(order.getGarageHolder());
 		if(pending.contains(order)){
 			pending.remove(order);
-			if(!getCompletedOrders().containsKey(order.getGarageHolder())){
+			if(!this.completedOrders.containsKey(order.getGarageHolder())){
 				ArrayList<Order> firstCompletedOrder = new ArrayList<Order>();
 				firstCompletedOrder.add(order);
-				getCompletedOrders().put(order.getGarageHolder(),firstCompletedOrder);
+				this.completedOrders.put(order.getGarageHolder(),firstCompletedOrder);
 			}
 			else{
-				getCompletedOrders().get(order.getGarageHolder()).add(0, order);
+				this.completedOrders.get(order.getGarageHolder()).add(0, order);
 			}
 		}
 	}
@@ -55,13 +77,13 @@ public class OrderBook {
 
 	// mss wordt in de arraylist geen orders maar description van orders geadd.. Not sure anymore
 	public void addOrder(Order order){
-		if(!this.getPendingOrders().containsKey(order.getGarageHolder())){
+		if(!this.pendingOrders.containsKey(order.getGarageHolder())){
 			ArrayList<Order> firstPendingOrder = new ArrayList<Order>();
 			firstPendingOrder.add(order);
-			this.getPendingOrders().put(order.getGarageHolder(),firstPendingOrder);
+			this.pendingOrders.put(order.getGarageHolder(),firstPendingOrder);
 		}
 		else {
-			this.getPendingOrders().get(order.getGarageHolder()).add(order);
+			this.pendingOrders.get(order.getGarageHolder()).add(order);
 		}
 	}
 }

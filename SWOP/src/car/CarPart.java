@@ -13,7 +13,7 @@ public abstract class CarPart {
 	 * 			| or type is not one of the possible types for this CarPart
 	 */
 	public void setDescription(String type){
-		this.description = type; 
+		this.description = type;  
 	}
 	
 	/**

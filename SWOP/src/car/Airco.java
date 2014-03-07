@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class Airco extends CarPart {
 	
-	private static ArrayList<String> possibleAircos = new ArrayList<>(Arrays.asList("manual", "automatic climate control"));
+	private static final ArrayList<String> possibleAircos = new ArrayList<>(Arrays.asList("manual", "automatic climate control"));
 	
 	public static void addPossibleAirco(String type) {
 		if (type == null) {
