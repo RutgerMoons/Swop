@@ -56,4 +56,8 @@ public class Action {
 		this.description = description;
 	}
 	
+	public String toString(){
+		return getDescription();
+	}
+	
 }

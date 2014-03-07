@@ -276,4 +276,17 @@ public class AssemblyLineTest{
 		assertEquals(2, jobs.size());
 		assertEquals(7, jobs.get(0).getTasks().size());
 	}
+	
+	@Test
+	public void TestEstimatedTime1(){
+		Order order = new Order("Stef", "auto", 2);
+		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		line.calculateEstimatedTime(order);
+		assertEquals(0, order.getEstimatedTime()[0]);
+		assertEquals(240, order.getEstimatedTime()[1]);
+	}
 }

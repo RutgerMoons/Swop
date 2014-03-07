@@ -197,11 +197,10 @@ public class AssemblyLine {
 		if(order==null)
 			throw new IllegalArgumentException();
 
+		// Het is lelijk ik weet het, maar het kan echt niet anders.. denk ik
 		List<Job> jobs = new ArrayList<>();
 		for(int i=0; i<order.getQuantity(); i++){
 			Job job = new Job(order);
-			//CarModel model = order.getDescription();
-
 
 			Task paint = new Task("Paint");
 			Action actionPaint = new Action("Paint");
@@ -238,7 +237,7 @@ public class AssemblyLine {
 			job.addTask(seats);
 			job.addTask(airco);
 			job.addTask(wheels);
-			
+
 			jobs.add(job);
 		}
 		return jobs;
@@ -246,17 +245,46 @@ public class AssemblyLine {
 
 	/**
 	 * Get the estimated time when all this jobs are completed.
-	 * @param jobs
+	 * @param order
 	 * 			The jobs you want to check on.
 	 * @return
-	 */
-	public int getEstimatedTime(List<Job> jobs){
-		int time = getWorkbenches().size(); //1 uur per workbench
+	 * 			An array, with array[0]= days to completion and array[1]= the minutes to completion from that day
+	 */		
+	public void calculateEstimatedTime(Order order){
+		if(getWorkbenches().size()==0)
+			return;
+		int[] array = new int[2];
+		int days=0;
+		int time = 0;
+		int timeOnWorkBench = getWorkbenches().size()*60; //1 uur per workbench
+		int timeTillFirstWorkbench =0;
+		if(getWorkbenches().get(0).getCurrentJob()!=null){
+			//Hoeveel jobs er nog voorstaan in de wachtrij.
+			timeTillFirstWorkbench = (getCurrentJobs().size() - (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()) +1))*60;
+		}else{
+			timeTillFirstWorkbench=getCurrentJobs().size()*60;
+		}
 
 
+		time = timeOnWorkBench + timeTillFirstWorkbench;
 
+		int lastCarOnFirstBench = Clock.MINUTESINADAY - getWorkbenches().size()*60;
 
-		return time;
+		int beginTime = 6*60; //Om 6:00u beginnen ze te werken
+		int nbOfCarsPerDay =  (lastCarOnFirstBench - beginTime)/60; //1 auto per uur
+		int nbOfCarsToday = (lastCarOnFirstBench - clock.getTime())/60; //aantal auto's die vandaag nog kunnen verwerkt worden.
+		
+		if(timeTillFirstWorkbench/60 <nbOfCarsToday){
+			days=0;
+		}else{
+			timeTillFirstWorkbench-=nbOfCarsToday*60;
+			days = (timeTillFirstWorkbench/60)/nbOfCarsPerDay;
+			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay;
+		}
+		
+		array[0] = days;
+		array[1] = time;
+		order.setEstimatedTime(array);
 	}
 
 }
