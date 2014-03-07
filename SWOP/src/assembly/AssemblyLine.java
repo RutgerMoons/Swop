@@ -244,15 +244,20 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * Get the estimated time when all this jobs are completed.
+	 * Set the estimated time when all the jobs are completed. 
+	 *	
+	 *	The Jobs from the order have to be added to the list of currentJobs.
+	 *	
+	 *
 	 * @param order
-	 * 			The jobs you want to check on.
-	 * @return
-	 * 			An array, with array[0]= days to completion and array[1]= the minutes to completion from that day
+	 * 			The order to set the estimated time to.
 	 */		
 	public void calculateEstimatedTime(Order order){
 		if(getWorkbenches().size()==0)
 			return;
+		List<Job> jobsFromOrder = convertOrderToJob(order);
+		Job lastJobFromOrder = jobsFromOrder.get(jobsFromOrder.size()-1); //De laatste job zoeken voor completion.
+		
 		int[] array = new int[2];
 		int days=0;
 		int time = 0;
@@ -260,7 +265,7 @@ public class AssemblyLine {
 		int timeTillFirstWorkbench =0;
 		if(getWorkbenches().get(0).getCurrentJob()!=null){
 			//Hoeveel jobs er nog voorstaan in de wachtrij.
-			timeTillFirstWorkbench = (getCurrentJobs().size() - (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()) +1))*60;
+			timeTillFirstWorkbench = (getCurrentJobs().indexOf(lastJobFromOrder) - (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()) +1))*60;
 		}else{
 			timeTillFirstWorkbench=getCurrentJobs().size()*60;
 		}
@@ -268,18 +273,22 @@ public class AssemblyLine {
 
 		time = timeOnWorkBench + timeTillFirstWorkbench;
 
-		int lastCarOnFirstBench = Clock.MINUTESINADAY - getWorkbenches().size()*60;
+		int tenOClockInMinutes = 22*60;
+		int lastCarOnFirstBench = tenOClockInMinutes - getWorkbenches().size()*60;
 
 		int beginTime = 6*60; //Om 6:00u beginnen ze te werken
 		int nbOfCarsPerDay =  (lastCarOnFirstBench - beginTime)/60; //1 auto per uur
 		int nbOfCarsToday = (lastCarOnFirstBench - clock.getTime())/60; //aantal auto's die vandaag nog kunnen verwerkt worden.
+		if(nbOfCarsToday>nbOfCarsPerDay)
+			nbOfCarsToday= nbOfCarsPerDay;
 		
 		if(timeTillFirstWorkbench/60 <nbOfCarsToday){
 			days=0;
 		}else{
+			days=1; //je weet al dat vandaag het niet gaat lukken
 			timeTillFirstWorkbench-=nbOfCarsToday*60;
-			days = (timeTillFirstWorkbench/60)/nbOfCarsPerDay;
-			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay;
+			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay;
+			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay *60;
 		}
 		
 		array[0] = days;
