@@ -1,10 +1,11 @@
 package orderTest;
 
 import static org.junit.Assert.*;
-
 import order.Order;
 
 import org.junit.Test;
+
+import assembly.Action;
 
 
 
@@ -98,4 +99,18 @@ public class OrderTest {
 		
 	}
 
+	@Test
+	public void TestEquals(){
+		Order order1 = new Order("Jan", "Car", 2);
+		assertFalse(order1.equals(null));
+		assertFalse(order1.equals(new Action("Paint")));
+		Order order2 = new Order("Jan", "OtherCar", 2);
+		assertFalse(order1.equals(order2));
+		order2 = new Order("Jos", "Car", 2);
+		assertFalse(order1.equals(order2));
+		order2 = new Order("Jan", "Car", 1);
+		assertFalse(order1.equals(order2));
+		order2 = new Order("Jan", "Car", 2);
+		assertTrue(order1.equals(order2));
+	}
 }

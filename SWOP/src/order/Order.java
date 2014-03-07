@@ -1,5 +1,7 @@
 package order;
 
+import java.util.Arrays;
+
 public class Order {
 
 	private String description, garageholder;
@@ -70,5 +72,23 @@ public class Order {
 
 	public void completeCar(){
 		this.setPendingCars(--pendingCars);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (!description.equals(other.description))
+			return false;
+		if (!garageholder.equals(other.garageholder))
+			return false;
+		if (quantity != other.quantity)
+			return false;
+		return true;
 	}
 }

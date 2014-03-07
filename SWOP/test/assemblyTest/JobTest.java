@@ -130,4 +130,16 @@ public class JobTest {
 		action2.setCompleted(true);
 		assertTrue(job.isCompleted());
 	}
+	
+	@Test
+	public void TestEquals(){
+		Order order = new Order("Jef", "Car", 1);
+		Job job = new Job(order);
+		assertFalse(job.equals(null));
+		assertFalse(job.equals(new Action("Test")));
+		Job job2 = new Job(new Order("Jan", "Car", 1));
+		assertFalse(job.equals(job2));
+		job2 = new Job(order);
+		assertTrue(job.equals(job2));
+	}
 }

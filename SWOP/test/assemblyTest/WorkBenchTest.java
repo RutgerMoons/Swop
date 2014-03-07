@@ -218,4 +218,11 @@ public class WorkBenchTest {
 		action2.setCompleted(true);
 		assertTrue(workBench.isCompleted());
 	}
+	
+	@Test
+	public void TestToString(){
+		workBench.addResponsibility("Paint");
+		workBench.addResponsibility("Body");
+		assertEquals("Paint, Body, ", workBench.toString());
+	}
 }
