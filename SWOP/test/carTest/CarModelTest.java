@@ -12,7 +12,7 @@ import org.junit.Test;
 import car.Airco;
 import car.Body;
 import car.CarModel;
-import car.Catalogue;
+import car.CarModelCatalogue;
 import car.Color;
 import car.Engine;
 import car.Gearbox;

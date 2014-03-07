@@ -10,7 +10,7 @@ import org.junit.Test;
 import car.Airco;
 import car.Body;
 import car.CarModel;
-import car.Catalogue;
+import car.CarModelCatalogue;
 import car.Color;
 import car.Engine;
 import car.Gearbox;
@@ -37,7 +37,7 @@ public class CatalogueTest {
 		Seat seat1 = new Seat("leather black");
 		Wheel wheel1 = new Wheel("comfort");
 		CarModel car2 = new CarModel("car2",airco1,body1,color1,engine1,gear1,seat1,wheel1);
-		Catalogue cat = new Catalogue();
+		CarModelCatalogue cat = new CarModelCatalogue();
 		ArrayList<CarModel> list = new ArrayList<CarModel>();
 		list.add(car2);
 		list.add(car1);

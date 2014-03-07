@@ -6,9 +6,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Set;
 
-import assembly.Task;
 import order.Order;
-import users.*;
+import assembly.Task;
 
 
 public class UserInterface implements UIFacade{

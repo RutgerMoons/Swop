@@ -8,13 +8,13 @@ import javax.jws.soap.SOAPBinding.Use;
 import order.OrderBook;
 import users.UserBook;
 import assembly.AssemblyLine;
-import car.Catalogue;
+import car.CarModelCatalogue;
 import clock.Clock;
 
 
 public class runProgram {
 	private static Clock clock;
-	private static Catalogue catalogue;
+	private static CarModelCatalogue catalogue;
 	private static OrderBook orderBook;
 	private static AssemblyLine assemblyLine;
 	private static UserInterface userInterface;
@@ -36,7 +36,7 @@ public class runProgram {
 		clock = new Clock();
 		//de constructor van Assemblyline moet de initial workbenches aanmaken en erinstoppen
 		assemblyLine = new AssemblyLine(clock);
-		catalogue = new Catalogue();
+		catalogue = new CarModelCatalogue();
 		
 		orderBook = new OrderBook();
 		userBook = new UserBook();

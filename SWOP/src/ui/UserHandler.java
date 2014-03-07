@@ -10,20 +10,20 @@ import users.UserBook;
 import users.Worker;
 import util.Ensure;
 import assembly.AssemblyLine;
-import car.Catalogue;
+import car.CarModelCatalogue;
 import clock.Clock;
 
 public class UserHandler {
 	
 	private Clock clock;
-	private Catalogue catalogue;
+	private CarModelCatalogue catalogue;
 	private OrderBook orderBook;
 	private AssemblyLine assemblyLine;
 	private UserBook userBook; 
 	private UIFacade UIFacade;
 	private ArrayList<UseCaseHandler> handlers;
 	
-	public UserHandler(UIFacade UIFacade, Clock clock,Catalogue catalogue, OrderBook orderBook, AssemblyLine assemblyLine,UserBook userBook, ArrayList<UseCaseHandler> handlers)throws NullPointerException{
+	public UserHandler(UIFacade UIFacade, Clock clock,CarModelCatalogue catalogue, OrderBook orderBook, AssemblyLine assemblyLine,UserBook userBook, ArrayList<UseCaseHandler> handlers)throws NullPointerException{
 		if(UIFacade == null || clock == null || catalogue == null || orderBook == null ||assemblyLine == null || userBook == null || handlers == null) throw new NullPointerException();
 		this.UIFacade = UIFacade;
 		this.clock = clock;

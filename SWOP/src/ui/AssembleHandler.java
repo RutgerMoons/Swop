@@ -10,7 +10,7 @@ import users.Worker;
 import assembly.AssemblyLine;
 import assembly.Task;
 import assembly.WorkBench;
-import car.Catalogue;
+import car.CarModelCatalogue;
 import clock.Clock;
 
 public class AssembleHandler extends UseCaseHandler{
