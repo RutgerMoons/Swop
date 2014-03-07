@@ -18,8 +18,10 @@ public class OrderTest {
 		assertEquals("Mario",order.getGarageHolder());
 		assertEquals(3,order.getQuantity());
 		assertEquals(3, order.getPendingCars());
-		order.setEstimatedTime(5);
-		assertEquals(5,order.getEstimatedTime());
+		int[] array = {0,5};
+		order.setEstimatedTime(array);
+		assertEquals(0,order.getEstimatedTime()[0]);
+		assertEquals(5,order.getEstimatedTime()[1]);
 		
 	}
 	@Test (expected = IllegalArgumentException.class)
@@ -67,14 +69,24 @@ public class OrderTest {
 	@Test
 	public void testEstimatedTime1(){
 		Order order = new Order("Mario","Luigi",3);
-		order.setEstimatedTime(5);
-		assertEquals(5, order.getEstimatedTime());
+		int[] array = {0,5};
+		order.setEstimatedTime(array);
+		assertEquals(0,order.getEstimatedTime()[0]);
+		assertEquals(5,order.getEstimatedTime()[1]);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testEstimatedTime2(){
 		Order order = new Order("Mario","Luigi",3);
-		order.setEstimatedTime(-3);
+		int[] array = {-1,5};
+		order.setEstimatedTime(array);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testEstimatedTime3(){
+		Order order = new Order("Mario","Luigi",3);
+		int[] array = {0,-3};
+		order.setEstimatedTime(array);
 	}
 	
 	@Test

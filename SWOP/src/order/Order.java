@@ -3,7 +3,8 @@ package order;
 public class Order {
 
 	private String description, garageholder;
-	private int quantity, pendingCars, estimatedTime;
+	private int quantity, pendingCars;
+	int[] estimatedTime;
 
 	public Order(String holder, String description, int quantity){
 		this.setDescription(description);
@@ -56,15 +57,15 @@ public class Order {
 		return this.description;
 	}
 
-	public int getEstimatedTime(){
+	public int[] getEstimatedTime(){
 		return this.estimatedTime;
 	}
 
-	public void setEstimatedTime(int time){
-		if(time <0){
-			throw new IllegalArgumentException();
+	public void setEstimatedTime(int[] array){
+		if(array==null || array[0] <0 || array[1] <0){
+			throw new IllegalArgumentException(); 
 		}
-		this.estimatedTime = time;
+		this.estimatedTime = array;
 	}
 
 	public void completeCar(){

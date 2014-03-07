@@ -127,4 +127,10 @@ public class WorkBench {
 		return true;
 	}
 	
+	public String toString(){
+		String string="";
+		for(String str: getResponsibilities())
+			string+=str + ", ";
+		return string;
+	}
 }

@@ -197,11 +197,10 @@ public class AssemblyLine {
 		if(order==null)
 			throw new IllegalArgumentException();
 
+		// Het is lelijk ik weet het, maar het kan echt niet anders.. denk ik
 		List<Job> jobs = new ArrayList<>();
 		for(int i=0; i<order.getQuantity(); i++){
 			Job job = new Job(order);
-			//CarModel model = order.getDescription();
-
 
 			Task paint = new Task("Paint");
 			Action actionPaint = new Action("Paint");
@@ -238,25 +237,64 @@ public class AssemblyLine {
 			job.addTask(seats);
 			job.addTask(airco);
 			job.addTask(wheels);
-			
+
 			jobs.add(job);
 		}
 		return jobs;
 	}
 
 	/**
-	 * Get the estimated time when all this jobs are completed.
-	 * @param jobs
-	 * 			The jobs you want to check on.
-	 * @return
-	 */
-	public int getEstimatedTime(List<Job> jobs){
-		int time = getWorkbenches().size(); //1 uur per workbench
+	 * Set the estimated time when all the jobs are completed. 
+	 *	
+	 *	The Jobs from the order have to be added to the list of currentJobs.
+	 *	
+	 *
+	 * @param order
+	 * 			The order to set the estimated time to.
+	 */		
+	public void calculateEstimatedTime(Order order){
+		if(getWorkbenches().size()==0)
+			return;
+		List<Job> jobsFromOrder = convertOrderToJob(order);
+		Job lastJobFromOrder = jobsFromOrder.get(jobsFromOrder.size()-1); //De laatste job zoeken voor completion.
+		
+		int[] array = new int[2];
+		int days=0;
+		int time = 0;
+		int timeOnWorkBench = getWorkbenches().size()*60; //1 uur per workbench
+		int timeTillFirstWorkbench =0;
+		if(getWorkbenches().get(0).getCurrentJob()!=null){
+			//Hoeveel jobs er nog voorstaan in de wachtrij.
+			timeTillFirstWorkbench = (getCurrentJobs().indexOf(lastJobFromOrder) - (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()) +1))*60;
+		}else{
+			timeTillFirstWorkbench=getCurrentJobs().size()*60;
+		}
 
 
+		time = timeOnWorkBench + timeTillFirstWorkbench;
 
+		int tenOClockInMinutes = 22*60;
+		int lastCarOnFirstBench = tenOClockInMinutes - getWorkbenches().size()*60;
 
-		return time;
+		int beginTime = 6*60; //Om 6:00u beginnen ze te werken
+		int nbOfCarsPerDay =  (lastCarOnFirstBench - beginTime)/60; //1 auto per uur
+		int nbOfCarsToday = (lastCarOnFirstBench - clock.getTime())/60; //aantal auto's die vandaag nog kunnen verwerkt worden.
+		if(nbOfCarsToday>nbOfCarsPerDay)
+			nbOfCarsToday= nbOfCarsPerDay;
+		
+		if(timeTillFirstWorkbench/60 <nbOfCarsToday){
+			days=0;
+		}else{
+			days=1; //je weet al dat vandaag het niet gaat lukken
+			timeTillFirstWorkbench-=nbOfCarsToday*60;
+			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay;
+			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay *60;
+		}
+		
+		array[0] = days;
+		array[1] = time;
+		order.setEstimatedTime(array);
 	}
 
 }
+

@@ -89,4 +89,8 @@ public class Task {
 			throw new IllegalArgumentException();
 		this.taskDescription = taskDescription;
 	}
+	
+	public String toString(){
+		return getTaskDescription();
+	}
 }

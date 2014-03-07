@@ -2,6 +2,7 @@ package clock;
 
 public class Clock {
 	
+	//public omdat AssemblyLine hier ook aan moet kunnen
 	private final int MINUTESINADAY = 1440;
 	private int minute;
 	
