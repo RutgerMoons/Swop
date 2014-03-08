@@ -41,7 +41,7 @@ public class Action {
 	/**
 	 * Get the description of the action.
 	 * @return
-	 * 			The description of the action.
+	 * 			A String representing description of the action.
 	 */
 	public String getDescription() {
 		return description;
@@ -50,7 +50,7 @@ public class Action {
 	/**
 	 * Set the description of this action.
 	 * @param description
-	 * 			The description you want to give to this action.
+	 * 			The description you want to give to this action represented as a String.
 	 */
 	public void setDescription(String description) {
 		this.description = description;
