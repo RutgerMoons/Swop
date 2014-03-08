@@ -12,7 +12,7 @@ public class CarModelCatalogue {
 	private Map<String, List<CarPart>> data;
 
 	public CarModelCatalogue(){
-		initializeCatalogue(new CatalogueFiller().getInitialModels());
+		initializeCatalogue(new CarModelCatalogueFiller().getInitialModels());
 	}
 
 	// TODO clone maken

@@ -3,8 +3,8 @@ package car;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CatalogueFiller {
-	public CatalogueFiller() {
+public class CarModelCatalogueFiller {
+	public CarModelCatalogueFiller() {
 	}
 	
 	
