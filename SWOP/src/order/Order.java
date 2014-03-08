@@ -63,7 +63,7 @@ public class Order {
 	 * Get the estimated time untill completion.
 	 * @return
 	 * 			An array of 2 integers, with the first the days untill completion (1 is tomorrow), 
-	 * 			the second gives the minutes till completion from the beginning of the day.
+	 * 			the second gives the minutes till completion from the beginning of that day. (the amount of minutes that has to be spended on the car that day). 
 	 */
 	public int[] getEstimatedTime(){
 		return this.estimatedTime;
@@ -71,7 +71,7 @@ public class Order {
 
 	/**
 	 * Set the estimated time, the first integer gives the days from today before it's finished (so 1 is tomorrow);
-	 * the second integer gives the minutes till completion for that day from the beginning of that day. 
+	 * the second integer gives the minutes till completion for that day from the beginning of that day. (the amount of minutes that has to be spended on the car that day).
 	 * @param array
 	 */
 	public void setEstimatedTime(int[] array){

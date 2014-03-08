@@ -1,7 +1,6 @@
 package assemblyTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -255,6 +254,12 @@ public class AssemblyLineTest{
 		assertEquals(0, line.getCurrentJobs().size());
 	}
 	
+	@Test(expected=IllegalStateException.class)
+	public void TestNoCurrentJobs(){
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		line.addWorkBench(bench1);
+		line.advance();
+	}
 	
 	@Test
 	public void TestConvertOrderToJobOneCar(){
@@ -355,4 +360,31 @@ public class AssemblyLineTest{
 		assertEquals(720, order.getEstimatedTime()[1]);
 	}
 	
+	
+	@Test
+	public void TestEstimatedTime7() {
+		line.getClock().advanceTime(19*60);
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		Order order = new Order("Stef", "auto", 1);
+		line.addJob(new Job(order));
+		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		line.calculateEstimatedTime(order);
+		assertEquals(0, order.getEstimatedTime()[0]);
+		assertEquals(180, order.getEstimatedTime()[1]);
+	}
+	
+	@Test
+	public void TestFutureAssemblyLine(){
+		Order order = new Order("Stef", "auto", 1);
+		Job job = new Job(order);
+		line.addJob(job);
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		line.addWorkBench(bench1);
+		AssemblyLine lineClone = line.getFutureAssemblyLine();
+		assertFalse(lineClone.getWorkbenches().get(0).getCurrentJob().equals(line.getWorkbenches().get(0).getCurrentJob()));
+		assertNull(line.getWorkbenches().get(0).getCurrentJob());
+	}
 }

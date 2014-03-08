@@ -13,7 +13,7 @@ public class CarPartCatalogue {
 	
 	public CarPartCatalogue() {
 		this.carPartCatalogue = new HashMap<>();
-		CarPartCatalogueFiller filler = new CarPartCatalogueFiller();
+		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(this);
 		filler.initializeCarParts();
 	}
 	
@@ -27,7 +27,7 @@ public class CarPartCatalogue {
 	 */
 	public boolean isValidCarPart(CarPart carPart) {
 		return carPart != null && 
-				carPartCatalogue.get(carPart.getClass()).contains(carPart.getType());
+				carPartCatalogue.get(carPart.getClass()).contains(carPart);
 	}
 	
 	/**

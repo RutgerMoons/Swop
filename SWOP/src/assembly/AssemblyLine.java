@@ -152,18 +152,25 @@ public class AssemblyLine {
 
 	/**
 	 * This method advances the workbenches if all the workbenches are completed. It shifts the jobs to it's next workstation.
+	 * 
+	 * @throws IllegalStateException
+	 * 				If there are no currentJobs
 	 */
 	public void advance(){
 		//kijken of alle workbenches completed zijn, anders moogt ge ni advancen.
 		for(WorkBench bench: getWorkbenches())
 			if(!bench.isCompleted())
 				return;
-
+		if(getCurrentJobs().size()==0) //als er geen volgende jobs zijn.
+			throw new IllegalStateException("You can't advance if there is no next Job!");
+		
 		Job lastJob = null;
 		for(int i=0; i<getWorkbenches().size(); i++){
 			WorkBench bench = getWorkbenches().get(i);	
 			if(i==0){	//als het de eerste workbench is (de meest linkse op tekeningen, dan moet je een nieuwe job nemen.
 				lastJob = bench.getCurrentJob();
+			
+				
 				if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
 					bench.setCurrentJob(getCurrentJobs().get(0));	//de eerste uit de lijst halen dus.
 				}else{
@@ -269,7 +276,7 @@ public class AssemblyLine {
 			int indexJobOnFirstWorkbench = (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()));
 			timeTillFirstWorkbench = (indexLastJob - indexJobOnFirstWorkbench)*60;
 		}else{
-			timeTillFirstWorkbench=getCurrentJobs().size()*60;
+			timeTillFirstWorkbench=indexLastJob*60;
 		}
 
 
@@ -284,7 +291,7 @@ public class AssemblyLine {
 		if(nbOfCarsToday>nbOfCarsPerDay)
 			nbOfCarsToday= nbOfCarsPerDay;
 		
-		if(timeTillFirstWorkbench/60 <nbOfCarsToday){
+		if(timeTillFirstWorkbench/60 <=nbOfCarsToday){
 			days=0;
 		}else{
 			days=1; //je weet al dat vandaag het niet gaat lukken
@@ -304,6 +311,21 @@ public class AssemblyLine {
 			if(job.getOrder().equals(order))
 				index = getCurrentJobs().indexOf(job) + order.getQuantity();
 		return index;
+	}
+	
+	public AssemblyLine getFutureAssemblyLine(){
+		AssemblyLine line = new AssemblyLine(getClock());
+		ArrayList<WorkBench> clones = new ArrayList<>();
+		line.setCurrentJobs(getCurrentJobs());
+		for(WorkBench bench: getWorkbenches()){
+			WorkBench clone = new WorkBench(bench.getResponsibilities());
+			clone.setCurrentJob(bench.getCurrentJob());
+			clone.setCurrentTasks(bench.getCurrentTasks());
+			clones.add(clone);
+		}
+		line.setWorkbenches(clones);
+		line.advance();
+		return line;
 	}
 
 }
