@@ -26,6 +26,7 @@ public class AssemblyLineTest{
 		line = new AssemblyLine(new Clock());
 		line.setWorkbenches(new ArrayList<WorkBench>()); //DIT MOET GEBEUREN OMDAT ER ANDERS AL 3 WORKBENCHES AANWEZIG ZIJN!!
 	}
+	
 	@Test
 	public void TestConstructor() {
 		assertNotNull(line);
@@ -230,6 +231,7 @@ public class AssemblyLineTest{
 	/**
 	 * Check if the job is completed it will be removed from currentjobs. 
 	 */
+	
 	@Test
 	public void TestAdvanceTwoWorkbenchesCompleteFullJob(){
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
@@ -302,4 +304,55 @@ public class AssemblyLineTest{
 		assertEquals(1, order.getEstimatedTime()[0]);
 		assertEquals(360, order.getEstimatedTime()[1]);
 	}
+	
+	@Test
+	public void TestEstimatedTime3(){
+		Order order = new Order("Stef", "auto", 40);
+		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		line.calculateEstimatedTime(order);
+		assertEquals(2, order.getEstimatedTime()[0]);
+		assertEquals(720, order.getEstimatedTime()[1]);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void TestEstimatedTime4(){
+		Order order = new Order("Stef", "auto", 1);
+		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		line.calculateEstimatedTime(order);
+	}
+	
+	@Test
+	public void TestEstimatedTime5(){
+		
+		Order order = new Order("Stef", "auto", 40);
+		line.addJob(new Job(order));
+		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		line.advance();
+		line.calculateEstimatedTime(order);
+		assertEquals(2, order.getEstimatedTime()[0]);
+		assertEquals(720, order.getEstimatedTime()[1]);
+	}
+	
+	
+	@Test(expected= IllegalStateException.class)
+	public void TestEstimatedTime6(){
+		
+		Order order = new Order("Stef", "auto", 1);
+		WorkBench bench1 = new WorkBench(new ArrayList<String>());
+		WorkBench bench2 = new WorkBench(new ArrayList<String>());
+		line.addWorkBench(bench1);
+		line.addWorkBench(bench2);
+		line.calculateEstimatedTime(order);
+		assertEquals(2, order.getEstimatedTime()[0]);
+		assertEquals(720, order.getEstimatedTime()[1]);
+	}
+	
 }

@@ -94,4 +94,9 @@ public class TaskTest {
 		action1.setCompleted(false);
 		assertFalse(task.isCompleted());
 	}
+	
+	@Test
+	public void TestToString(){
+		assertEquals("Paint", task.toString());
+	}
 }

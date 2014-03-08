@@ -254,10 +254,10 @@ public class AssemblyLine {
 	 */		
 	public void calculateEstimatedTime(Order order){
 		if(getWorkbenches().size()==0)
-			return;
-		List<Job> jobsFromOrder = convertOrderToJob(order);
-		Job lastJobFromOrder = jobsFromOrder.get(jobsFromOrder.size()-1); //De laatste job zoeken voor completion.
-		
+			throw new IllegalStateException("There are no workbenches!");
+		int indexLastJob = getIndexOf(order);
+		if(indexLastJob<0)
+			throw new IllegalStateException("The jobs of the order aren't added to the currentJobs");
 		int[] array = new int[2];
 		int days=0;
 		int time = 0;
@@ -265,7 +265,9 @@ public class AssemblyLine {
 		int timeTillFirstWorkbench =0;
 		if(getWorkbenches().get(0).getCurrentJob()!=null){
 			//Hoeveel jobs er nog voorstaan in de wachtrij.
-			timeTillFirstWorkbench = (getCurrentJobs().indexOf(lastJobFromOrder) - (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()) +1))*60;
+			
+			int indexJobOnFirstWorkbench = (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()));
+			timeTillFirstWorkbench = (indexLastJob - indexJobOnFirstWorkbench)*60;
 		}else{
 			timeTillFirstWorkbench=getCurrentJobs().size()*60;
 		}
@@ -294,6 +296,14 @@ public class AssemblyLine {
 		array[0] = days;
 		array[1] = time;
 		order.setEstimatedTime(array);
+	}
+
+	private int getIndexOf(Order order) {	
+		int index = -1;
+		for(Job job: getCurrentJobs())
+			if(job.getOrder().equals(order))
+				index = getCurrentJobs().indexOf(job) + order.getQuantity();
+		return index;
 	}
 
 }
