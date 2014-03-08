@@ -1,36 +1,33 @@
 package car;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
+/**
+ * Class that represents the carpart of type Color.
+ *
+ */
 public class Color extends CarPart {
 
-	private static ArrayList<String> possibleColors = new ArrayList<String>(Arrays.asList("red","blue","black","white"));
-	
+	/**
+	 * Constructing an Color and immediately 
+	 * choosing a certain type of Color given the 
+	 * description.
+	 */
 	public Color(String description){
-		this.setDescription(description);
+		this.setType(description);
 	}
 	
-	
-	public static void addPossibleColor(String type){
-		if (type == null){
-			throw new IllegalArgumentException();
-		}
-		possibleColors.add(type);
-	}
-	
-	public static Iterator<String> getPossibleColors(){
-		return possibleColors.iterator();
-	}
-	
+	/**
+	 *  Checks if the given description is null. If so an
+	 *  IllegalArgument exception is thrown. If not, the description
+	 *  is set to the given string.
+	 *  
+	 */
 	@Override
-	public void setDescription(String description) {
-		if (description == null || !possibleColors.contains(description)) {
+	public void setType(String description) {
+		if (description == null) {
 			throw new IllegalArgumentException();
 		} 
 		else {
-			super.setDescription(description);
+			super.setType(description);
 		}
 	}
 	

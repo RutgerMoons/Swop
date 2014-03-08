@@ -55,14 +55,14 @@ public class AircoTest {
 //	
 	@Test
 	public void test4Description() {
-		airco.setDescription("manual");
-		assertEquals("manual", airco.getDescription());
+		airco.setType("manual");
+		assertEquals("manual", airco.getType());
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test5Description() {
-		airco.setDescription(null);
-		assertNull(airco.getDescription());
+		airco.setType(null);
+		assertNull(airco.getType());
 	}
 	
 	 

@@ -1,35 +1,33 @@
 package car;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
+/**
+ * Class that represents the carpart of type Gearbox.
+ *
+ */
 public class Gearbox extends CarPart {
 	
-	private static ArrayList<String> possibleGearboxes = new ArrayList<>(Arrays.asList("6 speed manual", "5 speed automatic"));
-	
+	/**
+	 * Constructing an Gearbox and immediately 
+	 * choosing a certain type of Gearbox given the 
+	 * description.
+	 */
 	public Gearbox(String description) {
-		this.setDescription(description);
+		this.setType(description);
 	}
 	
-	public static void addPossibleGearbox(String type) {
-		if (type == null) {
-			throw new IllegalArgumentException();
-		} 
-		possibleGearboxes.add(type); 
-	}
-	
-	public static Iterator<String> getPossibleGearbox() {
-		return possibleGearboxes.iterator();		
-	}
-	
+	/**
+	 *  Checks if the given description is null. If so an
+	 *  IllegalArgument exception is thrown. If not, the description
+	 *  is set to the given string.
+	 *  
+	 */	
 	@Override
-	public void setDescription(String description) {
-		if (description == null || !possibleGearboxes.contains(description)) {
+	public void setType(String description) {
+		if (description == null) {
 			throw new IllegalArgumentException();
 		} 
 		else {
-			super.setDescription(description);
+			super.setType(description);
 		}
 	}
 	

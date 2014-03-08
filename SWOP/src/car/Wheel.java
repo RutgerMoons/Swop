@@ -1,36 +1,32 @@
 package car;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
+/**
+ * Class that represents the carpart of type Wheel.
+ *
+ */
 public class Wheel extends CarPart {
 
-	private static ArrayList<String> possibleWheels = new ArrayList<>(Arrays.asList("comfort", "sports (low profile)"));
-
-
+	/**
+	 * Constructing an Wheel and immediately choosing a certain type of Wheel
+	 * given the description.
+	 */
 	public Wheel(String description) {
-		this.setDescription(description);
+		this.setType(description);
 	}
 
-	public static void addPossibleWheel(String type) {
-		if (type == null) {
-			throw new IllegalArgumentException();
-		} 
-		possibleWheels.add(type); 
-	}
-
-	public static Iterator<String> getPossibleWheel() {
-		return possibleWheels.iterator();		
-	}
-
+	/**
+	 *  Checks if the given description is null. If so an
+	 *  IllegalArgument exception is thrown. If not, the description
+	 *  is set to the given string.
+	 *  
+	 */
 	@Override
-	public void setDescription(String description) {
-		if (description == null || !possibleWheels.contains(description)) {
+	public void setType(String description) {
+		if (description == null ){//|| !possibleWheels.contains(description)) {
 			throw new IllegalArgumentException();
 		} 
 		else {
-			super.setDescription(description);
+			super.setType(description);
 		}
 	}
 

@@ -3,7 +3,7 @@ package car;
 
 public abstract class CarPart {
 	
-	private String description;
+	private String type;
 	
 	/**
 	 * 
@@ -12,16 +12,17 @@ public abstract class CarPart {
 	 * 			| unless type == null
 	 * 			| or type is not one of the possible types for this CarPart
 	 */
-	public void setDescription(String type){
-		this.description = type;  
+	public void setType(String description){
+		this.type = description;  
 	}
 	
 	/**
-	 * 
-	 * @return The description of this object
+	 * Returns the description of this type.
 	 */
-	public String getDescription(){
-		return this.description;
+	public String getType(){
+		return type;
 	}
+	
+	
 }
  

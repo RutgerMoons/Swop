@@ -31,39 +31,39 @@ private Engine engine;
 		Engine alibaba = new Engine(null);
 	}
 	
-	@Test
-	public void test2Add() {
-		assertNotNull(engine);
-		Engine.addPossibleEngine("Fake engine");
-		Iterator<String> i = Engine.getPossibleEngines();
-		assertTrue(i.hasNext());
-		assertEquals("standard 2l 4 cilinders", i.next());
-		assertTrue(i.hasNext());
-		assertEquals("performance 2.5l 6 cilinders", i.next());
-		assertTrue(i.hasNext());
-		assertEquals("Fake engine", i.next());
-	}
-	  
-	@Test (expected = IllegalArgumentException.class)
-	public void testAddNullToTypes() {
-		Engine.addPossibleEngine(null);
-	}
+//	@Test
+//	public void test2Add() {
+//		assertNotNull(engine);
+//		Engine.addPossibleEngine("Fake engine");
+//		Iterator<String> i = Engine.getPossibleEngines();
+//		assertTrue(i.hasNext());
+//		assertEquals("standard 2l 4 cilinders", i.next());
+//		assertTrue(i.hasNext());
+//		assertEquals("performance 2.5l 6 cilinders", i.next());
+//		assertTrue(i.hasNext());
+//		assertEquals("Fake engine", i.next());
+//	}
+//	  
+//	@Test (expected = IllegalArgumentException.class)
+//	public void testAddNullToTypes() {
+//		Engine.addPossibleEngine(null);
+//	}
 	
-	@Test (expected = IllegalArgumentException.class)
-	public void test3Description() {
-		engine.setDescription("not a possible type of engine");
-		assertNull(engine.getDescription());
-	}
+//	@Test (expected = IllegalArgumentException.class)
+//	public void test3Description() {
+//		engine.setType("not a possible type of engine");
+//		assertNull(engine.getDescription());
+//	}
 	
 	@Test
 	public void test4Description() {
-		engine.setDescription("standard 2l 4 cilinders");
-		assertEquals("standard 2l 4 cilinders", engine.getDescription());
+		engine.setType("standard 2l 4 cilinders");
+		assertEquals("standard 2l 4 cilinders", engine.getType());
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test5Description() {
-		engine.setDescription(null);
-		assertNull(engine.getDescription());
+		engine.setType(null);
+		assertNull(engine.getType());
 	}
 }

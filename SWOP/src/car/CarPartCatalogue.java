@@ -27,7 +27,7 @@ public class CarPartCatalogue {
 	 */
 	public boolean isValidCarPart(CarPart carPart) {
 		return carPart != null && 
-				carPartCatalogue.get(carPart.getClass()).contains(carPart.getDescription());
+				carPartCatalogue.get(carPart.getClass()).contains(carPart.getType());
 	}
 	
 	/**

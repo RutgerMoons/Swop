@@ -1,35 +1,33 @@
 package car;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
+/**
+ * Class that represents the carpart of type Seat.
+ *
+ */
 public class Seat extends CarPart {
 
-	private static ArrayList<String> possibleSeats = new ArrayList<>(Arrays.asList("leather black", "leather white", "vinyl grey"));
-
+	/**
+	 * Constructing an Seat and immediately 
+	 * choosing a certain type of Seat given the 
+	 * description.
+	 */
 	public Seat(String description) {
-		this.setDescription(description);
+		this.setType(description);
 	}
 
-	public static void addPossibleSeat(String type) {
-		if (type == null) {
-			throw new IllegalArgumentException();
-		} 
-		possibleSeats.add(type); 
-	}
-
-	public static Iterator<String> getPossibleSeats() {
-		return possibleSeats.iterator();		
-	}
-
+	/**
+	 *  Checks if the given description is null. If so an
+	 *  IllegalArgument exception is thrown. If not, the description
+	 *  is set to the given string.
+	 *  
+	 */
 	@Override
-	public void setDescription(String description) {
-		if (description == null || !possibleSeats.contains(description)) {
+	public void setType(String description) {
+		if (description == null) {
 			throw new IllegalArgumentException();
 		} 
 		else {
-			super.setDescription(description);
+			super.setType(description);
 		}
 	}
 

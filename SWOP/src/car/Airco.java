@@ -1,5 +1,8 @@
 package car;
-
+/**
+ * Class that represents the carpart of type Airco.
+ *
+ */
 public class Airco extends CarPart {
 	
 	//private static final ArrayList<String> possibleAircos = new ArrayList<>(Arrays.asList("manual", "automatic climate control"));
@@ -15,17 +18,27 @@ public class Airco extends CarPart {
 //		return possibleAircos.iterator();		
 //	}
 	
+	/**
+	 * Constructing an Airco and immediately choosing a certain type of Airco
+	 * given the description.
+	 */
 	public Airco(String description) {
-		this.setDescription(description);
+		this.setType(description);
 	}
 	
+	/**
+	 *  Checks if the given description is null. If so an
+	 *  IllegalArgument exception is thrown. If not, the description
+	 *  is set to the given string.
+	 *  
+	 */
 	@Override
-	public void setDescription(String description) {
+	public void setType(String description) {
 		if (description == null) {
 			throw new IllegalArgumentException();
 		} 
 		else {
-			super.setDescription(description);
+			super.setType(description);
 		}
 	}
 	   
