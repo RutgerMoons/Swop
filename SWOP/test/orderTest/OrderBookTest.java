@@ -42,7 +42,7 @@ public class OrderBookTest {
 		HashMap<String,ArrayList<Order>> test = orderBook.getCompletedOrders();	 
 		test.get(order.getGarageHolder()).remove(0);
 		assertEquals(1,test.get(order.getGarageHolder()).size());
-		assertEquals(1,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
+		assertEquals(2,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
 	}
 
 	@Test

@@ -29,21 +29,13 @@ public class OrderBook {
 	public HashMap<String, ArrayList<Order>> clone(HashMap<String, ArrayList<Order>> map){
 		HashMap<String, ArrayList<Order>> newMap = new HashMap<String,ArrayList<Order>>();
 		Set<Entry<String,ArrayList<Order>>> set1 = map.entrySet();
-		//newMap.putAll(map);
-
 		for (Entry<String, ArrayList<Order>> entry : set1){
 			ArrayList<Order> test = new ArrayList<Order>();
 			for(Order ord : entry.getValue()){
 				test.add(ord);
-				//newMap.put(entry.getKey(), test);
 			}
 			newMap.put(entry.getKey(),test);
-//			for(Order ord : m){
-//				newMap.get(entry.getKey()).add(ord);
-//			}
-
 		}
-
 		return newMap;
 	}
 
