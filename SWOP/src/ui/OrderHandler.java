@@ -56,7 +56,9 @@ public class OrderHandler extends UseCaseHandler{
 		else{
 			String model = UIFacade.getModel(catalogue.getCatalogue().keySet());
 			int quantity = UIFacade.getQuantity();
-			UIFacade.showOrder(quantity, model, -1);
+			int[] estimatedTime = new int[1];
+			estimatedTime[0] = -1;
+			UIFacade.showOrder(quantity, model, estimatedTime);
 			boolean confirm = UIFacade.askContinue();
 			if(!confirm){
 				executeUseCase(user);

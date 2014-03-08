@@ -1,5 +1,9 @@
 package ui;
 
+import java.util.ArrayList;
+
+import clock.Clock;
+import assembly.AssemblyLine;
 import assembly.Task;
 import assembly.WorkBench;
 import users.GarageHolder;
@@ -8,7 +12,14 @@ import users.User;
 
 public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 
-	public AdvanceAssemblyLineHandler(){
+	private UIFacade UIfacade;
+	private AssemblyLine assemblyLine;
+	private Clock clock;
+	
+	public AdvanceAssemblyLineHandler(UIFacade UIFacade, AssemblyLine assemblyLine, Clock clock){
+		UIfacade = UIFacade;
+		this.assemblyLine = assemblyLine;
+		this.clock = clock;
 	}
 	
 	public boolean mayUseThisHandler(User user){
@@ -17,16 +28,38 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	}
 	
 	public void executeUseCase(User user){
-		showAssemblyLine(user);
-		advanceAssemblyLine(user);
+		if(this.UIfacade.askContinue()){
+			showCurrentAssemblyLine();
+			showFutureAssemblyLine();
+			if(this.UIfacade.askContinue())
+				advanceAssemblyLine();
+				showCurrentAssemblyLine();
+		}
 	}
 
-	private void showAssemblyLine(User user) {
+	private void showCurrentAssemblyLine() {
+		this.UIfacade.showAssemblyLine(this.assemblyLine, "current");
+	}
+	
+	private void showFutureAssemblyLine(){
 		//TODO implement
 	}
 	
-	private void advanceAssemblyLine(User user) {
-		//TODO implement
+	private void advanceAssemblyLine() {
+		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
+		for (int i = 0; i < this.assemblyLine.getWorkbenches().size(); i++)
+			if(!this.assemblyLine.getWorkbenches().get(i).isCompleted())
+				notCompletedBenches.add(i);
+		
+		if(notCompletedBenches.isEmpty()){
+			assemblyLine.advance();
+			clock.advanceTime(this.UIfacade.getElapsedTime());
+			showCurrentAssemblyLine();
+		}
+		else{
+			this.UIfacade.showBlockingBenches(notCompletedBenches);
+		}
+		this.UIfacade.askFinished();
 	}
 
 }
