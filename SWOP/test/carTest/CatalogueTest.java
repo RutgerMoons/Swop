@@ -11,6 +11,7 @@ import car.Airco;
 import car.Body;
 import car.CarModel;
 import car.CarModelCatalogue;
+import car.CarModelCatalogueFiller;
 import car.Color;
 import car.Engine;
 import car.Gearbox;
@@ -70,5 +71,5 @@ public class CatalogueTest {
 		cat.initializeCatalogue(list);
 		
 	}
-
+	
 }
