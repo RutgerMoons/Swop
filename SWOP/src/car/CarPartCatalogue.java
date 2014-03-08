@@ -35,7 +35,7 @@ public class CarPartCatalogue {
 	 * 		the class is valid
 	 * 		the list is not null
 	 */
-	public void addListForCarPart(Class<?> key, List<CarPart> value) {
+	protected void addListForCarPart(Class<?> key, List<CarPart> value) {
 		carPartCatalogue.put(key, value);
 	}
 	
