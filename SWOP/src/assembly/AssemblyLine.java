@@ -269,7 +269,7 @@ public class AssemblyLine {
 			int indexJobOnFirstWorkbench = (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()));
 			timeTillFirstWorkbench = (indexLastJob - indexJobOnFirstWorkbench)*60;
 		}else{
-			timeTillFirstWorkbench=getCurrentJobs().size()*60;
+			timeTillFirstWorkbench=indexLastJob*60;
 		}
 
 
@@ -284,7 +284,7 @@ public class AssemblyLine {
 		if(nbOfCarsToday>nbOfCarsPerDay)
 			nbOfCarsToday= nbOfCarsPerDay;
 		
-		if(timeTillFirstWorkbench/60 <nbOfCarsToday){
+		if(timeTillFirstWorkbench/60 <=nbOfCarsToday){
 			days=0;
 		}else{
 			days=1; //je weet al dat vandaag het niet gaat lukken
