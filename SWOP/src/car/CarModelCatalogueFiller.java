@@ -1,14 +1,40 @@
 package car;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CarModelCatalogueFiller {
-	public CarModelCatalogueFiller() {
+	
+	private CarPartCatalogue carPartCatalogue;
+	
+	public CarModelCatalogueFiller(CarPartCatalogue cat) {
+		this.carPartCatalogue= cat;
 	}
 	
 	
 	public ArrayList<CarModel> getInitialModels() {
+		ArrayList<CarModel> result = new ArrayList<CarModel>();
+		ArrayList<CarModel> models = this.getModels();
+		for(CarModel model : models){
+			if(isValidCarModel(model.getCarParts())){
+				result.add(model);
+			}	
+		}
+		return result;
+	}
+	
+	private boolean isValidCarModel(ArrayList<CarPart> list){
+		for(CarPart part : list){
+			if(!carPartCatalogue.isValidCarPart(part)){
+				return false;
+			}
+			else{
+				throw new IllegalArgumentException();
+			}
+		}
+		return true;
+	}
+	
+	private ArrayList<CarModel> getModels(){
 		ArrayList<CarModel> initialModels = new ArrayList<CarModel>();
 		initialModels.add(
 			new CarModel("Polo",

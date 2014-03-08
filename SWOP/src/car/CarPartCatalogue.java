@@ -13,7 +13,7 @@ public class CarPartCatalogue {
 	
 	public CarPartCatalogue() {
 		this.carPartCatalogue = new HashMap<>();
-		CarPartCatalogueFiller filler = new CarPartCatalogueFiller();
+		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(this);
 		filler.initializeCarParts();
 	}
 	

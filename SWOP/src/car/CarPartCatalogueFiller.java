@@ -3,6 +3,12 @@ package car;
 import java.util.ArrayList;
 
 public class CarPartCatalogueFiller {
+	
+	private CarPartCatalogue catalogue;
+	
+	public CarPartCatalogueFiller(CarPartCatalogue cat){
+		this.catalogue = cat;
+	}
 
 	private ArrayList<CarPart> getInitialAirco() {
 		ArrayList<CarPart> initialAircos = new ArrayList<CarPart>();
@@ -57,13 +63,12 @@ public class CarPartCatalogueFiller {
 	}
 	
 	public void initializeCarParts(){
-		CarPartCatalogue catalogue = new CarPartCatalogue();
-		catalogue.addListForCarPart(Airco.class, this.getInitialAirco());
-		catalogue.addListForCarPart(Body.class, this.getInitialBody());
-		catalogue.addListForCarPart(Color.class, this.getInitialColors());
-		catalogue.addListForCarPart(Engine.class, this.getInitialEngine());
-		catalogue.addListForCarPart(Gearbox.class, this.getInitialGearbox());
-		catalogue.addListForCarPart(Seat.class, this.getInitialSeat());
-		catalogue.addListForCarPart(Wheel.class, this.getInitialWheel());
+		this.catalogue.addListForCarPart(Airco.class, this.getInitialAirco());
+		this.catalogue.addListForCarPart(Body.class, this.getInitialBody());
+		this.catalogue.addListForCarPart(Color.class, this.getInitialColors());
+		this.catalogue.addListForCarPart(Engine.class, this.getInitialEngine());
+		this.catalogue.addListForCarPart(Gearbox.class, this.getInitialGearbox());
+		this.catalogue.addListForCarPart(Seat.class, this.getInitialSeat());
+		this.catalogue.addListForCarPart(Wheel.class, this.getInitialWheel());
 	}
 }

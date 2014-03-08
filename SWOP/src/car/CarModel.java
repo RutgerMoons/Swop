@@ -1,7 +1,10 @@
 package car;
 
 import java.util.ArrayList;
-
+/**
+ * Class representing a certain carmodel. Each carmodel has all the essential carparts.
+ *
+ */
 public class CarModel {
 
 	private String description;
