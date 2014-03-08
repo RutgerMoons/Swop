@@ -9,10 +9,12 @@ import java.util.List;
  */
 public class CarPartCatalogue {
 	
-	private HashMap<Class<CarPart>, List<CarPart>> carPartCatalogue;
+	private HashMap<Class<?>, List<CarPart>> carPartCatalogue;
 	
 	public CarPartCatalogue() {
 		this.carPartCatalogue = new HashMap<>();
+		CarPartCatalogueFiller filler = new CarPartCatalogueFiller();
+		filler.initializeCarParts();
 	}
 	
 	/**
@@ -33,8 +35,9 @@ public class CarPartCatalogue {
 	 * 		the class is valid
 	 * 		the list is not null
 	 */
-	public void addListForCarPart(Class<CarPart> key, List<CarPart> value) {
+	public void addListForCarPart(Class<?> key, List<CarPart> value) {
 		carPartCatalogue.put(key, value);
 	}
+	
 	
 }
