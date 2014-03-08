@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import ui.*;
 
+/**
+ * Represents a single User. This is an abstract class, choose 1 of it's subclasses to instantiate. 
+ *
+ */
 public abstract class User {
 
 	private String name;
