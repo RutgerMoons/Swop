@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import assembly.AssemblyLine;
+
 /**
  * this class will be used to keep record of two kinds of orders.
  * these two kinds of orders are the pending orders and the completed
@@ -22,9 +24,11 @@ public class OrderBook {
 	 */
 	private HashMap<String, ArrayList<Order>> pendingOrders;
 	private HashMap<String, ArrayList<Order>> completedOrders;
+	private AssemblyLine assemblyLine;
 
-	public OrderBook(){
+	public OrderBook(AssemblyLine assemblyLine){
 		initializeBook();
+		this.assemblyLine = assemblyLine;
 	}
 
 
@@ -117,5 +121,6 @@ public class OrderBook {
 		else {
 			this.pendingOrders.get(order.getGarageHolder()).add(order);
 		}
+		assemblyLine.getCurrentJobs().addAll(assemblyLine.convertOrderToJob(order));
 	}
 }

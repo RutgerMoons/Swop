@@ -16,7 +16,7 @@ public class Job {
 	private List<Task> taskList;
 
 	/**
-	 * 
+	 * Construct a new Job.
 	 * @param order
 	 * 			The order on which the Job is based.
 	 */
@@ -29,7 +29,7 @@ public class Job {
 	 * Get the Order on which the Job is based.
 	 * 
 	 * @return
-	 * 			The order on which the Job is based.
+	 * 			The Order on which the Job is based.
 	 */
 	public Order getOrder() {
 		return order;
@@ -39,7 +39,7 @@ public class Job {
 	 * Allocate a new Order to this Job.
 	 * 
 	 * @param order
-	 * 			The order you want to allocate to this Job.
+	 * 			The Order you want to allocate to this Job.
 	 * @throws IllegalArgumentException
 	 * 			If order==null
 	 */
@@ -51,7 +51,7 @@ public class Job {
 	}
 
 	/**
-	 * Get the tasks that has to be completed before the Job(Car) is finished.
+	 * Get the tasks that have to be completed before the Job(Car) is finished.
 	 * @return
 	 * 			A list of tasks.
 	 */

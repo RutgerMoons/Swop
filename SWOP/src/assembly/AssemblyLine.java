@@ -29,7 +29,7 @@ public class AssemblyLine {
 		initializeWorkbenches();
 	}
 
-	private void initializeWorkbenches() {
+	private void initializeWorkbenches() {//gemakkelijk om een nieuwe workbench toe te voegen om te initializeren
 		List<String> responsibilitiesCarBodyPost = new ArrayList<>();
 		responsibilitiesCarBodyPost.add("Paint"); 
 		responsibilitiesCarBodyPost.add("Assembly");
@@ -49,18 +49,18 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * 
+	 * Get the WorkBenches that are assigned to this AssemblyLine.
 	 * @return
-	 * 			All the workbenches that are available for this assemblyline.
+	 * 			A list of WorkBenches.
 	 */
 	public List<WorkBench> getWorkbenches() {
 		return workbenches;
 	}
 
 	/**
-	 * 
+	 * Assign a list of workbenches to this AssemblyLine.
 	 * @param workbenches
-	 * 			The list of workbenches you want to allocate to the assemblyline.
+	 * 			A list of WorkBenches.
 	 * @throws IllegalArgumentException
 	 * 			If workbenches==null
 	 */
@@ -71,18 +71,18 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * 
+	 * Get all the pending jobs for this AssemblyLine.
 	 * @return
-	 * 			A list of all the pending jobs for this assemblyline.
+	 * 			A list of Jobs.
 	 */
 	public List<Job> getCurrentJobs() {
 		return currentJobs;
 	}
 
 	/**
-	 * 
+	 * Assign a list of jobs you want to the AssemblyLine.
 	 * @param currentJobs
-	 * 			The list of jobs you want to allocate to the assemblyline.
+	 * 			A list of Jobs.
 	 * @throws IllegalArgumentException
 	 * 			If currentJobs==null
 	 */
@@ -93,18 +93,18 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * 
+	 * Get the overtime of the previous day.
 	 * @return
-	 * 			The overtime of the previous day.
+	 * 			An integer representing the overtime.
 	 */
 	public int getOvertime() {
 		return overtime;
 	}
 
 	/**
-	 * 
+	 * Set the overtime.
 	 * @param overtime
-	 * 			Set the overtime of the previous day.
+	 * 			An integer representing the overtime.
 	 * @throws IllegalArgumentException
 	 * 			If overtime<0
 	 */
@@ -115,9 +115,9 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * 
+	 * Get the clock. 
 	 * @return
-	 * 			The clock that's available.
+	 * 			The Clock that's available.
 	 */
 	public Clock getClock() {
 		return clock;
@@ -313,6 +313,11 @@ public class AssemblyLine {
 		return index;
 	}
 	
+	/**
+	 * Get a clone of this AssemblyLine, advanced 1 hour forward.
+	 * @return
+	 * 			An AssemblyLine.
+	 */
 	public AssemblyLine getFutureAssemblyLine(){
 		AssemblyLine line = new AssemblyLine(getClock());
 		ArrayList<WorkBench> clones = new ArrayList<>();

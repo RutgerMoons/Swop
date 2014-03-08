@@ -31,6 +31,7 @@ public class WorkBenchTest {
 
 	@Test
 	public void TestSetCurrentJob(){
+		workBench.isCompleted();
 		assertNull(workBench.getCurrentJob());
 		Job job = new Job(new Order("Jef", "Car", 1));
 		workBench.setCurrentJob(job);

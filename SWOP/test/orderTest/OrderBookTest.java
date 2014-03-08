@@ -11,6 +11,9 @@ import order.OrderBook;
 import org.junit.Before;
 import org.junit.Test;
 
+import clock.Clock;
+import assembly.AssemblyLine;
+
 
 /*
  * Geen 100% code coverage bij OrderBook maar vind niet hoe ik het kan fixen.
@@ -19,7 +22,7 @@ public class OrderBookTest {
 	OrderBook orderBook;
 	@Before
 	public void setUp(){
-		orderBook = new OrderBook();
+		orderBook = new OrderBook(new AssemblyLine(new Clock()));
 	}
 
 	@Test
