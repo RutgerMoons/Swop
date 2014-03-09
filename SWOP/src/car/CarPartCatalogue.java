@@ -26,18 +26,25 @@ public class CarPartCatalogue {
 	 * note: the description of CarPart cannot equal null
 	 */
 	public boolean isValidCarPart(CarPart carPart) {
-		return carPart != null && 
+		return carPart != null && //carPartCatalogue.get(carPart.getClass()).contains(carPart.getDescription());
+	//} 
 				carPartCatalogue.get(carPart.getClass()).contains(carPart);
 	}
-	
+
 	/**
 	 * This methods adds an entry for a carPart if
 	 * 		the class is valid
 	 * 		the list is not null
 	 */
-	protected void addListForCarPart(Class<?> key, List<CarPart> value) {
-		carPartCatalogue.put(key, value);
+
+	public void addListForCarPart(Class<?> key, List<CarPart> value) throws IllegalArgumentException {
+		if (key == null) {
+			throw new IllegalArgumentException(); 
+		}
 	}
 	
+	public HashMap<Class<?>, List<CarPart>> getMap() {
+		return carPartCatalogue;
+	} 
 	
 }

@@ -1,4 +1,7 @@
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,17 +12,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
+
 
 public class Handler implements Runnable { 
 	Socket connectionSocket;
 	String escapeSequence = "^]";
-	Boolean connectionOpen;
 
 	// connectionsSocket != null:
 	// this is forced in ThreadedServer
 	public Handler(Socket socket) {
 		this.connectionSocket = socket;
-		connectionOpen = true;
 	}
 	
 	public void writeToClient(PrintWriter outToClient, String message) {
@@ -71,6 +74,32 @@ public class Handler implements Runnable {
 	    }
 	}
 	
+	public void getImage(String path, Socket connectionSocket, DataOutputStream dout, PrintWriter outToClient) {
+		try {
+			
+			try {	
+				BufferedImage img = ImageIO.read(new File(path));
+				writeToClient(outToClient, "Sending image");
+				String extension = path.split("\\.")[1];
+				ImageIO.write(img,extension,dout);
+				
+				dout.writeUTF("\r\n");
+				dout.writeUTF(System.lineSeparator());
+				dout.flush();
+				
+				//dout.close(); // also closes socket
+			} catch (FileNotFoundException f) {
+				writeToClient(outToClient, "error 404: File not found");
+			}
+		}
+		catch (IOException i) {
+			System.out.println("Requested image not found");
+			
+			writeToClient(outToClient, "error 404: File not found");
+			
+		}
+	}
+	
 	/*
 	 * date
 	 * content type
@@ -91,19 +120,27 @@ public class Handler implements Runnable {
 		}
 	}
 	
-	public void handleGet(String protocol, String pathToFile, PrintWriter outToClient) throws IOException {
+	public void handleGet(String protocol, String pathToFile, PrintWriter outToClient, DataOutputStream dout) throws IOException {
 		String toWrite;
-		try {
-			toWrite = 		protocol + 
-							getContentFromFile(pathToFile);
-			writeToClient(outToClient, toWrite);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			writeToClient(outToClient, "error 404: File not found");
+		String extension = pathToFile.split("\\.")[1];
+		if (extension.equals("html")) {
+			try {
+				toWrite = 		protocol + " " +
+								getContentFromFile(pathToFile);
+				writeToClient(outToClient, toWrite);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				writeToClient(outToClient, "error 404: File not found");
+			}
+		}
+		else {
+			//image
+			getImage("src/" + pathToFile, connectionSocket, dout, outToClient);
 		}
 	}
 	
-	public void handleRequest(String clientSentence, BufferedReader inFromClient, PrintWriter outToClient) {
+	public void handleRequest(String clientSentence, BufferedReader inFromClient, PrintWriter outToClient, DataOutputStream dout) {
+
 		// 0: Command
 		// 1: resource
 		// 2: protocol
@@ -114,7 +151,7 @@ public class Handler implements Runnable {
 			 * Requests a representation of the specified resource.
 			 */
 			case "GET":
-				handleGet(parsedCommand[2], parsedCommand[1], outToClient);
+				handleGet(parsedCommand[2], parsedCommand[1], outToClient, dout);
 				if (isHTTP0(parsedCommand[2])) {
 					connectionSocket.close();
 				}
@@ -166,10 +203,11 @@ public class Handler implements Runnable {
 	public void run() {
 
 		try {
-			while (!connectionSocket.isClosed()) {
+			while (!connectionSocket.isClosed()) { //
 				// prepare streams
 				BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 				PrintWriter outToClient = new PrintWriter(connectionSocket.getOutputStream());
+				DataOutputStream dout = new DataOutputStream(connectionSocket.getOutputStream());
 				
 				// read input from user
 				String clientSentence = readFromClient(inFromClient);
@@ -183,7 +221,7 @@ public class Handler implements Runnable {
 //				}
 				
 				// process message and respond to client
-				handleRequest(clientSentence, inFromClient, outToClient);				
+				handleRequest(clientSentence, inFromClient, outToClient, dout);
 			}
 		} catch (IOException error1) {
 			error1.printStackTrace();
