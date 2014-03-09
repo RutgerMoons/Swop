@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a single task that contains a certain amount of tasks.
+ * Represents a single task that contains a certain amount of Actions.
  *
  */
 public class Task {
