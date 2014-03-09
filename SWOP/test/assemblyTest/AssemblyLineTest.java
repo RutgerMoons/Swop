@@ -218,27 +218,6 @@ public class AssemblyLineTest{
 	}
 	
 	
-	
-	@Test
-	public void TestAdvanceTwoWorkbenchesIncompleteJob(){
-		WorkBench bench1 = new WorkBench(new ArrayList<String>());
-		bench1.addResponsibility("Body");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>());
-		Order order1 = new Order("Jef", model, 1);
-		Job job = new Job(order1);
-		Task task = new Task("Body");
-		task.addAction(new Action("Spray Colour"));
-		job.addTask(task);
-		line.addJob(job);
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.advance();
-		assertEquals(job, bench1.getCurrentJob());
-		line.advance();
-		assertEquals(job, bench1.getCurrentJob());
-		assertEquals(null, bench2.getCurrentJob());
-	}
-	
 	/**
 	 * Check if the job is completed it will be removed from currentjobs. 
 	 */

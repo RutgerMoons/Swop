@@ -165,10 +165,6 @@ public class AssemblyLine {
 	 * 				If there are no currentJobs
 	 */
 	public void advance(){
-		//kijken of alle workbenches completed zijn, anders moogt ge ni advancen.
-		for(WorkBench bench: getWorkbenches())
-			if(!bench.isCompleted())
-				return;
 		if(getCurrentJobs().size()==0) //als er geen volgende jobs zijn.
 			throw new IllegalStateException("You can't advance if there is no next Job!");
 		
@@ -303,12 +299,12 @@ public class AssemblyLine {
 			nbOfCarsToday= nbOfCarsPerDay;
 		
 		if(timeTillFirstWorkbench/60 <=nbOfCarsToday){
-			days=0;
+			days=clock.getDay();
 			time += clock.getTime();
 		}else{
 			days=1; //je weet al dat vandaag het niet gaat lukken
 			timeTillFirstWorkbench-=nbOfCarsToday*60;
-			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay;
+			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay + clock.getDay();
 			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay *60 + beginTime;
 		}
 		
