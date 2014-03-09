@@ -1,8 +1,18 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import car.Airco;
+import car.Body;
+import car.CarModel;
 import car.CarModelCatalogue;
+import car.CarPart;
+import car.Color;
+import car.Engine;
+import car.Gearbox;
+import car.Seat;
+import car.Wheel;
 import order.Order;
 import order.OrderBook;
 import users.GarageHolder;
@@ -55,15 +65,20 @@ public class OrderHandler extends UseCaseHandler{
 			return null;
 		else{
 			String model = UIFacade.getModel(catalogue.getCatalogue().keySet());
+			HashMap<Class<?>, CarPart> parts = catalogue.getCatalogue().get(model);
+			CarModel carModel = new CarModel(model, (Airco)parts.get(Airco.class), (Body)parts.get(Body.class),(Color) parts.get(Color.class), 
+					(Engine)parts.get(Engine.class), (Gearbox)parts.get(Gearbox.class), (Seat)parts.get(Seat.class), (Wheel)parts.get(Wheel.class));
 			int quantity = UIFacade.getQuantity();
-			UIFacade.showOrder(quantity, model, -1);
+			int[] estimatedTime = new int[1];
+			estimatedTime[0] = -1;
+			UIFacade.showOrder(quantity, carModel, estimatedTime);
 			boolean confirm = UIFacade.askContinue();
 			if(!confirm){
 				executeUseCase(user);
 				return null;
 			}
 			else{
-				Order order = new Order(user.getName(), model, quantity);
+				Order order = new Order(user.getName(), carModel, quantity);
 				orderBook.addOrder(order);
 				return order;
 			}

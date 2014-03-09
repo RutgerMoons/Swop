@@ -13,6 +13,8 @@ public class CarPartCatalogue {
 	
 	public CarPartCatalogue() {
 		this.carPartCatalogue = new HashMap<>();
+		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(this);
+		filler.initializeCarParts();
 	}
 	
 	/**
@@ -24,20 +26,21 @@ public class CarPartCatalogue {
 	 * note: the description of CarPart cannot equal null
 	 */
 	public boolean isValidCarPart(CarPart carPart) {
-		return carPart != null && 
-				carPartCatalogue.get(carPart.getClass()).contains(carPart.getDescription());
-	} 
-	
+		return carPart != null && //carPartCatalogue.get(carPart.getClass()).contains(carPart.getDescription());
+	//} 
+				carPartCatalogue.get(carPart.getClass()).contains(carPart);
+	}
+
 	/**
 	 * This methods adds an entry for a carPart if
 	 * 		the class is valid
 	 * 		the list is not null
 	 */
+
 	public void addListForCarPart(Class<?> key, List<CarPart> value) throws IllegalArgumentException {
 		if (key == null) {
 			throw new IllegalArgumentException(); 
 		}
-		carPartCatalogue.put(key, value);
 	}
 	
 	public HashMap<Class<?>, List<CarPart>> getMap() {

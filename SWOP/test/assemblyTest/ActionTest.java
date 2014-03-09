@@ -27,4 +27,9 @@ public class ActionTest {
 		action.setDescription("Mix Colours");
 		assertEquals("Mix Colours", action.getDescription());
 	}
+	
+	@Test
+	public void TestToString(){
+		assertEquals("Spray Colour", action.toString());
+	}
 }

@@ -1,34 +1,32 @@
 package car;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
+/**
+ * Class that represents the carpart of type Body.
+ *
+ */
 public class Body extends CarPart {
 	
-	private static ArrayList<String> possibleBodies = new ArrayList<>(Arrays.asList("break", "sedan"));
-	
-	public static void addPossibleBody(String type) {
-		if (type == null) {
-			throw new IllegalArgumentException();
-		} 
-		possibleBodies.add(type); 
-	}
-	
-	public static Iterator<String> getPossibleBody() {
-		return possibleBodies.iterator();		
-	}
-	
+	/**
+	 * Constructing an Body and immediately 
+	 * choosing a certain type of Body given the 
+	 * description.
+	 */
 	public Body(String description) {
-		this.setDescription(description);
+		this.setType(description);
 	}
 	
-	public void setDescription(String description) {
-		if (description == null || !possibleBodies.contains(description)) {
+	/**
+	 *  Checks if the given description is null. If so an
+	 *  IllegalArgument exception is thrown. If not, the description
+	 *  is set to the given string.
+	 *  
+	 */
+	public void setType(String description) {
+		if (description == null) {
 			throw new IllegalArgumentException();
 		} 
 		else {
-			super.setDescription(description);
+			super.setType(description);
 		}
 	}
 	

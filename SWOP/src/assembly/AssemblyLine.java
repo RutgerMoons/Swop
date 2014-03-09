@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import order.Order;
+import car.Airco;
+import car.Body;
+import car.CarModel;
+import car.Color;
+import car.Engine;
+import car.Gearbox;
+import car.Seat;
+import car.Wheel;
 import clock.Clock;
 
 /**
@@ -29,7 +37,7 @@ public class AssemblyLine {
 		initializeWorkbenches();
 	}
 
-	private void initializeWorkbenches() {
+	private void initializeWorkbenches() {//gemakkelijk om een nieuwe workbench toe te voegen om te initializeren
 		List<String> responsibilitiesCarBodyPost = new ArrayList<>();
 		responsibilitiesCarBodyPost.add("Paint"); 
 		responsibilitiesCarBodyPost.add("Assembly");
@@ -49,18 +57,18 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * 
+	 * Get the WorkBenches that are assigned to this AssemblyLine.
 	 * @return
-	 * 			All the workbenches that are available for this assemblyline.
+	 * 			A list of WorkBenches.
 	 */
 	public List<WorkBench> getWorkbenches() {
 		return workbenches;
 	}
 
 	/**
-	 * 
+	 * Assign a list of workbenches to this AssemblyLine.
 	 * @param workbenches
-	 * 			The list of workbenches you want to allocate to the assemblyline.
+	 * 			A list of WorkBenches.
 	 * @throws IllegalArgumentException
 	 * 			If workbenches==null
 	 */
@@ -71,18 +79,18 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * 
+	 * Get all the pending jobs for this AssemblyLine.
 	 * @return
-	 * 			A list of all the pending jobs for this assemblyline.
+	 * 			A list of Jobs.
 	 */
 	public List<Job> getCurrentJobs() {
 		return currentJobs;
 	}
 
 	/**
-	 * 
+	 * Assign a list of jobs you want to the AssemblyLine.
 	 * @param currentJobs
-	 * 			The list of jobs you want to allocate to the assemblyline.
+	 * 			A list of Jobs.
 	 * @throws IllegalArgumentException
 	 * 			If currentJobs==null
 	 */
@@ -93,18 +101,18 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * 
+	 * Get the overtime of the previous day.
 	 * @return
-	 * 			The overtime of the previous day.
+	 * 			An integer representing the overtime.
 	 */
 	public int getOvertime() {
 		return overtime;
 	}
 
 	/**
-	 * 
+	 * Set the overtime.
 	 * @param overtime
-	 * 			Set the overtime of the previous day.
+	 * 			An integer representing the overtime.
 	 * @throws IllegalArgumentException
 	 * 			If overtime<0
 	 */
@@ -115,9 +123,9 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * 
+	 * Get the clock. 
 	 * @return
-	 * 			The clock that's available.
+	 * 			The Clock that's available.
 	 */
 	public Clock getClock() {
 		return clock;
@@ -152,19 +160,23 @@ public class AssemblyLine {
 
 	/**
 	 * This method advances the workbenches if all the workbenches are completed. It shifts the jobs to it's next workstation.
+	 * 
+	 * @throws IllegalStateException
+	 * 				If there are no currentJobs
 	 */
 	public void advance(){
-		//kijken of alle workbenches completed zijn, anders moogt ge ni advancen.
-		for(WorkBench bench: getWorkbenches())
-			if(!bench.isCompleted())
-				return;
-
+		if(getCurrentJobs().size()==0) //als er geen volgende jobs zijn.
+			throw new IllegalStateException("You can't advance if there is no next Job!");
+		
 		Job lastJob = null;
 		for(int i=0; i<getWorkbenches().size(); i++){
 			WorkBench bench = getWorkbenches().get(i);	
 			if(i==0){	//als het de eerste workbench is (de meest linkse op tekeningen, dan moet je een nieuwe job nemen.
 				lastJob = bench.getCurrentJob();
-				if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
+				
+				if((22*60 -clock.getTime())<(getWorkbenches().size()*60)) //kijken of er nog auto's op de band mogen 
+					bench.setCurrentJob(null);
+				else if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
 					bench.setCurrentJob(getCurrentJobs().get(0));	//de eerste uit de lijst halen dus.
 				}else{
 					int index = getCurrentJobs().indexOf(bench.getCurrentJob());	
@@ -196,38 +208,40 @@ public class AssemblyLine {
 	public List<Job> convertOrderToJob(Order order){
 		if(order==null)
 			throw new IllegalArgumentException();
+		
+		CarModel model = order.getDescription();
 
 		// Het is lelijk ik weet het, maar het kan echt niet anders.. denk ik
 		List<Job> jobs = new ArrayList<>();
 		for(int i=0; i<order.getQuantity(); i++){
 			Job job = new Job(order);
 
+			Task assembly = new Task("Assembly");
+			Action actionAssembly = new Action("Put on a " + model.getCarParts().get(Body.class) + "body");
+			assembly.addAction(actionAssembly);
+			
 			Task paint = new Task("Paint");
-			Action actionPaint = new Action("Paint");
+			Action actionPaint = new Action("Paint car " + model.getCarParts().get(Color.class));
 			paint.addAction(actionPaint);
 
-			Task assembly = new Task("Assembly");
-			Action actionAssembly = new Action("Assembly");
-			assembly.addAction(actionAssembly);
-
 			Task engine = new Task("Engine");
-			Action actionEngine = new Action("Engine");
+			Action actionEngine = new Action("Install the " + model.getCarParts().get(Engine.class) + " engine");
 			engine.addAction(actionEngine);
-
+			
 			Task gearbox = new Task("Gearbox");
-			Action actionGearbox = new Action("Gearbox");
+			Action actionGearbox = new Action("Put in the " + model.getCarParts().get(Gearbox.class) +" gearbox");
 			gearbox.addAction(actionGearbox);
 
 			Task seats = new Task("Seats");
-			Action actionSeats = new Action("Seats");
+			Action actionSeats = new Action("Install " + model.getCarParts().get(Seat.class) + " seats");
 			seats.addAction(actionSeats);
 
 			Task airco = new Task("Airco");
-			Action actionAirco = new Action("Airco");
+			Action actionAirco = new Action("Install the " + model.getCarParts().get(Airco.class) + " airco");
 			airco.addAction(actionAirco);
 
 			Task wheels = new Task("Wheels");
-			Action actionWheels = new Action("Wheels");
+			Action actionWheels = new Action("Put on " + model.getCarParts().get(Wheel.class) + " wheels");
 			wheels.addAction(actionWheels);
 
 			job.addTask(paint);
@@ -254,10 +268,10 @@ public class AssemblyLine {
 	 */		
 	public void calculateEstimatedTime(Order order){
 		if(getWorkbenches().size()==0)
-			return;
-		List<Job> jobsFromOrder = convertOrderToJob(order);
-		Job lastJobFromOrder = jobsFromOrder.get(jobsFromOrder.size()-1); //De laatste job zoeken voor completion.
-		
+			throw new IllegalStateException("There are no workbenches!");
+		int indexLastJob = getIndexOf(order);
+		if(indexLastJob<0)
+			throw new IllegalStateException("The jobs of the order aren't added to the currentJobs");
 		int[] array = new int[2];
 		int days=0;
 		int time = 0;
@@ -265,9 +279,11 @@ public class AssemblyLine {
 		int timeTillFirstWorkbench =0;
 		if(getWorkbenches().get(0).getCurrentJob()!=null){
 			//Hoeveel jobs er nog voorstaan in de wachtrij.
-			timeTillFirstWorkbench = (getCurrentJobs().indexOf(lastJobFromOrder) - (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()) +1))*60;
+			
+			int indexJobOnFirstWorkbench = (getCurrentJobs().indexOf(getWorkbenches().get(0).getCurrentJob()));
+			timeTillFirstWorkbench = (indexLastJob - indexJobOnFirstWorkbench)*60;
 		}else{
-			timeTillFirstWorkbench=getCurrentJobs().size()*60;
+			timeTillFirstWorkbench=indexLastJob*60;
 		}
 
 
@@ -282,18 +298,47 @@ public class AssemblyLine {
 		if(nbOfCarsToday>nbOfCarsPerDay)
 			nbOfCarsToday= nbOfCarsPerDay;
 		
-		if(timeTillFirstWorkbench/60 <nbOfCarsToday){
-			days=0;
+		if(timeTillFirstWorkbench/60 <=nbOfCarsToday){
+			days=clock.getDay();
+			time += clock.getTime();
 		}else{
 			days=1; //je weet al dat vandaag het niet gaat lukken
 			timeTillFirstWorkbench-=nbOfCarsToday*60;
-			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay;
-			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay *60;
+			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay + clock.getDay();
+			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay *60 + beginTime;
 		}
 		
 		array[0] = days;
 		array[1] = time;
 		order.setEstimatedTime(array);
+	}
+
+	private int getIndexOf(Order order) {	
+		int index = -1;
+		for(Job job: getCurrentJobs())
+			if(job.getOrder().equals(order))
+				index = getCurrentJobs().indexOf(job) + order.getQuantity();
+		return index;
+	}
+	
+	/**
+	 * Get a clone of this AssemblyLine, advanced 1 hour forward.
+	 * @return
+	 * 			An AssemblyLine.
+	 */
+	public AssemblyLine getFutureAssemblyLine(){
+		AssemblyLine line = new AssemblyLine(getClock());
+		ArrayList<WorkBench> clones = new ArrayList<>();
+		line.setCurrentJobs(getCurrentJobs());
+		for(WorkBench bench: getWorkbenches()){
+			WorkBench clone = new WorkBench(bench.getResponsibilities());
+			clone.setCurrentJob(bench.getCurrentJob());
+			clone.setCurrentTasks(bench.getCurrentTasks());
+			clones.add(clone);
+		}
+		line.setWorkbenches(clones);
+		line.advance();
+		return line;
 	}
 
 }

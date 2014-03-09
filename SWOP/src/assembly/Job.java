@@ -16,7 +16,7 @@ public class Job {
 	private List<Task> taskList;
 
 	/**
-	 * 
+	 * Construct a new Job.
 	 * @param order
 	 * 			The order on which the Job is based.
 	 */
@@ -24,12 +24,12 @@ public class Job {
 		setOrder(order);
 		setTasks(new ArrayList<Task>());
 	}
-	
+
 	/**
 	 * Get the Order on which the Job is based.
 	 * 
 	 * @return
-	 * 			The order on which the Job is based.
+	 * 			The Order on which the Job is based.
 	 */
 	public Order getOrder() {
 		return order;
@@ -39,7 +39,7 @@ public class Job {
 	 * Allocate a new Order to this Job.
 	 * 
 	 * @param order
-	 * 			The order you want to allocate to this Job.
+	 * 			The Order you want to allocate to this Job.
 	 * @throws IllegalArgumentException
 	 * 			If order==null
 	 */
@@ -51,7 +51,7 @@ public class Job {
 	}
 
 	/**
-	 * Get the tasks that has to be completed before the Job(Car) is finished.
+	 * Get the tasks that have to be completed before the Job(Car) is finished.
 	 * @return
 	 * 			A list of tasks.
 	 */
@@ -101,16 +101,6 @@ public class Job {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((order == null) ? 0 : order.hashCode());
-		result = prime * result
-				+ ((taskList == null) ? 0 : taskList.hashCode());
-		return result;
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -119,18 +109,11 @@ public class Job {
 		if (getClass() != obj.getClass())
 			return false;
 		Job other = (Job) obj;
-		if (order == null) {
-			if (other.order != null)
-				return false;
-		} else if (!order.equals(other.order))
+		if (!order.equals(other.order))
 			return false;
-		if (taskList == null) {
-			if (other.taskList != null)
-				return false;
-		} else if (!taskList.equals(other.taskList))
-			return false;
+
 		return true;
 	}
-	
-	
+
+
 }

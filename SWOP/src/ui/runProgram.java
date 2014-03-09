@@ -38,12 +38,12 @@ public class runProgram {
 		assemblyLine = new AssemblyLine(clock);
 		catalogue = new CarModelCatalogue();
 		
-		orderBook = new OrderBook();
+		orderBook = new OrderBook(assemblyLine);
 		userBook = new UserBook();
 		userInterface = new UserInterface();
 		orderHandler = new OrderHandler(userInterface,orderBook,catalogue);
 		assembleHandler = new AssembleHandler(userInterface,assemblyLine);
-		advanceAssemblyLineHandler = new AdvanceAssemblyLineHandler();
+		advanceAssemblyLineHandler = new AdvanceAssemblyLineHandler(userInterface, assemblyLine, clock);
 		
 		ArrayList<UseCaseHandler> handlers = new ArrayList<UseCaseHandler>();
 		handlers.add(orderHandler);

@@ -1,37 +1,33 @@
 package car;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
+/**
+ * Class that represents the carpart of type Engine.
+ *
+ */
 public class Engine extends CarPart {
 
-	private static ArrayList<String> possibleEngines = new ArrayList<>(Arrays.asList("standard 2l 4 cilinders", "performance 2.5l 6 cilinders"));
-
+	/**
+	 * Constructing an Engine and immediately 
+	 * choosing a certain type of Engine given the 
+	 * description.
+	 */
 	public Engine(String description) {
-		this.setDescription(description);
+		this.setType(description);
 	}
 
-
-	public static void addPossibleEngine(String type) {
-		if (type == null) {
-			throw new IllegalArgumentException();
-		} 
-		possibleEngines.add(type); 
-	}
-
-	public static Iterator<String> getPossibleEngines() {
-		return possibleEngines.iterator();		
-	}
-
-
+	/**
+	 *  Checks if the given description is null. If so an
+	 *  IllegalArgument exception is thrown. If not, the description
+	 *  is set to the given string.
+	 *  
+	 */
 	@Override
-	public void setDescription(String description) {
-		if (description == null || !possibleEngines.contains(description)) {
+	public void setType(String description) {
+		if (description == null ) {
 			throw new IllegalArgumentException();
 		} 
 		else {
-			super.setDescription(description);
+			super.setType(description);
 		}
 	}
 

@@ -31,42 +31,42 @@ private Seat seat;
 		Seat alibaba = new Seat(null);
 	}
 	
-	@Test
-	public void test2Add() {
-		assertNotNull(seat);
-		Seat.addPossibleSeat("testshizzle");
-		Iterator<String> i = Seat.getPossibleSeats();
-		assertTrue(i.hasNext());
-		assertEquals("leather black", i.next());
-		assertTrue(i.hasNext());
-		assertEquals("leather white", i.next());
-		assertTrue(i.hasNext());
-		assertEquals("vinyl grey", i.next());
-		assertTrue(i.hasNext());
-		assertEquals("testshizzle", i.next());
-	}
+//	@Test
+//	public void test2Add() {
+//		assertNotNull(seat);
+//		Seat.addPossibleSeat("testshizzle");
+//		Iterator<String> i = Seat.getPossibleSeats();
+//		assertTrue(i.hasNext());
+//		assertEquals("leather black", i.next());
+//		assertTrue(i.hasNext());
+//		assertEquals("leather white", i.next());
+//		assertTrue(i.hasNext());
+//		assertEquals("vinyl grey", i.next());
+//		assertTrue(i.hasNext());
+//		assertEquals("testshizzle", i.next());
+//	}
 	  
-	@Test (expected = IllegalArgumentException.class)
-	public void testAddNullToTypes() {
-		Seat.addPossibleSeat(null);
-	}
+//	@Test (expected = IllegalArgumentException.class)
+//	public void testAddNullToTypes() {
+//		Seat.addPossibleSeat(null);
+//	}
 	
-	@Test (expected = IllegalArgumentException.class)
-	public void test3Description() {
-		seat.setDescription("not a possible type of seat");
-		assertNull(seat.getDescription());
-	}
+//	@Test (expected = IllegalArgumentException.class)
+//	public void test3Description() {
+//		seat.setType("not a possible type of seat");
+//		assertNull(seat.getDescription());
+//	}
 	
 	@Test
 	public void test4Description() {
-		seat.setDescription("leather black");
-		assertEquals("leather black", seat.getDescription());
+		seat.setType("leather black");
+		assertEquals("leather black", seat.getType());
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test5Description() {
-		seat.setDescription(null);
-		assertNull(seat.getDescription());
+		seat.setType(null);
+		assertNull(seat.getType());
 	}
 	
 

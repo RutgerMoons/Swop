@@ -3,6 +3,8 @@ package ui;
 import java.util.ArrayList;
 import java.util.Set;
 
+import car.CarModel;
+import assembly.AssemblyLine;
 import assembly.Task;
 import order.*;
 
@@ -22,6 +24,8 @@ public interface UIFacade {
 	
 	public int chooseTask(ArrayList<Task> tasks);
 	
+	public void showChosenTask(Task task);
+	
 	public boolean askContinue();
 	
 	public void invalidAnswerPrompt();
@@ -35,5 +39,13 @@ public interface UIFacade {
 	public void showWorkBenchCompleted();
 	
 	//estimatedTime kan -1 zijn!! --> dan moet de estimatedTime niet geprint worden 
-	public void showOrder(int quantity, String model, int estimatedTime);
+	public void showOrder(int quantity, CarModel carModel, int[] estimatedTime);
+	
+	public void showAssemblyLine(AssemblyLine assemblyline, String tense);
+	
+	public int getElapsedTime();
+	
+	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches);
+	
+	public boolean askAdvance();
 }
