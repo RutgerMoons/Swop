@@ -303,11 +303,12 @@ public class AssemblyLine {
 		
 		if(timeTillFirstWorkbench/60 <=nbOfCarsToday){
 			days=0;
+			time += clock.getTime();
 		}else{
 			days=1; //je weet al dat vandaag het niet gaat lukken
 			timeTillFirstWorkbench-=nbOfCarsToday*60;
 			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay;
-			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay *60;
+			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay *60 + beginTime;
 		}
 		
 		array[0] = days;
