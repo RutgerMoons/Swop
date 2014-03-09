@@ -142,7 +142,6 @@ public class AssemblyLineTest{
 		assertEquals(1, line.getWorkbenches().size());
 		assertEquals(workBench, line.getWorkbenches().get(0));
 	}
-	
 	@Test (expected = IllegalArgumentException.class)
 	public void TestAddOneInvalidWorkBench(){
 		line.addWorkBench(null);
@@ -265,6 +264,21 @@ public class AssemblyLineTest{
 		action.setCompleted(true);
 		line.advance();
 		assertEquals(0, line.getCurrentJobs().size());
+	}
+
+	@Test
+	public void TestAdvanceAfterTenOClock(){
+		WorkBench bench = new WorkBench(new ArrayList<String>());
+		Order order1 = new Order("Jef", model, 1);
+		Job job = new Job(order1);
+		line.addJob(job);
+		line.addWorkBench(bench);
+		bench.setCurrentJob(job);
+		line.getClock().advanceTime(21*60 + 5);
+		
+		
+		line.advance();
+		assertNull(bench.getCurrentJob());
 	}
 	
 	@Test(expected=IllegalStateException.class)

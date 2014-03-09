@@ -177,10 +177,10 @@ public class AssemblyLine {
 			WorkBench bench = getWorkbenches().get(i);	
 			if(i==0){	//als het de eerste workbench is (de meest linkse op tekeningen, dan moet je een nieuwe job nemen.
 				lastJob = bench.getCurrentJob();
-			
-				if((22*60 -clock.getTime())<=(getWorkbenches().size()*60)) //kijken of er nog auto's op de band mogen 
+				
+				if((22*60 -clock.getTime())<(getWorkbenches().size()*60)) //kijken of er nog auto's op de band mogen 
 					bench.setCurrentJob(null);
-				if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
+				else if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
 					bench.setCurrentJob(getCurrentJobs().get(0));	//de eerste uit de lijst halen dus.
 				}else{
 					int index = getCurrentJobs().indexOf(bench.getCurrentJob());	
