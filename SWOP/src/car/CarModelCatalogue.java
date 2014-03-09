@@ -1,6 +1,7 @@
 package car;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class CarModelCatalogue {
 		for (Entry<String, HashMap<Class<?>,CarPart>> entry : set1){
 			
 			HashMap<Class<?>,CarPart> test = new HashMap<Class<?>,CarPart>();
-			List<CarPart> listOfCarParts = (List<CarPart>) entry.getValue().values();
+			Collection<CarPart> listOfCarParts = entry.getValue().values();
 			for(CarPart part : listOfCarParts){
 				test.put(part.getClass(), part);
 			}

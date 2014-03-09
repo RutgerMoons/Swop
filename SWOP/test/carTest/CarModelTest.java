@@ -108,4 +108,51 @@ public class CarModelTest {
 		Wheel wheel1 = new Wheel(null);
 		CarModel car2 = new CarModel("",airco1,body1,color1,engine1,gear1,seat1,wheel1);
 	}
+	
+	@Test
+	public void TestToString(){
+		Airco airco = new Airco("manual");
+		Body body = new Body("break");
+		Color color = new Color("red");
+		Engine engine = new Engine("standard 2l 4 cilinders");
+		Gearbox gear = new Gearbox("6 speed manual");
+		Seat seat = new Seat("leather black");
+		Wheel wheel = new Wheel("comfort");
+		CarModel car1 = new CarModel("BMW",airco,body,color,engine,gear,seat,wheel);
+		assertEquals("BMW", car1.toString());
+	}
+	
+	@Test
+	public void TestEquals(){
+		Airco airco = new Airco("manual");
+		Body body = new Body("break");
+		Color color = new Color("red");
+		Engine engine = new Engine("standard 2l 4 cilinders");
+		Gearbox gear = new Gearbox("6 speed manual");
+		Seat seat = new Seat("leather black");
+		Wheel wheel = new Wheel("comfort");
+		CarModel car1 = new CarModel("car1",airco,body,color,engine,gear,seat,wheel);
+
+		Airco airco1 = new Airco("manual");
+		Body body1 = new Body("break");
+		Color color1 = new Color("red");
+		Engine engine1 = new Engine("standard 2l 4 cilinders");
+		Gearbox gear1 = new Gearbox("6 speed manual");
+		Seat seat1 = new Seat("leather black");
+		Wheel wheel1 = new Wheel("comfort");
+		CarModel car2 = new CarModel("car2",airco1,body1,color1,engine1,gear1,seat1,wheel1);
+		
+		assertTrue(car1.equals(car1));
+		assertFalse(car1.equals(car2));
+		assertFalse(car1.equals(null));
+		assertFalse(car1.equals(airco));
+		CarModel car3 = new CarModel("car3", airco, body, color, engine, gear, seat, wheel);
+		assertFalse(car1.equals(car3));
+		
+		CarModel car4 = new CarModel("car1", airco, body, new Color("blue"), engine, gear, seat, wheel);
+		assertFalse(car1.equals(car4));
+		
+		CarModel car5 = new CarModel("car1", airco, body, color, engine, gear, seat, wheel);
+		assertTrue(car1.equals(car5));
+	}
 }

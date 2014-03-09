@@ -51,7 +51,7 @@ public class CarModel {
 		if (getClass() != obj.getClass())
 			return false;
 		CarModel other = (CarModel) obj;
-		if (!carParts.equals(other.carParts))
+		if (!carParts.values().containsAll(other.carParts.values()))
 			return false;
 		if (!description.equals(other.description))
 			return false;
