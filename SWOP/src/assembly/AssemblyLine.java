@@ -227,7 +227,6 @@ public class AssemblyLine {
 			Action actionPaint = new Action("Paint car " + model.getCarParts().get(Color.class));
 			paint.addAction(actionPaint);
 
-
 			Task engine = new Task("Engine");
 			Action actionEngine = new Action("Install the " + model.getCarParts().get(Engine.class) + "engine");
 			engine.addAction(actionEngine);

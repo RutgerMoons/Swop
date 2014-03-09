@@ -45,6 +45,11 @@ public abstract class CarPart {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return getType();
+	}
+
 
 
 }
