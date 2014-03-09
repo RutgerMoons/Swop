@@ -14,7 +14,7 @@ public class CarModelCatalogue {
 	/**
 	 * TODO : add functie maken
 	 */
-	private HashMap<String, List<CarPart>> data;
+	private HashMap<String, HashMap<Class<?>, CarPart>> data;
 
 	public CarModelCatalogue(){
 		CarPartCatalogue cat = new CarPartCatalogue();
@@ -24,28 +24,33 @@ public class CarModelCatalogue {
 	/**
 	 * Returns a deep clone of the catalogue of car models.
 	 */
-	public HashMap<String, List<CarPart>> getCatalogue() {
+	public HashMap<String, HashMap<Class<?>, CarPart>> getCatalogue() {
 		return clone(this.data);
 	}
 
 	/**
 	 * Method for deep cloning a given HashMap. 
 	 */
-	public HashMap<String, List<CarPart>> clone(HashMap<String, List<CarPart>> map){
-		HashMap<String, List<CarPart>> newMap = new HashMap<String,List<CarPart>>();
-		Set<Entry<String,List<CarPart>>> set1 = map.entrySet();
-		for (Entry<String, List<CarPart>> entry : set1){
-			List<CarPart> test = new ArrayList<CarPart>();
-			for(CarPart part : entry.getValue()){
-				test.add(part);
+	public HashMap<String, HashMap<Class<?>,CarPart>> clone(HashMap<String, HashMap<Class<?>, CarPart>> data2){
+		HashMap<String, HashMap<Class<?>,CarPart>> newMap = new HashMap<String,HashMap<Class<?>,CarPart>>();
+
+		Set<Entry<String,HashMap<Class<?>,CarPart>>> set1 = data2.entrySet();
+		
+		for (Entry<String, HashMap<Class<?>,CarPart>> entry : set1){
+			
+			HashMap<Class<?>,CarPart> test = new HashMap<Class<?>,CarPart>();
+			List<CarPart> listOfCarParts = (List<CarPart>) entry.getValue().values();
+			for(CarPart part : listOfCarParts){
+				test.put(part.getClass(), part);
 			}
 			newMap.put(entry.getKey(),test);
 		}
 		return newMap;
 	}
 	
+
 	public void initializeCatalogue(ArrayList<CarModel> models){
-		data = new HashMap<String,List<CarPart>>();
+		data = new HashMap<String,HashMap<Class<?>,CarPart>>();
 		for(CarModel model : models){
 			data.put(model.getDescription(), model.getCarParts());
 		}

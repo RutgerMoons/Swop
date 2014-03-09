@@ -1,6 +1,7 @@
 package car;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CarModelCatalogueFiller {
 
@@ -22,8 +23,8 @@ public class CarModelCatalogueFiller {
 		return result;
 	}
 
-	private boolean isValidCarModel(ArrayList<CarPart> list){
-		for(CarPart part : list){
+	private boolean isValidCarModel(HashMap<Class<?>, CarPart> hashMap){
+		for(CarPart part : hashMap.values()){
 			if(!carPartCatalogue.isValidCarPart(part)){
 				return false;
 			}
