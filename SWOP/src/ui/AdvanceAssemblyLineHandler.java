@@ -54,7 +54,6 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 		if(notCompletedBenches.isEmpty()){
 			assemblyLine.advance();
 			clock.advanceTime(this.UIfacade.getElapsedTime());
-			showCurrentAssemblyLine();
 		}
 		else{
 			this.UIfacade.showBlockingBenches(notCompletedBenches);
