@@ -157,7 +157,7 @@ public class UserInterface implements UIFacade{
 	
 	public void showAssemblyLine(AssemblyLine assemblyline, String tense){
 		ArrayList<String> assemblyLineString = new ArrayList<String>();
-		assemblyLineString.add(tense + "assemblyline:");
+		assemblyLineString.add(tense + " assemblyline:");
 		
 		WorkBench workbench;
 		String completed;
@@ -172,6 +172,7 @@ public class UserInterface implements UIFacade{
 				assemblyLineString.add("  *" + workbench.getCurrentTasks().get(i).getTaskDescription() + ": " + completed);
 			}
 		}
+		show(assemblyLineString);
 	}
 	
 	public int getElapsedTime(){
@@ -180,5 +181,16 @@ public class UserInterface implements UIFacade{
 	
 	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches){
 		show(new ArrayList<String>(Arrays.asList("AssemblyLine can't be advanced because of workbench " + notCompletedBenches.toString())));
+	}
+	
+	public boolean askAdvance(){
+		String answer = askQuestion("Do you want advance the assemblyLine? Y/N");
+		if(answer.equals("Y")){
+			return true;
+		}
+		else if(answer == "N"){
+			return false;
+		}
+		else return false;
 	}
 }

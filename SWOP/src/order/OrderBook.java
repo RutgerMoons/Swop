@@ -122,5 +122,6 @@ public class OrderBook {
 			this.pendingOrders.get(order.getGarageHolder()).add(order);
 		}
 		assemblyLine.getCurrentJobs().addAll(assemblyLine.convertOrderToJob(order));
+		assemblyLine.calculateEstimatedTime(order);
 	}
 }

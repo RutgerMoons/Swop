@@ -45,4 +45,6 @@ public interface UIFacade {
 	public int getElapsedTime();
 	
 	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches);
+	
+	public boolean askAdvance();
 }

@@ -28,7 +28,7 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	}
 	
 	public void executeUseCase(User user){
-		if(this.UIfacade.askContinue()){
+		if(this.UIfacade.askAdvance()){
 			showCurrentAssemblyLine();
 			showFutureAssemblyLine();
 			if(this.UIfacade.askContinue())
@@ -49,7 +49,7 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
 		for (int i = 0; i < this.assemblyLine.getWorkbenches().size(); i++)
 			if(!this.assemblyLine.getWorkbenches().get(i).isCompleted())
-				notCompletedBenches.add(i);
+				notCompletedBenches.add(i+1);
 		
 		if(notCompletedBenches.isEmpty()){
 			assemblyLine.advance();
