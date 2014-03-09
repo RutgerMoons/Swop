@@ -15,15 +15,27 @@ import assembly.AssemblyLine;
 import assembly.Job;
 import assembly.Task;
 import assembly.WorkBench;
+import car.Airco;
+import car.Body;
+import car.CarModel;
+import car.Color;
+import car.Engine;
+import car.Gearbox;
+import car.Seat;
+import car.Wheel;
 import clock.Clock;
 
 public class AssemblyLineTest{
 
 	private AssemblyLine line;
+	private CarModel model;
 	@Before
 	public void initialize(){
 		line = new AssemblyLine(new Clock());
 		line.setWorkbenches(new ArrayList<WorkBench>()); //DIT MOET GEBEUREN OMDAT ER ANDERS AL 3 WORKBENCHES AANWEZIG ZIJN!!
+		
+		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
+				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
 	}
 	
 	@Test
@@ -38,7 +50,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestSetValidCurrentJobs(){
 		List<Job> jobs = new ArrayList<>();
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		jobs.add(new Job(order1));
 		jobs.add(new Job(order1));
 		line.setCurrentJobs(jobs);
@@ -86,7 +98,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestAddOneValidJob(){
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
 		assertEquals(1, line.getCurrentJobs().size());
@@ -101,7 +113,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestAddTwoValidJobs(){
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		Job job1 = new Job(order1);
 		Job job2 = new Job(order1);
 		line.addJob(job1);
@@ -113,7 +125,7 @@ public class AssemblyLineTest{
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void TestAddOneValidJobOneInvalidJob(){
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
 		assertEquals(1, line.getCurrentJobs().size());
@@ -163,7 +175,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestAdvanceOneWorkbench(){
 		WorkBench bench = new WorkBench(new ArrayList<String>());
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
 		line.addWorkBench(bench);
@@ -175,7 +187,7 @@ public class AssemblyLineTest{
 	public void TestAdvanceTwoWorkbenches(){
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
 		line.addWorkBench(bench1);
@@ -191,7 +203,7 @@ public class AssemblyLineTest{
 	public void TestAdvanceTwoWorkbenchesTwoJobs(){
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		Job job1 = new Job(order1);
 		Job job2 = new Job(order1);
 		line.addJob(job1);
@@ -212,7 +224,7 @@ public class AssemblyLineTest{
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
 		bench1.addResponsibility("Body");
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		Task task = new Task("Body");
 		task.addAction(new Action("Spray Colour"));
@@ -236,7 +248,7 @@ public class AssemblyLineTest{
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
 		bench2.addResponsibility("Body");
-		Order order1 = new Order("Jef", "Car", 1);
+		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		Task task = new Task("Body");
 		Action action = new Action("Spray Colour");
@@ -263,7 +275,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestConvertOrderToJobOneCar(){
-		Order order = new Order("Stef", "auto", 1);
+		Order order = new Order("Stef", model, 1);
 		List<Job> jobs = line.convertOrderToJob(order);
 		assertEquals(1, jobs.size());
 		assertEquals(7, jobs.get(0).getTasks().size());
@@ -278,7 +290,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestConvertOrderToJobTwoCars(){
-		Order order = new Order("Stef", "auto", 2);
+		Order order = new Order("Stef", model, 2);
 		List<Job> jobs = line.convertOrderToJob(order);
 		assertEquals(2, jobs.size());
 		assertEquals(7, jobs.get(0).getTasks().size());
@@ -286,7 +298,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestEstimatedTime1(){
-		Order order = new Order("Stef", "auto", 2);
+		Order order = new Order("Stef", model, 2);
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
@@ -299,7 +311,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestEstimatedTime2(){
-		Order order = new Order("Stef", "auto", 20);
+		Order order = new Order("Stef", model, 20);
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
@@ -312,7 +324,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestEstimatedTime3(){
-		Order order = new Order("Stef", "auto", 40);
+		Order order = new Order("Stef", model, 40);
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
@@ -325,7 +337,7 @@ public class AssemblyLineTest{
 	
 	@Test(expected = IllegalStateException.class)
 	public void TestEstimatedTime4(){
-		Order order = new Order("Stef", "auto", 1);
+		Order order = new Order("Stef", model, 1);
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
 		line.calculateEstimatedTime(order);
 	}
@@ -333,7 +345,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestEstimatedTime5(){
 		
-		Order order = new Order("Stef", "auto", 40);
+		Order order = new Order("Stef", model, 40);
 		line.addJob(new Job(order));
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
@@ -350,7 +362,7 @@ public class AssemblyLineTest{
 	@Test(expected= IllegalStateException.class)
 	public void TestEstimatedTime6(){
 		
-		Order order = new Order("Stef", "auto", 1);
+		Order order = new Order("Stef", model, 1);
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
 		line.addWorkBench(bench1);
@@ -368,7 +380,7 @@ public class AssemblyLineTest{
 		WorkBench bench2 = new WorkBench(new ArrayList<String>());
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
-		Order order = new Order("Stef", "auto", 1);
+		Order order = new Order("Stef", model, 1);
 		line.addJob(new Job(order));
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
 		line.calculateEstimatedTime(order);
@@ -378,7 +390,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestFutureAssemblyLine(){
-		Order order = new Order("Stef", "auto", 1);
+		Order order = new Order("Stef", model, 1);
 		Job job = new Job(order);
 		line.addJob(job);
 		WorkBench bench1 = new WorkBench(new ArrayList<String>());

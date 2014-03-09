@@ -10,6 +10,14 @@ import order.Order;
 import org.junit.Before;
 import org.junit.Test;
 
+import car.Airco;
+import car.Body;
+import car.CarModel;
+import car.Color;
+import car.Engine;
+import car.Gearbox;
+import car.Seat;
+import car.Wheel;
 import assembly.Action;
 import assembly.Job;
 import assembly.Task;
@@ -18,9 +26,12 @@ import assembly.WorkBench;
 public class WorkBenchTest {
 
 	private WorkBench workBench;
+	private CarModel model;
 	@Before
 	public void initialize(){
 		workBench = new WorkBench(new ArrayList<String>());
+		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
+				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
 	}
 	
 	@Test
@@ -33,7 +44,7 @@ public class WorkBenchTest {
 	public void TestSetCurrentJob(){
 		workBench.isCompleted();
 		assertNull(workBench.getCurrentJob());
-		Job job = new Job(new Order("Jef", "Car", 1));
+		Job job = new Job(new Order("Jef", model, 1));
 		workBench.setCurrentJob(job);
 		assertNotNull(workBench.getCurrentJob());
 		assertEquals(job, workBench.getCurrentJob());
@@ -116,7 +127,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestChooseNextTasks(){
 		workBench.addResponsibility("Paint");
-		Job job = new Job(new Order("Jef", "Car", 1));
+		Job job = new Job(new Order("Jef", model, 1));
 		Task task = new Task("Paint");
 		task.addAction(new Action("Spray Colour"));
 		job.addTask(task);
@@ -130,7 +141,7 @@ public class WorkBenchTest {
 	public void TestChooseNextTasksTwoCompatibleTasks(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		Job job = new Job(new Order("Jef", "Car", 1));
+		Job job = new Job(new Order("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
@@ -148,7 +159,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestChooseNextTasksOneCompatibleOneInCompatibleTask(){
 		workBench.addResponsibility("Paint");
-		Job job = new Job(new Order("Jef", "Car", 1));
+		Job job = new Job(new Order("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
@@ -167,7 +178,7 @@ public class WorkBenchTest {
 	public void TestNotCompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		Job job = new Job(new Order("Jef", "Car", 1));
+		Job job = new Job(new Order("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
@@ -184,7 +195,7 @@ public class WorkBenchTest {
 	public void TestOneCompletedOneIncompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		Job job = new Job(new Order("Jef", "Car", 1));
+		Job job = new Job(new Order("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
@@ -203,7 +214,7 @@ public class WorkBenchTest {
 	public void TestTwoCompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		Job job = new Job(new Order("Jef", "Car", 1));
+		Job job = new Job(new Order("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);

@@ -9,7 +9,7 @@ public class CarModel {
 
 	private String description;
 	private HashMap<Class<?>,CarPart> carParts;
-	
+
 	public CarModel(String description, Airco airco, Body body, Color color, Engine engine, Gearbox gear, Seat seat, Wheel wheel){
 		carParts = new HashMap<Class<?>,CarPart>();
 		this.setDescription(description);
@@ -39,7 +39,23 @@ public class CarModel {
 
 	private void setDescription(String description){
 		if(!description.equals(null) && !description.equals(""))
-		this.description=description;
+			this.description=description;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CarModel other = (CarModel) obj;
+		if (!carParts.equals(other.carParts))
+			return false;
+		if (!description.equals(other.description))
+			return false;
+		return true;
 	}
 
 	public String getDescription(){

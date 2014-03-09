@@ -3,19 +3,34 @@ package orderTest;
 import static org.junit.Assert.*;
 import order.Order;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import car.Airco;
+import car.Body;
+import car.CarModel;
+import car.Color;
+import car.Engine;
+import car.Gearbox;
+import car.Seat;
+import car.Wheel;
 import assembly.Action;
 
 
 
 public class OrderTest {
 
+	private CarModel model;
+	@Before
+	public void initializeModel(){
+		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
+				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+	}
 	@Test
 	public void test1Constructor(){
-		Order order = new Order("Mario","Volkswagen",3);
+		Order order = new Order("Mario",model,3);
 		assertNotNull(order);
-		assertEquals("Volkswagen",order.getDescription());
+		assertEquals(model,order.getDescription());
 		assertEquals("Mario",order.getGarageHolder());
 		assertEquals(3,order.getQuantity());
 		assertEquals(3, order.getPendingCars());
@@ -32,24 +47,24 @@ public class OrderTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testSetGarageHolder1(){
-		Order order = new Order(" ","volkswagen",3);
+		Order order = new Order(" ",model,3);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testSetGarageHolder2(){
-		Order order3 = new Order("Mario","Volkswagen",3);
+		Order order3 = new Order("Mario",model,3);
 		assertNotNull(order3.getGarageHolder());
-		Order order2 = new Order(null, "volkswagen",3);		
+		Order order2 = new Order(null, model,3);		
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testPendingCars1(){
-		Order order = new Order("Mario","Luigi",-1);
+		Order order = new Order("Mario",model,-1);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testPendingCars2(){
-		Order order = new Order("Mario", "Luigi",1);
+		Order order = new Order("Mario", model,1);
 		order.completeCar();
 		assertEquals(0, order.getPendingCars());
 		order.completeCar();
@@ -58,18 +73,12 @@ public class OrderTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testQuantity(){
-		Order order =  new Order("Mario", "Luigi",0);
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void testDescription(){
-		Order order = new Order("Mario"," ",2);
-		Order order2 = new Order("Mario",null,2);
+		Order order =  new Order("Mario", model,0);
 	}
 	
 	@Test
 	public void testEstimatedTime1(){
-		Order order = new Order("Mario","Luigi",3);
+		Order order = new Order("Mario",model,3);
 		int[] array = {0,5};
 		order.setEstimatedTime(array);
 		assertEquals(0,order.getEstimatedTime()[0]);
@@ -78,21 +87,21 @@ public class OrderTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testEstimatedTime2(){
-		Order order = new Order("Mario","Luigi",3);
+		Order order = new Order("Mario",model,3);
 		int[] array = {-1,5};
 		order.setEstimatedTime(array);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testEstimatedTime3(){
-		Order order = new Order("Mario","Luigi",3);
+		Order order = new Order("Mario",model,3);
 		int[] array = {0,-3};
 		order.setEstimatedTime(array);
 	}
 	
 	@Test
 	public void testCarCompleted(){
-		Order order = new Order("Mario","Volkswagen",3);
+		Order order = new Order("Mario",model,3);
 		assertEquals(3,order.getPendingCars());
 		order.completeCar();
 		assertEquals(2,order.getPendingCars());
@@ -101,16 +110,18 @@ public class OrderTest {
 
 	@Test
 	public void TestEquals(){
-		Order order1 = new Order("Jan", "Car", 2);
+		CarModel model2 = new CarModel("BMW", new Airco("manual"), new Body("break"), new Color("red"), 
+				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+		Order order1 = new Order("Jan", model, 2);
 		assertFalse(order1.equals(null));
 		assertFalse(order1.equals(new Action("Paint")));
-		Order order2 = new Order("Jan", "OtherCar", 2);
+		Order order2 = new Order("Jan", model2, 2);
 		assertFalse(order1.equals(order2));
-		order2 = new Order("Jos", "Car", 2);
+		order2 = new Order("Jos", model, 2);
 		assertFalse(order1.equals(order2));
-		order2 = new Order("Jan", "Car", 1);
+		order2 = new Order("Jan", model, 1);
 		assertFalse(order1.equals(order2));
-		order2 = new Order("Jan", "Car", 2);
+		order2 = new Order("Jan", model, 2);
 		assertTrue(order1.equals(order2));
 	}
 }

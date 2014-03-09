@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import order.Order;
+import car.Airco;
+import car.Body;
+import car.CarModel;
+import car.Color;
+import car.Engine;
+import car.Gearbox;
+import car.Seat;
+import car.Wheel;
 import clock.Clock;
 
 /**
@@ -203,38 +211,41 @@ public class AssemblyLine {
 	public List<Job> convertOrderToJob(Order order){
 		if(order==null)
 			throw new IllegalArgumentException();
+		
+		CarModel model = order.getDescription();
 
 		// Het is lelijk ik weet het, maar het kan echt niet anders.. denk ik
 		List<Job> jobs = new ArrayList<>();
 		for(int i=0; i<order.getQuantity(); i++){
 			Job job = new Job(order);
 
+			Task assembly = new Task("Assembly");
+			Action actionAssembly = new Action("Put on a " + model.getCarParts().get(Body.class) + "body");
+			assembly.addAction(actionAssembly);
+			
 			Task paint = new Task("Paint");
-			Action actionPaint = new Action("Paint");
+			Action actionPaint = new Action("Paint car " + model.getCarParts().get(Color.class));
 			paint.addAction(actionPaint);
 
-			Task assembly = new Task("Assembly");
-			Action actionAssembly = new Action("Assembly");
-			assembly.addAction(actionAssembly);
 
 			Task engine = new Task("Engine");
-			Action actionEngine = new Action("Engine");
+			Action actionEngine = new Action("Install the " + model.getCarParts().get(Engine.class) + "engine");
 			engine.addAction(actionEngine);
-
+			
 			Task gearbox = new Task("Gearbox");
-			Action actionGearbox = new Action("Gearbox");
+			Action actionGearbox = new Action("Put in the " + model.getCarParts().get(Gearbox.class) +"gearbox");
 			gearbox.addAction(actionGearbox);
 
 			Task seats = new Task("Seats");
-			Action actionSeats = new Action("Seats");
+			Action actionSeats = new Action("Install " + model.getCarParts().get(Seat.class) + "seats");
 			seats.addAction(actionSeats);
 
 			Task airco = new Task("Airco");
-			Action actionAirco = new Action("Airco");
+			Action actionAirco = new Action("Install the " + model.getCarParts().get(Airco.class) + "airco");
 			airco.addAction(actionAirco);
 
 			Task wheels = new Task("Wheels");
-			Action actionWheels = new Action("Wheels");
+			Action actionWheels = new Action("Put on " + model.getCarParts().get(Wheel.class) + "wheels");
 			wheels.addAction(actionWheels);
 
 			job.addTask(paint);
