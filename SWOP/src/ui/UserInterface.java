@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Set;
 
+import car.CarModel;
 import order.Order;
 import assembly.AssemblyLine;
 import assembly.Task;
@@ -114,7 +115,7 @@ public class UserInterface implements UIFacade{
 	}
 
 	@Override
-	public void showOrder(int quantity, String model, int[] estimatedTime) {
+	public void showOrder(int quantity, CarModel model, int[] estimatedTime) {
 		if(estimatedTime[0] == -1)
 			show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model)));
 		else show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model + " Estimated completion time: " + estimatedTime[0] + " days and " + estimatedTime[1]/60 + " hours and " + estimatedTime[1]%60 + " minutes")));

@@ -61,4 +61,8 @@ public class CarModel {
 	public String getDescription(){
 		return this.description;
 	}
+	
+	public String toString(){
+		return getDescription();
+	}
 }
