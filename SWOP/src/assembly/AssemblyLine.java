@@ -165,10 +165,6 @@ public class AssemblyLine {
 	 * 				If there are no currentJobs
 	 */
 	public void advance(){
-		//kijken of alle workbenches completed zijn, anders moogt ge ni advancen.
-		for(WorkBench bench: getWorkbenches())
-			if(!bench.isCompleted())
-				return;
 		if(getCurrentJobs().size()==0) //als er geen volgende jobs zijn.
 			throw new IllegalStateException("You can't advance if there is no next Job!");
 		
@@ -177,10 +173,10 @@ public class AssemblyLine {
 			WorkBench bench = getWorkbenches().get(i);	
 			if(i==0){	//als het de eerste workbench is (de meest linkse op tekeningen, dan moet je een nieuwe job nemen.
 				lastJob = bench.getCurrentJob();
-			
-				if((22*60 -clock.getTime())<=(getWorkbenches().size()*60)) //kijken of er nog auto's op de band mogen 
+				
+				if((22*60 -clock.getTime())<(getWorkbenches().size()*60)) //kijken of er nog auto's op de band mogen 
 					bench.setCurrentJob(null);
-				if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
+				else if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
 					bench.setCurrentJob(getCurrentJobs().get(0));	//de eerste uit de lijst halen dus.
 				}else{
 					int index = getCurrentJobs().indexOf(bench.getCurrentJob());	
@@ -303,12 +299,12 @@ public class AssemblyLine {
 			nbOfCarsToday= nbOfCarsPerDay;
 		
 		if(timeTillFirstWorkbench/60 <=nbOfCarsToday){
-			days=0;
+			days=clock.getDay();
 			time += clock.getTime();
 		}else{
 			days=1; //je weet al dat vandaag het niet gaat lukken
 			timeTillFirstWorkbench-=nbOfCarsToday*60;
-			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay;
+			days += (timeTillFirstWorkbench/60)/nbOfCarsPerDay + clock.getDay();
 			time = (timeTillFirstWorkbench/60)%nbOfCarsPerDay *60 + beginTime;
 		}
 		
