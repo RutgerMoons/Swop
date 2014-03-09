@@ -1,9 +1,9 @@
 package users;
 
-import java.util.ArrayList;
-
-import ui.UseCaseHandler;
-
+/**
+ * Represents a manager of an AssemblyLine, who can interact with the system. 
+ *
+ */
 public class Manager extends User {
 
 	public Manager(String name) {
