@@ -1,26 +1,21 @@
-import java.io.BufferedReader;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 
 public class TestShizzle {
+	public static boolean isHTTP0(String protocol) {
+		return (protocol.substring(protocol.length() - 1).equals("0"));
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		
 		
-		try(BufferedReader br = new BufferedReader(new FileReader("src/index.html"))) {
-	        StringBuilder sb = new StringBuilder();
-	        String line = br.readLine();
-
-	        while (line != null) {
-	            sb.append(line);
-	            sb.append(System.lineSeparator());
-	            line = br.readLine();
-	        }
-	        String everything = sb.toString();
-	        System.out.println(everything);
-	        System.out.println(everything.length());
-	    }
+		String t = "GET /index.html HTTP/1.0";
+		System.out.println(isHTTP0(t));
 		
 		
 		
