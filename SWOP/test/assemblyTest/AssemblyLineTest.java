@@ -29,6 +29,7 @@ public class AssemblyLineTest{
 
 	private AssemblyLine line;
 	private CarModel model;
+	private int beginTime = 6*60;
 	@Before
 	public void initialize(){
 		line = new AssemblyLine(new Clock());
@@ -319,7 +320,7 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench2);
 		line.calculateEstimatedTime(order);
 		assertEquals(1, order.getEstimatedTime()[0]);
-		assertEquals(360, order.getEstimatedTime()[1]);
+		assertEquals(360 + beginTime , order.getEstimatedTime()[1]); //+begintijd om 6u
 	}
 	
 	@Test
@@ -332,7 +333,7 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench2);
 		line.calculateEstimatedTime(order);
 		assertEquals(2, order.getEstimatedTime()[0]);
-		assertEquals(720, order.getEstimatedTime()[1]);
+		assertEquals(beginTime + 720, order.getEstimatedTime()[1]);
 	}
 	
 	@Test(expected = IllegalStateException.class)
@@ -355,7 +356,7 @@ public class AssemblyLineTest{
 		line.advance();
 		line.calculateEstimatedTime(order);
 		assertEquals(2, order.getEstimatedTime()[0]);
-		assertEquals(720, order.getEstimatedTime()[1]);
+		assertEquals(beginTime + 720, order.getEstimatedTime()[1]);
 	}
 	
 	
@@ -385,7 +386,7 @@ public class AssemblyLineTest{
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
 		line.calculateEstimatedTime(order);
 		assertEquals(0, order.getEstimatedTime()[0]);
-		assertEquals(180, order.getEstimatedTime()[1]);
+		assertEquals(line.getClock().getTime() + 180, order.getEstimatedTime()[1]);
 	}
 	
 	@Test
