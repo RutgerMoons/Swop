@@ -58,7 +58,7 @@ public class CarPartCatalogueFiller {
 	private ArrayList<CarPart> getInitialWheel() {
 		ArrayList<CarPart> initialWheels = new ArrayList<CarPart>();
 		initialWheels.add(new Wheel("comfort"));
-		initialWheels.add(new Seat("sports (low profile)"));
+		initialWheels.add(new Wheel("sports (low profile)"));
 		return initialWheels;
 	}
 	
