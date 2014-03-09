@@ -72,7 +72,23 @@ public class AircoTest {
 		assertFalse(airco.equals(null));
 		Body body = new Body("break");
 		assertFalse(airco.equals(body));
-		
+		Airco airco2 = new Airco("automatic climate control");
+		assertFalse(airco.equals(airco2));
+		Airco airco3 = new Airco("manual");
+		assertTrue(airco.equals(airco3));
+	}
+	
+	@Test
+	public void testHashCode(){
+		Airco airco2 = new Airco("manual");
+		Airco airco3 = new Airco("shizzle");
+		assertTrue(airco.hashCode()==airco2.hashCode());
+		assertFalse(airco.hashCode()==airco3.hashCode());
+	}
+	
+	@Test
+	public void testToString(){
+		assertTrue(airco.toString()=="manual");
 	}
 	
 	 
