@@ -6,9 +6,6 @@ public class UserBook {
 	
 	private HashMap<String,User> userBook = new HashMap<String,User>();
 	
-	public UserBook(){
-	}
-	
 	/**
 	 * Returns the User Book
 	 * 
@@ -18,8 +15,8 @@ public class UserBook {
 		return userBook;
 	}
 	
-	public void addUser(User user) throws NullPointerException, IllegalArgumentException {
-		if(user == null) throw new NullPointerException("user can't be null");
+	public void addUser(User user) {
+		if(user == null) throw new IllegalArgumentException("user can't be null");
 		else if(userBook.containsKey(user.getName())) throw new IllegalArgumentException("user is already registered in the userBook");
 		else{
 			userBook.put(user.getName(), user);
