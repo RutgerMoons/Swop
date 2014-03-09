@@ -131,7 +131,7 @@ public class UserInterface implements UIFacade{
 		
 		tasksInStrings.add("Tasks:");
 		for (int i = 0; i <tasks.size(); i++) {
-			tasksInStrings.add(i + ". " + tasks.get(i).getTaskDescription());
+			tasksInStrings.add((i+1) + ". " + tasks.get(i).getTaskDescription());
 		}
 		
 		show(tasksInStrings);
@@ -166,11 +166,11 @@ public class UserInterface implements UIFacade{
 			workbench = assemblyline.getWorkbenches().get(i);
 			assemblyLineString.add("-workbench " + (i+1) + ":");
 			for (int j = 0; j < workbench.getCurrentTasks().size(); j++) {
-				if(workbench.getCurrentTasks().get(i).isCompleted())
+				if(workbench.getCurrentTasks().get(j).isCompleted())
 					completed = "completed";
 				else
 					completed = "not completed";
-				assemblyLineString.add("  *" + workbench.getCurrentTasks().get(i).getTaskDescription() + ": " + completed);
+				assemblyLineString.add("  *" + workbench.getCurrentTasks().get(j).getTaskDescription() + ": " + completed);
 			}
 		}
 		show(assemblyLineString);

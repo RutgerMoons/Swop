@@ -33,7 +33,6 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 			showFutureAssemblyLine();
 			if(this.UIfacade.askContinue())
 				advanceAssemblyLine();
-				showCurrentAssemblyLine();
 		}
 	}
 
@@ -58,6 +57,7 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 		else{
 			this.UIfacade.showBlockingBenches(notCompletedBenches);
 		}
+		showCurrentAssemblyLine();
 		this.UIfacade.askFinished();
 	}
 
