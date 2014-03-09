@@ -228,23 +228,23 @@ public class AssemblyLine {
 			paint.addAction(actionPaint);
 
 			Task engine = new Task("Engine");
-			Action actionEngine = new Action("Install the " + model.getCarParts().get(Engine.class) + "engine");
+			Action actionEngine = new Action("Install the " + model.getCarParts().get(Engine.class) + " engine");
 			engine.addAction(actionEngine);
 			
 			Task gearbox = new Task("Gearbox");
-			Action actionGearbox = new Action("Put in the " + model.getCarParts().get(Gearbox.class) +"gearbox");
+			Action actionGearbox = new Action("Put in the " + model.getCarParts().get(Gearbox.class) +" gearbox");
 			gearbox.addAction(actionGearbox);
 
 			Task seats = new Task("Seats");
-			Action actionSeats = new Action("Install " + model.getCarParts().get(Seat.class) + "seats");
+			Action actionSeats = new Action("Install " + model.getCarParts().get(Seat.class) + " seats");
 			seats.addAction(actionSeats);
 
 			Task airco = new Task("Airco");
-			Action actionAirco = new Action("Install the " + model.getCarParts().get(Airco.class) + "airco");
+			Action actionAirco = new Action("Install the " + model.getCarParts().get(Airco.class) + " airco");
 			airco.addAction(actionAirco);
 
 			Task wheels = new Task("Wheels");
-			Action actionWheels = new Action("Put on " + model.getCarParts().get(Wheel.class) + "wheels");
+			Action actionWheels = new Action("Put on " + model.getCarParts().get(Wheel.class) + " wheels");
 			wheels.addAction(actionWheels);
 
 			job.addTask(paint);
