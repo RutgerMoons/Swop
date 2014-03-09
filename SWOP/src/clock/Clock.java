@@ -1,8 +1,10 @@
 package clock;
 
+/**
+ * Represents a clock that stores the current time (in minutes) and the current day.
+ */
 public class Clock {
 	
-	//public omdat AssemblyLine hier ook aan moet kunnen
 	private final int MINUTESINADAY = 1440;
 	private int minute;
 	private int day;
@@ -40,8 +42,14 @@ public class Clock {
 		this.minute = 0;
 	}
 
+	/**
+	 * Get the current day.
+	 * @return
+	 * 			An integer that represents the current day. 
+	 * 			The 'current day' is interpreted as how many days the program has been running. (first day == 0)
+	 */
 	public int getDay() {
-		return day;
+		return this.day;
 	}
 
 

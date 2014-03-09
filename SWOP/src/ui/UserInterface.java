@@ -3,6 +3,7 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -32,15 +33,13 @@ public class UserInterface implements UIFacade{
 	}
 	
 	@Override
-	public boolean askContinue() {
+	public boolean askContinue() throws InputMismatchException{
 		String answer = askQuestion("Do you want to continue? Y/N");
-		if(answer.equals("Y")){
+		if(answer.equalsIgnoreCase("Y"))
 			return true;
-		}
-		else if(answer == "N"){
+		else if(answer.equalsIgnoreCase("N"))
 			return false;
-		}
-		else return false;
+		else throw new InputMismatchException();
 	}
 	
 	public String getName(){
@@ -65,8 +64,11 @@ public class UserInterface implements UIFacade{
 	}
 
 	@Override
-	public int getQuantity() {
-		return Integer.parseInt(askQuestion("How many cars do you want to order?"));
+	public int getQuantity() throws InputMismatchException {
+		int quantity = Integer.parseInt(askQuestion("How many cars do you want to order?"));
+		if(quantity<=0)
+			throw new InputMismatchException();
+		else return quantity;
 	}
 
 	public void invalidAnswerPrompt(){
@@ -118,7 +120,7 @@ public class UserInterface implements UIFacade{
 	public void showOrder(int quantity, CarModel model, int[] estimatedTime) {
 		if(estimatedTime[0] == -1)
 			show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model)));
-		else show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model + " Estimated completion time: " + estimatedTime[0] + " days and " + estimatedTime[1]/60 + " hours and " + estimatedTime[1]%60 + " minutes")));
+		else show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model + " Estimated completion time: day " + estimatedTime[0] + " " + estimatedTime[1]/60 + "h" + estimatedTime[1]%60)));
 		
 	}
 	
@@ -146,6 +148,7 @@ public class UserInterface implements UIFacade{
 		for (int i = 0; i < task.getActions().size(); i++) {
 			chosenTask.add((i+1) + "." + task.getActions().get(i).getDescription());
 		}
+		show(chosenTask);
 	}
 	
 	public String askFinished(){
@@ -189,7 +192,7 @@ public class UserInterface implements UIFacade{
 		if(answer.equals("Y")){
 			return true;
 		}
-		else if(answer == "N"){
+		else if(answer.equals("N")){
 			return false;
 		}
 		else return false;

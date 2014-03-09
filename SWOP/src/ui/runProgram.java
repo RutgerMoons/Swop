@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import users.UserBook;
 import assembly.AssemblyLine;
 import car.CarModelCatalogue;
 import clock.Clock;
-
 
 public class runProgram {
 	private static Clock clock;
@@ -24,42 +24,45 @@ public class runProgram {
 	private static OrderHandler orderHandler;
 	private static AssembleHandler assembleHandler;
 	private static AdvanceAssemblyLineHandler advanceAssemblyLineHandler;
-	
-	
-	
+
 	public static void main(String[] args) {
 		initializeData();
 		startProgram();
 	}
-	
-	public static void initializeData(){
+
+	public static void initializeData() {
 		clock = new Clock();
-		//de constructor van Assemblyline moet de initial workbenches aanmaken en erinstoppen
 		assemblyLine = new AssemblyLine(clock);
 		catalogue = new CarModelCatalogue();
-		
+
 		orderBook = new OrderBook(assemblyLine);
 		userBook = new UserBook();
 		userInterface = new UserInterface();
-		orderHandler = new OrderHandler(userInterface,orderBook,catalogue);
-		assembleHandler = new AssembleHandler(userInterface,assemblyLine);
-		advanceAssemblyLineHandler = new AdvanceAssemblyLineHandler(userInterface, assemblyLine, clock);
-		
+		orderHandler = new OrderHandler(userInterface, orderBook, catalogue);
+		assembleHandler = new AssembleHandler(userInterface, assemblyLine);
+		advanceAssemblyLineHandler = new AdvanceAssemblyLineHandler(
+				userInterface, assemblyLine, clock);
+
 		ArrayList<UseCaseHandler> handlers = new ArrayList<UseCaseHandler>();
 		handlers.add(orderHandler);
 		handlers.add(assembleHandler);
 		handlers.add(advanceAssemblyLineHandler);
-		
-		userHandler = new UserHandler(userInterface, clock, catalogue, orderBook, assemblyLine, userBook, handlers);
+
+		userHandler = new UserHandler(userInterface, clock, catalogue,
+				orderBook, assemblyLine, userBook, handlers);
 	}
-	
-	public static void startProgram(){
-		do{userHandler.login();
-		userHandler.performDuties();
-		userHandler.logOut();
-		}while(true);
-		
+
+	public static void startProgram() {
+		do {
+			userHandler.login();
+			try {
+				userHandler.performDuties();
+			} catch (InvalidObjectException i) {
+				UIFacade.invalidUserPrompt();
+			}
+			userHandler.logOut();
+		} while (true);
+
 	}
-	
-	
+
 }

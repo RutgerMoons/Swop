@@ -50,7 +50,7 @@ public class AssembleHandler extends UseCaseHandler{
 				if(!workbench.getCurrentTasks().get(i).isCompleted())
 					tasks.add(workbench.getCurrentTasks().get(i));
 			}	
-		int chosenTaskNumber = this.UIFacade.chooseTask(tasks);
+		int chosenTaskNumber = this.UIFacade.chooseTask(tasks)-1;
 		this.UIFacade.showChosenTask(tasks.get(chosenTaskNumber));
 		endTask(user, tasks.get(chosenTaskNumber), workbench);
 		}
