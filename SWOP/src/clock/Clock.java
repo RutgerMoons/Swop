@@ -5,7 +5,7 @@ public class Clock {
 	//public omdat AssemblyLine hier ook aan moet kunnen
 	private final int MINUTESINADAY = 1440;
 	private int minute;
-	
+	private int day;
 	/**
 	 * Get the current time (in minutes).
 	 * @return
@@ -24,8 +24,13 @@ public class Clock {
 	 */
 	public void advanceTime(int elapsedTime) throws IllegalArgumentException{
 		if (elapsedTime < 0) throw new IllegalArgumentException("argument can't be negative");
-		else if (this.minute + elapsedTime > MINUTESINADAY) this.minute = (this.minute + elapsedTime) % MINUTESINADAY;
+		else if (this.minute + elapsedTime > MINUTESINADAY){
+			this.minute = (this.minute + elapsedTime) % MINUTESINADAY;
+			day++;
+		}
 		else this.minute +=elapsedTime;
+		
+		
 	}
 	
 	/**
@@ -34,5 +39,10 @@ public class Clock {
 	public void reset(){
 		this.minute = 0;
 	}
+
+	public int getDay() {
+		return day;
+	}
+
 
 }
