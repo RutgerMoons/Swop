@@ -2,9 +2,9 @@ package car;
 
 
 public abstract class CarPart {
-	
+
 	private String type;
-	
+
 	/**
 	 * 
 	 * @param type One of the possible types for this CarPart
@@ -15,7 +15,7 @@ public abstract class CarPart {
 	public void setType(String description){
 		this.type = description;  
 	}
-	
+
 	/**
 	 * Returns the description of this type.
 	 */
@@ -40,15 +40,11 @@ public abstract class CarPart {
 		if (getClass() != obj.getClass())
 			return false;
 		CarPart other = (CarPart) obj;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
+		if (!type.equals(other.type))
 			return false;
 		return true;
 	}
-	
-	
-	
+
+
+
 }
- 

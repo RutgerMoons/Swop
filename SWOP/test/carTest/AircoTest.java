@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import car.Airco;
+import car.Body;
 
 public class AircoTest {
 	
@@ -63,6 +64,15 @@ public class AircoTest {
 	public void test5Description() {
 		airco.setType(null);
 		assertNull(airco.getType());
+	}
+	
+	@Test
+	public void testEquals(){
+		assertTrue(airco.equals(airco));
+		assertFalse(airco.equals(null));
+		Body body = new Body("break");
+		assertFalse(airco.equals(body));
+		
 	}
 	
 	 
