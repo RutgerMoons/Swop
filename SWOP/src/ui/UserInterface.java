@@ -286,6 +286,7 @@ public class UserInterface implements UIFacade{
 		} else {
 			invalidAnswerPrompt();
 			return chooseWorkBench(taskNumber, assemblyLine);
+			//TODO: derp
 		}	
 	}
 	
