@@ -1,6 +1,8 @@
 package car;
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
 /**
  * Class representing a certain carmodel. Each carmodel has all the essential carparts.
  *
@@ -16,6 +18,11 @@ public class CarModel {
 		this.setCarParts(airco,body,color,engine,gear,seat,wheel);
 	}
 
+	/**
+	 * Method for assigning given objects to certain attributes.
+	 * The method checks before assigning if the given objects are different from null.
+	 * If this isn't the case, an IllegalArgumentException is thrown. 
+	 */
 	private void setCarParts(Airco airco, Body body, Color color,
 			Engine engine, Gearbox gear, Seat seat, Wheel wheel) {
 		if(airco!= null && body!=null && color != null && engine != null && gear != null && seat != null && wheel != null){
@@ -31,12 +38,29 @@ public class CarModel {
 			throw new IllegalArgumentException();
 	}
 
-
+	/**
+	 *This method returns a deep copy of the the hashmap including all the car parts. 
+	 */
 	public HashMap<Class<?>,CarPart> getCarParts(){
-		return this.carParts;
+		return clone(carParts);
 	}
 
+	/**
+	 * Method that returns a deep clone of the given hashmap.
+	 */
+	private HashMap<Class<?>, CarPart> clone(HashMap<Class<?>, CarPart> carParts2) {
+		HashMap<Class<?>, CarPart> newMap = new HashMap<Class<?>, CarPart>();
+		Set<Entry<Class<?>, CarPart>> set1 = carParts2.entrySet();
+		for (Entry<Class<?>, CarPart> entry : set1){
+			newMap.put(entry.getKey(), entry.getValue());
+		}
+		return newMap;
+	}
 
+	/**
+	 * Method for giving naming this model. The method checks if
+	 * the name is different from null and if it is different from the empty string.
+	 */
 	private void setDescription(String description){
 		if(!description.equals(null) && !description.equals(""))
 			this.description=description;
@@ -58,10 +82,15 @@ public class CarModel {
 		return true;
 	}
 
+	/**
+	 * Returns the description/name of the model. Since a String
+	 * is immutable, a clone is not necessary.
+	 */
 	public String getDescription(){
 		return this.description;
 	}
-	
+
+	@Override
 	public String toString(){
 		return getDescription();
 	}

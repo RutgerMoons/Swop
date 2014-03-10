@@ -11,11 +11,14 @@ import java.util.Map.Entry;
  *
  */
 public class CarModelCatalogue {
-	/**
-	 * TODO : add functie maken
-	 */
+	
 	private HashMap<String, HashMap<Class<?>, CarPart>> data;
 
+	/**
+	 * Default constructor. When a carModelCatalogue is constructed, an carModelCatalogueFiller
+	 * is created and the newly constructed carModelCatalogue is filled with the basic carModels thanks
+	 * to the carModelCatalogueFiller.
+	 */
 	public CarModelCatalogue(){
 		CarPartCatalogue cat = new CarPartCatalogue();
 		initializeCatalogue(new CarModelCatalogueFiller(cat).getInitialModels());
@@ -48,7 +51,10 @@ public class CarModelCatalogue {
 		return newMap;
 	}
 	
-
+	/**
+	 * Method for initializing the catalogue. The given arrayList of models is
+	 * included in the catalogue. This method is used by the carModelCatalogueFiller.
+	 */
 	public void initializeCatalogue(ArrayList<CarModel> models){
 		data = new HashMap<String,HashMap<Class<?>,CarPart>>();
 		for(CarModel model : models){
