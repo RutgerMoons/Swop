@@ -1,16 +1,13 @@
 package users;
 
 import java.util.HashMap;
-<<<<<<< HEAD
 import java.util.Map.Entry;
 import java.util.Set;
 
 
-=======
 /**
  * Class that is responsible for keeping track of all the users in the system.
  */
->>>>>>> 09257eba52c9668116f2924d84d52b032e1cc9ec
 public class UserBook {
 	
 	private HashMap<String,User> userBook = new HashMap<String,User>();
