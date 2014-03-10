@@ -48,8 +48,7 @@ public class runProgram {
 		handlers.add(assembleHandler);
 		handlers.add(advanceAssemblyLineHandler);
 
-		userHandler = new UserHandler(userInterface, clock, catalogue,
-				orderBook, assemblyLine, userBook, handlers);
+		userHandler = new UserHandler(userInterface, userBook, handlers);
 	}
 
 	public static void startProgram() {

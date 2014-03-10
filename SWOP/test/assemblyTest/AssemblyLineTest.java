@@ -379,7 +379,7 @@ public class AssemblyLineTest{
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
 		line.calculateEstimatedTime(order);
 		assertEquals(0, order.getEstimatedTime()[0]);
-		assertEquals(line.getClock().getTime() + 180, order.getEstimatedTime()[1]);
+		assertEquals(line.getClock().getMinutes() + 180, order.getEstimatedTime()[1]);
 	}
 	
 	@Test

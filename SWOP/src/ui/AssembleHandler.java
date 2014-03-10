@@ -34,7 +34,7 @@ public class AssembleHandler extends UseCaseHandler{
 	}
 	
 	private WorkBench chooseWorkBench(User user){
-		int workbenchIndex = this.UIFacade.getWorkBench()-1;
+		int workbenchIndex = this.UIFacade.chooseWorkBench(assemblyLine.getWorkbenches().size()) - 1;
 		return this.assemblyLine.getWorkbenches().get(workbenchIndex);
 	}
 	

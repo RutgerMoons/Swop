@@ -23,17 +23,17 @@ public class ClockTest {
 	@Test
 	public void testConstructor() {
 		assertNotNull(clock);
-		assertTrue(clock.getTime() == 0);	
+		assertTrue(clock.getMinutes() == 0);	
 	}
 	
 	@Test
 	public void testMethods() {
 		clock.advanceTime(360);
-		assertTrue(clock.getTime() == 360);
+		assertTrue(clock.getMinutes() == 360);
 		clock.reset();
-		assertTrue(clock.getTime() == 0);
+		assertTrue(clock.getMinutes() == 0);
 		clock.advanceTime(1450);
-		assertTrue(clock.getTime() == 10);
+		assertTrue(clock.getMinutes() == 10);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
