@@ -1,7 +1,5 @@
 package order;
 
-import java.util.Arrays;
-
 import car.CarModel;
 
 public class Order {
