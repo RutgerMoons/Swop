@@ -1,6 +1,10 @@
 package users;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
+
+
 /**
  * Class that is responsible for keeping track of all the users in the system.
  */
@@ -14,7 +18,24 @@ public class UserBook {
 	 * @return A HashMap containing the values in the user book
 	 */
 	public HashMap<String,User> getUserBook() {
-		return userBook;
+		return clone(userBook);
+	}
+	
+	/**
+	 * Get a deep clone of a HashMap<String,User>.
+	 * @param map
+	 * 			The original data.
+	 * @return
+	 * 			A HashMap<String,User>.
+	 */
+	public HashMap<String, User> clone(HashMap<String, User> map){
+		HashMap<String, User> clone = new HashMap<>();
+		
+		Set<Entry<String, User>> dataSet = map.entrySet();
+		for(Entry<String, User> entry: dataSet){
+			clone.put(entry.getKey(), entry.getValue());
+		}
+		return clone;
 	}
 	
 	/**
@@ -29,4 +50,6 @@ public class UserBook {
 			userBook.put(user.getName(), user);
 		}
 	}
+	
+	
 }

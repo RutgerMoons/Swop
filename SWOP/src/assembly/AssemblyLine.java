@@ -37,6 +37,9 @@ public class AssemblyLine {
 		initializeWorkbenches();
 	}
 
+	/** Initializes the workbenches at the start of the program.
+	 * 
+	 */
 	private void initializeWorkbenches() {//gemakkelijk om een nieuwe workbench toe te voegen om te initializeren
 		List<String> responsibilitiesCarBodyPost = new ArrayList<>();
 		responsibilitiesCarBodyPost.add("Paint"); 
