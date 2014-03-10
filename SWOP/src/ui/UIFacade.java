@@ -20,9 +20,9 @@ public interface UIFacade {
 	
 	public int getQuantity();
 	
-	public int chooseWorkBench(int numberOfWorkbenches);
+	public int chooseWorkBench(int numberOfWorkbenches, AssemblyLine Assemblyline);
 	
-	public int chooseTask(ArrayList<Task> tasks);
+	public int chooseTask(ArrayList<Task> tasks, AssemblyLine assemblyline);
 	
 	public void showChosenTask(Task task);
 	

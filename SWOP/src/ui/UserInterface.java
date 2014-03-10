@@ -174,7 +174,7 @@ public class UserInterface implements UIFacade{
 		String completed;
 		for (int i = 0; i < assemblyline.getWorkbenches().size(); i++) {
 			workbench = assemblyline.getWorkbenches().get(i);
-			assemblyLineString.add("-workbench " + (i+1) + ":");
+			assemblyLineString.add("-workbench " + (i+1) + ": " + assemblyline.getWorkbenches().get(i).getWorkbenchName());
 			for (int j = 0; j < workbench.getCurrentTasks().size(); j++) {
 				if(workbench.getCurrentTasks().get(j).isCompleted()) {
 					completed = "completed";
@@ -247,13 +247,21 @@ public class UserInterface implements UIFacade{
 	 * @param The amount of workbenches in the assemblyline
 	 * this is necessary to validate the user input
 	 */
-	public int chooseWorkBench(int numberOfWorkBenches){
+	public int chooseWorkBench(int numberOfWorkBenches, AssemblyLine assemblyline){
+		ArrayList<String> workBenchNames = new ArrayList<>();
+		int i = 1;
+		for (WorkBench w : assemblyline.getWorkbenches()) {
+			workBenchNames.add(i + ": " + w.getWorkbenchName());
+			i++;
+		}
+		show(workBenchNames);
+		
 		int numberWorkbench = (askNumber("What's the number of the workbench you're currently residing at?"));
 		if (numberWorkbench >= 1  && numberWorkbench <= numberOfWorkBenches) {
 			return numberOfWorkBenches;
 		} else {
 			invalidAnswerPrompt();
-			return chooseWorkBench(numberOfWorkBenches);
+			return chooseWorkBench(numberOfWorkBenches, assemblyline);
 		}
 	}
 	
@@ -277,7 +285,7 @@ public class UserInterface implements UIFacade{
 			return taskNumber;
 		} else {
 			invalidAnswerPrompt();
-			return chooseWorkBench(taskNumber);
+			return chooseWorkBench(taskNumber, assemblyLine);
 		}	
 	}
 	

@@ -31,10 +31,10 @@ public class AssembleHandler extends UseCaseHandler{
 	public void executeUseCase(User user){
 		WorkBench workBench = chooseWorkBench(user);
 		chooseTask(user,workBench);
-	}
+	} 
 	
 	private WorkBench chooseWorkBench(User user){
-		int workbenchIndex = this.UIFacade.chooseWorkBench(assemblyLine.getWorkbenches().size()) - 1;
+		int workbenchIndex = this.UIFacade.chooseWorkBench(assemblyLine.getWorkbenches().size(), assemblyLine) - 1;
 		return this.assemblyLine.getWorkbenches().get(workbenchIndex);
 	}
 	 
@@ -50,7 +50,7 @@ public class AssembleHandler extends UseCaseHandler{
 				if(!workbench.getCurrentTasks().get(i).isCompleted())
 					tasks.add(workbench.getCurrentTasks().get(i));
 			}	
-		int chosenTaskNumber = this.UIFacade.chooseTask(tasks)-1;
+		int chosenTaskNumber = this.UIFacade.chooseTask(tasks, assemblyLine)-1;
 		this.UIFacade.showChosenTask(tasks.get(chosenTaskNumber));
 		endTask(user, tasks.get(chosenTaskNumber), workbench);
 		}
