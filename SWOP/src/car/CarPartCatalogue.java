@@ -41,6 +41,9 @@ public class CarPartCatalogue {
 		if (key == null) {
 			throw new IllegalArgumentException(); 
 		}
+		else {
+			carPartCatalogue.put(key, value);
+		}
 	}
 	
 	public HashMap<Class<?>, List<CarPart>> getMap() {
