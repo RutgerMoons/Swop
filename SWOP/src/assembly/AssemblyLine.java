@@ -177,7 +177,7 @@ public class AssemblyLine {
 			if(i==0){	//als het de eerste workbench is (de meest linkse op tekeningen, dan moet je een nieuwe job nemen.
 				lastJob = bench.getCurrentJob();
 				
-				if((22*60 -clock.getTime())<(getWorkbenches().size()*60)) //kijken of er nog auto's op de band mogen 
+				if((22*60 -clock.getMinutes())<(getWorkbenches().size()*60)) //kijken of er nog auto's op de band mogen 
 					bench.setCurrentJob(null);
 				else if(bench.getCurrentJob()==null){	//Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
 					bench.setCurrentJob(getCurrentJobs().get(0));	//de eerste uit de lijst halen dus.
@@ -297,13 +297,13 @@ public class AssemblyLine {
 
 		int beginTime = 6*60; //Om 6:00u beginnen ze te werken
 		int nbOfCarsPerDay =  (lastCarOnFirstBench - beginTime)/60; //1 auto per uur
-		int nbOfCarsToday = (lastCarOnFirstBench - clock.getTime())/60; //aantal auto's die vandaag nog kunnen verwerkt worden.
+		int nbOfCarsToday = (lastCarOnFirstBench - clock.getMinutes())/60; //aantal auto's die vandaag nog kunnen verwerkt worden.
 		if(nbOfCarsToday>nbOfCarsPerDay)
 			nbOfCarsToday= nbOfCarsPerDay;
 		
 		if(timeTillFirstWorkbench/60 <=nbOfCarsToday){
 			days=clock.getDay();
-			time += clock.getTime();
+			time += clock.getMinutes();
 		}else{
 			days=1; //je weet al dat vandaag het niet gaat lukken
 			timeTillFirstWorkbench-=nbOfCarsToday*60;

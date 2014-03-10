@@ -1,7 +1,13 @@
 package order;
 
 import car.CarModel;
-
+/**
+ * Class representing an order from a garageholder. There are 5 attributes specifying a
+ * certain order : the description/type of carModel the garageholder order, the name of the 
+ * garageholder. Moreover the amount of cars ordered and the amount of cars yet to be completed,
+ * are specific attributes of an order. Each order also has an estimated time. This is an estimation
+ * of when the order will be completed. This time is expressed in days and minutes.
+ */
 public class Order {
 
 	private CarModel description;
@@ -9,6 +15,10 @@ public class Order {
 	private int quantity, pendingCars;
 	int[] estimatedTime;
 
+	/**
+	 * Constructor of an Order, given the name of the orderer, 
+	 * the type of carModel and the amount of cars to be ordered.
+	 */
 	public Order(String holder, CarModel description, int quantity){
 		this.setDescription(description);
 		this.setGarageHolder(holder);
@@ -16,6 +26,9 @@ public class Order {
 		this.setPendingCars(quantity);
 	}
 
+	/**
+	 * Assignes the given name to the name of the garageholder.
+	 */
 	private void setGarageHolder(String holder) {
 		if(holder == null  || holder.equals(" ")){
 			throw new IllegalArgumentException();
@@ -23,10 +36,19 @@ public class Order {
 		this.garageholder=holder;
 	}
 
+	/**
+	 * Returns the name of the garageholder.
+	 */
 	public String getGarageHolder(){
 		return this.garageholder;
 	}
 
+	/**
+	 * Changing the amount of pendingCars to the given amount. That's how
+	 * other classes may check if the order is completed or not.
+	 * The method checks if the given amount is lower than zero. If so an
+	 * IllegalArgumentException is thrown.
+	 */
 	private void setPendingCars(int quantity2) {
 		if(quantity2 <0){
 			throw new IllegalArgumentException();
@@ -34,10 +56,18 @@ public class Order {
 		this.pendingCars=quantity2;
 	}
 
+	/**
+	 * Method for retrieving the amount of ccars still to be completed.
+	 */
 	public int getPendingCars(){
 		return this.pendingCars;
 	}
 
+	/**
+	 * Method for assigning the amount of cars ordered to the given amount.
+	 * The method checks if the given amount is lower than zero. If so an
+	 * IllegalArgumentException is thrown.
+	 */
 	private void setQuantity(int quantity) {
 		if(quantity <=0){
 			throw new IllegalArgumentException();
@@ -45,10 +75,17 @@ public class Order {
 		this.quantity=quantity;
 	}
 
+	/**
+	 * Method for retrieving the amount of cars ordered.
+	 */
 	public int getQuantity(){
 		return this.quantity;
 	}
 
+	/**
+	 * Assigning the type/name of the ordered carModel to the given description.
+	 * The method throws an IllegalArgumentException is the given name equals null.s
+	 */
 	private void setDescription(CarModel description2) {
 		if(description2 == null){
 			throw new IllegalArgumentException();
@@ -56,6 +93,9 @@ public class Order {
 		this.description=description2;
 	}
 
+	/**
+	 * Returns the name of the ordered carModel.
+	 */
 	public CarModel getDescription(){
 		return this.description;
 	}
@@ -82,6 +122,10 @@ public class Order {
 		this.estimatedTime = array;
 	}
 
+	/**
+	 * Method for decreasing the amount of pendingCars each time an car of the order
+	 * is completed.
+	 */
 	public void completeCar(){
 		this.setPendingCars(--pendingCars);
 	}

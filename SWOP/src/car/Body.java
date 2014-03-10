@@ -21,6 +21,7 @@ public class Body extends CarPart {
 	 *  is set to the given string.
 	 *  
 	 */
+	@Override
 	public void setType(String description) {
 		if (description == null) {
 			throw new IllegalArgumentException();

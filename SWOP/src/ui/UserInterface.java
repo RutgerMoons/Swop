@@ -17,12 +17,77 @@ import assembly.WorkBench;
 public class UserInterface implements UIFacade{
 	
 	private Scanner inputReader;
-
+	
+	/**
+	 * Ask the question, give the answer of the user
+	 * 
+	 * @param question the question the user has to answer
+	 * @return answer of the user
+	 */
 	private String askQuestion(String question){
 		System.out.println(question);
 		inputReader = new Scanner(System.in);
 		String answer = inputReader.nextLine();
+		//inputReader.close();
 		return answer;
+	}
+	
+	/**
+	 * Keep asking the same question, until a valid (expected) response is given by the user 
+	 * note: inputReader is only constructed once
+	 * 
+	 * @param question the question the user has to answer
+	 * @param expected possible answers
+	 * @return answer of the user, this answer is an expected one
+	 */
+	private String askQuestionLoop(String question, ArrayList<String> expected) {
+		inputReader = new Scanner(System.in);
+		while (true) {
+			System.out.println(question);
+			String answer = inputReader.nextLine();
+			if (answer != null && expected.contains(answer)) {
+				//inputReader.close();
+				return answer;
+			} 
+			invalidAnswerPrompt();
+		}
+	}
+	
+	@Override
+	public boolean askContinue() {
+		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
+		return askQuestionLoop("Do you want to continue? Y/N", expected).equals("Y");
+	}
+	
+	/**
+	 * User presses enter to indicate he's finished
+	 * It doesn't matter if there's something typed
+	 */
+	public String askFinished(){
+		return askQuestion("Press enter when you're finished");
+	}
+	
+	public boolean askAdvance(){
+		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
+		return askQuestionLoop("Do you want advance the assemblyLine? Y/N", expected).equals("Y");
+	}
+	
+	public int askNumber(String question) {
+		while (true) {
+			try {
+				return Integer.parseInt(askQuestion(question));
+			}
+			catch (NumberFormatException n) {
+			}
+		}
+	}
+	
+	public void invalidAnswerPrompt(){
+		show(new ArrayList<String>(Arrays.asList("Sorry, that's not a valid response")));
+	}
+	
+	public void invalidUserPrompt(){
+		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
 	
 	private void show(ArrayList<String> message){
@@ -32,53 +97,9 @@ public class UserInterface implements UIFacade{
 		System.out.println("");
 	}
 	
-	@Override
-	public boolean askContinue() throws InputMismatchException{
-		String answer = askQuestion("Do you want to continue? Y/N");
-		if(answer.equalsIgnoreCase("Y"))
-			return true;
-		else if(answer.equalsIgnoreCase("N"))
-			return false;
-		else throw new InputMismatchException();
-	}
-	
-	public String getName(){
-		return askQuestion("Hello user, what's your name?");
-	}
-	
-	public String getRole(){
-		return askQuestion("What's your role: manager, garageholder or worker?");
-	}
-	
-	@Override
-	public String getModel(Set<String> catalogue) {
-		ArrayList<String> catalogueInString = new ArrayList<String>();
-		
-		catalogueInString.add("Possible models:");
-		for(String key:catalogue){
-			catalogueInString.add(key);
-		}
-		show(catalogueInString);
-		
-		return askQuestion("Which model do you want to order?");
-	}
-
-	@Override
-	public int getQuantity() throws InputMismatchException {
-		int quantity = Integer.parseInt(askQuestion("How many cars do you want to order?"));
-		if(quantity<=0)
-			throw new InputMismatchException();
-		else return quantity;
-	}
-
-	public void invalidAnswerPrompt(){
-		show(new ArrayList<String>(Arrays.asList("Sorry, that's not a valid response")));
-	}
-	
-	public void invalidUserPrompt(){
-		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
-	}
-	
+	/**
+	 * 
+	 */
 	@Override
 	public void showPendingOrders(ArrayList<Order> pendingOrders) {
 		ArrayList<String> ordersInString = new ArrayList<String>();
@@ -88,7 +109,16 @@ public class UserInterface implements UIFacade{
 		
 		if(pendingOrders != null){
 			for (int i = 0; i < pendingOrders.size(); i++) {
-				orderInString = pendingOrders.get(i).getQuantity() + " " + pendingOrders.get(i).getDescription() + " Estimated completion time:" + pendingOrders.get(i).getEstimatedTime()[0] + " days and " + pendingOrders.get(i).getEstimatedTime()[1]/60 + " hours and " + pendingOrders.get(i).getEstimatedTime()[1]%60 + " minutes";
+				orderInString = pendingOrders.get(i).getQuantity() + 
+								" " + 
+								pendingOrders.get(i).getDescription() + 
+								" Estimated completion time: " + 
+								pendingOrders.get(i).getEstimatedTime()[0] + 
+								" days and " + 
+								pendingOrders.get(i).getEstimatedTime()[1]/60 + 
+								" hours and " + 
+								pendingOrders.get(i).getEstimatedTime()[1]%60 + 
+								" minutes";
 				ordersInString.add(orderInString);
 			}
 			show(ordersInString);
@@ -106,7 +136,8 @@ public class UserInterface implements UIFacade{
 		
 		if(completedOrders != null){
 			for (int i = 0; i < completedOrders.size(); i++) {
-				orderInString = completedOrders.get(i).getQuantity() + " " + completedOrders.get(i).getDescription();
+				orderInString = completedOrders.get(i).getQuantity() + " " + 
+								completedOrders.get(i).getDescription();
 				ordersInString.add(orderInString);
 			}
 			
@@ -118,41 +149,17 @@ public class UserInterface implements UIFacade{
 
 	@Override
 	public void showOrder(int quantity, CarModel model, int[] estimatedTime) {
-		if(estimatedTime[0] == -1)
+		if(estimatedTime[0] == -1) {
 			show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model)));
-		else show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model + " Estimated completion time: day " + estimatedTime[0] + " " + estimatedTime[1]/60 + "h" + estimatedTime[1]%60)));
-		
-	}
-	
-	public int getWorkBench(){
-		return Integer.parseInt(askQuestion("What's the number of the workbench you're currently residing at?"));
-	}
-	
-	public int chooseTask(ArrayList<Task> tasks){
-		ArrayList<String> tasksInStrings = new ArrayList<String>();
-		
-		tasksInStrings.add("Tasks:");
-		for (int i = 0; i <tasks.size(); i++) {
-			tasksInStrings.add((i+1) + ". " + tasks.get(i).getTaskDescription());
+		} 
+		else {
+			show(new ArrayList<String>(Arrays.asList("Your order:",	quantity + " " + 
+																	model + " Estimated completion time: day " + 
+																	estimatedTime[0] + " " + 
+																	estimatedTime[1]/60 + "h" + 
+																	estimatedTime[1]%60)));
 		}
 		
-		show(tasksInStrings);
-		
-		return Integer.parseInt(askQuestion("Which taskNumber do you choose?"));		
-	}
-	
-	public void showChosenTask(Task task){
-		ArrayList<String> chosenTask = new ArrayList<String>();
-		chosenTask.add("Your task: " + task.getTaskDescription());
-		chosenTask.add("Required actions:");
-		for (int i = 0; i < task.getActions().size(); i++) {
-			chosenTask.add((i+1) + "." + task.getActions().get(i).getDescription());
-		}
-		show(chosenTask);
-	}
-	
-	public String askFinished(){
-		return askQuestion("Type 'done' when you're finished");
 	}
 	
 	public void showWorkBenchCompleted(){
@@ -169,32 +176,127 @@ public class UserInterface implements UIFacade{
 			workbench = assemblyline.getWorkbenches().get(i);
 			assemblyLineString.add("-workbench " + (i+1) + ":");
 			for (int j = 0; j < workbench.getCurrentTasks().size(); j++) {
-				if(workbench.getCurrentTasks().get(j).isCompleted())
+				if(workbench.getCurrentTasks().get(j).isCompleted()) {
 					completed = "completed";
-				else
+				}
+				else {
 					completed = "not completed";
+				}
 				assemblyLineString.add("  *" + workbench.getCurrentTasks().get(j).getTaskDescription() + ": " + completed);
 			}
 		}
 		show(assemblyLineString);
 	}
 	
-	public int getElapsedTime(){
-		return Integer.parseInt(askQuestion("How much time has passed? (minutes)"));
+	public void showChosenTask(Task task){
+		ArrayList<String> chosenTask = new ArrayList<String>();
+		chosenTask.add("Your task: " + task.getTaskDescription());
+		chosenTask.add("Required actions:");
+		for (int i = 0; i < task.getActions().size(); i++) {
+					chosenTask.add((i+1) + "." + 
+					task.getActions().get(i).getDescription());
+		}
+		show(chosenTask);
 	}
 	
 	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches){
-		show(new ArrayList<String>(Arrays.asList("AssemblyLine can't be advanced because of workbench " + notCompletedBenches.toString())));
+		show(new ArrayList<String>(Arrays.asList(	"AssemblyLine can't be advanced because of workbench " + 
+													notCompletedBenches.toString())));
 	}
 	
-	public boolean askAdvance(){
-		String answer = askQuestion("Do you want advance the assemblyLine? Y/N");
-		if(answer.equals("Y")){
-			return true;
+	/**
+	 * ask the name of the user and return this
+	 */
+	public String getName(){
+		return askQuestion("Hello user, what's your name?");
+	}
+	
+	/**
+	 * ask the amount of cars to order, until the response is a positive integer
+	 */
+	@Override
+	public int getQuantity() {
+		int quantity = Integer.parseInt(askQuestion("How many cars do you want to order?"));
+		while (quantity<=0) {
+			invalidAnswerPrompt();
+			quantity = Integer.parseInt(askQuestion("How many cars do you want to order?"));
 		}
-		else if(answer.equals("N")){
-			return false;
+		return quantity;
+	}
+	
+	/**
+	 * ask the user how much time has passed and return this if it is an integer
+	 * a negative integer -> new day
+	 * 0 or positive integer -> amount of minutes passed
+	 */
+	public int getElapsedTime(){
+		return askNumber("How much time has passed? (minutes)");
+	}
+	
+	/**
+	 * user has to indicate which role he fulfills  
+	 */
+	public String chooseRole(){
+		ArrayList<String> expected = new ArrayList<>(Arrays.asList("manager", "garageholder", "worker"));
+		return askQuestionLoop("What's your role: manager, garageholder or worker?", expected);
+	}
+	
+	/**
+	 * returns the number of the workbench at which the user is currently residing
+	 * 
+	 * @param The amount of workbenches in the assemblyline
+	 * this is necessary to validate the user input
+	 */
+	public int chooseWorkBench(int numberOfWorkBenches){
+		int numberWorkbench = (askNumber("What's the number of the workbench you're currently residing at?"));
+		if (numberWorkbench >= 1  && numberWorkbench <= numberOfWorkBenches) {
+			return numberOfWorkBenches;
+		} else {
+			invalidAnswerPrompt();
+			return chooseWorkBench(numberOfWorkBenches);
 		}
-		else return false;
+	}
+	
+	/**
+	 * the user indicates which tasks he wants to perform
+	 * 
+	 * @param The tasks at the user's current workbench
+	 */
+	public int chooseTask(ArrayList<Task> tasks){
+		ArrayList<String> tasksInStrings = new ArrayList<String>();
+		
+		tasksInStrings.add("Tasks:");
+		for (int i = 0; i <tasks.size(); i++) {
+					tasksInStrings.add((i+1) + ". " + 
+					tasks.get(i).getTaskDescription());
+		}
+		
+		show(tasksInStrings);
+		int taskNumber = askNumber("Which taskNumber do you choose?");
+		if (taskNumber >= 1  && taskNumber <= taskNumber) {
+			return taskNumber;
+		} else {
+			invalidAnswerPrompt();
+			return chooseWorkBench(taskNumber);
+		}	
+	}
+	
+	/**
+	 * the user has to indicate which model to order
+	 */
+	@Override
+	public String chooseModel(Set<String> catalogue) {
+		ArrayList<String> catalogueInString = new ArrayList<String>();
+		
+		catalogueInString.add("Possible models:");
+		for(String key:catalogue){
+			catalogueInString.add(key);
+		}
+		show(catalogueInString);
+		
+		return askQuestionLoop("Which model do you want to order?", catalogueInString);
 	}
 }
+
+
+

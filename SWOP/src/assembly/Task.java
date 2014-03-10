@@ -90,6 +90,7 @@ public class Task {
 		this.taskDescription = taskDescription;
 	}
 	
+	@Override
 	public String toString(){
 		return getTaskDescription();
 	}

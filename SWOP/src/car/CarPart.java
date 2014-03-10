@@ -1,6 +1,8 @@
 package car;
 
-
+/**
+ * Abstract class representing a part of a car. 
+ */
 public abstract class CarPart {
 
 	private String type;

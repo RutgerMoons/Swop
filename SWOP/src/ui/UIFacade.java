@@ -12,15 +12,15 @@ public interface UIFacade {
 	
 	public String getName();
 	
-	public String getRole();
+	public String chooseRole();
 	
-	public String getModel(Set<String> catalogue);
+	public String chooseModel(Set<String> catalogue);
 	
 	public String askFinished();
 	
 	public int getQuantity();
 	
-	public int getWorkBench();
+	public int chooseWorkBench(int numberOfWorkbenches);
 	
 	public int chooseTask(ArrayList<Task> tasks);
 	

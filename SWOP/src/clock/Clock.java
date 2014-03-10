@@ -6,6 +6,7 @@ package clock;
 public class Clock {
 	
 	private final int MINUTESINADAY = 1440;
+	private final int MINUTESSTARTOFDAY= 360;
 	private int minute;
 	private int day;
 	/**
@@ -13,8 +14,14 @@ public class Clock {
 	 * @return
 	 * 			An integer that represents the current time, expressed in minutes.
 	 */
-	public int getTime(){
+	public int getMinutes(){
 		return minute;
+	}
+	
+	private void setMinutes(int min) {
+		if (min >= 0) {
+			this.minute = min % MINUTESINADAY;
+		}
 	}
 	
 	/**
@@ -50,6 +57,24 @@ public class Clock {
 	 */
 	public int getDay() {
 		return this.day;
+	}
+	
+	/**
+	 * the amount of days is incremented with one
+	 */
+	private void incrementDay() {
+		this.day++;
+	}
+	
+	/**
+	 * if it is before midnight increment the day with one
+	 * set the minutes to MINUTESSTARTOFDAY
+	 */
+	public void startNewDay() {
+		if (getMinutes() < MINUTESINADAY) {
+			incrementDay();
+		}
+		setMinutes(MINUTESSTARTOFDAY);
 	}
 
 
