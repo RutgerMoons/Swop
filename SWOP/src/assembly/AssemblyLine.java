@@ -41,18 +41,18 @@ public class AssemblyLine {
 		List<String> responsibilitiesCarBodyPost = new ArrayList<>();
 		responsibilitiesCarBodyPost.add("Paint"); 
 		responsibilitiesCarBodyPost.add("Assembly");
-		getWorkbenches().add(new WorkBench(responsibilitiesCarBodyPost));
+		getWorkbenches().add(new WorkBench(responsibilitiesCarBodyPost, "car body"));
 
 		List<String> responsibilitiesDrivetrainPost = new ArrayList<>();
 		responsibilitiesDrivetrainPost.add("Engine"); 
 		responsibilitiesDrivetrainPost.add("Gearbox");
-		getWorkbenches().add(new WorkBench(responsibilitiesDrivetrainPost));
+		getWorkbenches().add(new WorkBench(responsibilitiesDrivetrainPost, "drivetrain"));
 
 		List<String> responsibilitiesAccesoiresPost = new ArrayList<>();
 		responsibilitiesAccesoiresPost.add("Seats"); 
 		responsibilitiesAccesoiresPost.add("Airco");
 		responsibilitiesAccesoiresPost.add("Wheels");
-		getWorkbenches().add(new WorkBench(responsibilitiesAccesoiresPost));
+		getWorkbenches().add(new WorkBench(responsibilitiesAccesoiresPost, "accessories"));
 
 	}
 
@@ -331,7 +331,7 @@ public class AssemblyLine {
 		ArrayList<WorkBench> clones = new ArrayList<>();
 		line.setCurrentJobs(getCurrentJobs());
 		for(WorkBench bench: getWorkbenches()){
-			WorkBench clone = new WorkBench(bench.getResponsibilities());
+			WorkBench clone = new WorkBench(bench.getResponsibilities(), bench.getWorkbenchName());
 			clone.setCurrentJob(bench.getCurrentJob());
 			clone.setCurrentTasks(bench.getCurrentTasks());
 			clones.add(clone);

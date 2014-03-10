@@ -29,7 +29,7 @@ public class WorkBenchTest {
 	private CarModel model;
 	@Before
 	public void initialize(){
-		workBench = new WorkBench(new ArrayList<String>());
+		workBench = new WorkBench(new ArrayList<String>(), "name");
 		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
 				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
 	}
@@ -38,6 +38,7 @@ public class WorkBenchTest {
 	public void TestContstructor(){
 		assertNotNull(workBench);
 		assertNotNull(workBench.getResponsibilities());
+		assertEquals("name", workBench.getWorkbenchName());
 	}
 
 	@Test

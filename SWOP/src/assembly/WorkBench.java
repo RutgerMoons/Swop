@@ -12,15 +12,31 @@ public class WorkBench {
 	private List<String> responsibilities;
 	private Job currentJob;
 	private List<Task> currentTasks;
+	private final String workbenchName;
 	
 	/**
 	 * Construct a new Workbench.
 	 * @param responsibilities
 	 * 			A list of strings. The types of Tasks that have to be performed by this WorkBench.
+	 * @param workbench_name
+	 * 			A name for this workbench
 	 */
-	public WorkBench(List<String> responsibilities){
+	public WorkBench(List<String> responsibilities, String workbenchName){
+		if (workbenchName == null) {
+			throw new IllegalArgumentException();
+		}
+		this.workbenchName = workbenchName;
 		this.setResponsibilities(responsibilities);
 		setCurrentTasks(new ArrayList<Task>());
+	}
+	
+	/**
+	 * Get the name of the current workbench
+	 * @return
+	 * 			The name of the current workbench
+	 */
+	public String getWorkbenchName() {
+		return workbenchName;
 	}
 	
 	/**
@@ -134,4 +150,4 @@ public class WorkBench {
 			string+=str + ", ";
 		return string;
 	}
-}
+} 
