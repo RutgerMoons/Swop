@@ -281,11 +281,11 @@ public class UserInterface implements UIFacade{
 		
 		show(tasksInStrings);
 		int taskNumber = askNumber("Which taskNumber do you choose?");
-		if (taskNumber >= 1  && taskNumber <= taskNumber) {
+		if (taskNumber >= 1  && taskNumber <= tasks.size()) {
 			return taskNumber;
 		} else {
 			invalidAnswerPrompt();
-			return chooseWorkBench(taskNumber, assemblyLine);
+			return chooseTask(tasks);
 			//TODO: derp
 		}	
 	}

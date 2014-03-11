@@ -22,7 +22,7 @@ public interface UIFacade {
 	
 	public int chooseWorkBench(int numberOfWorkbenches, AssemblyLine Assemblyline);
 	
-	public int chooseTask(ArrayList<Task> tasks, AssemblyLine assemblyline);
+	public int chooseTask(ArrayList<Task> tasks);
 	
 	public void showChosenTask(Task task);
 	
