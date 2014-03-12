@@ -1,17 +1,16 @@
 package uiTest;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import ui.UserInterface;
+
 
 public class UserInterfaceTest {
 

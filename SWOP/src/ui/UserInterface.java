@@ -92,6 +92,16 @@ public class UserInterface implements UIFacade{
 		return askQuestionLoop("Do you want advance the assemblyLine? Y/N", expected).equals("Y");
 	}
 	
+	public int askNumber(String question,  Scanner inputReader) {
+		while (true) {
+			try {
+				return Integer.parseInt(askQuestion(question, inputReader));
+			}
+			catch (NumberFormatException n) {
+			}
+		}
+	}
+	
 	/**
 	 * Notify the user that the answer he has given is not a valid answer.
 	 */
@@ -229,10 +239,11 @@ public class UserInterface implements UIFacade{
 	 * Ask the amount of cars to order, until the response is a positive integer
 	 */
 	public int getQuantity() {
-		int quantity = askNumber("How many cars do you want to order?");
+		Scanner inputReader = new Scanner(System.in);
+		int quantity = askNumber("How many cars do you want to order?", inputReader);
 		while (quantity<=0) {
 			invalidAnswerPrompt();
-			quantity = askNumber("How many cars do you want to order?");
+			quantity = askNumber("How many cars do you want to order?", inputReader);
 		}
 		return quantity;
 	}
@@ -243,7 +254,8 @@ public class UserInterface implements UIFacade{
 	 * 0 or positive integer -> amount of minutes passed
 	 */
 	public int getElapsedTime(){
-		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)");
+		Scanner inputReader = new Scanner(System.in);
+		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)", inputReader);
 	}
 	
 	/**
@@ -269,8 +281,8 @@ public class UserInterface implements UIFacade{
 			i++;
 		}
 		show(workBenchNames);
-		
-		int numberWorkbench = (askNumber("What's the number of the workbench you're currently residing at?"));
+		Scanner inputReader = new Scanner(System.in);
+		int numberWorkbench = (askNumber("What's the number of the workbench you're currently residing at?", inputReader));
 		if (numberWorkbench >= 1  && numberWorkbench <= numberOfWorkBenches) {
 			return numberWorkbench;
 		} else {
@@ -294,7 +306,8 @@ public class UserInterface implements UIFacade{
 		}
 		show(tasksString);
 		
-		int taskNumber = askNumber("Which taskNumber do you choose?");
+		Scanner inputReader = new Scanner(System.in);
+		int taskNumber = askNumber("Which taskNumber do you choose?", inputReader);
 		if (taskNumber >= 1  && taskNumber <= tasks.size()) {
 			return taskNumber;
 		} else {
