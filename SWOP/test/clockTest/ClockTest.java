@@ -40,4 +40,11 @@ public class ClockTest {
 	public void testAdvanceException() {
 		clock.advanceTime(-10);
 	}
+	
+	@Test
+	public void TestStartNewDay(){
+		assertEquals(0, clock.getDay());
+		clock.startNewDay();
+		assertEquals(1, clock.getDay());
+	}
 }
