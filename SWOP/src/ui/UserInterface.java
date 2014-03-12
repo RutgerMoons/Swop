@@ -6,12 +6,10 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Set;
 
-import car.CarModel;
-import assembly.AssemblyLine;
-import assembly.Task;
-import assembly.WorkBench;
-
-
+/**
+ * A text-based user interface to interact with the system.
+ *
+ */
 public class UserInterface implements UIFacade{
 	
 	private Scanner inputReader;
@@ -48,7 +46,28 @@ public class UserInterface implements UIFacade{
 		}
 	}
 	
-	@Override
+	/**
+	 * Ask a question for which the answer is expected to be an integer.
+	 * @param question
+	 * @return
+	 * 			An integer which represents the users's answer.
+	 */
+	private int askNumber(String question) {
+		Scanner inputReader = new Scanner(System.in);
+		while (true) {
+			try {
+				return Integer.parseInt(askQuestion(question, inputReader));
+			}
+			catch (NumberFormatException n) {
+			}
+		}
+	}
+	
+	/**
+	 * Ask the user if he wants to continue.
+	 * @return
+	 * 			A String that equals either "Y" (for yes) or "N" (for no).
+	 */
 	public boolean askContinue() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want to continue? Y/N", expected).equals("Y");
@@ -63,6 +82,11 @@ public class UserInterface implements UIFacade{
 		return askQuestion("Press enter when you're finished", inputReader);
 	}
 	
+	/**
+	 * Ask if the user wants to advance the assemblyline.
+	 * @return
+	 * 			A String that equals either "Y" (for yes) or "N" (for no).
+	 */
 	public boolean askAdvance(){
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want advance the assemblyLine? Y/N", expected).equals("Y");
@@ -78,14 +102,25 @@ public class UserInterface implements UIFacade{
 		}
 	}
 	
+	/**
+	 * Notify the user that the answer he has given is not a valid answer.
+	 */
 	public void invalidAnswerPrompt(){
 		show(new ArrayList<String>(Arrays.asList("Sorry, that's not a valid response")));
 	}
 	
+	/**
+	 * Notify the user that the answer he has given is not a valid user.
+	 */
 	public void invalidUserPrompt(){
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
 	
+	/**
+	 * Show message to the users.
+	 * @param message
+	 * 			The message that has to be shown to the users.
+	 */
 	private void show(ArrayList<String> message){
 		for (int i = 0; i < message.size(); i++) {
 			System.out.println(message.get(i));
@@ -94,9 +129,12 @@ public class UserInterface implements UIFacade{
 	}
 	
 	/**
-	 * 
+	 * Show the user his pending orders.
+	 * @param pendingOrders
+	 * 			An ArrayList of Strings.
+	 * 			Each String in this ArrayList represents an order. 
+	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
 	 */
-	@Override
 	public void showPendingOrders(ArrayList<String> pendingOrders) {
 		if(pendingOrders != null){
 			pendingOrders.add(0,"Your pending orders:");
@@ -105,7 +143,13 @@ public class UserInterface implements UIFacade{
 		else show(new ArrayList<String>(Arrays.asList("You have no pending Orders")));
 	}
 
-	@Override
+	/**
+	 * Show the user's completed orders.
+	 * @param pendingOrders
+	 * 			An ArrayList of Strings.
+	 * 			Each String in this ArrayList represents an order. 
+	 * 			It contains the quantity and the name of the model, separated by comma's.
+	 */
 	public void showCompletedOrders(ArrayList<String> completedOrders) {
 		if(completedOrders != null){
 			completedOrders.add(0,"Your completed orders:");
@@ -114,7 +158,16 @@ public class UserInterface implements UIFacade{
 		else show(new ArrayList<String>(Arrays.asList("You have no completed Orders")));
 	}
 
-	@Override
+	/**
+	 * Show the user the order he is about to place.
+	 * @param quantity
+	 * 			An integer representing the quantity of cars the user is about to order.
+	 * @param carModel
+	 * 			A String representing the name of the carmodel the user is about to order.
+	 * @param estimatedTime
+	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
+	 * 			If the estimated completion time == -1, the completion time can't be shown.
+	 */
 	public void showOrder(int quantity, String model, int[] estimatedTime) {
 		if(estimatedTime[0] == -1) {
 			show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model)));
@@ -126,25 +179,49 @@ public class UserInterface implements UIFacade{
 																	estimatedTime[1]/60 + "h" + 
 																	estimatedTime[1]%60)));
 		}
-		
 	}
 	
+	/**
+	 * Notify the user that all the tasks at the workbench he's working on are completed.
+	 */
 	public void showWorkBenchCompleted(){
 		show(new ArrayList<String>(Arrays.asList("All the tasks at this workbench are completed")));
 	}
 	
+	/**
+	 * Show the user the assemblyline.
+	 * @param assemblyline
+	 * 			A String representing the assemblyline.
+	 * 			The String contains all the workbenches in the assemblyline 
+	 * 			and all the tasks at each workbench (with indication whether the task has been completed), 
+	 * 			each of them separated by a comma.
+	 * @param tense
+	 * 			String that indicates whether the other parameter is a current or future assemblyline.
+	 */
 	public void showAssemblyLine(String assemblyline, String tense){
 		ArrayList<String> assemblyLineStrings = new ArrayList<String>(Arrays.asList(assemblyline.split(",")));
 		assemblyLineStrings.add(0,tense + " assemblyline:");
 		show(assemblyLineStrings);
 	}
 	
+	/**
+	 * Show the user the task he has chosen.
+	 * @param task
+	 * 			A String that represents the task. 
+	 * 			This String contains the task description, "Required actions:", and all the actions required.
+	 * 			Each of these elements are separated by a comma.
+	 */
 	public void showChosenTask(String task){
 		ArrayList <String> taskStrings = new ArrayList<String>(Arrays.asList(task.split(",")));
 		taskStrings.add(0,"Your task: ");
 		show(taskStrings);
 	}
 	
+	/**
+	 * Show the user which benches are keeping the assemblyline from advancing.
+	 * @param notCompletedBenches
+	 * 			A list of integers. Each integer represents the number of a workbench that is blocking the assemblyline.
+	 */
 	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches){
 		show(new ArrayList<String>(Arrays.asList(	"AssemblyLine can't be advanced because of workbench " + 
 													notCompletedBenches.toString())));
@@ -159,9 +236,8 @@ public class UserInterface implements UIFacade{
 	}
 	
 	/**
-	 * ask the amount of cars to order, until the response is a positive integer
+	 * Ask the amount of cars to order, until the response is a positive integer
 	 */
-	@Override
 	public int getQuantity() {
 		Scanner inputReader = new Scanner(System.in);
 		int quantity = askNumber("How many cars do you want to order?", inputReader);
@@ -243,7 +319,6 @@ public class UserInterface implements UIFacade{
 	/**
 	 * the user has to indicate which model to order
 	 */
-	@Override
 	public String chooseModel(Set<String> catalogue) {
 		ArrayList<String> catalogueInString = new ArrayList<String>();
 		
