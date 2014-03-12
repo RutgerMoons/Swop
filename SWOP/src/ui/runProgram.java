@@ -2,9 +2,6 @@ package ui;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.jws.soap.SOAPBinding.Use;
 
 import order.OrderBook;
 import users.UserBook;
@@ -12,6 +9,10 @@ import assembly.AssemblyLine;
 import car.CarModelCatalogue;
 import clock.Clock;
 
+/**
+ * This is the class where the program starts running.
+ *
+ */
 public class runProgram {
 	private static Clock clock;
 	private static CarModelCatalogue catalogue;
@@ -30,6 +31,9 @@ public class runProgram {
 		startProgram();
 	}
 
+	/**
+	 * Initializes all datastructures that the program needs from the start.
+	 */
 	public static void initializeData() {
 		clock = new Clock();
 		assemblyLine = new AssemblyLine(clock);
@@ -51,6 +55,9 @@ public class runProgram {
 		userHandler = new UserHandler(userInterface, userBook, handlers);
 	}
  
+	/**
+	 * Starts the program.
+	 */
 	public static void startProgram() {
 		do {
 			userHandler.login();

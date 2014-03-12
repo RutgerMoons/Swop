@@ -15,7 +15,7 @@ public class CarModelCatalogue {
 	private HashMap<String, HashMap<Class<?>, CarPart>> data;
 
 	/**
-	 * Default constructor. When a carModelCatalogue is constructed, an carModelCatalogueFiller
+	 * Default constructor. When a carModelCatalogue is constructed, a carModelCatalogueFiller
 	 * is created and the newly constructed carModelCatalogue is filled with the basic carModels thanks
 	 * to the carModelCatalogueFiller.
 	 */

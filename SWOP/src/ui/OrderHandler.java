@@ -18,22 +18,48 @@ import order.OrderBook;
 import users.GarageHolder;
 import users.User;
 
+/**
+ * 
+ * Defines the program flow for the 'Order New Car' use case.
+ *
+ */
 public class OrderHandler extends UseCaseHandler{
 	
 	private OrderBook orderBook;
 	private UIFacade UIFacade;
 	private CarModelCatalogue catalogue;
 	
+	/**
+	 * Construct a new OrderHandler
+	 * @param UIFacade
+	 * 			The UIfacade this OrderHandler has to use to communicate with the user.
+	 * @param orderBook
+	 * 			The OrderBook this OrderHandler has to access if it needs an OrderBook.
+	 * @param catalogue
+	 * 			The CarModelCatalogue from which this OrderHandler can get its possible CarModels.
+	 */
 	public OrderHandler (UIFacade UIFacade, OrderBook orderBook, CarModelCatalogue catalogue){
 		this.UIFacade = UIFacade;
 		this.orderBook = orderBook;
 		this.catalogue = catalogue;
 	}
-		
+	
+	/**
+	 * Indicates if the user is authorized to be part of the use case.
+	 * @param user
+	 * 			The user of which we want to get to know if he's authorized.
+	 * @return
+	 * 			A boolean indicating if the user is authorized.
+	 */
 	public boolean mayUseThisHandler(User user){
 		return user instanceof GarageHolder;
 	}
 	
+	/**
+	 * Execute the use case.
+	 * @param user
+	 * 			primary actor in this use case
+	 */
 	public void executeUseCase(User user) throws IllegalArgumentException{
 		if (user == null) {
 			throw new IllegalArgumentException();
@@ -43,10 +69,14 @@ public class OrderHandler extends UseCaseHandler{
 		
 		// order == null if order isn't confirmed by user
 		if(order != null) {
-			showNewOrder(user, order);
+			showNewOrder(order);
 		}
 	}
 	
+	/**
+	 * Shows the user's current pending (with estimated time of completion) and completed orders.
+	 * @param user
+	 */
 	private void showOrders(User user){
 		ArrayList<Order> pendingOrders;
 		ArrayList<Order> completedOrders;
@@ -79,6 +109,13 @@ public class OrderHandler extends UseCaseHandler{
 		
 	}
 	
+	/**
+	 * Creates a new order. 
+	 * @param user
+	 * @return
+	 * 			Returns null if the user cancels his order somewhere in this process.
+	 * 			Otherwise, it returns the order the user has just placed.
+	 */
 	private Order placeNewOrder(User user){
 		boolean wantToOrder = this.UIFacade.askContinue();
 		if(!wantToOrder) {
@@ -115,7 +152,12 @@ public class OrderHandler extends UseCaseHandler{
 		}
 	}
 	
-	private void showNewOrder(User user, Order order){
+	/**
+	 * Shows the new order the user has just placed (with estimated completion time)
+	 * @param user
+	 * @param order
+	 */
+	private void showNewOrder(Order order){
 		UIFacade.showOrder(order.getQuantity(), order.getDescription().toString(), order.getEstimatedTime());
 	}
 }
