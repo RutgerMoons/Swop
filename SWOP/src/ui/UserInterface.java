@@ -3,12 +3,10 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
 
 import car.CarModel;
-import order.Order;
 import assembly.AssemblyLine;
 import assembly.Task;
 import assembly.WorkBench;
@@ -101,54 +99,25 @@ public class UserInterface implements UIFacade{
 	 * 
 	 */
 	@Override
-	public void showPendingOrders(ArrayList<Order> pendingOrders) {
-		ArrayList<String> ordersInString = new ArrayList<String>();
-		String orderInString;
-		
-		ordersInString.add("Your pending orders:");
-		
+	public void showPendingOrders(ArrayList<String> pendingOrders) {
 		if(pendingOrders != null){
-			for (int i = 0; i < pendingOrders.size(); i++) {
-				orderInString = pendingOrders.get(i).getQuantity() + 
-								" " + 
-								pendingOrders.get(i).getDescription() + 
-								" Estimated completion time: " + 
-								pendingOrders.get(i).getEstimatedTime()[0] + 
-								" days and " + 
-								pendingOrders.get(i).getEstimatedTime()[1]/60 + 
-								" hours and " + 
-								pendingOrders.get(i).getEstimatedTime()[1]%60 + 
-								" minutes";
-				ordersInString.add(orderInString);
-			}
-			show(ordersInString);
+			pendingOrders.add(0,"Your pending orders:");
+			show(pendingOrders);
 		}
 		else show(new ArrayList<String>(Arrays.asList("You have no pending Orders")));
-		
 	}
 
 	@Override
-	public void showCompletedOrders(ArrayList<Order> completedOrders) {
-		ArrayList<String> ordersInString = new ArrayList<String>();
-		String orderInString;
-		
-		ordersInString.add("Your completed orders:");
-		
+	public void showCompletedOrders(ArrayList<String> completedOrders) {
 		if(completedOrders != null){
-			for (int i = 0; i < completedOrders.size(); i++) {
-				orderInString = completedOrders.get(i).getQuantity() + " " + 
-								completedOrders.get(i).getDescription();
-				ordersInString.add(orderInString);
-			}
-			
-			show(ordersInString);
+			completedOrders.add(0,"Your completed orders:");
+			show(completedOrders);
 		}
 		else show(new ArrayList<String>(Arrays.asList("You have no completed Orders")));
-		
 	}
 
 	@Override
-	public void showOrder(int quantity, CarModel model, int[] estimatedTime) {
+	public void showOrder(int quantity, String model, int[] estimatedTime) {
 		if(estimatedTime[0] == -1) {
 			show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model)));
 		} 
@@ -166,37 +135,16 @@ public class UserInterface implements UIFacade{
 		show(new ArrayList<String>(Arrays.asList("All the tasks at this workbench are completed")));
 	}
 	
-	public void showAssemblyLine(AssemblyLine assemblyline, String tense){
-		ArrayList<String> assemblyLineString = new ArrayList<String>();
-		assemblyLineString.add(tense + " assemblyline:");
-		
-		WorkBench workbench;
-		String completed;
-		for (int i = 0; i < assemblyline.getWorkbenches().size(); i++) {
-			workbench = assemblyline.getWorkbenches().get(i);
-			assemblyLineString.add("-workbench " + (i+1) + ": " + assemblyline.getWorkbenches().get(i).getWorkbenchName());
-			for (int j = 0; j < workbench.getCurrentTasks().size(); j++) {
-				if(workbench.getCurrentTasks().get(j).isCompleted()) {
-					completed = "completed";
-				}
-				else {
-					completed = "not completed";
-				}
-				assemblyLineString.add("  *" + workbench.getCurrentTasks().get(j).getTaskDescription() + ": " + completed);
-			}
-		}
-		show(assemblyLineString);
+	public void showAssemblyLine(String assemblyline, String tense){
+		ArrayList<String> assemblyLineStrings = new ArrayList<String>(Arrays.asList(assemblyline.split(",")));
+		assemblyLineStrings.add(0,tense + " assemblyline:");
+		show(assemblyLineStrings);
 	}
 	
-	public void showChosenTask(Task task){
-		ArrayList<String> chosenTask = new ArrayList<String>();
-		chosenTask.add("Your task: " + task.getTaskDescription());
-		chosenTask.add("Required actions:");
-		for (int i = 0; i < task.getActions().size(); i++) {
-					chosenTask.add((i+1) + "." + 
-					task.getActions().get(i).getDescription());
-		}
-		show(chosenTask);
+	public void showChosenTask(String task){
+		ArrayList <String> taskStrings = new ArrayList<String>(Arrays.asList(task.split(",")));
+		taskStrings.add(0,"Your task: ");
+		show(taskStrings);
 	}
 	
 	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches){
@@ -230,7 +178,7 @@ public class UserInterface implements UIFacade{
 	 * 0 or positive integer -> amount of minutes passed
 	 */
 	public int getElapsedTime(){
-		return askNumber("How much time has passed? (minutes)");
+		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)");
 	}
 	
 	/**
@@ -247,21 +195,22 @@ public class UserInterface implements UIFacade{
 	 * @param The amount of workbenches in the assemblyline
 	 * this is necessary to validate the user input
 	 */
-	public int chooseWorkBench(int numberOfWorkBenches, AssemblyLine assemblyline){
+	public int chooseWorkBench(int numberOfWorkBenches, ArrayList<String> workbenches){
 		ArrayList<String> workBenchNames = new ArrayList<>();
+		workBenchNames.add("Workbenches:");
 		int i = 1;
-		for (WorkBench w : assemblyline.getWorkbenches()) {
-			workBenchNames.add(i + ": " + w.getWorkbenchName());
+		for (String workbench : workbenches) {
+			workBenchNames.add(i + ": " + workbench);
 			i++;
 		}
 		show(workBenchNames);
 		
 		int numberWorkbench = (askNumber("What's the number of the workbench you're currently residing at?"));
 		if (numberWorkbench >= 1  && numberWorkbench <= numberOfWorkBenches) {
-			return numberOfWorkBenches;
+			return numberWorkbench;
 		} else {
 			invalidAnswerPrompt();
-			return chooseWorkBench(numberOfWorkBenches, assemblyline);
+			return chooseWorkBench(numberOfWorkBenches, workbenches);
 		}
 	}
 	
@@ -270,23 +219,22 @@ public class UserInterface implements UIFacade{
 	 * 
 	 * @param The tasks at the user's current workbench
 	 */
-	public int chooseTask(ArrayList<Task> tasks){
-		ArrayList<String> tasksInStrings = new ArrayList<String>();
-		
-		tasksInStrings.add("Tasks:");
-		for (int i = 0; i <tasks.size(); i++) {
-					tasksInStrings.add((i+1) + ". " + 
-					tasks.get(i).getTaskDescription());
+	public int chooseTask(ArrayList<String> tasks){
+		ArrayList<String> tasksString = new ArrayList<String>();
+		tasksString.add(0,"Tasks:");
+		int i = 1;
+		for(String task : tasks){
+			tasksString.add(i+"."+task);
+			i++;
 		}
+		show(tasksString);
 		
-		show(tasksInStrings);
 		int taskNumber = askNumber("Which taskNumber do you choose?");
 		if (taskNumber >= 1  && taskNumber <= tasks.size()) {
 			return taskNumber;
 		} else {
 			invalidAnswerPrompt();
 			return chooseTask(tasks);
-			//TODO: derp
 		}	
 	}
 	

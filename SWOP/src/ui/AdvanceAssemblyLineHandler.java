@@ -37,11 +37,11 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	}
 
 	private void showCurrentAssemblyLine() {
-		this.UIfacade.showAssemblyLine(this.assemblyLine, "current");
+		this.UIfacade.showAssemblyLine(this.assemblyLine.toString(), "current");
 	}
 	
 	private void showFutureAssemblyLine(){
-		this.UIfacade.showAssemblyLine(this.assemblyLine.getFutureAssemblyLine(), "future");
+		this.UIfacade.showAssemblyLine(this.assemblyLine.getFutureAssemblyLine().toString(), "future");
 	}
 	
 	private void advanceAssemblyLine() {

@@ -6,7 +6,6 @@ import java.util.Set;
 import car.CarModel;
 import assembly.AssemblyLine;
 import assembly.Task;
-import order.*;
 
 public interface UIFacade {
 	
@@ -20,11 +19,11 @@ public interface UIFacade {
 	
 	public int getQuantity();
 	
-	public int chooseWorkBench(int numberOfWorkbenches, AssemblyLine Assemblyline);
+	public int chooseWorkBench(int numberOfWorkbenches, ArrayList<String> workbenches);
 	
-	public int chooseTask(ArrayList<Task> tasks);
+	public int chooseTask(ArrayList<String> tasks);
 	
-	public void showChosenTask(Task task);
+	public void showChosenTask(String task);
 	
 	public boolean askContinue();
 	
@@ -32,16 +31,16 @@ public interface UIFacade {
 	
 	public void invalidUserPrompt();
 	
-	public void showPendingOrders(ArrayList<Order> pendingOrders);
+	public void showPendingOrders(ArrayList<String> pendingOrders);
 	
-	public void showCompletedOrders(ArrayList<Order> completedOrders);
+	public void showCompletedOrders(ArrayList<String> completedOrders);
 	
 	public void showWorkBenchCompleted();
 	
 	//estimatedTime kan -1 zijn!! --> dan moet de estimatedTime niet geprint worden 
-	public void showOrder(int quantity, CarModel carModel, int[] estimatedTime);
+	public void showOrder(int quantity, String carModel, int[] estimatedTime);
 	
-	public void showAssemblyLine(AssemblyLine assemblyline, String tense);
+	public void showAssemblyLine(String assemblyline, String tense);
 	
 	public int getElapsedTime();
 	

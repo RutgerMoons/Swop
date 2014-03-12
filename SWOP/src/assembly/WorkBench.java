@@ -145,9 +145,6 @@ public class WorkBench {
 	
 	@Override
 	public String toString(){
-		String string="";
-		for(String str: getResponsibilities())
-			string+=str + ", ";
-		return string;
+		return this.getWorkbenchName();
 	}
 } 

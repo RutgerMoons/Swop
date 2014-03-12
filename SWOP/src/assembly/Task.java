@@ -92,6 +92,10 @@ public class Task {
 	
 	@Override
 	public String toString(){
-		return getTaskDescription();
+		 String taskString = this.getTaskDescription() + "," + "Required actions:";
+			for (int i = 0; i < this.getActions().size(); i++) {
+				taskString += "," + (i+1) + "." + this.getActions().get(i).getDescription();
+			}
+			return taskString;
 	}
 }

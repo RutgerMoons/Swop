@@ -34,7 +34,12 @@ public class AssembleHandler extends UseCaseHandler{
 	} 
 	
 	private WorkBench chooseWorkBench(User user){
-		int workbenchIndex = this.UIFacade.chooseWorkBench(assemblyLine.getWorkbenches().size(), assemblyLine) - 1;
+		ArrayList<String> workbenches = new ArrayList<String>();
+		for(WorkBench w : this.assemblyLine.getWorkbenches()){
+			workbenches.add(w.getWorkbenchName());
+		}
+		
+		int workbenchIndex = this.UIFacade.chooseWorkBench(assemblyLine.getWorkbenches().size(), workbenches) - 1;
 		return this.assemblyLine.getWorkbenches().get(workbenchIndex);
 	}
 	 
@@ -45,13 +50,15 @@ public class AssembleHandler extends UseCaseHandler{
 				executeUseCase(user);
 		}
 		else{		
-			ArrayList<Task> tasks = new ArrayList<>();
+			ArrayList<Task> tasks = new ArrayList<Task>();
+			ArrayList<String> tasksStrings = new ArrayList<String>();
 			for (int i = 0; i < workbench.getCurrentTasks().size(); i++) {
 				if(!workbench.getCurrentTasks().get(i).isCompleted())
 					tasks.add(workbench.getCurrentTasks().get(i));
+					tasksStrings.add(workbench.getCurrentTasks().get(i).getTaskDescription());
 			}	
-		int chosenTaskNumber = this.UIFacade.chooseTask(tasks)-1;
-		this.UIFacade.showChosenTask(tasks.get(chosenTaskNumber));
+		int chosenTaskNumber = this.UIFacade.chooseTask(tasksStrings)-1;
+		this.UIFacade.showChosenTask(tasks.get(chosenTaskNumber).toString());
 		endTask(user, tasks.get(chosenTaskNumber), workbench);
 		}
 	}

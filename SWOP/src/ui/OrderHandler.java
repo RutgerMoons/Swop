@@ -1,6 +1,5 @@
 package ui;
 
-import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -51,24 +50,32 @@ public class OrderHandler extends UseCaseHandler{
 	private void showOrders(User user){
 		ArrayList<Order> pendingOrders;
 		ArrayList<Order> completedOrders;
+		ArrayList<String> pendingOrdersStrings = new ArrayList<String>();
+		ArrayList<String> completedOrdersStrings = new ArrayList<String>();
 		
 		if(this.orderBook.getPendingOrders().containsKey(user.getName()) &&
 				!this.orderBook.getPendingOrders().get(user.getName()).isEmpty()) {
 			pendingOrders = this.orderBook.getPendingOrders().get(user.getName());
+			for(Order order: pendingOrders){
+				pendingOrdersStrings.add(order.toString());
+			}
 		}
 		else {
-			pendingOrders = null;
+			pendingOrdersStrings = null;
 		}
 		
 		if(this.orderBook.getCompletedOrders().containsKey(user.getName())) {
 			completedOrders = this.orderBook.getCompletedOrders().get(user.getName());
+			for(Order order: completedOrders){
+				completedOrdersStrings.add(order.toString());
+			}
 		}	
 		else {
-			completedOrders = null;
+			completedOrdersStrings = null;
 		}
 		
-		this.UIFacade.showPendingOrders(pendingOrders);
-		this.UIFacade.showCompletedOrders(completedOrders);
+		this.UIFacade.showPendingOrders(pendingOrdersStrings);
+		this.UIFacade.showCompletedOrders(completedOrdersStrings);
 		
 	}
 	
@@ -94,7 +101,7 @@ public class OrderHandler extends UseCaseHandler{
 			int quantity = UIFacade.getQuantity();
 			int[] estimatedTime = new int[1];
 			estimatedTime[0] = -1;
-			UIFacade.showOrder(quantity, carModel, estimatedTime);
+			UIFacade.showOrder(quantity, carModel.toString(), estimatedTime);
 			
 			if(!this.UIFacade.askContinue()){
 				executeUseCase(user);
@@ -109,6 +116,6 @@ public class OrderHandler extends UseCaseHandler{
 	}
 	
 	private void showNewOrder(User user, Order order){
-		UIFacade.showOrder(order.getQuantity(), order.getDescription(), order.getEstimatedTime());
+		UIFacade.showOrder(order.getQuantity(), order.getDescription().toString(), order.getEstimatedTime());
 	}
 }

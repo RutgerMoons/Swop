@@ -28,14 +28,6 @@ public class WorkerTest {
 	}
 	
 	@Test
-	public void TestWorkbench() {
-		assertNull(worker.getCurrentWorkBench());
-		WorkBench workBench = new WorkBench(new ArrayList<String>());
-		worker.setCurrentWorkBench(workBench);
-		assertEquals(workBench, worker.getCurrentWorkBench());
-	}
-	
-	@Test
 	public void TestGetRightHandler(){
 		assertNull(worker.getRightHandler(new ArrayList<UseCaseHandler>()));
 		AssembleHandler rightHandler = new AssembleHandler(null, null);
