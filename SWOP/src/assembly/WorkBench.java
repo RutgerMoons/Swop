@@ -120,8 +120,10 @@ public class WorkBench {
 	 * The taskDescription is checked against the responsibilities.
 	 */
 	public void chooseTasksOutOfJob(){
-		if(getCurrentJob()==null)
+		if(getCurrentJob()==null){
+			setCurrentTasks(new ArrayList<Task>());
 			return;
+		}
 		List<Task> tasks = new ArrayList<>();
 		for(Task task: getCurrentJob().getTasks())
 			if(getResponsibilities().contains(task.getTaskDescription()) && !task.isCompleted()){

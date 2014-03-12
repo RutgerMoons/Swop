@@ -89,13 +89,15 @@ public class Task {
 			throw new IllegalArgumentException();
 		this.taskDescription = taskDescription;
 	}
-	
+
 	@Override
 	public String toString(){
-		 String taskString = this.getTaskDescription() + "," + "Required actions:";
-			for (int i = 0; i < this.getActions().size(); i++) {
-				taskString += "," + (i+1) + "." + this.getActions().get(i).getDescription();
-			}
-			return taskString;
+		String taskString = this.getTaskDescription() + "," + "Required actions:";
+		for (int i = 0; i < this.getActions().size(); i++) {
+			taskString += " " + (i+1) + "." + this.getActions().get(i).getDescription() +",";
+		}
+		if(getActions().size()!=0)
+			taskString = taskString.substring(0, taskString.length()-1);
+		return taskString;
 	}
 }

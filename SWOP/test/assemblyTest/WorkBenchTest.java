@@ -174,7 +174,11 @@ public class WorkBenchTest {
 		assertEquals(task1, workBench.getCurrentTasks().get(0));
 	}
 	
-	
+	@Test
+	public void TestChooseTasksInvalid(){
+		workBench.chooseTasksOutOfJob();
+		assertEquals(0,workBench.getCurrentTasks().size());
+	}
 	@Test
 	public void TestNotCompleted(){
 		workBench.addResponsibility("Paint");
@@ -236,6 +240,11 @@ public class WorkBenchTest {
 	public void TestToString(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		assertEquals("Paint, Body, ", workBench.toString());
+		assertEquals("name", workBench.toString());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void TestInvalidConstructor(){
+		WorkBench bench = new WorkBench(new ArrayList<String>(), null);
 	}
 }
