@@ -20,11 +20,9 @@ public class UserInterface implements UIFacade{
 	 * @param question the question the user has to answer
 	 * @return answer of the user
 	 */
-	private String askQuestion(String question){
+	private String askQuestion(String question, Scanner inputReader){
 		System.out.println(question);
-		inputReader = new Scanner(System.in);
 		String answer = inputReader.nextLine();
-		//inputReader.close();
 		return answer;
 	}
 	
@@ -42,7 +40,6 @@ public class UserInterface implements UIFacade{
 			System.out.println(question);
 			String answer = inputReader.nextLine();
 			if (answer != null && expected.contains(answer)) {
-				//inputReader.close();
 				return answer;
 			} 
 			invalidAnswerPrompt();
@@ -56,9 +53,10 @@ public class UserInterface implements UIFacade{
 	 * 			An integer which represents the users's answer.
 	 */
 	private int askNumber(String question) {
+		Scanner inputReader = new Scanner(System.in);
 		while (true) {
 			try {
-				return Integer.parseInt(askQuestion(question));
+				return Integer.parseInt(askQuestion(question, inputReader));
 			}
 			catch (NumberFormatException n) {
 			}
@@ -80,7 +78,8 @@ public class UserInterface implements UIFacade{
 	 * It doesn't matter if there's something typed
 	 */
 	public String askFinished(){
-		return askQuestion("Press enter when you're finished");
+		Scanner inputReader = new Scanner(System.in);
+		return askQuestion("Press enter when you're finished", inputReader);
 	}
 	
 	/**
@@ -222,7 +221,8 @@ public class UserInterface implements UIFacade{
 	 * ask the name of the user and return this
 	 */
 	public String getName(){
-		return askQuestion("Hello user, what's your name?");
+		Scanner inputReader = new Scanner(System.in);
+		return askQuestion("Hello user, what's your name?", inputReader);
 	}
 	
 	/**

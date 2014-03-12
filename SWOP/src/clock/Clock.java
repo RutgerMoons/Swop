@@ -34,10 +34,10 @@ public class Clock {
 	public void advanceTime(int elapsedTime) throws IllegalArgumentException{
 		if (elapsedTime < 0) throw new IllegalArgumentException("argument can't be negative");
 		else if (this.minute + elapsedTime > MINUTESINADAY){
-			this.minute = (this.minute + elapsedTime) % MINUTESINADAY;
+			setMinutes((this.minute + elapsedTime) % MINUTESINADAY);
 			day++;
 		}
-		else this.minute +=elapsedTime;
+		else setMinutes(this.minute + elapsedTime);
 		
 		
 	}

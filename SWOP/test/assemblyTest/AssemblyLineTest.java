@@ -393,4 +393,24 @@ public class AssemblyLineTest{
 		assertFalse(lineClone.getWorkbenches().get(0).getCurrentJob().equals(line.getWorkbenches().get(0).getCurrentJob()));
 		assertNull(line.getWorkbenches().get(0).getCurrentJob());
 	}
+	
+	@Test
+	public void TestToString(){
+		assertEquals("", line.toString());
+		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
+		bench1.addResponsibility("Paint");
+		line.addWorkBench(bench1);
+		assertEquals("-workbench 1: test", line.toString());
+		Order order = new Order("Stef", model, 1);
+		Job job = new Job(order);
+		Task task = new Task("Paint");
+		Action action = new Action("Paint car blue");
+		task.addAction(action);
+		job.addTask(task);
+		bench1.setCurrentJob(job);
+		bench1.chooseTasksOutOfJob();
+		assertEquals("-workbench 1: test,  *Paint: not completed", line.toString());
+		action.setCompleted(true);
+		assertEquals("-workbench 1: test,  *Paint: completed", line.toString());
+	}
 }
