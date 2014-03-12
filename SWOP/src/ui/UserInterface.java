@@ -22,11 +22,9 @@ public class UserInterface implements UIFacade{
 	 * @param question the question the user has to answer
 	 * @return answer of the user
 	 */
-	private String askQuestion(String question){
+	private String askQuestion(String question, Scanner inputReader){
 		System.out.println(question);
-		inputReader = new Scanner(System.in);
 		String answer = inputReader.nextLine();
-		//inputReader.close();
 		return answer;
 	}
 	
@@ -44,7 +42,6 @@ public class UserInterface implements UIFacade{
 			System.out.println(question);
 			String answer = inputReader.nextLine();
 			if (answer != null && expected.contains(answer)) {
-				//inputReader.close();
 				return answer;
 			} 
 			invalidAnswerPrompt();
@@ -62,7 +59,8 @@ public class UserInterface implements UIFacade{
 	 * It doesn't matter if there's something typed
 	 */
 	public String askFinished(){
-		return askQuestion("Press enter when you're finished");
+		Scanner inputReader = new Scanner(System.in);
+		return askQuestion("Press enter when you're finished", inputReader);
 	}
 	
 	public boolean askAdvance(){
@@ -73,7 +71,8 @@ public class UserInterface implements UIFacade{
 	public int askNumber(String question) {
 		while (true) {
 			try {
-				return Integer.parseInt(askQuestion(question));
+				Scanner inputReader = new Scanner(System.in);
+				return Integer.parseInt(askQuestion(question, inputReader));
 			}
 			catch (NumberFormatException n) {
 			}
@@ -156,7 +155,8 @@ public class UserInterface implements UIFacade{
 	 * ask the name of the user and return this
 	 */
 	public String getName(){
-		return askQuestion("Hello user, what's your name?");
+		Scanner inputReader = new Scanner(System.in);
+		return askQuestion("Hello user, what's your name?", inputReader);
 	}
 	
 	/**
@@ -164,10 +164,11 @@ public class UserInterface implements UIFacade{
 	 */
 	@Override
 	public int getQuantity() {
-		int quantity = Integer.parseInt(askQuestion("How many cars do you want to order?"));
+		Scanner inputReader = new Scanner(System.in);
+		int quantity = Integer.parseInt(askQuestion("How many cars do you want to order?", inputReader));
 		while (quantity<=0) {
 			invalidAnswerPrompt();
-			quantity = Integer.parseInt(askQuestion("How many cars do you want to order?"));
+			quantity = Integer.parseInt(askQuestion("How many cars do you want to order?", inputReader));
 		}
 		return quantity;
 	}
