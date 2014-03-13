@@ -112,7 +112,7 @@ public class UserInterfaceTest {
 			
 			String output = myout.toString();
 			
-			assertEquals("How many cars do you want to order?" + s + 
+			assertEquals("How many cars do you want to order?" + s +s + 
 							"How many cars do you want to order?" + s, output);
 			assertEquals(5, quantity);
 			
@@ -270,7 +270,7 @@ public class UserInterfaceTest {
 			String output = myout.toString();
 			
 			assertEquals(5, time);
-			assertEquals("How much time has passed? (minutes, type a negative number if this is the start of the day)" + s + 
+			assertEquals("How much time has passed? (minutes, type a negative number if this is the start of the day)" + s + s+ 
 					"How much time has passed? (minutes, type a negative number if this is the start of the day)" + s, output);
 			
 
@@ -296,7 +296,7 @@ public class UserInterfaceTest {
 			String output = myout.toString();
 			
 			assertEquals(-5, time);
-			assertEquals("How much time has passed? (minutes, type a negative number if this is the start of the day)" + s + 
+			assertEquals("How much time has passed? (minutes, type a negative number if this is the start of the day)" + s +s+ 
 					"How much time has passed? (minutes, type a negative number if this is the start of the day)" + s, output);
 			
 
