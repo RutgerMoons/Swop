@@ -48,7 +48,7 @@ public class UserInterface implements UIFacade{
 			invalidAnswerPrompt();
 		}
 	}
-	 
+	  
 	/**
 	 * Ask a question for which the answer is expected to be an integer.
 	 * @param question
