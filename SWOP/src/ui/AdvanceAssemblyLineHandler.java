@@ -40,6 +40,7 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	 * @return
 	 * 			A boolean indicating if the user is authorized.
 	 */
+	@Override
 	public boolean mayUseThisHandler(User user){
 		if (user instanceof Manager) return true;
 		else return false;
@@ -50,6 +51,7 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	 * @param user
 	 * 			primary actor in this use case
 	 */
+	@Override
 	public void executeUseCase(User user){
 		if(this.UIfacade.askAdvance()){
 			showCurrentAssemblyLine();

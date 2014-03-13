@@ -51,6 +51,7 @@ public class OrderHandler extends UseCaseHandler{
 	 * @return
 	 * 			A boolean indicating if the user is authorized.
 	 */
+	@Override
 	public boolean mayUseThisHandler(User user){
 		return user instanceof GarageHolder;
 	}
@@ -60,6 +61,7 @@ public class OrderHandler extends UseCaseHandler{
 	 * @param user
 	 * 			primary actor in this use case
 	 */
+	@Override
 	public void executeUseCase(User user) throws IllegalArgumentException{
 		if (user == null) {
 			throw new IllegalArgumentException();
