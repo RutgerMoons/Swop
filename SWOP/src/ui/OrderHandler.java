@@ -159,7 +159,7 @@ public class OrderHandler extends UseCaseHandler{
 	 * @param user
 	 * @param order
 	 */
-	private void showNewOrder(Order order){
+	public void showNewOrder(Order order){
 		UIFacade.showOrder(order.getQuantity(), order.getDescription().toString(), order.getEstimatedTime());
 	}
 }
