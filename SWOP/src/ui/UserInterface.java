@@ -68,6 +68,7 @@ public class UserInterface implements UIFacade{
 	 * @return
 	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
+	@Override
 	public boolean askContinue() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want to continue? Y/N", expected).equals("Y");
@@ -77,6 +78,7 @@ public class UserInterface implements UIFacade{
 	 * User presses enter to indicate he's finished
 	 * It doesn't matter if there's something typed
 	 */
+	@Override
 	public String askFinished(){
 		Scanner inputReader = new Scanner(System.in);
 		return askQuestion("Press enter when you're finished", inputReader);
@@ -87,6 +89,7 @@ public class UserInterface implements UIFacade{
 	 * @return
 	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
+	@Override
 	public boolean askAdvance(){
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want advance the assemblyLine? Y/N", expected).equals("Y");
@@ -105,6 +108,7 @@ public class UserInterface implements UIFacade{
 	/**
 	 * Notify the user that the answer he has given is not a valid answer.
 	 */
+	@Override
 	public void invalidAnswerPrompt(){
 		show(new ArrayList<String>(Arrays.asList("Sorry, that's not a valid response")));
 	}
@@ -112,6 +116,7 @@ public class UserInterface implements UIFacade{
 	/**
 	 * Notify the user that the answer he has given is not a valid user.
 	 */
+	@Override
 	public void invalidUserPrompt(){
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
@@ -135,6 +140,7 @@ public class UserInterface implements UIFacade{
 	 * 			Each String in this ArrayList represents an order. 
 	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
 	 */
+	@Override
 	public void showPendingOrders(ArrayList<String> pendingOrders) {
 		if(pendingOrders != null){
 			pendingOrders.add(0,"Your pending orders:");
@@ -150,6 +156,7 @@ public class UserInterface implements UIFacade{
 	 * 			Each String in this ArrayList represents an order. 
 	 * 			It contains the quantity and the name of the model, separated by comma's.
 	 */
+	@Override
 	public void showCompletedOrders(ArrayList<String> completedOrders) {
 		if(completedOrders != null){
 			completedOrders.add(0,"Your completed orders:");
@@ -168,6 +175,7 @@ public class UserInterface implements UIFacade{
 	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
+	@Override
 	public void showOrder(int quantity, String model, int[] estimatedTime) {
 		if(estimatedTime[0] == -1) {
 			show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model)));
@@ -184,6 +192,7 @@ public class UserInterface implements UIFacade{
 	/**
 	 * Notify the user that all the tasks at the workbench he's working on are completed.
 	 */
+	@Override
 	public void showWorkBenchCompleted(){
 		show(new ArrayList<String>(Arrays.asList("All the tasks at this workbench are completed")));
 	}
@@ -198,6 +207,7 @@ public class UserInterface implements UIFacade{
 	 * @param tense
 	 * 			String that indicates whether the other parameter is a current or future assemblyline.
 	 */
+	@Override
 	public void showAssemblyLine(String assemblyline, String tense){
 		ArrayList<String> assemblyLineStrings = new ArrayList<String>(Arrays.asList(assemblyline.split(",")));
 		assemblyLineStrings.add(0,tense + " assemblyline:");
@@ -211,6 +221,7 @@ public class UserInterface implements UIFacade{
 	 * 			This String contains the task description, "Required actions:", and all the actions required.
 	 * 			Each of these elements are separated by a comma.
 	 */
+	@Override
 	public void showChosenTask(String task){
 		ArrayList <String> taskStrings = new ArrayList<String>(Arrays.asList(task.split(",")));
 		taskStrings.add(0,"Your task: ");
@@ -222,6 +233,7 @@ public class UserInterface implements UIFacade{
 	 * @param notCompletedBenches
 	 * 			A list of integers. Each integer represents the number of a workbench that is blocking the assemblyline.
 	 */
+	@Override
 	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches){
 		show(new ArrayList<String>(Arrays.asList(	"AssemblyLine can't be advanced because of workbench " + 
 													notCompletedBenches.toString())));
@@ -230,6 +242,7 @@ public class UserInterface implements UIFacade{
 	/**
 	 * ask the name of the user and return this
 	 */
+	@Override
 	public String getName(){
 		Scanner inputReader = new Scanner(System.in);
 		return askQuestion("Hello user, what's your name?", inputReader);
@@ -238,6 +251,7 @@ public class UserInterface implements UIFacade{
 	/**
 	 * Ask the amount of cars to order, until the response is a positive integer
 	 */
+	@Override
 	public int getQuantity() {
 		Scanner inputReader = new Scanner(System.in);
 		int quantity = askNumber("How many cars do you want to order?", inputReader);
@@ -253,6 +267,7 @@ public class UserInterface implements UIFacade{
 	 * a negative integer -> new day
 	 * 0 or positive integer -> amount of minutes passed
 	 */
+	@Override
 	public int getElapsedTime(){
 		Scanner inputReader = new Scanner(System.in);
 		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)", inputReader);
@@ -261,6 +276,7 @@ public class UserInterface implements UIFacade{
 	/**
 	 * user has to indicate which role he fulfills  
 	 */
+	@Override
 	public String chooseRole(){
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("manager", "garageholder", "worker"));
 		return askQuestionLoop("What's your role: manager, garageholder or worker?", expected);
@@ -272,6 +288,7 @@ public class UserInterface implements UIFacade{
 	 * @param The amount of workbenches in the assemblyline
 	 * this is necessary to validate the user input
 	 */
+	@Override
 	public int chooseWorkBench(int numberOfWorkBenches, ArrayList<String> workbenches){
 		ArrayList<String> workBenchNames = new ArrayList<>();
 		workBenchNames.add("Workbenches:");
@@ -296,6 +313,7 @@ public class UserInterface implements UIFacade{
 	 * 
 	 * @param The tasks at the user's current workbench
 	 */
+	@Override
 	public int chooseTask(ArrayList<String> tasks){
 		ArrayList<String> tasksString = new ArrayList<String>();
 		tasksString.add(0,"Tasks:");
@@ -319,6 +337,7 @@ public class UserInterface implements UIFacade{
 	/**
 	 * the user has to indicate which model to order
 	 */
+	@Override
 	public String chooseModel(Set<String> catalogue) {
 		ArrayList<String> catalogueInString = new ArrayList<String>();
 		

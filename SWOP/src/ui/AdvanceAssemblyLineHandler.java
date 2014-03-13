@@ -64,14 +64,14 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	/**
 	 * Show the user the current assemblyline.
 	 */
-	private void showCurrentAssemblyLine() {
+	public void showCurrentAssemblyLine() {
 		this.UIfacade.showAssemblyLine(this.assemblyLine.toString(), "current");
 	}
 	
 	/**
 	 * Show the user what the assemblyline would look like if he succesfully advances the assemblyline.
 	 */
-	private void showFutureAssemblyLine(){
+	public void showFutureAssemblyLine(){
 		this.UIfacade.showAssemblyLine(this.assemblyLine.getFutureAssemblyLine().toString(), "future");
 	}
 	
@@ -79,7 +79,7 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	 * Advance the assemblyline if it can be advanced.
 	 * Show which benches are preventing the assemblyline from advancing.
 	 */
-	private void advanceAssemblyLine() {
+	public void advanceAssemblyLine() {
 		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
 		for (int i = 0; i < this.assemblyLine.getWorkbenches().size(); i++)
 			if(!this.assemblyLine.getWorkbenches().get(i).isCompleted())
