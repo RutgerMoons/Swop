@@ -48,13 +48,18 @@ public class UserHandler {
 	private User currentUser;
 	
 	/**
+	 * Method that returns the user who has completed the login-process.
+	 */
+	public User getCurrentUser(){
+		return currentUser;
+	}
+	
+	/**
 	 * Assign an existing user to the current user (identify the existing user by the name the user gives),
 	 * or create a new user with the given name and assign that user to the current user.
 	 */
 	public void login() {
-		String name;
-		
-		name = this.UIFacade.getName();
+		String name = this.UIFacade.getName();
 				
 		//check if user is new user
 		if(userBook.getUserBook().containsKey(name)) {
@@ -91,11 +96,11 @@ public class UserHandler {
 	 * @throws InvalidObjectException
 	 * 			If the user doesn't have authorization to execute any of the use cases.
 	 */
-	public void performDuties() throws InvalidObjectException{
+	public void performDuties(){
 		UseCaseHandler useCaseHandler = currentUser.getRightHandler(handlers);
 	
 		if(useCaseHandler == null) {
-			throw new InvalidObjectException("");
+			throw new IllegalArgumentException();
 		}
 		else {
 			useCaseHandler.executeUseCase(currentUser);
