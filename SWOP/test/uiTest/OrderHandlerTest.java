@@ -75,14 +75,14 @@ public class OrderHandlerTest {
 
 	@Test
 	public void TestShowOrders() {
-
+		String s = System.lineSeparator();
 		ByteArrayOutputStream myout = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(myout));
 		GarageHolder holder = new GarageHolder("Stef");
 		handler.showOrders(holder);
 		String output = myout.toString();
 		assertEquals(
-				"You have no pending Orders\r\n\r\nYou have no completed Orders\r\n\r\n",
+				"You have no pending Orders" + s + s + "You have no completed Orders" + s + s,
 				output);
 		CarModel model = new CarModel("Volvo", new Airco("manual"), new Body(
 				"sedan"), new Color("blue"), new Engine("standard"),
@@ -96,7 +96,7 @@ public class OrderHandlerTest {
 		handler.showOrders(holder);
 		output = myout.toString();
 		assertEquals(
-				"Your pending orders:\r\n1 Volvo Estimated completion time: 0 days and 4 hours and 0 minutes\r\n\r\nYou have no completed Orders\r\n\r\n",
+				"Your pending orders:" + s + "1 Volvo Estimated completion time: 0 days and 4 hours and 0 minutes" + s + s + "You have no completed Orders" + s + s,
 				output);
 
 		order.completeCar();
@@ -106,7 +106,7 @@ public class OrderHandlerTest {
 		handler.showOrders(holder);
 		output = myout.toString();
 		assertEquals(
-				"You have no pending Orders\r\n\r\nYour completed orders:\r\n1 Volvo\r\n\r\n",
+				"You have no pending Orders" + s +s + "Your completed orders:" + s + "1 Volvo" + s + s,
 				output);
 
 	}
@@ -129,7 +129,7 @@ public class OrderHandlerTest {
 		System.setOut(new PrintStream(myout));
 		Order order = handler.placeNewOrder(holder);
 		String output = myout.toString();
-		assertEquals("Do you want to continue? Y/N\r\n", output);
+		assertEquals("Do you want to continue? Y/N" + s, output);
 		assertNull(order);
 
 		input = "Y";
@@ -140,7 +140,7 @@ public class OrderHandlerTest {
 		assertNotNull(order);
 
 		assertEquals(
-				"Do you want to continue? Y/N\r\nPossible models:\r\nLada\r\nPolo\r\n\r\nWhich model do you want to order?\r\nHow many cars do you want to order?\r\nYour order:\r\n1 Lada\r\n\r\nDo you want to continue? Y/N\r\n",
+				"Do you want to continue? Y/N" + s + "Possible models:" + s + "Lada" + s + "Polo" + s + s + "Which model do you want to order?" + s + "How many cars do you want to order?" + s + "Your order:" + s + "1 Lada" + s + s + "Do you want to continue? Y/N" + s,
 				output);
 
 		myout = new ByteArrayOutputStream();
@@ -148,7 +148,7 @@ public class OrderHandlerTest {
 		handler.showNewOrder(order);
 		output = myout.toString();
 		assertEquals(
-				"Your order:\r\n1 Lada Estimated completion time: day 0 4h0\r\n\r\n",
+				"Your order:" + s + "1 Lada Estimated completion time: day 0 4h0" + s + s,
 				output);
 	}
 
@@ -171,7 +171,7 @@ public class OrderHandlerTest {
 		assertNull(handler.placeNewOrder(holder));
 		String output = myout.toString();
 		assertEquals(
-				"Do you want to continue? Y/N\r\nPossible models:\r\nLada\r\nPolo\r\n\r\nWhich model do you want to order?\r\nHow many cars do you want to order?\r\nYour order:\r\n1 Lada\r\n\r\nDo you want to continue? Y/N\r\nYou have no pending Orders\r\n\r\nYou have no completed Orders\r\n\r\nDo you want to continue? Y/N\r\n",
+				"Do you want to continue? Y/N" + s + "Possible models:" + s + "Lada" + s + "Polo" + s + s + "Which model do you want to order?" + s + "How many cars do you want to order?" + s + "Your order:" + s + "1 Lada" + s + s + "Do you want to continue? Y/N" + s + "You have no pending Orders" + s + s + "You have no completed Orders" + s + s + "Do you want to continue? Y/N" + s + "",
 				output);
 	}
 

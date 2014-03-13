@@ -61,6 +61,7 @@ public class UserInterface implements UIFacade{
 				return Integer.parseInt(askQuestion(question));
 			}
 			catch (NumberFormatException n) {
+				System.out.println("");
 			}
 		}
 	}
