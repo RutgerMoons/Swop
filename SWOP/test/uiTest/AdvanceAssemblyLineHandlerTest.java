@@ -114,16 +114,14 @@ public class AdvanceAssemblyLineHandlerTest {
 	public void advAssLineTest1(){
 		try{
 			String s = System.lineSeparator();
-			String input = "200";
+			String input = "200" + "\r\n" +s +"Y +s";
 			ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
 			System.setIn(in);
 			
 			assembly.addJob(job);
-			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
+			ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			
-			in.read("\n".getBytes());
-			in.reset();
 			advAss.advanceAssemblyLine();
 			String output = myout.toString();
 
@@ -135,7 +133,7 @@ public class AdvanceAssemblyLineHandlerTest {
 	}
 
 	@Parameterized.Parameters
-	public static Collection<Object[]> instancesToTest() {
+	public static Collection<Object[]> instancesToTest() { 
 		return Arrays.asList(
 				new Object[][]{{new UserInterface()}});
 	}

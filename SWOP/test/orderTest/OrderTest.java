@@ -123,5 +123,17 @@ public class OrderTest {
 		assertFalse(order1.equals(order2));
 		order2 = new Order("Jan", model, 2);
 		assertTrue(order1.equals(order2));
+		assertTrue(order1.equals(order1));
+	}
+	
+	@Test
+	public void testToString(){
+		CarModel model2 = new CarModel("BMW", new Airco("manual"), new Body("break"), new Color("red"), 
+				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+		Order order1 = new Order("Jan", model, 2);
+		int[] array = {1,100};
+		order1.setEstimatedTime(array);
+		assertEquals("2 Volkswagen Estimated completion time: 1 days and 1 hours and 40 minutes",order1.toString());
 	}
 }
+
