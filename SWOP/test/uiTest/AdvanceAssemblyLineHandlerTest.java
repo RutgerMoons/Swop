@@ -224,6 +224,32 @@ public class AdvanceAssemblyLineHandlerTest {
 		} 
 	}
 	
+	
+	@Test
+	public void advAssLineTest4(){
+		String s = System.lineSeparator();
+		String input = "200" +s + "Y" + s;
+		ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+		System.setIn(in);
+		
+		
+		ByteArrayOutputStream myout = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(myout));
+		
+		uiFacade = new UserInterface();
+		Clock clock = new Clock();
+		assembly = new AssemblyLine(clock);
+		advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
+		
+		
+		advAss.advanceAssemblyLine();
+		String output = myout.toString();
+
+		assertEquals("How much time has passed? (minutes, type a negative number if this is the start of the day)"
+				+ s + "You can't advance the assemblyline, because there are no orders."
+				+ s +"current assemblyline:" + s + "-workbench 1: car body" + s + "-workbench 2: drivetrain" + s + "-workbench 3: accessories" + s + s
+				+ "Press enter when you're finished" + s, output);
+	}
 	@Test
 	public void useCaseTest(){
 		try{
