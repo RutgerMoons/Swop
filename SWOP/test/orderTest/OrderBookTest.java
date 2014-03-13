@@ -78,4 +78,9 @@ public class OrderBookTest {
 		orderBook.updateOrderBook(order);
 		
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test4(){
+		orderBook.updateOrderBook(null);
+	}
 }

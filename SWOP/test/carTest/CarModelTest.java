@@ -46,6 +46,10 @@ public class CarModelTest {
 		
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidConstructor(){
+		CarModel car = new CarModel("Volvo", null, null, null, null, null, null, null);
+	}
 	@Test (expected = IllegalArgumentException.class)
 	public void test2(){
 		Airco airco1 = new Airco(null);
