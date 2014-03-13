@@ -1,6 +1,5 @@
 package ui;
 
-import java.io.InvalidObjectException;
 import java.util.ArrayList;
 
 import order.OrderBook;
