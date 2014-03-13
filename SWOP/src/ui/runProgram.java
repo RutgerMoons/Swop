@@ -63,7 +63,7 @@ public class runProgram {
 			userHandler.login();
 			try {
 				userHandler.performDuties();
-			} catch (InvalidObjectException i) {
+			} catch (IllegalArgumentException i) {
 				UIFacade.invalidUserPrompt();
 			}
 			userHandler.logOut();
