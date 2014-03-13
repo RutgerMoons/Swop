@@ -602,7 +602,7 @@ public class UserInterfaceTest {
 		try {
 			// ik kan alternatieve input (foute input) niet testen omdat de inputreader steeds opniuew wordt geïntialiseerd..
 			String s = System.lineSeparator();
-			String input = "3" + s;
+			String input = "0" + s + "3" + s;
 			ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
 			System.setIn(in);
 			
@@ -619,6 +619,12 @@ public class UserInterfaceTest {
 							"1: w1" + s +
 							"2: w2" + s +
 							"3: w3" + s + s +
+							"What's the number of the workbench you're currently residing at?" + s +
+							"Sorry, that's not a valid response" + s + s +
+							"Workbenches:" + s + 
+							"1: w1" + s +
+							"2: w2" + s +
+							"3: w3" + s + s +
 							"What's the number of the workbench you're currently residing at?" + s, output);
 			assertEquals(3, quantity);
 			
@@ -632,7 +638,7 @@ public class UserInterfaceTest {
 		try {
 			// ik kan alternatieve input (foute input) niet testen omdat de inputreader steeds opniuew wordt geïntialiseerd..
 			String s = System.lineSeparator();
-			String input = "1" + s;
+			String input = "0" + s + "1" + s;
 			ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
 			System.setIn(in);
 			
@@ -645,11 +651,9 @@ public class UserInterfaceTest {
 			
 			String output = myout.toString();
 			
-			assertEquals("Tasks:" + s + 
-							"1.t1" + s +
-							"2.t2" + s + 
-							"3.t3" + s + s +
-							"Which taskNumber do you choose?" + s, output);
+			assertEquals("Tasks:" + s + "1.t1" + s + "2.t2" + s + "3.t3" + s 
+					+ s + "Which taskNumber do you choose?" + s + "Sorry, that's not a valid response" + s + s 
+					+ "Tasks:" + s + "1.t1" + s + "2.t2" + s + "3.t3" + s + s + "Which taskNumber do you choose?" + s, output);
 			assertEquals(1, quantity);
 			
 
