@@ -86,8 +86,7 @@ public class AdvanceAssemblyLineHandlerTest {
 
 			assertEquals("current assemblyline:\r\n" +"-workbench 1: car body\r\n" + "-workbench 2: drivetrain\r\n"+"-workbench 3: accessories\r\n\r\n", output);
 
-		} catch(Throwable t) {
-			t.printStackTrace();
+		} finally {
 		}
 	}
 
@@ -104,8 +103,7 @@ public class AdvanceAssemblyLineHandlerTest {
 
 			assertEquals("future assemblyline:\r\n-workbench 1: car body\r\n-workbench 2: drivetrain\r\n-workbench 3: accessories\r\n\r\n", output);
 
-		} catch(Throwable t) {
-			t.printStackTrace();
+		} finally {
 		}
 	}
 
@@ -118,18 +116,26 @@ public class AdvanceAssemblyLineHandlerTest {
 			ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
 			System.setIn(in);
 			
-			assembly.addJob(job);
+			
 			ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
+			
+			uiFacade = new UserInterface();
+			Clock clock = new Clock();
+			assembly = new AssemblyLine(clock);
+			advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
+			
+			assembly.addJob(job);
 			
 			advAss.advanceAssemblyLine();
 			String output = myout.toString();
 
-			assertEquals("future assemblyline:\r\n-workbench 1: car body\r\n-workbench 2: drivetrain\r\n-workbench 3: accessories\r\n\r\n", output);
+			assertEquals("How much time has passed? (minutes, type a negative number if this is the start of the day)"
+					+ s +"current assemblyline:" + s + "-workbench 1: car body" + s + "-workbench 2: drivetrain" + s + "-workbench 3: accessories"
+					+ s + s + "Press enter when you're finished" + s, output);
 
-		} catch(Throwable t) {
-			t.printStackTrace();
-		}
+		} finally {
+		} 
 	}
 
 	@Parameterized.Parameters

@@ -79,7 +79,7 @@ public class OrderHandler extends UseCaseHandler{
 	 * Shows the user's current pending (with estimated time of completion) and completed orders.
 	 * @param user
 	 */
-	private void showOrders(User user){
+	public void showOrders(User user){
 		ArrayList<Order> pendingOrders;
 		ArrayList<Order> completedOrders;
 		ArrayList<String> pendingOrdersStrings = new ArrayList<String>();
@@ -118,7 +118,7 @@ public class OrderHandler extends UseCaseHandler{
 	 * 			Returns null if the user cancels his order somewhere in this process.
 	 * 			Otherwise, it returns the order the user has just placed.
 	 */
-	private Order placeNewOrder(User user){
+	public Order placeNewOrder(User user){
 		boolean wantToOrder = this.UIFacade.askContinue();
 		if(!wantToOrder) {
 			return null;
