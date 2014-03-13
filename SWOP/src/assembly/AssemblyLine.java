@@ -45,7 +45,7 @@ public class AssemblyLine {
 	 * 
 	 */
 	private void initializeWorkbenches() {// gemakkelijk om een nieuwe workbench
-											// toe te voegen om te initializeren
+		// toe te voegen om te initializeren
 		List<String> responsibilitiesCarBodyPost = new ArrayList<>();
 		responsibilitiesCarBodyPost.add("Paint");
 		responsibilitiesCarBodyPost.add("Assembly");
@@ -192,57 +192,37 @@ public class AssemblyLine {
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			WorkBench bench = getWorkbenches().get(i);
 			if (i == 0) { // als het de eerste workbench is (de meest linkse op
-							// tekeningen, dan moet je een nieuwe job nemen.
+				// tekeningen, dan moet je een nieuwe job nemen.
 				lastJob = bench.getCurrentJob();
-
-				if ((22 * 60 - clock.getMinutes()) < (getWorkbenches().size() * 60)) // kijken
-																						// of
-																						// er
-																						// nog
-																						// auto's
-																						// op
-																						// de
-																						// band
-																						// mogen
+				
+				if ((22 * 60 - clock.getMinutes() - (overtime*60)) < (getWorkbenches()
+						.size() * 60))
 					bench.setCurrentJob(null);
-				else if (bench.getCurrentJob() == null) { // Dit is voor bij de
-															// start van een
-															// nieuwe werkdag,
-															// dan heeft de
-															// workbench geen
-															// currentjob
-					bench.setCurrentJob(getCurrentJobs().get(0)); // de eerste
-																	// uit de
-																	// lijst
-																	// halen
-																	// dus.
+				else if (bench.getCurrentJob() == null) { // Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
+					bench.setCurrentJob(getCurrentJobs().get(0)); 
 				} else {
 					int index = getCurrentJobs().indexOf(bench.getCurrentJob());
-					if ((index + 1) < getCurrentJobs().size()) { // om
-																	// indexoutofbounds
-																	// te
-																	// voorkomen
+					if ((index + 1) < getCurrentJobs().size()) { // om indexoutofbounds te voorkomen
 						bench.setCurrentJob(getCurrentJobs().get(index + 1));
 					} else
-						bench.setCurrentJob(null); // als er geen nieuwe jobs
-													// meer zijn, dan moet je
-													// zeggen dat de workbench
-													// niets te doen heeft
+						bench.setCurrentJob(null); // als er geen nieuwe job meer zijn, dan moet je zeggen dat de workbench niets te doen heeft
 				}
 			} else { // Als het niet de eerste is, moet je de job van de vorige
-						// workbench nemen.
+				// workbench nemen.
 				Job prev = bench.getCurrentJob();
 				bench.setCurrentJob(lastJob);
 				lastJob = prev;
 			}
 			bench.chooseTasksOutOfJob(); // dan de taken laten selecteren door
-											// de workbench
+			// de workbench
 		}
 		if (lastJob != null && lastJob.isCompleted()) {
-			getCurrentJobs().remove(lastJob); // als de job completed is, dus de
-												// auto('s), dan moet je de job
-												// natuurlijk removen.
+			getCurrentJobs().remove(lastJob); // als de job completed is, dus de auto('s), dan moet je de job natuurlijk removen.
 			lastJob.getOrder().completeCar();
+		}
+
+		if ((22 * 60 - getClock().getMinutes()) < 0) {// overtime zetten
+			overtime = Math.abs(22 * 60 - getClock().getMinutes());
 		}
 	}
 
@@ -332,7 +312,7 @@ public class AssemblyLine {
 		int days = 0;
 		int time = 0;
 		int timeOnWorkBench = getWorkbenches().size() * 60; // 1 uur per
-															// workbench
+		// workbench
 		int timeTillFirstWorkbench = 0;
 		if (getWorkbenches().get(0).getCurrentJob() != null) {
 			// Hoeveel jobs er nog voorstaan in de wachtrij.
@@ -352,16 +332,16 @@ public class AssemblyLine {
 
 		int beginTime = 6 * 60; // Om 6:00u beginnen ze te werken
 		int nbOfCarsPerDay = (lastCarOnFirstBench - beginTime) / 60; // 1 auto
-																		// per
-																		// uur
+		// per
+		// uur
 		int nbOfCarsToday = (lastCarOnFirstBench - clock.getMinutes()) / 60; // aantal
-																				// auto's
-																				// die
-																				// vandaag
-																				// nog
-																				// kunnen
-																				// verwerkt
-																				// worden.
+		// auto's
+		// die
+		// vandaag
+		// nog
+		// kunnen
+		// verwerkt
+		// worden.
 		if (nbOfCarsToday > nbOfCarsPerDay)
 			nbOfCarsToday = nbOfCarsPerDay;
 
