@@ -110,7 +110,7 @@ public class AdvanceAssemblyLineScenario {
 							+ "Do you want to continue? Y/N" + s				//step 3
 							+ "Sorry, that's not a valid response" + s + s
 							+ "Do you want to continue? Y/N" + s
-							+ "How much time has passed? (minutes, type a negative number if this is the start of the day)" + s + s
+							+ "How much time has passed? (minutes, type a negative number if this is the start of the day)" + s
 							+ "How much time has passed? (minutes, type a negative number if this is the start of the day)" + s
 							+ "current assemblyline:" + s 						//step 5
 							+ "-workbench 1: car body" + s 
