@@ -14,13 +14,17 @@ public class UserInterface implements UIFacade{
 	
 	private Scanner inputReader;
 	
+	public UserInterface() {
+		this.inputReader = new Scanner(System.in);
+	}
+	
 	/**
 	 * Ask the question, give the answer of the user
 	 * 
 	 * @param question the question the user has to answer
 	 * @return answer of the user
 	 */
-	private String askQuestion(String question, Scanner inputReader){
+	private String askQuestion(String question){
 		System.out.println(question);
 		String answer = inputReader.nextLine();
 		return answer;
@@ -35,7 +39,6 @@ public class UserInterface implements UIFacade{
 	 * @return answer of the user, this answer is an expected one
 	 */
 	private String askQuestionLoop(String question, ArrayList<String> expected) {
-		inputReader = new Scanner(System.in);
 		while (true) {
 			System.out.println(question);
 			String answer = inputReader.nextLine();
@@ -53,10 +56,9 @@ public class UserInterface implements UIFacade{
 	 * 			An integer which represents the users's answer.
 	 */
 	private int askNumber(String question) {
-		Scanner inputReader = new Scanner(System.in);
 		while (true) {
 			try {
-				return Integer.parseInt(askQuestion(question, inputReader));
+				return Integer.parseInt(askQuestion(question));
 			}
 			catch (NumberFormatException n) {
 			}
@@ -80,8 +82,7 @@ public class UserInterface implements UIFacade{
 	 */
 	@Override
 	public String askFinished(){
-		Scanner inputReader = new Scanner(System.in);
-		return askQuestion("Press enter when you're finished", inputReader);
+		return askQuestion("Press enter when you're finished");
 	}
 	
 	/**
@@ -93,16 +94,6 @@ public class UserInterface implements UIFacade{
 	public boolean askAdvance(){
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want advance the assemblyLine? Y/N", expected).equals("Y");
-	}
-	
-	public int askNumber(String question,  Scanner inputReader) {
-		while (true) {
-			try {
-				return Integer.parseInt(askQuestion(question, inputReader));
-			}
-			catch (NumberFormatException n) {
-			}
-		}
 	}
 	
 	/**
@@ -244,8 +235,7 @@ public class UserInterface implements UIFacade{
 	 */
 	@Override
 	public String getName(){
-		Scanner inputReader = new Scanner(System.in);
-		return askQuestion("Hello user, what's your name?", inputReader);
+		return askQuestion("Hello user, what's your name?");
 	}
 	
 	/**
@@ -253,11 +243,10 @@ public class UserInterface implements UIFacade{
 	 */
 	@Override
 	public int getQuantity() {
-		Scanner inputReader = new Scanner(System.in);
-		int quantity = askNumber("How many cars do you want to order?", inputReader);
+		int quantity = askNumber("How many cars do you want to order?");
 		while (quantity<=0) {
 			invalidAnswerPrompt();
-			quantity = askNumber("How many cars do you want to order?", inputReader);
+			quantity = askNumber("How many cars do you want to order?");
 		}
 		return quantity;
 	}
@@ -269,8 +258,7 @@ public class UserInterface implements UIFacade{
 	 */
 	@Override
 	public int getElapsedTime(){
-		Scanner inputReader = new Scanner(System.in);
-		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)", inputReader);
+		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)");
 	}
 	
 	/**
@@ -298,8 +286,7 @@ public class UserInterface implements UIFacade{
 			i++;
 		}
 		show(workBenchNames);
-		Scanner inputReader = new Scanner(System.in);
-		int numberWorkbench = (askNumber("What's the number of the workbench you're currently residing at?", inputReader));
+		int numberWorkbench = (askNumber("What's the number of the workbench you're currently residing at?"));
 		if (numberWorkbench >= 1  && numberWorkbench <= numberOfWorkBenches) {
 			return numberWorkbench;
 		} else {
@@ -324,8 +311,7 @@ public class UserInterface implements UIFacade{
 		}
 		show(tasksString);
 		
-		Scanner inputReader = new Scanner(System.in);
-		int taskNumber = askNumber("Which taskNumber do you choose?", inputReader);
+		int taskNumber = askNumber("Which taskNumber do you choose?");
 		if (taskNumber >= 1  && taskNumber <= tasks.size()) {
 			return taskNumber;
 		} else {
