@@ -81,9 +81,8 @@ public class OrderHandlerTest {
 		GarageHolder holder = new GarageHolder("Stef");
 		handler.showOrders(holder);
 		String output = myout.toString();
-		assertEquals(
-				"You have no pending Orders" + s + s + "You have no completed Orders" + s + s,
-				output);
+		assertEquals("You have no pending Orders" + s + s
+				+ "You have no completed Orders" + s + s, output);
 		CarModel model = new CarModel("Volvo", new Airco("manual"), new Body(
 				"sedan"), new Color("blue"), new Engine("standard"),
 				new Gearbox("manual"), new Seat("black leather"), new Wheel(
@@ -96,7 +95,10 @@ public class OrderHandlerTest {
 		handler.showOrders(holder);
 		output = myout.toString();
 		assertEquals(
-				"Your pending orders:" + s + "1 Volvo Estimated completion time: 0 days and 4 hours and 0 minutes" + s + s + "You have no completed Orders" + s + s,
+				"Your pending orders:"
+						+ s
+						+ "1 Volvo Estimated completion time: 0 days and 4 hours and 0 minutes"
+						+ s + s + "You have no completed Orders" + s + s,
 				output);
 
 		order.completeCar();
@@ -105,9 +107,8 @@ public class OrderHandlerTest {
 		System.setOut(new PrintStream(myout));
 		handler.showOrders(holder);
 		output = myout.toString();
-		assertEquals(
-				"You have no pending Orders" + s +s + "Your completed orders:" + s + "1 Volvo" + s + s,
-				output);
+		assertEquals("You have no pending Orders" + s + s
+				+ "Your completed orders:" + s + "1 Volvo" + s + s, output);
 
 	}
 
@@ -139,17 +140,18 @@ public class OrderHandlerTest {
 		output = myout.toString();
 		assertNotNull(order);
 
-		assertEquals(
-				"Do you want to continue? Y/N" + s + "Possible models:" + s + "Lada" + s + "Polo" + s + s + "Which model do you want to order?" + s + "How many cars do you want to order?" + s + "Your order:" + s + "1 Lada" + s + s + "Do you want to continue? Y/N" + s,
-				output);
+		assertEquals("Do you want to continue? Y/N" + s + "Possible models:"
+				+ s + "Lada" + s + "Polo" + s + s
+				+ "Which model do you want to order?" + s
+				+ "How many cars do you want to order?" + s + "Your order:" + s
+				+ "1 Lada" + s + s + "Do you want to continue? Y/N" + s, output);
 
 		myout = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(myout));
 		handler.showNewOrder(order);
 		output = myout.toString();
-		assertEquals(
-				"Your order:" + s + "1 Lada Estimated completion time: day 0 4h0" + s + s,
-				output);
+		assertEquals("Your order:" + s
+				+ "1 Lada Estimated completion time: day 0 4h0" + s + s, output);
 	}
 
 	@Test
@@ -170,15 +172,122 @@ public class OrderHandlerTest {
 		System.setOut(new PrintStream(myout));
 		assertNull(handler.placeNewOrder(holder));
 		String output = myout.toString();
+		assertEquals("Do you want to continue? Y/N" + s + "Possible models:"
+				+ s + "Lada" + s + "Polo" + s + s
+				+ "Which model do you want to order?" + s
+				+ "How many cars do you want to order?" + s + "Your order:" + s
+				+ "1 Lada" + s + s + "Do you want to continue? Y/N" + s
+				+ "You have no pending Orders" + s + s
+				+ "You have no completed Orders" + s + s
+				+ "Do you want to continue? Y/N" + s + "", output);
+	}
+
+	@Test
+	public void TestUseCase() {
+		String s = System.lineSeparator();
+		GarageHolder holder = new GarageHolder("Stef");
+		String input = "Y" + s + "Lada" + s + "1" + s + "N" + s + "N" + s;
+		InputStream in = new ByteArrayInputStream(input.getBytes());
+		System.setIn(in);
+
+		AssemblyLine line = new AssemblyLine(new Clock());
+		book = new OrderBook(line);
+		CarModelCatalogue catalogue = new CarModelCatalogue();
+		ui = new UserInterface();
+		handler = new OrderHandler(ui, book, catalogue);
+
+		CarModel model = new CarModel("Volvo", new Airco("manual"), new Body(
+				"sedan"), new Color("blue"), new Engine("standard"),
+				new Gearbox("manual"), new Seat("black leather"), new Wheel(
+						"black"));
+		Order order = new Order("Stef", model, 1);
+		book.addOrder(order);
+
+		ByteArrayOutputStream myout = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(myout));
+		handler.executeUseCase(holder);
+		String output = myout.toString();
 		assertEquals(
-				"Do you want to continue? Y/N" + s + "Possible models:" + s + "Lada" + s + "Polo" + s + s + "Which model do you want to order?" + s + "How many cars do you want to order?" + s + "Your order:" + s + "1 Lada" + s + s + "Do you want to continue? Y/N" + s + "You have no pending Orders" + s + s + "You have no completed Orders" + s + s + "Do you want to continue? Y/N" + s + "",
-				output);
+				"Your pending orders:"
+						+ s
+						+ "1 Volvo Estimated completion time: 0 days and 4 hours and 0 minutes"
+						+ s
+						+ s
+						+ "You have no completed Orders"
+						+ s
+						+ s
+						+ "Do you want to continue? Y/N"
+						+ s
+						+ "Possible models:"
+						+ s
+						+ "Lada"
+						+ s
+						+ "Polo"
+						+ s
+						+ s
+						+ "Which model do you want to order?"
+						+ s
+						+ "How many cars do you want to order?"
+						+ s
+						+ "Your order:"
+						+ s
+						+ "1 Lada"
+						+ s
+						+ s
+						+ "Do you want to continue? Y/N"
+						+ s
+						+ "Your pending orders:"
+						+ s
+						+ "1 Volvo Estimated completion time: 0 days and 4 hours and 0 minutes"
+						+ s + s + "You have no completed Orders" + s + s
+						+ "Do you want to continue? Y/N" + s + "", output);
+	}
+
+	@Test
+	public void TestUseCaseDeclineOrder() {
+		String s = System.lineSeparator();
+		GarageHolder holder = new GarageHolder("Stef");
+		String input = "Y" + s + "Lada" + s + "1" + s + "Y" + s + "N" + s;
+		InputStream in = new ByteArrayInputStream(input.getBytes());
+		System.setIn(in);
+
+		AssemblyLine line = new AssemblyLine(new Clock());
+		book = new OrderBook(line);
+		CarModelCatalogue catalogue = new CarModelCatalogue();
+		ui = new UserInterface();
+		handler = new OrderHandler(ui, book, catalogue);
+
+		CarModel model = new CarModel("Volvo", new Airco("manual"), new Body(
+				"sedan"), new Color("blue"), new Engine("standard"),
+				new Gearbox("manual"), new Seat("black leather"), new Wheel(
+						"black"));
+		Order order = new Order("Stef", model, 1);
+		book.addOrder(order);
+
+		ByteArrayOutputStream myout = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(myout));
+		handler.executeUseCase(holder);
+		String output = myout.toString();
+		assertEquals(
+				"Your pending orders:"
+						+ s
+						+ "1 Volvo Estimated completion time: 0 days and 4 hours and 0 minutes"
+						+ s + s + "You have no completed Orders" + s + s
+						+ "Do you want to continue? Y/N" + s
+						+ "Possible models:" + s + "Lada" + s + "Polo" + s + s
+						+ "Which model do you want to order?" + s
+						+ "How many cars do you want to order?" + s
+						+ "Your order:" + s + "1 Lada" + s + s
+						+ "Do you want to continue? Y/N" + s + "Your order:"
+						+ s + "1 Lada Estimated completion time: day 0 5h0" + s
+						+ s, output);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void TestExecuteInvalidUser(){
+	public void TestExecuteInvalidUser() {
 		handler.executeUseCase(null);
 	}
+
 	@Parameterized.Parameters
 	public static Collection<Object[]> primeNumbers() {
 		return Arrays.asList(new Object[][] { { new UserInterface() } });

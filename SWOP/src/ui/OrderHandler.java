@@ -24,11 +24,11 @@ import users.User;
  *
  */
 public class OrderHandler extends UseCaseHandler{
-	
+
 	private OrderBook orderBook;
 	private UIFacade UIFacade;
 	private CarModelCatalogue catalogue;
-	
+
 	/**
 	 * Construct a new OrderHandler
 	 * @param UIFacade
@@ -43,7 +43,7 @@ public class OrderHandler extends UseCaseHandler{
 		this.orderBook = orderBook;
 		this.catalogue = catalogue;
 	}
-	
+
 	/**
 	 * Indicates if the user is authorized to be part of the use case.
 	 * @param user
@@ -55,7 +55,7 @@ public class OrderHandler extends UseCaseHandler{
 	public boolean mayUseThisHandler(User user){
 		return user instanceof GarageHolder;
 	}
-	
+
 	/**
 	 * Execute the use case.
 	 * @param user
@@ -66,15 +66,17 @@ public class OrderHandler extends UseCaseHandler{
 		if (user == null) {
 			throw new IllegalArgumentException();
 		}
-		showOrders(user);
-		Order order = placeNewOrder(user);
-		
-		// order == null if order isn't confirmed by user
-		if(order != null) {
-			showNewOrder(order);
+		if(mayUseThisHandler(user)){
+			showOrders(user);
+			Order order = placeNewOrder(user);
+
+			// order == null if order isn't confirmed by user
+			if(order != null) {
+				showNewOrder(order);
+			}
 		}
 	}
-	
+
 	/**
 	 * Shows the user's current pending (with estimated time of completion) and completed orders.
 	 * @param user
@@ -84,7 +86,7 @@ public class OrderHandler extends UseCaseHandler{
 		ArrayList<Order> completedOrders;
 		ArrayList<String> pendingOrdersStrings = new ArrayList<String>();
 		ArrayList<String> completedOrdersStrings = new ArrayList<String>();
-		
+
 		if(this.orderBook.getPendingOrders().containsKey(user.getName()) &&
 				!this.orderBook.getPendingOrders().get(user.getName()).isEmpty()) {
 			pendingOrders = this.orderBook.getPendingOrders().get(user.getName());
@@ -95,7 +97,7 @@ public class OrderHandler extends UseCaseHandler{
 		else {
 			pendingOrdersStrings = null;
 		}
-		
+
 		if(this.orderBook.getCompletedOrders().containsKey(user.getName())) {
 			completedOrders = this.orderBook.getCompletedOrders().get(user.getName());
 			for(Order order: completedOrders){
@@ -105,12 +107,12 @@ public class OrderHandler extends UseCaseHandler{
 		else {
 			completedOrdersStrings = null;
 		}
-		
+
 		this.UIFacade.showPendingOrders(pendingOrdersStrings);
 		this.UIFacade.showCompletedOrders(completedOrdersStrings);
-		
+
 	}
-	
+
 	/**
 	 * Creates a new order. 
 	 * @param user
@@ -125,7 +127,7 @@ public class OrderHandler extends UseCaseHandler{
 		}
 		else{
 			String model = UIFacade.chooseModel(catalogue.getCatalogue().keySet());
-			
+
 			//TODO wat doet dit?
 			//--> 1e lijn weg
 			//--> 2e lijn: CarModel carModel = catalogue.getCatalogue().get(model);
@@ -133,15 +135,15 @@ public class OrderHandler extends UseCaseHandler{
 			//       zo wordt ervoor gezorgd dat elk carModel maar 1 keer aangemaakt wordt, en in elk order van dat model naar dat ene object verwezen wordt
 			HashMap<Class<?>, CarPart> parts = catalogue.getCatalogue().get(model);
 			CarModel carModel = new CarModel(model, (Airco)parts.get(Airco.class), (Body)parts.get(Body.class),
-											(Color) parts.get(Color.class), (Engine)parts.get(Engine.class), 
-											(Gearbox)parts.get(Gearbox.class), (Seat)parts.get(Seat.class), 
-											(Wheel)parts.get(Wheel.class));
-			
+					(Color) parts.get(Color.class), (Engine)parts.get(Engine.class), 
+					(Gearbox)parts.get(Gearbox.class), (Seat)parts.get(Seat.class), 
+					(Wheel)parts.get(Wheel.class));
+
 			int quantity = UIFacade.getQuantity();
 			int[] estimatedTime = new int[1];
 			estimatedTime[0] = -1;
 			UIFacade.showOrder(quantity, carModel.toString(), estimatedTime);
-			
+
 			if(!this.UIFacade.askContinue()){
 				executeUseCase(user);
 				return null;
@@ -153,7 +155,7 @@ public class OrderHandler extends UseCaseHandler{
 			}
 		}
 	}
-	
+
 	/**
 	 * Shows the new order the user has just placed (with estimated completion time)
 	 * @param user

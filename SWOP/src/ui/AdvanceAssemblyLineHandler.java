@@ -53,11 +53,13 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	 */
 	@Override
 	public void executeUseCase(User user){
-		if(this.UIfacade.askAdvance()){
-			showCurrentAssemblyLine();
-			showFutureAssemblyLine();
-			if(this.UIfacade.askContinue())
-				advanceAssemblyLine();
+		if(mayUseThisHandler(user)){
+			if(this.UIfacade.askAdvance()){
+				showCurrentAssemblyLine();
+				showFutureAssemblyLine();
+				if(this.UIfacade.askContinue())
+					advanceAssemblyLine();
+			}
 		}
 	}
 
