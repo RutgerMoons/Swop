@@ -56,8 +56,7 @@ public class WorkBench {
 	 * 				The job you want to allocate to the WorkBench.
 	 */
 	public void setCurrentJob(Optional<Job> currentJob) {
-		this.currentJob = currentJob;		//deze mag null zijn, aan het begin van de dag, het eind van de dag en indien
-											//er geen auto's meer geproduceerd moeten worden.
+		this.currentJob = currentJob;		
 	}
 	
 	/**

@@ -190,7 +190,7 @@ public class AssemblyLine {
 			throw new IllegalStateException(
 					"You can't advance if there is no next Job!");
 
-		Optional<Job> lastJob = null;
+		Optional<Job> lastJob = Optional.absent();
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			WorkBench bench = getWorkbenches().get(i);
 			if (i == 0) { // als het de eerste workbench is (de meest linkse op
