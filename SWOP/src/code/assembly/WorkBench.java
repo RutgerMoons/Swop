@@ -3,6 +3,8 @@ package code.assembly;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
+
 /**
  * Represents a WorkBench from an assemblyline.
  *
@@ -10,7 +12,7 @@ import java.util.List;
 public class WorkBench {
 
 	private List<String> responsibilities;
-	private Job currentJob;
+	private Optional<Job> currentJob;
 	private List<Task> currentTasks;
 	private final String workbenchName;
 	
@@ -44,7 +46,7 @@ public class WorkBench {
 	 * @return
 	 * 			The current Job this WorkBench is working on.
 	 */
-	public Job getCurrentJob() {
+	public Optional<Job> getCurrentJob() {
 		return currentJob;
 	}
 
@@ -53,7 +55,7 @@ public class WorkBench {
 	 * @param currentJob
 	 * 				The job you want to allocate to the WorkBench.
 	 */
-	public void setCurrentJob(Job currentJob) {
+	public void setCurrentJob(Optional<Job> currentJob) {
 		this.currentJob = currentJob;		//deze mag null zijn, aan het begin van de dag, het eind van de dag en indien
 											//er geen auto's meer geproduceerd moeten worden.
 	}
@@ -120,12 +122,12 @@ public class WorkBench {
 	 * The taskDescription is checked against the responsibilities.
 	 */
 	public void chooseTasksOutOfJob(){
-		if(getCurrentJob()==null){
+		if(getCurrentJob()==null || !getCurrentJob().isPresent()){
 			setCurrentTasks(new ArrayList<Task>());
 			return;
 		}
 		List<Task> tasks = new ArrayList<>();
-		for(Task task: getCurrentJob().getTasks())
+		for(Task task: getCurrentJob().get().getTasks())
 			if(getResponsibilities().contains(task.getTaskDescription()) && !task.isCompleted()){
 				tasks.add(task);
 			}

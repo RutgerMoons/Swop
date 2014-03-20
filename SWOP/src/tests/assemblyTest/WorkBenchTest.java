@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Optional;
+
 import code.assembly.Action;
 import code.assembly.Job;
 import code.assembly.Task;
@@ -45,9 +47,9 @@ public class WorkBenchTest {
 		workBench.isCompleted();
 		assertNull(workBench.getCurrentJob());
 		Job job = new Job(new Order("Jef", model, 1));
-		workBench.setCurrentJob(job);
+		workBench.setCurrentJob(Optional.fromNullable(job));
 		assertNotNull(workBench.getCurrentJob());
-		assertEquals(job, workBench.getCurrentJob());
+		assertEquals(job, workBench.getCurrentJob().get());
 	}
 	
 	@Test
@@ -131,7 +133,7 @@ public class WorkBenchTest {
 		Task task = new Task("Paint");
 		task.addAction(new Action("Spray Colour"));
 		job.addTask(task);
-		workBench.setCurrentJob(job);
+		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();;
 		assertEquals(1, workBench.getCurrentTasks().size());
 		assertEquals(task, workBench.getCurrentTasks().get(0));
@@ -149,7 +151,7 @@ public class WorkBenchTest {
 		
 		job.addTask(task1);
 		job.addTask(task2);
-		workBench.setCurrentJob(job);
+		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		assertEquals(2, workBench.getCurrentTasks().size());
 		assertEquals(task1, workBench.getCurrentTasks().get(0));
@@ -167,7 +169,7 @@ public class WorkBenchTest {
 		
 		job.addTask(task1);
 		job.addTask(task2);
-		workBench.setCurrentJob(job);
+		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		assertEquals(1, workBench.getCurrentTasks().size());
 		assertEquals(task1, workBench.getCurrentTasks().get(0));
@@ -190,7 +192,7 @@ public class WorkBenchTest {
 		
 		job.addTask(task1);
 		job.addTask(task2);
-		workBench.setCurrentJob(job);
+		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		assertFalse(workBench.isCompleted());
 	}
@@ -208,7 +210,7 @@ public class WorkBenchTest {
 		
 		job.addTask(task1);
 		job.addTask(task2);
-		workBench.setCurrentJob(job);
+		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		action1.setCompleted(true);
 		assertFalse(workBench.isCompleted());
@@ -228,7 +230,7 @@ public class WorkBenchTest {
 		
 		job.addTask(task1);
 		job.addTask(task2);
-		workBench.setCurrentJob(job);
+		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		action1.setCompleted(true);
 		action2.setCompleted(true);

@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.google.common.base.Optional;
+
 import code.assembly.Action;
 import code.assembly.AssemblyLine;
 import code.assembly.Job;
@@ -91,7 +93,7 @@ public class AssembleHandlerTest {
 		handler = new AssembleHandler(ui, line);
 
 		WorkBench bench = line.getWorkbenches().get(0);
-		bench.setCurrentJob(job);
+		bench.setCurrentJob(Optional.fromNullable(job));
 		bench.chooseTasksOutOfJob();
 
 		handler.executeUseCase(worker);

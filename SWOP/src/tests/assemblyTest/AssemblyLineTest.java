@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Optional;
+
 import code.assembly.Action;
 import code.assembly.AssemblyLine;
 import code.assembly.Job;
@@ -179,7 +181,7 @@ public class AssemblyLineTest{
 		line.addJob(job);
 		line.addWorkBench(bench);
 		line.advance();
-		assertEquals(job, bench.getCurrentJob());
+		assertEquals(job, bench.getCurrentJob().get());
 	}
 
 	@Test
@@ -192,9 +194,9 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.advance();
-		assertEquals(job, bench1.getCurrentJob());
+		assertEquals(job, bench1.getCurrentJob().get());
 		line.advance();
-		assertEquals(job, bench2.getCurrentJob());
+		assertEquals(job, bench2.getCurrentJob().get());
 	}
 
 
@@ -210,10 +212,10 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.advance();
-		assertEquals(job1, bench1.getCurrentJob());
+		assertEquals(job1, bench1.getCurrentJob().get());
 		line.advance();
-		assertEquals(job2, bench1.getCurrentJob());
-		assertEquals(job1, bench2.getCurrentJob());
+		assertEquals(job2, bench1.getCurrentJob().get());
+		assertEquals(job1, bench2.getCurrentJob().get());
 	}
 
 	@Test
@@ -231,9 +233,9 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.advance();
-		assertEquals(job, bench1.getCurrentJob());
+		assertEquals(job, bench1.getCurrentJob().get());
 		line.advance();
-		assertEquals(job, bench2.getCurrentJob());
+		assertEquals(job, bench2.getCurrentJob().get());
 		action.setCompleted(true);
 		line.advance();
 		assertEquals(0, line.getCurrentJobs().size());
@@ -246,7 +248,7 @@ public class AssemblyLineTest{
 		Job job = new Job(order1);
 		line.addJob(job);
 		line.addWorkBench(bench);
-		bench.setCurrentJob(job);
+		bench.setCurrentJob(Optional.fromNullable(job));
 		line.getClock().advanceTime(21*60 + 5);
 
 
@@ -401,7 +403,7 @@ public class AssemblyLineTest{
 		Action action = new Action("Paint car blue");
 		task.addAction(action);
 		job.addTask(task);
-		bench1.setCurrentJob(job);
+		bench1.setCurrentJob(Optional.fromNullable(job));
 		bench1.chooseTasksOutOfJob();
 		assertEquals("-workbench 1: test,  *Paint: not completed", line.toString());
 		action.setCompleted(true);
@@ -421,7 +423,7 @@ public class AssemblyLineTest{
 		task.addAction(action);
 		job.addTask(task);
 		line.addJob(job);
-		bench1.setCurrentJob(job);
+		bench1.setCurrentJob(Optional.fromNullable(job));
 		bench1.chooseTasksOutOfJob();		
 
 		line.getClock().advanceTime(23*60);

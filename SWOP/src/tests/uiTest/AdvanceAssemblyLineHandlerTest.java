@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.google.common.base.Optional;
+
 import code.assembly.Action;
 import code.assembly.AssemblyLine;
 import code.assembly.Job;
@@ -166,7 +168,7 @@ public class AdvanceAssemblyLineHandlerTest {
 			job.addTask(task);
 			
 			assembly.addJob(job);
-			assembly.getWorkbenches().get(0).setCurrentJob(job);
+			assembly.getWorkbenches().get(0).setCurrentJob(Optional.fromNullable(job));
 			assembly.getWorkbenches().get(0).chooseTasksOutOfJob();
 			advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
 			

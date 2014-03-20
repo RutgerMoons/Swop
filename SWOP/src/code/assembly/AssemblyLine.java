@@ -3,6 +3,8 @@ package code.assembly;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
+
 import code.car.Airco;
 import code.car.Body;
 import code.car.CarModel;
@@ -188,37 +190,47 @@ public class AssemblyLine {
 			throw new IllegalStateException(
 					"You can't advance if there is no next Job!");
 
-		Job lastJob = null;
+		Optional<Job> lastJob = null;
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			WorkBench bench = getWorkbenches().get(i);
 			if (i == 0) { // als het de eerste workbench is (de meest linkse op
 				// tekeningen, dan moet je een nieuwe job nemen.
-				lastJob = bench.getCurrentJob();
-				
-				if ((22 * 60 - clock.getMinutes() - (overtime*60)) < (getWorkbenches()
+				if (bench.getCurrentJob() != null)
+					lastJob = bench.getCurrentJob();
+				else
+					lastJob = Optional.absent();
+				if ((22 * 60 - clock.getMinutes() - (overtime * 60)) < (getWorkbenches()
 						.size() * 60))
 					bench.setCurrentJob(null);
-				else if (bench.getCurrentJob() == null) { // Dit is voor bij de start van een nieuwe werkdag, dan heeft de workbench geen currentjob
-					bench.setCurrentJob(getCurrentJobs().get(0)); 
+				else if (bench.getCurrentJob() == null) { 
+					bench.setCurrentJob(Optional.fromNullable(getCurrentJobs()
+							.get(0)));
 				} else {
 					int index = getCurrentJobs().indexOf(bench.getCurrentJob());
-					if ((index + 1) < getCurrentJobs().size()) { // om indexoutofbounds te voorkomen
-						bench.setCurrentJob(getCurrentJobs().get(index + 1));
-					} else
-						bench.setCurrentJob(null); // als er geen nieuwe job meer zijn, dan moet je zeggen dat de workbench niets te doen heeft
+					if ((index + 1) < getCurrentJobs().size()) { 
+						bench.setCurrentJob(Optional
+								.fromNullable(getCurrentJobs().get(index + 1)));
+					} else{
+						Optional<Job> nullObject = Optional.absent();
+						bench.setCurrentJob(nullObject);
+					}
 				}
 			} else { // Als het niet de eerste is, moet je de job van de vorige
 				// workbench nemen.
-				Job prev = bench.getCurrentJob();
+				Optional<Job> prev = bench.getCurrentJob();
 				bench.setCurrentJob(lastJob);
 				lastJob = prev;
 			}
 			bench.chooseTasksOutOfJob(); // dan de taken laten selecteren door
 			// de workbench
 		}
-		if (lastJob != null && lastJob.isCompleted()) {
-			getCurrentJobs().remove(lastJob); // als de job completed is, dus de auto('s), dan moet je de job natuurlijk removen.
-			lastJob.getOrder().completeCar();
+		if (lastJob != null && lastJob.isPresent()
+				&& lastJob.get().isCompleted()) {
+			getCurrentJobs().remove(lastJob.get()); // als de job completed is,
+													// dus de auto('s), dan moet
+													// je de job natuurlijk
+													// removen.
+			lastJob.get().getOrder().completeCar();
 		}
 
 		if ((22 * 60 - getClock().getMinutes()) < 0) {// overtime zetten
@@ -314,11 +326,12 @@ public class AssemblyLine {
 		int timeOnWorkBench = getWorkbenches().size() * 60; // 1 uur per
 		// workbench
 		int timeTillFirstWorkbench = 0;
-		if (getWorkbenches().get(0).getCurrentJob() != null) {
+		if (getWorkbenches().get(0).getCurrentJob() != null
+				&& getWorkbenches().get(0).getCurrentJob().isPresent()) {
 			// Hoeveel jobs er nog voorstaan in de wachtrij.
 
 			int indexJobOnFirstWorkbench = (getCurrentJobs()
-					.indexOf(getWorkbenches().get(0).getCurrentJob()));
+					.indexOf(getWorkbenches().get(0).getCurrentJob().get()));
 			timeTillFirstWorkbench = (indexLastJob - indexJobOnFirstWorkbench) * 60;
 		} else {
 			timeTillFirstWorkbench = indexLastJob * 60;

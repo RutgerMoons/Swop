@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.google.common.base.Optional;
+
 import code.assembly.Action;
 import code.assembly.AssemblyLine;
 import code.assembly.Job;
@@ -160,7 +162,7 @@ public class AdvanceAssemblyLineScenario {
 			job.addTask(task);
 			
 			assembly.addJob(job);
-			assembly.getWorkbenches().get(0).setCurrentJob(job);
+			assembly.getWorkbenches().get(0).setCurrentJob(Optional.fromNullable(job));
 			assembly.getWorkbenches().get(0).chooseTasksOutOfJob();
 			advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
 			
@@ -179,6 +181,7 @@ public class AdvanceAssemblyLineScenario {
 							+ "-workbench 3: accessories" + s + s
 							+ "future assemblyline:" + s 
 							+ "-workbench 1: car body" + s 
+							+ "  *Paint: not completed" + s
 							+ "-workbench 2: drivetrain" + s 
 							+ "-workbench 3: accessories" + s + s
 							+ "Do you want to continue? Y/N" + s									//step 3
