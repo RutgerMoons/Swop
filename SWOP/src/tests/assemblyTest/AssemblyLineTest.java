@@ -290,7 +290,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestEstimatedTime1(){
 		Order order = new Order("Stef", model, 2);
-		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		line.addMultipleJobs(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
@@ -303,7 +303,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestEstimatedTime2(){
 		Order order = new Order("Stef", model, 20);
-		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		line.addMultipleJobs(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
@@ -316,7 +316,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestEstimatedTime3(){
 		Order order = new Order("Stef", model, 40);
-		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		line.addMultipleJobs(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
@@ -329,7 +329,7 @@ public class AssemblyLineTest{
 	@Test(expected = IllegalStateException.class)
 	public void TestEstimatedTime4(){
 		Order order = new Order("Stef", model, 1);
-		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		line.addMultipleJobs(line.convertOrderToJob(order));
 		line.calculateEstimatedTime(order);
 	}
 
@@ -338,7 +338,7 @@ public class AssemblyLineTest{
 
 		Order order = new Order("Stef", model, 40);
 		line.addJob(new Job(order));
-		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		line.addMultipleJobs(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
@@ -373,7 +373,7 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench2);
 		Order order = new Order("Stef", model, 1);
 		line.addJob(new Job(order));
-		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
+		line.addMultipleJobs(line.convertOrderToJob(order));
 		line.calculateEstimatedTime(order);
 		assertEquals(0, order.getEstimatedTime()[0]);
 		assertEquals(line.getClock().getMinutes() + 180, order.getEstimatedTime()[1]);

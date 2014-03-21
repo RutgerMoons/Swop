@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 import code.car.Airco;
 import code.car.Body;
@@ -53,21 +54,19 @@ public class AssemblyLine {
 		Set<String> responsibilitiesCarBodyPost = new HashSet<>();
 		responsibilitiesCarBodyPost.add("Paint");
 		responsibilitiesCarBodyPost.add("Assembly");
-		getWorkbenches().add(
-				new WorkBench(responsibilitiesCarBodyPost, "car body"));
+		addWorkBench(new WorkBench(responsibilitiesCarBodyPost, "car body"));
 
 		Set<String> responsibilitiesDrivetrainPost = new HashSet<>();
 		responsibilitiesDrivetrainPost.add("Engine");
 		responsibilitiesDrivetrainPost.add("Gearbox");
-		getWorkbenches().add(
-				new WorkBench(responsibilitiesDrivetrainPost, "drivetrain"));
+		addWorkBench(new WorkBench(responsibilitiesDrivetrainPost, "drivetrain"));
 
 		Set<String> responsibilitiesAccesoiresPost = new HashSet<>();
 		responsibilitiesAccesoiresPost.add("Seats");
 		responsibilitiesAccesoiresPost.add("Airco");
 		responsibilitiesAccesoiresPost.add("Wheels");
-		getWorkbenches().add(
-				new WorkBench(responsibilitiesAccesoiresPost, "accessories"));
+		addWorkBench(new WorkBench(responsibilitiesAccesoiresPost,
+				"accessories"));
 
 	}
 
@@ -77,7 +76,9 @@ public class AssemblyLine {
 	 * @return A list of WorkBenches.
 	 */
 	public List<WorkBench> getWorkbenches() {
-		return workbenches;
+		ImmutableList<WorkBench> immutable = new ImmutableList.Builder<WorkBench>()
+				.addAll(workbenches).build();
+		return immutable;
 	}
 
 	/**
@@ -100,7 +101,9 @@ public class AssemblyLine {
 	 * @return A list of Jobs.
 	 */
 	public List<Job> getCurrentJobs() {
-		return currentJobs;
+		ImmutableList<Job> immutable = new ImmutableList.Builder<Job>().addAll(
+				currentJobs).build();
+		return immutable;
 	}
 
 	/**
@@ -162,7 +165,11 @@ public class AssemblyLine {
 		if (job == null)
 			throw new IllegalArgumentException();
 		else
-			getCurrentJobs().add(job);
+			currentJobs.add(job);
+	}
+	
+	public void addMultipleJobs(List<Job> jobs){
+		currentJobs.addAll(jobs);
 	}
 
 	/**
@@ -177,7 +184,7 @@ public class AssemblyLine {
 		if (bench == null)
 			throw new IllegalArgumentException();
 		else
-			getWorkbenches().add(bench);
+			workbenches.add(bench);
 	}
 
 	/**
@@ -202,18 +209,18 @@ public class AssemblyLine {
 				else
 					lastJob = Optional.absent();
 				if ((22 * 60 - clock.getMinutes() - (overtime * 60)) < (getWorkbenches()
-						.size() * 60)){
+						.size() * 60)) {
 					Optional<Job> optional = Optional.absent();
 					bench.setCurrentJob(optional);
-				}else if (bench.getCurrentJob() == null) { 
+				} else if (bench.getCurrentJob() == null) {
 					bench.setCurrentJob(Optional.fromNullable(getCurrentJobs()
 							.get(0)));
 				} else {
 					int index = getCurrentJobs().indexOf(bench.getCurrentJob());
-					if ((index + 1) < getCurrentJobs().size()) { 
+					if ((index + 1) < getCurrentJobs().size()) {
 						bench.setCurrentJob(Optional
 								.fromNullable(getCurrentJobs().get(index + 1)));
-					} else{
+					} else {
 						Optional<Job> nullObject = Optional.absent();
 						bench.setCurrentJob(nullObject);
 					}
@@ -229,7 +236,7 @@ public class AssemblyLine {
 		}
 		if (lastJob != null && lastJob.isPresent()
 				&& lastJob.get().isCompleted()) {
-			getCurrentJobs().remove(lastJob.get()); // als de job completed is,
+			currentJobs.remove(lastJob.get()); // als de job completed is,
 													// dus de auto('s), dan moet
 													// je de job natuurlijk
 													// removen.

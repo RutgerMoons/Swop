@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Represents a WorkBench from an assemblyline.
@@ -101,7 +102,8 @@ public class WorkBench {
 	 * 			A list of tasks.
 	 */
 	public List<Task> getCurrentTasks() {
-		return currentTasks;
+		ImmutableList<Task> immutable = new ImmutableList.Builder<Task>().addAll(currentTasks).build();
+		return immutable;
 	}
 	
 	/**

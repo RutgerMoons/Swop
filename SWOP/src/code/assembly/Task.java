@@ -3,9 +3,11 @@ package code.assembly;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * Represents a single task that contains a certain amount of Actions.
- *
+ * 
  */
 public class Task {
 
@@ -14,32 +16,36 @@ public class Task {
 
 	/**
 	 * Construct a new Task.
+	 * 
 	 * @param taskDescription
-	 * 			The description you want to give to this Task.
+	 *            The description you want to give to this Task.
 	 */
-	public Task(String taskDescription){
+	public Task(String taskDescription) {
 		setActions(new ArrayList<Action>());
 		this.setTaskDescription(taskDescription);
 	}
 
 	/**
 	 * Get the Actions that this Task contains.
-	 * @return
-	 * 			A list of Actions.
+	 * 
+	 * @return A list of Actions.
 	 */
 	public List<Action> getActions() {
-		return actionList;
+		ImmutableList<Action> immutable = new ImmutableList.Builder<Action>()
+				.addAll(actionList).build();
+		return immutable;
 	}
 
 	/**
 	 * Set the list of Actions that this Task contains.
+	 * 
 	 * @param actions
-	 * 			A list of Actions.
+	 *            A list of Actions.
 	 * @throws IllegalArgumentException
-	 * 			If actions==null
+	 *             If actions==null
 	 */
 	public void setActions(List<Action> actions) {
-		if(actions==null)
+		if (actions == null)
 			throw new IllegalArgumentException();
 		else
 			this.actionList = actions;
@@ -47,33 +53,34 @@ public class Task {
 
 	/**
 	 * Add an Action to this Task.
+	 * 
 	 * @param action
-	 * 			The action you want to add.
+	 *            The action you want to add.
 	 */
-	public void addAction(Action action){
-		if(action==null)
+	public void addAction(Action action) {
+		if (action == null)
 			throw new IllegalArgumentException();
 		else
-			getActions().add(action);
+			actionList.add(action);
 	}
 
 	/**
 	 * Checks if the Task is completed.
-	 * @return
-	 * 			True if all Actions are completed.
-	 * 			False if one or more Actions are completed.
+	 * 
+	 * @return True if all Actions are completed. False if one or more Actions
+	 *         are completed.
 	 */
-	public boolean isCompleted(){
-		for(Action action: getActions())
-			if(!action.isCompleted())
+	public boolean isCompleted() {
+		for (Action action : getActions())
+			if (!action.isCompleted())
 				return false;
 		return true;
 	}
 
 	/**
 	 * Get the description of this Task.
-	 * @return
-	 * 			The description of this Task.
+	 * 
+	 * @return The description of this Task.
 	 */
 	public String getTaskDescription() {
 		return taskDescription;
@@ -81,23 +88,26 @@ public class Task {
 
 	/**
 	 * Set the description of this Task.
+	 * 
 	 * @param taskDescription
-	 * 			The description you want to give to this Task.
+	 *            The description you want to give to this Task.
 	 */
 	public void setTaskDescription(String taskDescription) {
-		if(taskDescription==null || taskDescription.equals(""))
+		if (taskDescription == null || taskDescription.equals(""))
 			throw new IllegalArgumentException();
 		this.taskDescription = taskDescription;
 	}
 
 	@Override
-	public String toString(){
-		String taskString = this.getTaskDescription() + "," + "Required actions:";
+	public String toString() {
+		String taskString = this.getTaskDescription() + ","
+				+ "Required actions:";
 		for (int i = 0; i < this.getActions().size(); i++) {
-			taskString += " " + (i+1) + "." + this.getActions().get(i).getDescription() +",";
+			taskString += " " + (i + 1) + "."
+					+ this.getActions().get(i).getDescription() + ",";
 		}
-		if(getActions().size()!=0)
-			taskString = taskString.substring(0, taskString.length()-1);
+		if (getActions().size() != 0)
+			taskString = taskString.substring(0, taskString.length() - 1);
 		return taskString;
 	}
 }

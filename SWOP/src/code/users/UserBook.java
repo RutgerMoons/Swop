@@ -18,7 +18,7 @@ public class UserBook {
 	 * @return A HashMap containing the values in the user book
 	 */
 	public HashMap<String,User> getUserBook() {
-		return clone(userBook);
+		return copy(userBook);
 	}
 	
 	/**
@@ -28,14 +28,14 @@ public class UserBook {
 	 * @return
 	 * 			A HashMap<String,User>.
 	 */
-	public HashMap<String, User> clone(HashMap<String, User> map){
-		HashMap<String, User> clone = new HashMap<>();
+	public HashMap<String, User> copy(HashMap<String, User> map){
+		HashMap<String, User> copy = new HashMap<>();
 		
 		Set<Entry<String, User>> dataSet = map.entrySet();
 		for(Entry<String, User> entry: dataSet){
-			clone.put(entry.getKey(), entry.getValue());
+			copy.put(entry.getKey(), entry.getValue());
 		}
-		return clone;
+		return copy;
 	}
 	
 	/**
