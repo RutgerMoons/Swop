@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMultimap;
+
 import code.car.Airco;
 import code.car.Body;
 import code.car.CarPart;
@@ -38,24 +40,19 @@ public class CarPartCatalogueTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void test3(){
 		CarPartCatalogue cat = new CarPartCatalogue();
-		ArrayList<CarPart> array = new ArrayList<CarPart>();
-		array.add(new Airco("manual"));
-		cat.addListForCarPart(null, array);
+		cat.addCarPart(null, new Airco("manual"));
 	}
 	
 	@Test
 	public void test4(){
 		CarPartCatalogue cat = new CarPartCatalogue();
-		ArrayList<CarPart> array = new ArrayList<CarPart>();
-		array.add(new Airco("manual"));
-		cat.addListForCarPart(Airco.class, array);
-		HashMap<Class<?>, List<CarPart>> map = cat.getMap();
+		cat.addCarPart(Airco.class, new Airco("manual"));
+		ImmutableMultimap<Class<?>, CarPart> map = cat.getMap();
 		//System.out.println(map.toString());
-		assertEquals(7,map.entrySet().size());
-		ArrayList<CarPart> arr = new ArrayList<CarPart>();
-		arr.add(new Body("break"));
-		cat.addListForCarPart(CarPart.class, arr);
-		assertEquals(7,map.entrySet().size());
+		assertEquals(7,map.keySet().size());
+		
+		cat.addCarPart(CarPart.class, new Body("break"));
+		assertEquals(7,map.keySet().size());
 	}
 	
 	

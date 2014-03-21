@@ -95,12 +95,20 @@ public class CarPartCatalogueFiller {
 	 * Method for initializing all the different carParts.
 	 */
 	public void initializeCarParts(){
-		this.catalogue.addListForCarPart(Airco.class, this.getInitialAirco());
-		this.catalogue.addListForCarPart(Body.class, this.getInitialBody());
-		this.catalogue.addListForCarPart(Color.class, this.getInitialColors());
-		this.catalogue.addListForCarPart(Engine.class, this.getInitialEngine());
-		this.catalogue.addListForCarPart(Gearbox.class, this.getInitialGearbox());
-		this.catalogue.addListForCarPart(Seat.class, this.getInitialSeat());
-		this.catalogue.addListForCarPart(Wheel.class, this.getInitialWheel());
+		for(CarPart ac: this.getInitialAirco())
+			this.catalogue.addCarPart(Airco.class, ac);
+		for(CarPart ac: this.getInitialBody())
+			this.catalogue.addCarPart(Body.class, ac);
+		for(CarPart ac: this.getInitialColors())
+			this.catalogue.addCarPart(Color.class, ac);
+		for(CarPart ac: this.getInitialEngine())
+			this.catalogue.addCarPart(Engine.class, ac);
+		for(CarPart ac: this.getInitialGearbox())
+			this.catalogue.addCarPart(Gearbox.class, ac);
+		for(CarPart ac: this.getInitialSeat())
+			this.catalogue.addCarPart(Seat.class, ac);
+		for(CarPart ac: this.getInitialWheel())
+			this.catalogue.addCarPart(Wheel.class, ac);
+		
 	}
 }

@@ -3,7 +3,9 @@ package tests.assemblyTest;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +32,7 @@ public class WorkBenchTest {
 	private CarModel model;
 	@Before
 	public void initialize(){
-		workBench = new WorkBench(new ArrayList<String>(), "name");
+		workBench = new WorkBench(new HashSet<String>(), "name");
 		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
 				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
 	}
@@ -54,7 +56,7 @@ public class WorkBenchTest {
 	
 	@Test
 	public void TestSetType(){
-		List<String> list = new ArrayList<>();
+		Set<String> list = new HashSet<>();
 		workBench.setResponsibilities(list);
 		assertEquals(list, workBench.getResponsibilities());
 	}
@@ -69,7 +71,7 @@ public class WorkBenchTest {
 	public void TestAddOneResponsibility(){
 		workBench.addResponsibility("Montage");
 		assertEquals(1, workBench.getResponsibilities().size());
-		assertEquals("Montage", workBench.getResponsibilities().get(0));
+		assertTrue(workBench.getResponsibilities().contains("Montage"));
 	}
 	
 	@Test
@@ -77,22 +79,21 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Montage");
 		workBench.addResponsibility("Chassis");
 		assertEquals(2, workBench.getResponsibilities().size());
-		assertEquals("Montage", workBench.getResponsibilities().get(0));
-		assertEquals("Chassis", workBench.getResponsibilities().get(1));
+		assertTrue(workBench.getResponsibilities().contains("Montage"));
+		assertTrue(workBench.getResponsibilities().contains("Chassis"));
+	
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void TestAddOneInvalidResponsibility(){
 		workBench.addResponsibility("");
 		assertEquals(1, workBench.getResponsibilities().size());
-		assertEquals("", workBench.getResponsibilities().get(0));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void TestAddOneNullResponsibility(){
 		workBench.addResponsibility(null);
 		assertEquals(1, workBench.getResponsibilities().size());
-		assertEquals(null, workBench.getResponsibilities().get(0));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -100,8 +101,6 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Montage");
 		workBench.addResponsibility("");
 		assertEquals(2, workBench.getResponsibilities().size());
-		assertEquals("Montage", workBench.getResponsibilities().get(0));
-		assertEquals("", workBench.getResponsibilities().get(1));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -109,8 +108,6 @@ public class WorkBenchTest {
 		workBench.addResponsibility("Montage");
 		workBench.addResponsibility(null);
 		assertEquals(2, workBench.getResponsibilities().size());
-		assertEquals("Montage", workBench.getResponsibilities().get(0));
-		assertEquals(null, workBench.getResponsibilities().get(1));
 	}
 	
 	@Test
@@ -246,6 +243,6 @@ public class WorkBenchTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void TestInvalidConstructor(){
-		WorkBench bench = new WorkBench(new ArrayList<String>(), null);
+		WorkBench bench = new WorkBench(new HashSet<String>(), null);
 	}
 }

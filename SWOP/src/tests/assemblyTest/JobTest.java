@@ -6,7 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -82,7 +84,6 @@ public class JobTest {
 		assertEquals(0, job.getTasks().size());
 		job.addTask(task);
 		assertEquals(1, job.getTasks().size());
-		assertEquals(task, job.getTasks().get(0));
 	}
 	
 	@Test
@@ -93,11 +94,9 @@ public class JobTest {
 		assertEquals(0, job.getTasks().size());
 		job.addTask(task);
 		assertEquals(1, job.getTasks().size());
-		assertEquals(task, job.getTasks().get(0));
 		Task task2 = new Task("Paint");
 		job.addTask(task2);
 		assertEquals(2, job.getTasks().size());
-		assertEquals(task2, job.getTasks().get(1));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

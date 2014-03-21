@@ -3,6 +3,7 @@ package tests.assemblyTest;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -83,8 +84,8 @@ public class AssemblyLineTest{
 	@Test
 	public void TestSetValidWorkBenches(){
 		List<WorkBench> workbenches = new ArrayList<WorkBench>();
-		workbenches.add(new WorkBench(new ArrayList<String>(), "test"));
-		workbenches.add(new WorkBench(new ArrayList<String>(), "test2"));
+		workbenches.add(new WorkBench(new HashSet<String>(), "test"));
+		workbenches.add(new WorkBench(new HashSet<String>(), "test2"));
 		line.setWorkbenches(workbenches);
 		assertEquals(2, line.getWorkbenches().size());
 		assertEquals(workbenches, line.getWorkbenches());
@@ -138,7 +139,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAddOneValidWorkBench(){
-		WorkBench workBench = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench workBench = new WorkBench(new HashSet<String>(), "test");
 		line.addWorkBench(workBench);
 		assertEquals(1, line.getWorkbenches().size());
 		assertEquals(workBench, line.getWorkbenches().get(0));
@@ -151,8 +152,8 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAddTwoValidWorkBenchs(){
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		assertEquals(2, line.getWorkbenches().size());
@@ -162,7 +163,7 @@ public class AssemblyLineTest{
 
 	@Test (expected = IllegalArgumentException.class)
 	public void TestAddOneValidWorkBenchOneInvalidWorkBench(){
-		WorkBench bench = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
 		line.addWorkBench(bench);
 		assertEquals(1, line.getWorkbenches().size());
 		assertEquals(bench, line.getWorkbenches().get(0));
@@ -175,7 +176,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAdvanceOneWorkbench(){
-		WorkBench bench = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
 		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
@@ -186,8 +187,8 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAdvanceTwoWorkbenches(){
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
@@ -202,8 +203,8 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAdvanceTwoWorkbenchesTwoJobs(){
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		Order order1 = new Order("Jef", model, 1);
 		Job job1 = new Job(order1);
 		Job job2 = new Job(order1);
@@ -220,8 +221,8 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAdvanceTwoWorkbenchesCompleteFullJob(){
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		bench2.addResponsibility("Body");
 		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
@@ -243,7 +244,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAdvanceAfterTenOClock(){
-		WorkBench bench = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
 		Order order1 = new Order("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
@@ -253,12 +254,12 @@ public class AssemblyLineTest{
 
 
 		line.advance();
-		assertNull(bench.getCurrentJob());
+		assertEquals(Optional.absent(), bench.getCurrentJob());
 	}
 
 	@Test(expected=IllegalStateException.class)
 	public void TestNoCurrentJobs(){
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		line.addWorkBench(bench1);
 		line.advance();
 	}
@@ -290,8 +291,8 @@ public class AssemblyLineTest{
 	public void TestEstimatedTime1(){
 		Order order = new Order("Stef", model, 2);
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.calculateEstimatedTime(order);
@@ -303,8 +304,8 @@ public class AssemblyLineTest{
 	public void TestEstimatedTime2(){
 		Order order = new Order("Stef", model, 20);
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.calculateEstimatedTime(order);
@@ -316,8 +317,8 @@ public class AssemblyLineTest{
 	public void TestEstimatedTime3(){
 		Order order = new Order("Stef", model, 40);
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.calculateEstimatedTime(order);
@@ -338,8 +339,8 @@ public class AssemblyLineTest{
 		Order order = new Order("Stef", model, 40);
 		line.addJob(new Job(order));
 		line.getCurrentJobs().addAll(line.convertOrderToJob(order));
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.advance();
@@ -353,8 +354,8 @@ public class AssemblyLineTest{
 	public void TestEstimatedTime6(){
 
 		Order order = new Order("Stef", model, 1);
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.calculateEstimatedTime(order);
@@ -366,8 +367,8 @@ public class AssemblyLineTest{
 	@Test
 	public void TestEstimatedTime7() {
 		line.getClock().advanceTime(19*60);
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
-		WorkBench bench2 = new WorkBench(new ArrayList<String>(), "test2");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		Order order = new Order("Stef", model, 1);
@@ -383,7 +384,7 @@ public class AssemblyLineTest{
 		Order order = new Order("Stef", model, 1);
 		Job job = new Job(order);
 		line.addJob(job);
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		line.addWorkBench(bench1);
 		AssemblyLine lineClone = line.getFutureAssemblyLine();
 		assertFalse(lineClone.getWorkbenches().get(0).getCurrentJob().equals(line.getWorkbenches().get(0).getCurrentJob()));
@@ -393,7 +394,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestToString(){
 		assertEquals("", line.toString());
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
 		assertEquals("-workbench 1: test", line.toString());
@@ -412,7 +413,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestOvertime(){
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
 		Order order = new Order("Stef", model, 1);
@@ -433,7 +434,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestIllegalAssemblyLine(){
-		WorkBench bench1 = new WorkBench(new ArrayList<String>(), "test");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
 		AssemblyLine future = line.getFutureAssemblyLine();

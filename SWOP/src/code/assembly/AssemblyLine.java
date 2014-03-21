@@ -1,7 +1,9 @@
 package code.assembly;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.base.Optional;
 
@@ -48,19 +50,19 @@ public class AssemblyLine {
 	 */
 	private void initializeWorkbenches() {// gemakkelijk om een nieuwe workbench
 		// toe te voegen om te initializeren
-		List<String> responsibilitiesCarBodyPost = new ArrayList<>();
+		Set<String> responsibilitiesCarBodyPost = new HashSet<>();
 		responsibilitiesCarBodyPost.add("Paint");
 		responsibilitiesCarBodyPost.add("Assembly");
 		getWorkbenches().add(
 				new WorkBench(responsibilitiesCarBodyPost, "car body"));
 
-		List<String> responsibilitiesDrivetrainPost = new ArrayList<>();
+		Set<String> responsibilitiesDrivetrainPost = new HashSet<>();
 		responsibilitiesDrivetrainPost.add("Engine");
 		responsibilitiesDrivetrainPost.add("Gearbox");
 		getWorkbenches().add(
 				new WorkBench(responsibilitiesDrivetrainPost, "drivetrain"));
 
-		List<String> responsibilitiesAccesoiresPost = new ArrayList<>();
+		Set<String> responsibilitiesAccesoiresPost = new HashSet<>();
 		responsibilitiesAccesoiresPost.add("Seats");
 		responsibilitiesAccesoiresPost.add("Airco");
 		responsibilitiesAccesoiresPost.add("Wheels");
@@ -200,9 +202,10 @@ public class AssemblyLine {
 				else
 					lastJob = Optional.absent();
 				if ((22 * 60 - clock.getMinutes() - (overtime * 60)) < (getWorkbenches()
-						.size() * 60))
-					bench.setCurrentJob(null);
-				else if (bench.getCurrentJob() == null) { 
+						.size() * 60)){
+					Optional<Job> optional = Optional.absent();
+					bench.setCurrentJob(optional);
+				}else if (bench.getCurrentJob() == null) { 
 					bench.setCurrentJob(Optional.fromNullable(getCurrentJobs()
 							.get(0)));
 				} else {
@@ -393,11 +396,11 @@ public class AssemblyLine {
 		ArrayList<WorkBench> clones = new ArrayList<>();
 		line.setCurrentJobs(getCurrentJobs());
 		for (WorkBench bench : getWorkbenches()) {
-			WorkBench clone = new WorkBench(bench.getResponsibilities(),
+			WorkBench copy = new WorkBench(bench.getResponsibilities(),
 					bench.getWorkbenchName());
-			clone.setCurrentJob(bench.getCurrentJob());
-			clone.setCurrentTasks(bench.getCurrentTasks());
-			clones.add(clone);
+			copy.setCurrentJob(bench.getCurrentJob());
+			copy.setCurrentTasks(bench.getCurrentTasks());
+			clones.add(copy);
 		}
 		line.setWorkbenches(clones);
 		try {

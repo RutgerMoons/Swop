@@ -3,6 +3,8 @@ package tests.carTest;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +48,7 @@ public class CatalogueTest {
 	public void Test(){
 		
 		CarModelCatalogue cat = new CarModelCatalogue();
-		ArrayList<CarModel> list = new ArrayList<CarModel>();
+		Set<CarModel> list = new HashSet<CarModel>();
 		list.add(car2);
 		list.add(car1);
 		cat.initializeCatalogue(list);
@@ -58,7 +60,7 @@ public class CatalogueTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void Test2(){
 		CarModelCatalogue cat = new CarModelCatalogue();
-		ArrayList<CarModel> list = new ArrayList<CarModel>();
+		Set<CarModel> list = new HashSet<CarModel>();
 		Airco airco1 = new Airco("manual");
 		Body body1 = new Body("break");
 		Color color1 = new Color("red");

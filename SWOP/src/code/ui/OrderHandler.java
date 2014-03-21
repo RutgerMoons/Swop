@@ -133,11 +133,7 @@ public class OrderHandler extends UseCaseHandler{
 			//--> 2e lijn: CarModel carModel = catalogue.getCatalogue().get(model);
 			// ===>hashmap in catalogue moet objecten van het type carModel bevatten, 
 			//       zo wordt ervoor gezorgd dat elk carModel maar 1 keer aangemaakt wordt, en in elk order van dat model naar dat ene object verwezen wordt
-			HashMap<Class<?>, CarPart> parts = catalogue.getCatalogue().get(model);
-			CarModel carModel = new CarModel(model, (Airco)parts.get(Airco.class), (Body)parts.get(Body.class),
-					(Color) parts.get(Color.class), (Engine)parts.get(Engine.class), 
-					(Gearbox)parts.get(Gearbox.class), (Seat)parts.get(Seat.class), 
-					(Wheel)parts.get(Wheel.class));
+			CarModel carModel = catalogue.getCatalogue().get(model);
 
 			int quantity = UIFacade.getQuantity();
 			int[] estimatedTime = new int[1];

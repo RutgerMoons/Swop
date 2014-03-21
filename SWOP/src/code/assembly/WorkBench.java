@@ -2,6 +2,7 @@ package code.assembly;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.base.Optional;
 
@@ -11,7 +12,7 @@ import com.google.common.base.Optional;
  */
 public class WorkBench {
 
-	private List<String> responsibilities;
+	private Set<String> responsibilities;
 	private Optional<Job> currentJob;
 	private List<Task> currentTasks;
 	private final String workbenchName;
@@ -23,7 +24,7 @@ public class WorkBench {
 	 * @param workbench_name
 	 * 			A name for this workbench
 	 */
-	public WorkBench(List<String> responsibilities, String workbenchName){
+	public WorkBench(Set<String> responsibilities, String workbenchName){
 		if (workbenchName == null) {
 			throw new IllegalArgumentException();
 		}
@@ -64,7 +65,7 @@ public class WorkBench {
 	 * @return
 	 * 			A list of responsibilities.
 	 */
-	public List<String> getResponsibilities() {
+	public Set<String> getResponsibilities() {
 		return responsibilities;
 	}
 	
@@ -75,7 +76,7 @@ public class WorkBench {
 	 * @throws IllegalArgumentException
 	 * 			If responsibilities==null
 	 */
-	public void setResponsibilities(List<String> responsibilities) {
+	public void setResponsibilities(Set<String> responsibilities) {
 		if(responsibilities==null)
 			throw new IllegalArgumentException();
 		this.responsibilities = responsibilities;
