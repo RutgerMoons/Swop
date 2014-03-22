@@ -37,8 +37,12 @@ public class AssemblyLine {
 	 * 
 	 * @param clock
 	 *            The clock that has to be accessed by this AssemblyLine.
+	 * @throws IllegalArgumentException
+	 *             If clock==null
 	 */
 	public AssemblyLine(Clock clock) {
+		if (clock == null)
+			throw new IllegalArgumentException();
 		this.clock = clock;
 		workbenches = new ArrayList<WorkBench>();
 		currentJobs = new ArrayList<Job>();
@@ -167,8 +171,8 @@ public class AssemblyLine {
 		else
 			currentJobs.add(job);
 	}
-	
-	public void addMultipleJobs(List<Job> jobs){
+
+	public void addMultipleJobs(List<Job> jobs) {
 		currentJobs.addAll(jobs);
 	}
 
@@ -215,15 +219,6 @@ public class AssemblyLine {
 				} else if (bench.getCurrentJob() == null) {
 					bench.setCurrentJob(Optional.fromNullable(getCurrentJobs()
 							.get(0)));
-				} else {
-					int index = getCurrentJobs().indexOf(bench.getCurrentJob());
-					if ((index + 1) < getCurrentJobs().size()) {
-						bench.setCurrentJob(Optional
-								.fromNullable(getCurrentJobs().get(index + 1)));
-					} else {
-						Optional<Job> nullObject = Optional.absent();
-						bench.setCurrentJob(nullObject);
-					}
 				}
 			} else { // Als het niet de eerste is, moet je de job van de vorige
 				// workbench nemen.
@@ -237,9 +232,9 @@ public class AssemblyLine {
 		if (lastJob != null && lastJob.isPresent()
 				&& lastJob.get().isCompleted()) {
 			currentJobs.remove(lastJob.get()); // als de job completed is,
-													// dus de auto('s), dan moet
-													// je de job natuurlijk
-													// removen.
+												// dus de auto('s), dan moet
+												// je de job natuurlijk
+												// removen.
 			lastJob.get().getOrder().completeCar();
 		}
 

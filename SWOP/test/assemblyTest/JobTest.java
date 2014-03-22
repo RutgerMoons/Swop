@@ -147,7 +147,7 @@ public class JobTest {
 	}
 	
 	@Test
-	public void TestEquals(){
+	public void TestEqualsAndHashCode(){
 		Order order = new Order("Jef", model, 1);
 		Job job = new Job(order);
 		assertFalse(job.equals(null));
@@ -155,6 +155,11 @@ public class JobTest {
 		Job job2 = new Job(new Order("Jan", model, 1));
 		assertFalse(job.equals(job2));
 		job2 = new Job(order);
+		
+		List<Task> tasks = new ArrayList<>();
+		job.setTasks(tasks);
+		job2.setTasks(tasks);
 		assertTrue(job.equals(job2));
+		assertEquals(job2.hashCode(), job.hashCode());
 	}
 }

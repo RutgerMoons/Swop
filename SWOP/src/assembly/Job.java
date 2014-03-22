@@ -112,7 +112,7 @@ public class Job {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((taskList == null) ? 0 : taskList.hashCode());
+				+ taskList.hashCode();
 		return result;
 	}
 

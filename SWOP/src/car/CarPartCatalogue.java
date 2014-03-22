@@ -60,24 +60,4 @@ public class CarPartCatalogue {
 		return copy;
 	}
 
-	/**
-	 * Method for making a deep copy of a certain hashmap of type <Class<?>,
-	 * List<CarPart>>.
-	 */
-	private HashMap<Class<?>, List<CarPart>> clone(
-			HashMap<Class<?>, List<CarPart>> carPartCatalogue2) {
-		HashMap<Class<?>, List<CarPart>> newMap = new HashMap<Class<?>, List<CarPart>>();
-
-		Set<Entry<Class<?>, List<CarPart>>> set1 = carPartCatalogue2.entrySet();
-
-		for (Entry<Class<?>, List<CarPart>> entry : set1) {
-			List<CarPart> test = new ArrayList<CarPart>();
-			for (CarPart part : entry.getValue()) {
-				test.add(part);
-			}
-			newMap.put(entry.getKey(), test);
-		}
-		return newMap;
-	}
-
 }

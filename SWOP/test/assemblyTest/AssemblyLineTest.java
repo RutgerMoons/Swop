@@ -51,6 +51,10 @@ public class AssemblyLineTest{
 		assertNotNull(line.getWorkbenches());
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void TestInvalidConstructor(){
+		new AssemblyLine(null);
+	}
 	@Test
 	public void TestSetValidCurrentJobs(){
 		List<Job> jobs = new ArrayList<>();
