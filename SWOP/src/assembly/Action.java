@@ -14,7 +14,8 @@ public class Action {
 	 * 
 	 * @param description
 	 *            The description for the action.
-	 * 
+	 * @throws IllegalArgumentException
+	 * 			if description==null of isEmpty.
 	 */
 	public Action(String description) {
 		this.setDescription(description);

@@ -37,4 +37,14 @@ public class GarageHolderTest {
 		assertEquals(rightHandler, returnHandler);
 	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void TestSetIllegalName1(){
+		new GarageHolder("");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void TestSetIllegalName2(){
+		new GarageHolder(null);
+	}
+	
 }

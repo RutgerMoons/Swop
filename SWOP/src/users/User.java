@@ -13,6 +13,9 @@ public abstract class User {
 	private String name;
 	/**
 	 * Each user has a name. This name is given when a new User is constructed.
+	 * 
+	 * @throws IllegalArgumentException
+	 * 			if name==null or isEmpty
 	 */
 	public User(String name){
 		this.setName(name);
@@ -27,8 +30,12 @@ public abstract class User {
 
 	/**
 	 * Method for assigning a new name to the user.
+	 * @throws IllegalArgumentException
+	 * 			if name==null || isEmpty.
 	 */
 	public void setName(String name) {
+		if(name==null || name.isEmpty())
+			throw new IllegalArgumentException();
 		this.name = name;
 	}
 	
