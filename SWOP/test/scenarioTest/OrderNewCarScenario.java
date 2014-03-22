@@ -25,6 +25,9 @@ import car.Airco;
 import car.Body;
 import car.CarModel;
 import car.CarModelCatalogue;
+import car.CarModelCatalogueFiller;
+import car.CarPartCatalogue;
+import car.CarPartCatalogueFiller;
 import car.Color;
 import car.Engine;
 import car.Gearbox;
@@ -51,7 +54,15 @@ public class OrderNewCarScenario {
 		holder = new GarageHolder("Stef");
 		AssemblyLine line = new AssemblyLine(new Clock());
 		book = new OrderBook(line);
-		catalogue = new CarModelCatalogue();
+		
+		CarPartCatalogue catalogueCarPart = new CarPartCatalogue();
+		CarPartCatalogueFiller partFiller = new CarPartCatalogueFiller(catalogueCarPart);
+		partFiller.initializeCarParts();
+		catalogue = new CarModelCatalogue(catalogueCarPart);
+		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
+		catalogue.initializeCatalogue(filler.getInitialModels());
+		
+		
 		CarModel model = new CarModel("Volvo", new Airco("manual"), new Body(
 				"sedan"), new Color("blue"), new Engine("standard"),
 				new Gearbox("manual"), new Seat("black leather"), new Wheel(

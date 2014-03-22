@@ -31,6 +31,9 @@ import car.Airco;
 import car.Body;
 import car.CarModel;
 import car.CarModelCatalogue;
+import car.CarModelCatalogueFiller;
+import car.CarPartCatalogue;
+import car.CarPartCatalogueFiller;
 import car.Color;
 import car.Engine;
 import car.Gearbox;
@@ -53,7 +56,7 @@ public class OrderHandlerTest {
 	public void initialize() {
 		AssemblyLine line = new AssemblyLine(new Clock());
 		book = new OrderBook(line);
-		CarModelCatalogue catalogue = new CarModelCatalogue();
+		CarModelCatalogue catalogue = new CarModelCatalogue(new CarPartCatalogue());
 		handler = new OrderHandler(ui, book, catalogue);
 	}
 
@@ -61,7 +64,7 @@ public class OrderHandlerTest {
 	public void TestConstructor() {
 		AssemblyLine line = new AssemblyLine(new Clock());
 		OrderBook book = new OrderBook(line);
-		CarModelCatalogue catalogue = new CarModelCatalogue();
+		CarModelCatalogue catalogue = new CarModelCatalogue(new CarPartCatalogue());
 		OrderHandler handler = new OrderHandler(ui, book, catalogue);
 		assertNotNull(handler);
 	}
@@ -123,7 +126,12 @@ public class OrderHandlerTest {
 
 		AssemblyLine line = new AssemblyLine(new Clock());
 		book = new OrderBook(line);
-		CarModelCatalogue catalogue = new CarModelCatalogue();
+		CarPartCatalogue catalogueCarPart = new CarPartCatalogue();
+		CarPartCatalogueFiller partFiller = new CarPartCatalogueFiller(catalogueCarPart);
+		partFiller.initializeCarParts();
+		CarModelCatalogue catalogue = new CarModelCatalogue(catalogueCarPart);
+		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
+		catalogue.initializeCatalogue(filler.getInitialModels());
 		ui = new UserInterface();
 		handler = new OrderHandler(ui, book, catalogue);
 
@@ -165,7 +173,13 @@ public class OrderHandlerTest {
 
 		AssemblyLine line = new AssemblyLine(new Clock());
 		book = new OrderBook(line);
-		CarModelCatalogue catalogue = new CarModelCatalogue();
+		
+		CarPartCatalogue catalogueCarPart = new CarPartCatalogue();
+		CarPartCatalogueFiller partFiller = new CarPartCatalogueFiller(catalogueCarPart);
+		partFiller.initializeCarParts();
+		CarModelCatalogue catalogue = new CarModelCatalogue(catalogueCarPart);
+		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
+		catalogue.initializeCatalogue(filler.getInitialModels());
 		ui = new UserInterface();
 		handler = new OrderHandler(ui, book, catalogue);
 
@@ -193,7 +207,12 @@ public class OrderHandlerTest {
 
 		AssemblyLine line = new AssemblyLine(new Clock());
 		book = new OrderBook(line);
-		CarModelCatalogue catalogue = new CarModelCatalogue();
+		CarPartCatalogue catalogueCarPart = new CarPartCatalogue();
+		CarPartCatalogueFiller partFiller = new CarPartCatalogueFiller(catalogueCarPart);
+		partFiller.initializeCarParts();
+		CarModelCatalogue catalogue = new CarModelCatalogue(catalogueCarPart);
+		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
+		catalogue.initializeCatalogue(filler.getInitialModels());
 		ui = new UserInterface();
 		handler = new OrderHandler(ui, book, catalogue);
 
@@ -254,7 +273,12 @@ public class OrderHandlerTest {
 
 		AssemblyLine line = new AssemblyLine(new Clock());
 		book = new OrderBook(line);
-		CarModelCatalogue catalogue = new CarModelCatalogue();
+		CarPartCatalogue catalogueCarPart = new CarPartCatalogue();
+		CarPartCatalogueFiller partFiller = new CarPartCatalogueFiller(catalogueCarPart);
+		partFiller.initializeCarParts();
+		CarModelCatalogue catalogue = new CarModelCatalogue(catalogueCarPart);
+		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
+		catalogue.initializeCatalogue(filler.getInitialModels());
 		ui = new UserInterface();
 		handler = new OrderHandler(ui, book, catalogue);
 

@@ -21,8 +21,6 @@ public class CarPartCatalogue {
 
 	public CarPartCatalogue() {
 		this.carPartCatalogue = HashMultimap.create();
-		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(this);
-		filler.initializeCarParts();
 	}
 
 	/**

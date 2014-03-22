@@ -12,18 +12,6 @@ import java.util.Set;
  */
 public class CarModelCatalogueFiller {
 
-	private CarPartCatalogue carPartCatalogue;
-
-	/**
-	 * Each carModelCatalogueFiller is associated with a certain
-	 * carPartCatalogue. This is needed to know which carParts are valid for
-	 * this certain carModelCatalogue. On initialization of a
-	 * CarModelCatalogueFiller a carPartCatalogue is given for creating this
-	 * association.
-	 */
-	public CarModelCatalogueFiller(CarPartCatalogue cat) {
-		this.carPartCatalogue = cat;
-	}
 
 	/**
 	 * Method that returns all the initial models. It checks for every car model

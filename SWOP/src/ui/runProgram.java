@@ -6,6 +6,9 @@ import order.OrderBook;
 import users.UserBook;
 import clock.Clock;
 import car.CarModelCatalogue;
+import car.CarModelCatalogueFiller;
+import car.CarPartCatalogue;
+import car.CarPartCatalogueFiller;
 import assembly.AssemblyLine;
 
 /**
@@ -36,7 +39,14 @@ public class runProgram {
 	public static void initializeData() {
 		clock = new Clock();
 		assemblyLine = new AssemblyLine(clock);
-		catalogue = new CarModelCatalogue();
+		CarPartCatalogue cat = new CarPartCatalogue();
+		catalogue = new CarModelCatalogue(cat);
+		
+		CarPartCatalogueFiller carPartFiller = new CarPartCatalogueFiller(cat);
+		carPartFiller.initializeCarParts();
+		
+		CarModelCatalogueFiller carModelFiller = new CarModelCatalogueFiller();
+		catalogue.initializeCatalogue(carModelFiller.getInitialModels());
 
 		orderBook = new OrderBook(assemblyLine);
 		userBook = new UserBook();

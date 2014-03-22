@@ -8,8 +8,10 @@ import org.junit.Test;
 
 import car.Airco;
 import car.Body;
+import car.CarModelCatalogueFiller;
 import car.CarPart;
 import car.CarPartCatalogue;
+import car.CarPartCatalogueFiller;
 
 import com.google.common.collect.ImmutableMultimap;
 
@@ -19,6 +21,8 @@ public class CarPartCatalogueTest {
 	@Test
 	public void test1() {
 		CarPartCatalogue catalogue = new CarPartCatalogue();
+		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(catalogue);
+		filler.initializeCarParts();
 		Airco airco = new Airco("manual");
 		assertTrue(catalogue.isValidCarPart(airco));
 		Airco airco2 = new Airco("manual");
@@ -29,6 +33,8 @@ public class CarPartCatalogueTest {
 	@Test 
 	public void test2() {
 		CarPartCatalogue catalogue = new CarPartCatalogue();
+		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(catalogue);
+		filler.initializeCarParts();
 		Airco airco = new Airco("bla");
 		assertFalse(catalogue.isValidCarPart(airco));
 		Body body = null;
@@ -38,12 +44,16 @@ public class CarPartCatalogueTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void test3(){
 		CarPartCatalogue cat = new CarPartCatalogue();
+		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(cat);
+		filler.initializeCarParts();
 		cat.addCarPart(null, new Airco("manual"));
 	}
 	
 	@Test
 	public void test4(){
 		CarPartCatalogue cat = new CarPartCatalogue();
+		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(cat);
+		filler.initializeCarParts();
 		cat.addCarPart(Airco.class, new Airco("manual"));
 		ImmutableMultimap<Class<?>, CarPart> map = cat.getMap();
 		//System.out.println(map.toString());

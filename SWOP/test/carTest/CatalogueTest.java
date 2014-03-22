@@ -13,6 +13,9 @@ import car.Airco;
 import car.Body;
 import car.CarModel;
 import car.CarModelCatalogue;
+import car.CarModelCatalogueFiller;
+import car.CarPartCatalogue;
+import car.CarPartCatalogueFiller;
 import car.Color;
 import car.Engine;
 import car.Gearbox;
@@ -48,7 +51,10 @@ public class CatalogueTest {
 	@Test
 	public void Test() {
 
-		CarModelCatalogue cat = new CarModelCatalogue();
+		CarPartCatalogue catalogueCarPart = new CarPartCatalogue();
+		CarPartCatalogueFiller partFiller = new CarPartCatalogueFiller(catalogueCarPart);
+		partFiller.initializeCarParts();
+		CarModelCatalogue cat = new CarModelCatalogue(catalogueCarPart);
 		Set<CarModel> list = new HashSet<CarModel>();
 		list.add(car2);
 		list.add(car1);
@@ -60,7 +66,7 @@ public class CatalogueTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void Test2() {
-		CarModelCatalogue cat = new CarModelCatalogue();
+		CarModelCatalogue cat = new CarModelCatalogue(new CarPartCatalogue());
 		Set<CarModel> list = new HashSet<CarModel>();
 		Airco airco1 = new Airco("manual");
 		Body body1 = new Body("break");
@@ -78,7 +84,7 @@ public class CatalogueTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void Test3() {
-		CarModelCatalogue cat = new CarModelCatalogue();
+		CarModelCatalogue cat = new CarModelCatalogue(new CarPartCatalogue());
 		Airco airco1 = new Airco("manual");
 		Body body1 = new Body("break");
 		Color color1 = new Color("red");
@@ -93,7 +99,7 @@ public class CatalogueTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void Test4() {
-		CarModelCatalogue cat = new CarModelCatalogue();
+		CarModelCatalogue cat = new CarModelCatalogue(new CarPartCatalogue());
 		cat.addModel(null);
 	}
 }

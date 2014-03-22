@@ -29,9 +29,9 @@ public class CarModelCatalogue {
 	 * carModelCatalogue is filled with the basic carModels thanks to the
 	 * carModelCatalogueFiller.
 	 */
-	public CarModelCatalogue() {
-		cat = new CarPartCatalogue();
-		initializeCatalogue(new CarModelCatalogueFiller(cat).getInitialModels());
+	public CarModelCatalogue(CarPartCatalogue cat) {
+		this.cat = cat;
+		data = new HashMap<String, CarModel>();
 	}
 
 	/**
@@ -49,7 +49,6 @@ public class CarModelCatalogue {
 	 * carModelCatalogueFiller.
 	 */
 	public void initializeCatalogue(Set<CarModel> models) {
-		data = new HashMap<String, CarModel>();
 		for (CarModel model : models) {
 			addModel(model);
 		}
@@ -57,10 +56,11 @@ public class CarModelCatalogue {
 
 	/**
 	 * Add a new model to the catalogue.
+	 * 
 	 * @param model
-	 * 			The model you want to add.
+	 *            The model you want to add.
 	 * @throws IllegalArgumentException
-	 * 			if model==null or not is valid
+	 *             if model==null or not is valid
 	 */
 	public void addModel(CarModel model) {
 		if (model == null || !isValidCarModel(model))
