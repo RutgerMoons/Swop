@@ -8,3 +8,9 @@ bin/
 
 doc/
 o2kdg1st.zyx.txt
+
+*.aux
+*.log
+*.out
+*.pdf
+*.synctex.gz

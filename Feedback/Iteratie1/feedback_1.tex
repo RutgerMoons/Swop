@@ -1,0 +1,88 @@
+\documentclass[DIV=calc,11pt ]{scrartcl}
+\usepackage[dutch]{babel} %Nederlandse splitsing en titels
+\usepackage{mathpazo} %gebruikt palatino, ook in wiskundige formules
+\linespread{1.04} %palatino is iets vetter, dus meer ruimte tussen regels
+\usepackage[utf8]{inputenc} %letters met accenten eenvoudig gebruiken
+\usepackage[output-decimal-marker={,}]{siunitx} %correcte fysische eenheden wie documentatie        
+\usepackage[small,bf,hang]{caption} %mooiere bijschriften bij figuren en tabellen
+\usepackage{graphicx} %Om jpg, png en pdf afbeeldingen in te voegen
+\usepackage{url} %Webadressen gemakkelijk invoeren
+\usepackage{graphicx} %figuren invoegen (pdf, png en jpg)
+\usepackage{multirow} %Rijen samennemen in tabel
+\usepackage{amsmath} %Voor bvb. \text in formules
+\usepackage{booktabs} %Professionele tabellen
+\usepackage{microtype} %enkele details qua typografie zodat er minder woordsplitsingen nodig zijn
+\usepackage{hyperref} %alle verwijzingen en inhoudsopgave klikbaar in PDF
+
+
+%%%%%%%%%% instellingen %%%%%%%%%%
+\setkomafont{sectioning}{\rmfamily\bfseries\boldmath} %gewone lettertype in sectietitels enz...
+\setkomafont{descriptionlabel}{\rmfamily\bfseries}
+\frenchspacing %"Europese stijl" spatie na einde zin (punt)
+
+
+
+
+%%%% Begin document %%%%
+
+\begin{document}
+\title{SWOP : Feedback iteratie 1}
+\maketitle
+
+\newpage
+\section{Klassediagram}
+De dingen die gecorrigeerd moesten worden:
+\begin{itemize}
+\item Syntax : naamgeving van klassen etc
+\item Pijltjes : generalisatie, uses etc
+\item Speciale notaties : interface etc
+\item Klassediagram was niet consistent met de code
+\end{itemize}
+Jonathan gaf de tip om het klassediagram te maken adhv reverse engineering.
+
+\section{Handlers in de UI}
+Deze waren niet zo slecht (zijn exacte woorden), maar ze zijn geen controller als bedoeld in het GRASP prinicpe. Ze zijn een andere soort van controller.
+Tips van Jonathan:
+\begin{itemize}
+\item Organiseren van de flow en data van model : nu nog niet volledig afgeschermd van de flow. Alleen immutables teruggeven.
+\item Controllerlaag invoegen tussen model en view.
+\item Proberen enlke klasse te encapsuleren, af te schermen van andere nodige klassen, vooral model en view $\Rightarrow$ MVC-pattern .
+\item Facade moet call ontvangen en doorsturen naar model-object. Dit zorgt dat de API backwards compatible is.
+\end{itemize}
+
+\section{Code}
+\begin{itemize}
+\item Duidelijk documenteren wat je met mutable objecten mag doen. Dit is echter moeilijker dan zorgen dat de objecten immutable zijn.
+\item Immutable state kan bekomen worden ofwel door:
+\begin{itemize}
+\item Immutable lists (vb) door middel van wrappers. Het handige is : immutable list B van list A, als A update $\Rightarrow$ B wordt geupdate.
+\item Data transfer object. Type dat alleen maar constante data bevat (vb Strings) of objecten en eenmaal het aangemaakt is voor een bepaald object heeft het niets meer te maken met dat object.
+\end{itemize}
+\item Equals alleen overriden bij value classes en ook dan de hashcode overriden.
+\item Defensief programmeren : soms programmeren we totaal en niet defensief. Vb we returnen bij verkeerde antwoorden ipv exceptions te throwen.
+\item Een model heeft bij ons nu voorgedefinieerde opties. Deze zouden net te kiezen moeten zijn. Elke auto appart kiezen wat de opties zijn!
+\item Vullen van catalogue $\Rightarrow$ beter bij klasse die programma opstart en niet in constructors van klassen.
+\item Clone methodes : andere naam nemen dan clone, vb. deep copy. Jonathan raadt aan om eerder immutable states te gebruiken.
+\item Functioneel programmeren : deel van bijhorende ideen kunnen helpen bij programmeren. In vb Haskell zijn ArrayList immutable en kan je gewoon doorgeven. (zie ook sectie \ref{Frameworks})
+\item Soms wordt er gebruikt gemaakt van ArrayList wanneer de volgorde niet belangrijk is. Gebruik dan Sets.
+\item Geen semantiek toewijzen aan nullwaarden! Gebruik maken van \textit{optional}. 
+\item Visitor pattern ipv InstanceOf $\Rightarrow$ maakt Worker, Garageholder en manager nuttig.
+\item Proxy-pattern gebruken. Hierbij worden voor klassen een interface gemaakt vb IOrder en elke keer als een object van Order wordt opgevraagd wordt een object van ImmutableOrder klasse meegegeven.
+\end{itemize}
+
+\section{Documentatie}
+Opmerkingen van Jonathan:
+\begin{itemize}
+\item Niet consistent.
+\item Pre- en postcondities gebruiken, zeker bij publieke methodes.
+\item Zo kort mogelijke documentatie. Vb niet het type herhalen bij methodes. Dit mag wel bij de beshrijving van klassen. Bij klassen ook mooie volzinnen schrijven, maar bij methodes hoeft dit niet.
+\item Sommige documentatie zoals in UIFacade heeft vreemde documentatie. Niet zeggen wrm we het gebruiken maar hoe. (Side note, UIFacade is interface, mag niet facade genoemd worden).
+\end{itemize}
+
+\section{Frameworks}
+\label{Frameworks}
+Jonathan raadt aan om frameworks te bekijken en eventueel te gebruiken zoals bv Guava. Guava heeft MultiMaps en deze zijn gemakkelijker te gebruiken dan Maps met Lists.\\
+Ander nuttig framework : package private. Dit kan handig zijn in onze code maar we moeten oppassen want subpackages behoren dan niet meer tot het package $\Rightarrow$ problemen! Dit probleem wordt wel gefixt in de frameworks van prof Jacobs.
+
+Tip kijken naar immutable datastructuren. Library moet bij het insturen van de code dan wel meegegeven worden in vb map lib in de src-map.
+\end{document}
