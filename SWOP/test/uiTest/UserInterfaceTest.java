@@ -44,6 +44,26 @@ public class UserInterfaceTest {
 	}
 	
 	@Test
+	public void testInvalidName1() {
+		String s = System.lineSeparator();
+			String input = s + "naam";
+			ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+			System.setIn(in);
+			
+			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
+			System.setOut(new PrintStream(myout));
+			            
+			UserInterface userInterface = new UserInterface();
+			String name = userInterface.getName();
+			
+			String output = myout.toString();
+			
+			assertEquals("Hello user, what's your name?" + s + "Sorry, that's not a valid response" + s + s + "Hello user, what's your name?" + s, output);
+			assertEquals("naam", name);
+
+	}
+	
+	@Test
 	public void testGetQuantity() {
 			
 			String input = "5";

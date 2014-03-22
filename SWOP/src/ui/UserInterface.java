@@ -235,7 +235,11 @@ public class UserInterface implements UIFacade{
 	 */
 	@Override
 	public String getName(){
-		return askQuestion("Hello user, what's your name?");
+		String answer = "";
+		while((answer= askQuestion("Hello user, what's your name?"))==null || answer.isEmpty()){
+			invalidAnswerPrompt();
+		}
+		return answer;
 	}
 	
 	/**
