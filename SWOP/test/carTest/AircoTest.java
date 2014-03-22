@@ -1,9 +1,10 @@
 package carTest;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Iterator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +59,16 @@ public class AircoTest {
 	public void test4Description() {
 		airco.setType("manual");
 		assertEquals("manual", airco.getType());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalDescription() {
+		airco.setType("");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalDescription2() {
+		airco.setType(null);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)

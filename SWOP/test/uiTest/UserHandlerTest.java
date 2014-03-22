@@ -1,10 +1,11 @@
 package uiTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InvalidObjectException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,16 +19,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import ui.AdvanceAssemblyLineHandler;
-import ui.AssembleHandler;
 import ui.UIFacade;
 import ui.UseCaseHandler;
 import ui.UserHandler;
 import ui.UserInterface;
 import users.GarageHolder;
-import users.Manager;
-import users.User;
 import users.UserBook;
-import clock.Clock;
+import assembly.AssemblyLine;
+import assembly.Job;
 import car.Airco;
 import car.Body;
 import car.CarModel;
@@ -36,8 +35,7 @@ import car.Engine;
 import car.Gearbox;
 import car.Seat;
 import car.Wheel;
-import assembly.AssemblyLine;
-import assembly.Job;
+import clock.Clock;
 
 @RunWith(Parameterized.class) 
 public class UserHandlerTest {

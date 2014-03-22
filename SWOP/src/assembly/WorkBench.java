@@ -24,14 +24,18 @@ public class WorkBench {
 	 * 			A list of strings. The types of Tasks that have to be performed by this WorkBench.
 	 * @param workbench_name
 	 * 			A name for this workbench
+	 * @throws IllegalArgumentException
+	 * 			if workbenchName==null or isEmpty
 	 */
 	public WorkBench(Set<String> responsibilities, String workbenchName){
-		if (workbenchName == null) {
+		if (workbenchName == null || workbenchName.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
 		this.workbenchName = workbenchName;
 		this.setResponsibilities(responsibilities);
 		setCurrentTasks(new ArrayList<Task>());
+		Optional<Job> nullJob = Optional.absent();
+		setCurrentJob(nullJob);
 	}
 	
 	/**
@@ -56,8 +60,12 @@ public class WorkBench {
 	 * Allocate a new Job(Car) to this WorkBench.
 	 * @param currentJob
 	 * 				The job you want to allocate to the WorkBench.
+	 * @throws IllegalArgumentException
+	 * 				if currentJob == null
 	 */
 	public void setCurrentJob(Optional<Job> currentJob) {
+		if(currentJob==null)
+			throw new IllegalArgumentException();
 		this.currentJob = currentJob;		
 	}
 	
@@ -88,7 +96,7 @@ public class WorkBench {
 	 * @param responibility
 	 * 			The responsibility you want to add.
 	 * @throws IllegalArgumentException
-	 * 			If responsibility==null or if the responsibility is empty.
+	 * 			If responsibility==null or isEmpty.
 	 */
 	public void addResponsibility(String responibility){
 		if(responibility==null || responibility.equals(""))
@@ -99,7 +107,7 @@ public class WorkBench {
 	/**
 	 * Get the current tasks that have to be completed by this WorkBench.
 	 * @return
-	 * 			A list of tasks.
+	 * 			An Immutable list of tasks.
 	 */
 	public List<Task> getCurrentTasks() {
 		ImmutableList<Task> immutable = new ImmutableList.Builder<Task>().addAll(currentTasks).build();

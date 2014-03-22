@@ -1,8 +1,8 @@
 package carTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +13,6 @@ import car.Airco;
 import car.Body;
 import car.CarModel;
 import car.CarModelCatalogue;
-import car.CarModelCatalogueFiller;
 import car.Color;
 import car.Engine;
 import car.Gearbox;

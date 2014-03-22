@@ -1,16 +1,15 @@
 package carTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import car.Airco;
 import car.Body;
 import car.CarModel;
-import car.CarModelCatalogue;
 import car.Color;
 import car.Engine;
 import car.Gearbox;

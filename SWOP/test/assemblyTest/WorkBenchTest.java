@@ -1,6 +1,9 @@
 package assemblyTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,11 +51,15 @@ public class WorkBenchTest {
 	@Test
 	public void TestSetCurrentJob(){
 		workBench.isCompleted();
-		assertNull(workBench.getCurrentJob());
 		Job job = new Job(new Order("Jef", model, 1));
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		assertNotNull(workBench.getCurrentJob());
 		assertEquals(job, workBench.getCurrentJob().get());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void TestSetCurrentJobInvalid(){
+		workBench.setCurrentJob(null);
 	}
 	
 	@Test

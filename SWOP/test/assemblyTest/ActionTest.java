@@ -14,6 +14,17 @@ public class ActionTest {
 	public void initialize(){
 		action = new Action("Spray Colour");
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestInvalidDescription(){
+		new Action("");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestInvalidDescription2(){
+		new Action(null);
+	}
+	
 	@Test
 	public void TestCompleted(){
 		action.setCompleted(true);

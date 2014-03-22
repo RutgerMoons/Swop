@@ -1,16 +1,17 @@
 package uiTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import order.Order;
 import order.OrderBook;
@@ -25,7 +26,7 @@ import ui.UIFacade;
 import ui.UserInterface;
 import users.GarageHolder;
 import users.Worker;
-import clock.Clock;
+import assembly.AssemblyLine;
 import car.Airco;
 import car.Body;
 import car.CarModel;
@@ -35,7 +36,7 @@ import car.Engine;
 import car.Gearbox;
 import car.Seat;
 import car.Wheel;
-import assembly.AssemblyLine;
+import clock.Clock;
 
 @RunWith(Parameterized.class)
 public class OrderHandlerTest {

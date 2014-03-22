@@ -10,7 +10,7 @@ import assembly.AssemblyLine;
 
 /**
  * This is the class where the program starts running.
- *
+ * 
  */
 public class runProgram {
 	private static Clock clock;
@@ -53,18 +53,16 @@ public class runProgram {
 
 		userHandler = new UserHandler(userInterface, userBook, handlers);
 	}
- 
+
 	/**
 	 * Starts the program.
 	 */
 	public static void startProgram() {
 		do {
 			userHandler.login();
-			try {
-				userHandler.performDuties();
-			} catch (IllegalArgumentException i) {
-				UIFacade.invalidUserPrompt();
-			}
+
+			userHandler.performDuties();
+
 			userHandler.logOut();
 		} while (true);
 

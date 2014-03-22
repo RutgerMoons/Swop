@@ -13,8 +13,12 @@ public abstract class CarPart {
 	 * @effect the description of this object equals type,
 	 * 			| unless type == null
 	 * 			| or type is not one of the possible types for this CarPart
+	 * @throws IllegalArgumentException
+	 * 			if description==null or isEmpty
 	 */
 	public void setType(String description){
+		if(description==null || description.isEmpty())
+			throw new IllegalArgumentException();
 		this.type = description;  
 	}
 
@@ -29,7 +33,7 @@ public abstract class CarPart {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + type.hashCode();
 		return result;
 	}
 

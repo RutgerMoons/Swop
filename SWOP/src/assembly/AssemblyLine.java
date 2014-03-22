@@ -168,11 +168,12 @@ public class AssemblyLine {
 	public void addJob(Job job) {
 		if (job == null)
 			throw new IllegalArgumentException();
-		else
-			currentJobs.add(job);
+		currentJobs.add(job);
 	}
 
 	public void addMultipleJobs(List<Job> jobs) {
+		if (jobs == null)
+			throw new IllegalArgumentException();
 		currentJobs.addAll(jobs);
 	}
 
@@ -187,8 +188,7 @@ public class AssemblyLine {
 	public void addWorkBench(WorkBench bench) {
 		if (bench == null)
 			throw new IllegalArgumentException();
-		else
-			workbenches.add(bench);
+		workbenches.add(bench);
 	}
 
 	/**
@@ -206,17 +206,14 @@ public class AssemblyLine {
 		Optional<Job> lastJob = Optional.absent();
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			WorkBench bench = getWorkbenches().get(i);
-			if (i == 0) { // als het de eerste workbench is (de meest linkse op
-				// tekeningen, dan moet je een nieuwe job nemen.
-				if (bench.getCurrentJob() != null)
-					lastJob = bench.getCurrentJob();
-				else
-					lastJob = Optional.absent();
+			if (i == 0) {
+				lastJob = bench.getCurrentJob();
+
 				if ((22 * 60 - clock.getMinutes() - (overtime * 60)) < (getWorkbenches()
 						.size() * 60)) {
 					Optional<Job> optional = Optional.absent();
 					bench.setCurrentJob(optional);
-				} else if (bench.getCurrentJob() == null) {
+				} else {
 					bench.setCurrentJob(Optional.fromNullable(getCurrentJobs()
 							.get(0)));
 				}
@@ -314,7 +311,6 @@ public class AssemblyLine {
 	 * 
 	 * The Jobs from the order have to be added to the list of currentJobs.
 	 * 
-	 * 
 	 * @param order
 	 *            The order to set the estimated time to.
 	 */
@@ -348,18 +344,9 @@ public class AssemblyLine {
 		int lastCarOnFirstBench = tenOClockInMinutes - getWorkbenches().size()
 				* 60;
 
-		int beginTime = 6 * 60; // Om 6:00u beginnen ze te werken
-		int nbOfCarsPerDay = (lastCarOnFirstBench - beginTime) / 60; // 1 auto
-		// per
-		// uur
-		int nbOfCarsToday = (lastCarOnFirstBench - clock.getMinutes()) / 60; // aantal
-		// auto's
-		// die
-		// vandaag
-		// nog
-		// kunnen
-		// verwerkt
-		// worden.
+		int beginTime = 6 * 60;
+		int nbOfCarsPerDay = (lastCarOnFirstBench - beginTime) / 60;
+		int nbOfCarsToday = (lastCarOnFirstBench - clock.getMinutes()) / 60;
 		if (nbOfCarsToday > nbOfCarsPerDay)
 			nbOfCarsToday = nbOfCarsPerDay;
 
@@ -379,15 +366,25 @@ public class AssemblyLine {
 		array[1] = time;
 		order.setEstimatedTime(array);
 	}
-
+	
+	/**
+	 * Get the index of the order.
+	 * 
+	 * @param order
+	 * @return Integer.
+	 * @throws IllegalArgumentException
+	 *             if order==null
+	 */
 	private int getIndexOf(Order order) {
+		if (order == null)
+			throw new IllegalArgumentException();
 		int index = -1;
 		for (Job job : getCurrentJobs())
 			if (job.getOrder().equals(order))
 				index = getCurrentJobs().indexOf(job) + order.getQuantity();
 		return index;
 	}
-
+	
 	/**
 	 * Get a clone of this AssemblyLine, advanced 1 hour forward.
 	 * 

@@ -13,6 +13,8 @@ public class Action {
 	 * Construct a new Action.
 	 * @param description
 	 * 			The description for the action.
+	 * @throws IllegalArgumentException
+	 * 			If description==null or empty
 	 */
 	public Action(String description){
 		this.setDescription(description);
@@ -53,6 +55,8 @@ public class Action {
 	 * 			The description you want to give to this action represented as a String.
 	 */
 	public void setDescription(String description) {
+		if (description==null || description.isEmpty())
+			throw new IllegalArgumentException();
 		this.description = description;
 	}
 	

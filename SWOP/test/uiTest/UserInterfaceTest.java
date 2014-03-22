@@ -24,7 +24,6 @@ public class UserInterfaceTest {
 	
 	@Test
 	public void testGetNameAndAskQuestion() {
-		try{
 			
 			String input = "naam";
 			ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
@@ -38,16 +37,14 @@ public class UserInterfaceTest {
 			
 			String output = myout.toString();
 			
-			assertEquals("Hello user, what's your name?\n", output);
+			assertEquals("Hello user, what's your name?" + System.lineSeparator(), output);
 			assertEquals("naam", name);
 			
 
-		} catch(Throwable t) {}
 	}
 	
 	@Test
 	public void testGetQuantity() {
-		try{
 			
 			String input = "5";
 			ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
@@ -61,11 +58,10 @@ public class UserInterfaceTest {
 			
 			String output = myout.toString();
 			
-			assertEquals("How many cars do you want to order?\n", output);
+			assertEquals("How many cars do you want to order?" + System.lineSeparator(), output);
 			assertEquals(5, quantity);
 			
 
-		} catch (Throwable t) {} 
 	}
 	
 	@Test

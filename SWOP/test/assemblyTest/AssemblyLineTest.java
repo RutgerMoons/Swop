@@ -130,6 +130,25 @@ public class AssemblyLineTest{
 		assertEquals(job1, line.getCurrentJobs().get(0));
 		assertEquals(job2, line.getCurrentJobs().get(1));
 	}
+	
+	@Test
+	public void TestAddMultipleJobs(){
+		Order order1 = new Order("Jef", model, 1);
+		Job job1 = new Job(order1);
+		Job job2 = new Job(order1);
+		List<Job> jobs = new ArrayList<>();
+		jobs.add(job1);
+		jobs.add(job2);
+		line.addMultipleJobs(jobs);
+		assertEquals(2, line.getCurrentJobs().size());
+		assertEquals(job1, line.getCurrentJobs().get(0));
+		assertEquals(job2, line.getCurrentJobs().get(1));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void TestAddMultipleJobsNull(){
+		line.addMultipleJobs(null);
+	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void TestAddOneValidJobOneInvalidJob(){
@@ -149,6 +168,7 @@ public class AssemblyLineTest{
 		assertEquals(1, line.getWorkbenches().size());
 		assertEquals(workBench, line.getWorkbenches().get(0));
 	}
+	
 	@Test (expected = IllegalArgumentException.class)
 	public void TestAddOneInvalidWorkBench(){
 		line.addWorkBench(null);
@@ -292,6 +312,7 @@ public class AssemblyLineTest{
 		assertEquals(7, jobs.get(0).getTasks().size());
 	}
 
+	
 	@Test
 	public void TestEstimatedTime1(){
 		Order order = new Order("Stef", model, 2);
@@ -384,6 +405,13 @@ public class AssemblyLineTest{
 		assertEquals(line.getClock().getMinutes() + 180, order.getEstimatedTime()[1]);
 	}
 
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void TestEstimatedTimeInvalidOrder(){
+		line.addWorkBench(new WorkBench(new HashSet<String>(), "test"));
+		line.calculateEstimatedTime(null);
+		}
+	
 	@Test
 	public void TestFutureAssemblyLine(){
 		Order order = new Order("Stef", model, 1);
@@ -393,7 +421,7 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		AssemblyLine lineClone = line.getFutureAssemblyLine();
 		assertFalse(lineClone.getWorkbenches().get(0).getCurrentJob().equals(line.getWorkbenches().get(0).getCurrentJob()));
-		assertNull(line.getWorkbenches().get(0).getCurrentJob());
+		assertEquals(Optional.absent(), line.getWorkbenches().get(0).getCurrentJob());
 	}
 
 	@Test

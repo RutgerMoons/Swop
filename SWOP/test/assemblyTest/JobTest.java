@@ -6,15 +6,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import order.Order;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import assembly.Action;
+import assembly.Job;
+import assembly.Task;
 import car.Airco;
 import car.Body;
 import car.CarModel;
@@ -23,9 +24,6 @@ import car.Engine;
 import car.Gearbox;
 import car.Seat;
 import car.Wheel;
-import assembly.Action;
-import assembly.Job;
-import assembly.Task;
 
 public class JobTest {
 	

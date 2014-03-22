@@ -56,6 +56,8 @@ public class Task {
 	 * 
 	 * @param action
 	 *            The action you want to add.
+	 * @throws IllegalArgumentException
+	 * 			if action==null
 	 */
 	public void addAction(Action action) {
 		if (action == null)
@@ -91,9 +93,11 @@ public class Task {
 	 * 
 	 * @param taskDescription
 	 *            The description you want to give to this Task.
+	 * @throws IllegalArgumentException
+	 * 			if taskDescription==null or isEmpty
 	 */
 	public void setTaskDescription(String taskDescription) {
-		if (taskDescription == null || taskDescription.equals(""))
+		if (taskDescription == null || taskDescription.isEmpty())
 			throw new IllegalArgumentException();
 		this.taskDescription = taskDescription;
 	}

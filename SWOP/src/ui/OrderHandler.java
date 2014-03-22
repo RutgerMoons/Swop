@@ -1,22 +1,13 @@
 package ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import order.Order;
 import order.OrderBook;
 import users.GarageHolder;
 import users.User;
-import car.Airco;
-import car.Body;
 import car.CarModel;
 import car.CarModelCatalogue;
-import car.CarPart;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
 
 /**
  * 
