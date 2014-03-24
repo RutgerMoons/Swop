@@ -1,5 +1,7 @@
 package order;
 
+import java.util.Arrays;
+
 import car.CarModel;
 
 /**
@@ -134,6 +136,20 @@ public class Order {
 	 */
 	public void completeCar() {
 		this.setPendingCars(--pendingCars);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + Arrays.hashCode(estimatedTime);
+		result = prime * result
+				+ ((garageholder == null) ? 0 : garageholder.hashCode());
+		result = prime * result + pendingCars;
+		result = prime * result + quantity;
+		return result;
 	}
 
 	@Override

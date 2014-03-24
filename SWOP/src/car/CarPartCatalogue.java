@@ -42,7 +42,7 @@ public class CarPartCatalogue {
 	 */
 	public void addCarPart(Class<?> key, CarPart value)
 			throws IllegalArgumentException {
-		if (key == null) {
+		if (key == null || value == null) {
 			throw new IllegalArgumentException();
 		} else {
 			carPartCatalogue.put(key, value);
