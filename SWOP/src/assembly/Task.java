@@ -19,6 +19,8 @@ public class Task {
 	 * 
 	 * @param taskDescription
 	 *            The description you want to give to this Task.
+	 * @throws	IllegalArgumentException
+	 * 			if taskDescription==null or isEmpty.
 	 */
 	public Task(String taskDescription) {
 		setActions(new ArrayList<Action>());
@@ -28,7 +30,7 @@ public class Task {
 	/**
 	 * Get the Actions that this Task contains.
 	 * 
-	 * @return A list of Actions.
+	 * @return An Immutable list of Actions.
 	 */
 	public List<Action> getActions() {
 		ImmutableList<Action> immutable = new ImmutableList.Builder<Action>()
@@ -57,7 +59,7 @@ public class Task {
 	 * @param action
 	 *            The action you want to add.
 	 * @throws IllegalArgumentException
-	 * 			if action==null
+	 *             if action==null
 	 */
 	public void addAction(Action action) {
 		if (action == null)
@@ -94,7 +96,7 @@ public class Task {
 	 * @param taskDescription
 	 *            The description you want to give to this Task.
 	 * @throws IllegalArgumentException
-	 * 			if taskDescription==null or isEmpty
+	 *             if taskDescription==null or isEmpty
 	 */
 	public void setTaskDescription(String taskDescription) {
 		if (taskDescription == null || taskDescription.isEmpty())

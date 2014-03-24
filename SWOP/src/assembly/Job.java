@@ -22,6 +22,8 @@ public class Job {
 	 * 
 	 * @param order
 	 *            The order on which the Job is based.
+	 * @throws IllegalArgumentException
+	 * 			if order==null
 	 */
 	public Job(Order order) {
 		setOrder(order);
@@ -55,7 +57,7 @@ public class Job {
 	/**
 	 * Get the tasks that have to be completed before the Job(Car) is finished.
 	 * 
-	 * @return A list of tasks.
+	 * @return An Immutable list of tasks.
 	 */
 	public List<Task> getTasks() {
 		ImmutableList<Task> imutableList = new ImmutableList.Builder<Task>()
@@ -111,8 +113,7 @@ public class Job {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ taskList.hashCode();
+		result = prime * result + taskList.hashCode();
 		return result;
 	}
 
@@ -130,7 +131,5 @@ public class Job {
 
 		return true;
 	}
-
-
 
 }

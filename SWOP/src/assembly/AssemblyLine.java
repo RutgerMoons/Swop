@@ -102,7 +102,7 @@ public class AssemblyLine {
 	/**
 	 * Get all the pending jobs for this AssemblyLine.
 	 * 
-	 * @return A list of Jobs.
+	 * @return A list representing the current jobs.
 	 */
 	public List<Job> getCurrentJobs() {
 		ImmutableList<Job> immutable = new ImmutableList.Builder<Job>().addAll(
@@ -134,10 +134,10 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * Set the overtime.
+	 * Set the overtime in hours.
 	 * 
 	 * @param overtime
-	 *            An integer representing the overtime.
+	 *            An integer representing the overtime in hours.
 	 * @throws IllegalArgumentException
 	 *             If overtime<0
 	 */
@@ -171,6 +171,14 @@ public class AssemblyLine {
 		currentJobs.add(job);
 	}
 
+	/**
+	 * Add multiple Jobs to the assemblyline
+	 * 
+	 * @param jobs
+	 *            A list of jobs.
+	 * @throws IllegalArgumentException
+	 *             if jobs==null
+	 */
 	public void addMultipleJobs(List<Job> jobs) {
 		if (jobs == null)
 			throw new IllegalArgumentException();
@@ -246,6 +254,9 @@ public class AssemblyLine {
 	 * @param order
 	 *            The order that needs to be converted to a list of jobs.
 	 * @return A list of jobs.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if order==null
 	 */
 	public List<Job> convertOrderToJob(Order order) {
 		if (order == null)
@@ -313,6 +324,11 @@ public class AssemblyLine {
 	 * 
 	 * @param order
 	 *            The order to set the estimated time to.
+	 * @throws IllegalStateException
+	 *             -if there are no workbenches are available -if the jobs of
+	 *             the order aren't in the currentJobList
+	 * @throws IllegalArgumentException
+	 *             if order==null
 	 */
 	public void calculateEstimatedTime(Order order) {
 		if (getWorkbenches().size() == 0)
@@ -366,12 +382,14 @@ public class AssemblyLine {
 		array[1] = time;
 		order.setEstimatedTime(array);
 	}
-	
+
 	/**
-	 * Get the index of the order.
+	 * Get the index of the last job that belongs to the order from the
+	 * currentJobList.
 	 * 
 	 * @param order
-	 * @return Integer.
+	 *            The order you want the index from.
+	 * @return The index.
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
@@ -384,11 +402,11 @@ public class AssemblyLine {
 				index = getCurrentJobs().indexOf(job) + order.getQuantity();
 		return index;
 	}
-	
+
 	/**
 	 * Get a clone of this AssemblyLine, advanced 1 hour forward.
 	 * 
-	 * @return An AssemblyLine.
+	 * @return An AssemblyLine representing the next state of the assemblyline.
 	 */
 	public AssemblyLine getFutureAssemblyLine() {
 		AssemblyLine line = new AssemblyLine(getClock());
