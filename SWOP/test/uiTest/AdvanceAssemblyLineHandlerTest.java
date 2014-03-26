@@ -22,8 +22,10 @@ import users.GarageHolder;
 import users.Manager;
 import assembly.Action;
 import assembly.AssemblyLine;
+import assembly.IJob;
 import assembly.Job;
 import assembly.Task;
+import assembly.WorkBench;
 import car.Airco;
 import car.Body;
 import car.CarModel;
@@ -41,7 +43,7 @@ public class AdvanceAssemblyLineHandlerTest {
 	public UIFacade uiFacade;
 	public AdvanceAssemblyLineHandler advAss;
 	public AssemblyLine assembly;
-	public Job job;
+	public IJob job;
 
 	public AdvanceAssemblyLineHandlerTest(UIFacade ui){
 		uiFacade = ui;
@@ -161,16 +163,16 @@ public class AdvanceAssemblyLineHandlerTest {
 			
 			CarModel model = new CarModel("it's me", new Airco("manual"), new Body("break"), new Color("red"), new Engine("bla"), new Gearbox("manual"), new Seat("vinyl grey"), new Wheel("comfort"));
 			Order order = new Order("Luigi", model, 5);
-			Job job = new Job(order);
+			IJob job = new Job(order);
 			Action action = new Action("action");
 			action.setCompleted(false);
 			Task task = new Task("Paint");
 			task.addAction(action);
-			job.addTask(task);
+			((Job) job).addTask(task);
 			
 			assembly.addJob(job);
-			assembly.getWorkbenches().get(0).setCurrentJob(Optional.fromNullable(job));
-			assembly.getWorkbenches().get(0).chooseTasksOutOfJob();
+			((WorkBench) assembly.getWorkbenches().get(0)).setCurrentJob(Optional.fromNullable(job));
+			((WorkBench) assembly.getWorkbenches().get(0)).chooseTasksOutOfJob();
 			advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
 			
 			advAss.advanceAssemblyLine();

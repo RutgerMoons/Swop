@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import assembly.Action;
+import assembly.IAction;
 import assembly.Task;
 
 public class TaskTest {
@@ -26,7 +27,7 @@ public class TaskTest {
 
 	@Test
 	public void setActions(){
-		List<Action> actions = new ArrayList<>();
+		List<IAction> actions = new ArrayList<>();
 		task.setActions(actions);
 		assertEquals(actions, task.getActions());
 	}

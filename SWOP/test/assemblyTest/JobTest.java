@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import assembly.Action;
+import assembly.ITask;
 import assembly.Job;
 import assembly.Task;
 import car.Airco;
@@ -60,7 +61,7 @@ public class JobTest {
 	
 	@Test
 	public void setTasks(){
-		List<Task> tasks = new ArrayList<>();
+		List<ITask> tasks = new ArrayList<>();
 		Order order = new Order("Jef", model, 1);
 		Job job = new Job(order);
 		job.setTasks(tasks);
@@ -154,7 +155,7 @@ public class JobTest {
 		assertFalse(job.equals(job2));
 		job2 = new Job(order);
 		
-		List<Task> tasks = new ArrayList<>();
+		List<ITask> tasks = new ArrayList<>();
 		job.setTasks(tasks);
 		job2.setTasks(tasks);
 		assertTrue(job.equals(job2));

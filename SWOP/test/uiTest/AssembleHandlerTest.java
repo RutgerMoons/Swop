@@ -25,6 +25,7 @@ import users.GarageHolder;
 import users.Worker;
 import assembly.Action;
 import assembly.AssemblyLine;
+import assembly.IJob;
 import assembly.Job;
 import assembly.Task;
 import assembly.WorkBench;
@@ -74,12 +75,12 @@ public class AssembleHandlerTest {
 						"6 speed manual"), new Seat("leather black"),
 				new Wheel("comfort"));
 		Order order = new Order("Jef", model, 1);
-		Job job = new Job(order);
+		IJob job = new Job(order);
 		Task task = new Task("Paint");
 		Action action = new Action("Paint car blue");
 		action.setCompleted(false);
 		task.addAction(action);
-		job.addTask(task);
+		((Job) job).addTask(task);
 
 		String s = System.lineSeparator();
 		Worker worker = new Worker("Stef");
@@ -94,7 +95,7 @@ public class AssembleHandlerTest {
 		line = new AssemblyLine(new Clock());
 		handler = new AssembleHandler(ui, line);
 
-		WorkBench bench = line.getWorkbenches().get(0);
+		WorkBench bench = (WorkBench) line.getWorkbenches().get(0);
 		bench.setCurrentJob(Optional.fromNullable(job));
 		bench.chooseTasksOutOfJob();
 
