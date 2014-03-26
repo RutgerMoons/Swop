@@ -3,6 +3,7 @@ package assembly;
 import java.util.ArrayList;
 import java.util.List;
 
+import order.IOrder;
 import order.Order;
 
 import com.google.common.collect.ImmutableList;
@@ -12,10 +13,10 @@ import com.google.common.collect.ImmutableList;
  * Represents a Job. A Job is actually 1 car.
  * 
  */
-public class Job {
+public class Job implements IJob{
 
-	private Order order;
-	private List<Task> taskList;
+	private IOrder order;
+	private List<ITask> taskList;
 
 	/**
 	 * Construct a new Job.
@@ -25,9 +26,9 @@ public class Job {
 	 * @throws IllegalArgumentException
 	 * 			if order==null
 	 */
-	public Job(Order order) {
+	public Job(IOrder order) {
 		setOrder(order);
-		setTasks(new ArrayList<Task>());
+		setTasks(new ArrayList<ITask>());
 	}
 
 	/**
@@ -35,7 +36,7 @@ public class Job {
 	 * 
 	 * @return The Order on which the Job is based.
 	 */
-	public Order getOrder() {
+	public IOrder getOrder() {
 		return order;
 	}
 
@@ -47,7 +48,7 @@ public class Job {
 	 * @throws IllegalArgumentException
 	 *             If order==null
 	 */
-	public void setOrder(Order order) {
+	public void setOrder(IOrder order) {
 		if (order == null)
 			throw new IllegalArgumentException();
 		else
@@ -59,8 +60,8 @@ public class Job {
 	 * 
 	 * @return An Immutable list of tasks.
 	 */
-	public List<Task> getTasks() {
-		ImmutableList<Task> imutableList = new ImmutableList.Builder<Task>()
+	public List<ITask> getTasks() {
+		ImmutableList<ITask> imutableList = new ImmutableList.Builder<ITask>()
 				.addAll(taskList).build();
 		return imutableList;
 	}
@@ -74,7 +75,7 @@ public class Job {
 	 * @throws IllegalArgumentException
 	 *             If tasks==null
 	 */
-	public void setTasks(List<Task> tasks) {
+	public void setTasks(List<ITask> tasks) {
 		if (tasks == null)
 			throw new IllegalArgumentException();
 		else
@@ -89,7 +90,7 @@ public class Job {
 	 * @throws IllegalArgumentException
 	 *             If task==null
 	 */
-	public void addTask(Task task) {
+	public void addTask(ITask task) {
 		if (task == null)
 			throw new IllegalArgumentException();
 		else
@@ -103,7 +104,7 @@ public class Job {
 	 *         are not fully completed.
 	 */
 	public boolean isCompleted() {
-		for (Task task : taskList)
+		for (ITask task : taskList)
 			if (!task.isCompleted())
 				return false;
 		return true;

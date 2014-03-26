@@ -11,11 +11,11 @@ import com.google.common.collect.ImmutableList;
  * Represents a WorkBench from an assemblyline.
  * 
  */
-public class WorkBench {
+public class WorkBench implements IWorkBench {
 
 	private Set<String> responsibilities;
-	private Optional<Job> currentJob;
-	private List<Task> currentTasks;
+	private Optional<IJob> currentJob;
+	private List<ITask> currentTasks;
 	private final String workbenchName;
 
 	/**
@@ -36,8 +36,8 @@ public class WorkBench {
 		}
 		this.workbenchName = workbenchName;
 		this.setResponsibilities(responsibilities);
-		setCurrentTasks(new ArrayList<Task>());
-		Optional<Job> nullJob = Optional.absent();
+		setCurrentTasks(new ArrayList<ITask>());
+		Optional<IJob> nullJob = Optional.absent();
 		setCurrentJob(nullJob);
 	}
 
@@ -56,22 +56,22 @@ public class WorkBench {
 	 * @return The current Job this WorkBench is working on. If there is no Job
 	 *         available, the Job is represented by Optional.absent().
 	 */
-	public Optional<Job> getCurrentJob() {
+	public Optional<IJob> getCurrentJob() {
 		return currentJob;
 	}
 
 	/**
 	 * Allocate a new Job(Car) to this WorkBench.
 	 * 
-	 * @param currentJob
+	 * @param optional
 	 *            The job you want to allocate to the WorkBench.
 	 * @throws IllegalArgumentException
 	 *             if currentJob == null
 	 */
-	public void setCurrentJob(Optional<Job> currentJob) {
-		if (currentJob == null)
+	public void setCurrentJob(Optional<IJob> optional) {
+		if (optional == null)
 			throw new IllegalArgumentException();
-		this.currentJob = currentJob;
+		this.currentJob = optional;
 	}
 
 	/**
@@ -117,8 +117,8 @@ public class WorkBench {
 	 * 
 	 * @return An Immutable list of tasks.
 	 */
-	public List<Task> getCurrentTasks() {
-		ImmutableList<Task> immutable = new ImmutableList.Builder<Task>()
+	public List<ITask> getCurrentTasks() {
+		ImmutableList<ITask> immutable = new ImmutableList.Builder<ITask>()
 				.addAll(currentTasks).build();
 		return immutable;
 	}
@@ -126,15 +126,15 @@ public class WorkBench {
 	/**
 	 * Set the tasks that have to be completed by this WorkBench.
 	 * 
-	 * @param currentTasks
+	 * @param list
 	 *            A list of tasks.
 	 * @throws IllegalArgumentException
 	 *             If currentTasks==null
 	 */
-	public void setCurrentTasks(List<Task> currentTasks) {
-		if (currentTasks == null)
+	public void setCurrentTasks(List<ITask> list) {
+		if (list == null)
 			throw new IllegalArgumentException();
-		this.currentTasks = currentTasks;
+		this.currentTasks = list;
 	}
 
 	/**
@@ -143,11 +143,11 @@ public class WorkBench {
 	 */
 	public void chooseTasksOutOfJob() {
 		if (getCurrentJob() == null || !getCurrentJob().isPresent()) {
-			setCurrentTasks(new ArrayList<Task>());
+			setCurrentTasks(new ArrayList<ITask>());
 			return;
 		}
-		List<Task> tasks = new ArrayList<>();
-		for (Task task : getCurrentJob().get().getTasks())
+		List<ITask> tasks = new ArrayList<>();
+		for (ITask task : getCurrentJob().get().getTasks())
 			if (getResponsibilities().contains(task.getTaskDescription())
 					&& !task.isCompleted()) {
 				tasks.add(task);
@@ -162,7 +162,7 @@ public class WorkBench {
 	 *         are not completed yet.
 	 */
 	public boolean isCompleted() {
-		for (Task task : getCurrentTasks())
+		for (ITask task : getCurrentTasks())
 			if (!task.isCompleted())
 				return false;
 		return true;

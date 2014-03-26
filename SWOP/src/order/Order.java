@@ -2,7 +2,7 @@ package order;
 
 import java.util.Arrays;
 
-import car.CarModel;
+import car.ICarModel;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes
@@ -12,9 +12,9 @@ import car.CarModel;
  * of an order. Each order also has an estimated time. This is an estimation of
  * when the order will be completed. This time is expressed in days and minutes.
  */
-public class Order {
+public class Order implements IOrder{
 
-	private CarModel description;
+	private ICarModel description;
 	private String garageholder;
 	private int quantity, pendingCars;
 	int[] estimatedTime;
@@ -23,7 +23,7 @@ public class Order {
 	 * Constructor of an Order, given the name of the orderer, the type of
 	 * carModel and the amount of cars to be ordered.
 	 */
-	public Order(String holder, CarModel description, int quantity) {
+	public Order(String holder, ICarModel description, int quantity) {
 		this.setDescription(description);
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
@@ -91,7 +91,7 @@ public class Order {
 	 * The method throws an IllegalArgumentException is the given name equals
 	 * null.s
 	 */
-	private void setDescription(CarModel description2) {
+	private void setDescription(ICarModel description2) {
 		if (description2 == null) {
 			throw new IllegalArgumentException();
 		}
@@ -101,7 +101,7 @@ public class Order {
 	/**
 	 * Returns the name of the ordered carModel.
 	 */
-	public CarModel getDescription() {
+	public ICarModel getDescription() {
 		return this.description;
 	}
 

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import users.User;
 import users.Worker;
+import assembly.Action;
 import assembly.AssemblyLine;
+import assembly.IWorkBench;
 import assembly.Task;
 import assembly.WorkBench;
 
@@ -64,12 +66,12 @@ public class AssembleHandler extends UseCaseHandler{
 	 */
 	public WorkBench chooseWorkBench(User user){
 		ArrayList<String> workbenches = new ArrayList<String>();
-		for(WorkBench w : this.assemblyLine.getWorkbenches()){
+		for(IWorkBench w : this.assemblyLine.getWorkbenches()){
 			workbenches.add(w.getWorkbenchName());
 		}
 
 		int workbenchIndex = this.UIFacade.chooseWorkBench(assemblyLine.getWorkbenches().size(), workbenches) - 1;
-		return this.assemblyLine.getWorkbenches().get(workbenchIndex);
+		return (WorkBench) this.assemblyLine.getWorkbenches().get(workbenchIndex);
 	}
 
 	/**
@@ -89,7 +91,7 @@ public class AssembleHandler extends UseCaseHandler{
 			ArrayList<String> tasksStrings = new ArrayList<String>();
 			for (int i = 0; i < workbench.getCurrentTasks().size(); i++) {
 				if(!workbench.getCurrentTasks().get(i).isCompleted()){
-					tasks.add(workbench.getCurrentTasks().get(i));
+					tasks.add((Task) workbench.getCurrentTasks().get(i));
 					tasksStrings.add(workbench.getCurrentTasks().get(i).getTaskDescription());
 				}
 			}	
@@ -110,7 +112,7 @@ public class AssembleHandler extends UseCaseHandler{
 		this.UIFacade.askFinished();
 
 		for (int i = 0; i < task.getActions().size(); i++) {
-			task.getActions().get(i).setCompleted(true);
+			((Action) task.getActions().get(i)).setCompleted(true);
 		}
 		chooseTask(user, workbench);
 	}

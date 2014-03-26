@@ -7,7 +7,7 @@ import java.util.Map.Entry;
  * Class representing a certain carmodel. Each carmodel has all the essential carparts.
  *
  */
-public class CarModel {
+public class CarModel implements ICarModel{
 
 	private String description;
 	private HashMap<Class<?>,CarPart> carParts;
@@ -42,13 +42,13 @@ public class CarModel {
 	 *This method returns a deep copy of the the hashmap including all the car parts. 
 	 */
 	public HashMap<Class<?>,CarPart> getCarParts(){
-		return clone(carParts);
+		return copy(carParts);
 	}
 
 	/**
 	 * Method that returns a deep clone of the given hashmap.
 	 */
-	private HashMap<Class<?>, CarPart> clone(HashMap<Class<?>, CarPart> carParts2) {
+	private HashMap<Class<?>, CarPart> copy(HashMap<Class<?>, CarPart> carParts2) {
 		HashMap<Class<?>, CarPart> newMap = new HashMap<Class<?>, CarPart>();
 		Set<Entry<Class<?>, CarPart>> set1 = carParts2.entrySet();
 		for (Entry<Class<?>, CarPart> entry : set1){
@@ -64,6 +64,17 @@ public class CarModel {
 	private void setDescription(String description){
 		if(!description.equals(null) && !description.equals(""))
 			this.description=description;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((carParts == null) ? 0 : carParts.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		return result;
 	}
 
 	@Override

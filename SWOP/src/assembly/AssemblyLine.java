@@ -12,6 +12,7 @@ import car.CarModel;
 import car.Color;
 import car.Engine;
 import car.Gearbox;
+import car.ICarModel;
 import car.Seat;
 import car.Wheel;
 import clock.Clock;
@@ -28,8 +29,8 @@ import com.google.common.collect.ImmutableList;
 public class AssemblyLine {
 
 	private Clock clock;
-	private List<WorkBench> workbenches;
-	private List<Job> currentJobs;
+	private List<IWorkBench> workbenches;
+	private List<IJob> currentJobs;
 	private int overtime;
 
 	/**
@@ -44,8 +45,8 @@ public class AssemblyLine {
 		if (clock == null)
 			throw new IllegalArgumentException();
 		this.clock = clock;
-		workbenches = new ArrayList<WorkBench>();
-		currentJobs = new ArrayList<Job>();
+		workbenches = new ArrayList<IWorkBench>();
+		currentJobs = new ArrayList<IJob>();
 		initializeWorkbenches();
 	}
 
@@ -75,12 +76,12 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * Get the WorkBenches that are assigned to this AssemblyLine.
+	 * Get the IWorkBenches that are assigned to this AssemblyLine.
 	 * 
-	 * @return A list of WorkBenches.
+	 * @return A list of IWorkBenches.
 	 */
-	public List<WorkBench> getWorkbenches() {
-		ImmutableList<WorkBench> immutable = new ImmutableList.Builder<WorkBench>()
+	public List<IWorkBench> getWorkbenches() {
+		ImmutableList<IWorkBench> immutable = new ImmutableList.Builder<IWorkBench>()
 				.addAll(workbenches).build();
 		return immutable;
 	}
@@ -89,11 +90,11 @@ public class AssemblyLine {
 	 * Assign a list of workbenches to this AssemblyLine.
 	 * 
 	 * @param workbenches
-	 *            A list of WorkBenches.
+	 *            A list of IWorkBenches.
 	 * @throws IllegalArgumentException
 	 *             If workbenches==null
 	 */
-	public void setWorkbenches(List<WorkBench> workbenches) {
+	public void setWorkbenches(List<IWorkBench> workbenches) {
 		if (workbenches == null)
 			throw new IllegalArgumentException();
 		this.workbenches = workbenches;
@@ -104,8 +105,8 @@ public class AssemblyLine {
 	 * 
 	 * @return A list representing the current jobs.
 	 */
-	public List<Job> getCurrentJobs() {
-		ImmutableList<Job> immutable = new ImmutableList.Builder<Job>().addAll(
+	public List<IJob> getCurrentJobs() {
+		ImmutableList<IJob> immutable = new ImmutableList.Builder<IJob>().addAll(
 				currentJobs).build();
 		return immutable;
 	}
@@ -118,7 +119,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             If currentJobs==null
 	 */
-	public void setCurrentJobs(List<Job> currentJobs) {
+	public void setCurrentJobs(List<IJob> currentJobs) {
 		if (currentJobs == null)
 			throw new IllegalArgumentException();
 		this.currentJobs = currentJobs;
@@ -165,7 +166,7 @@ public class AssemblyLine {
 	 *             If job==null
 	 * 
 	 */
-	public void addJob(Job job) {
+	public void addJob(IJob job) {
 		if (job == null)
 			throw new IllegalArgumentException();
 		currentJobs.add(job);
@@ -179,7 +180,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if jobs==null
 	 */
-	public void addMultipleJobs(List<Job> jobs) {
+	public void addMultipleJobs(List<IJob> jobs) {
 		if (jobs == null)
 			throw new IllegalArgumentException();
 		currentJobs.addAll(jobs);
@@ -193,7 +194,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             If bench==null
 	 */
-	public void addWorkBench(WorkBench bench) {
+	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
 			throw new IllegalArgumentException();
 		workbenches.add(bench);
@@ -211,15 +212,15 @@ public class AssemblyLine {
 			throw new IllegalStateException(
 					"You can't advance if there is no next Job!");
 
-		Optional<Job> lastJob = Optional.absent();
+		Optional<IJob> lastJob = Optional.absent();
 		for (int i = 0; i < getWorkbenches().size(); i++) {
-			WorkBench bench = getWorkbenches().get(i);
+			WorkBench bench = (WorkBench) getWorkbenches().get(i);
 			if (i == 0) {
 				lastJob = bench.getCurrentJob();
 
 				if ((22 * 60 - clock.getMinutes() - (overtime * 60)) < (getWorkbenches()
 						.size() * 60)) {
-					Optional<Job> optional = Optional.absent();
+					Optional<IJob> optional = Optional.absent();
 					bench.setCurrentJob(optional);
 				} else {
 					bench.setCurrentJob(Optional.fromNullable(getCurrentJobs()
@@ -227,7 +228,7 @@ public class AssemblyLine {
 				}
 			} else { // Als het niet de eerste is, moet je de job van de vorige
 				// workbench nemen.
-				Optional<Job> prev = bench.getCurrentJob();
+				Optional<IJob> prev = bench.getCurrentJob();
 				bench.setCurrentJob(lastJob);
 				lastJob = prev;
 			}
@@ -240,7 +241,7 @@ public class AssemblyLine {
 												// dus de auto('s), dan moet
 												// je de job natuurlijk
 												// removen.
-			lastJob.get().getOrder().completeCar();
+			((Order) lastJob.get().getOrder()).completeCar();
 		}
 
 		if ((22 * 60 - getClock().getMinutes()) < 0) {// overtime zetten
@@ -258,14 +259,14 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	public List<Job> convertOrderToJob(Order order) {
+	public List<IJob> convertOrderToJob(Order order) {
 		if (order == null)
 			throw new IllegalArgumentException();
 
-		CarModel model = order.getDescription();
+		ICarModel model = order.getDescription();
 
 		// Het is lelijk ik weet het, maar het kan echt niet anders.. denk ik
-		List<Job> jobs = new ArrayList<>();
+		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
 			Job job = new Job(order);
 
@@ -340,7 +341,7 @@ public class AssemblyLine {
 		int[] array = new int[2];
 		int days = 0;
 		int time = 0;
-		int timeOnWorkBench = getWorkbenches().size() * 60; // 1 uur per
+		int timeOnIWorkBench = getWorkbenches().size() * 60; // 1 uur per
 		// workbench
 		int timeTillFirstWorkbench = 0;
 		if (getWorkbenches().get(0).getCurrentJob() != null
@@ -354,7 +355,7 @@ public class AssemblyLine {
 			timeTillFirstWorkbench = indexLastJob * 60;
 		}
 
-		time = timeOnWorkBench + timeTillFirstWorkbench;
+		time = timeOnIWorkBench + timeTillFirstWorkbench;
 
 		int tenOClockInMinutes = 22 * 60;
 		int lastCarOnFirstBench = tenOClockInMinutes - getWorkbenches().size()
@@ -397,7 +398,7 @@ public class AssemblyLine {
 		if (order == null)
 			throw new IllegalArgumentException();
 		int index = -1;
-		for (Job job : getCurrentJobs())
+		for (IJob job : getCurrentJobs())
 			if (job.getOrder().equals(order))
 				index = getCurrentJobs().indexOf(job) + order.getQuantity();
 		return index;
@@ -410,14 +411,14 @@ public class AssemblyLine {
 	 */
 	public AssemblyLine getFutureAssemblyLine() {
 		AssemblyLine line = new AssemblyLine(getClock());
-		ArrayList<WorkBench> clones = new ArrayList<>();
+		ArrayList<IWorkBench> clones = new ArrayList<>();
 		line.setCurrentJobs(getCurrentJobs());
-		for (WorkBench bench : getWorkbenches()) {
+		for (IWorkBench bench : getWorkbenches()) {
 			WorkBench copy = new WorkBench(bench.getResponsibilities(),
 					bench.getWorkbenchName());
-			copy.setCurrentJob(bench.getCurrentJob());
+			copy.setCurrentJob(bench.getCurrentJob()); 
 			copy.setCurrentTasks(bench.getCurrentTasks());
-			clones.add(copy);
+			clones.add(copy); 
 		}
 		line.setWorkbenches(clones);
 		try {
@@ -431,7 +432,7 @@ public class AssemblyLine {
 	@Override
 	public String toString() {
 		String assemblyLineString = "";
-		WorkBench workbench;
+		IWorkBench workbench;
 		String completed;
 		for (int i = 0; i < this.getWorkbenches().size(); i++) {
 			workbench = this.getWorkbenches().get(i);

@@ -4,7 +4,7 @@ package assembly;
  * This class represents an Action that is available for the workers.
  * 
  */
-public class Action {
+public class Action implements IAction {
 
 	private boolean isCompleted;
 	private String description;

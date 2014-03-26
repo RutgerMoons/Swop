@@ -9,9 +9,9 @@ import com.google.common.collect.ImmutableList;
  * Represents a single task that contains a certain amount of Actions.
  * 
  */
-public class Task {
+public class Task implements ITask{
 
-	private List<Action> actionList;
+	private List<IAction> actionList;
 	private String taskDescription;
 
 	/**
@@ -23,7 +23,7 @@ public class Task {
 	 * 			if taskDescription==null or isEmpty.
 	 */
 	public Task(String taskDescription) {
-		setActions(new ArrayList<Action>());
+		setActions(new ArrayList<IAction>());
 		this.setTaskDescription(taskDescription);
 	}
 
@@ -32,8 +32,8 @@ public class Task {
 	 * 
 	 * @return An Immutable list of Actions.
 	 */
-	public List<Action> getActions() {
-		ImmutableList<Action> immutable = new ImmutableList.Builder<Action>()
+	public List<IAction> getActions() {
+		ImmutableList<IAction> immutable = new ImmutableList.Builder<IAction>()
 				.addAll(actionList).build();
 		return immutable;
 	}
@@ -46,7 +46,7 @@ public class Task {
 	 * @throws IllegalArgumentException
 	 *             If actions==null
 	 */
-	public void setActions(List<Action> actions) {
+	public void setActions(List<IAction> actions) {
 		if (actions == null)
 			throw new IllegalArgumentException();
 		else
@@ -61,7 +61,7 @@ public class Task {
 	 * @throws IllegalArgumentException
 	 *             if action==null
 	 */
-	public void addAction(Action action) {
+	public void addAction(IAction action) {
 		if (action == null)
 			throw new IllegalArgumentException();
 		else
@@ -75,7 +75,7 @@ public class Task {
 	 *         are completed.
 	 */
 	public boolean isCompleted() {
-		for (Action action : getActions())
+		for (IAction action : getActions())
 			if (!action.isCompleted())
 				return false;
 		return true;

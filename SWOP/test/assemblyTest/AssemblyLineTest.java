@@ -13,6 +13,10 @@ import org.junit.Test;
 
 import assembly.Action;
 import assembly.AssemblyLine;
+import assembly.IAction;
+import assembly.IJob;
+import assembly.ITask;
+import assembly.IWorkBench;
 import assembly.Job;
 import assembly.Task;
 import assembly.WorkBench;
@@ -36,7 +40,7 @@ public class AssemblyLineTest{
 	@Before
 	public void initialize(){
 		line = new AssemblyLine(new Clock());
-		line.setWorkbenches(new ArrayList<WorkBench>()); //DIT MOET GEBEUREN OMDAT ER ANDERS AL 3 WORKBENCHES AANWEZIG ZIJN!!
+		line.setWorkbenches(new ArrayList<IWorkBench>()); //DIT MOET GEBEUREN OMDAT ER ANDERS AL 3 WORKBENCHES AANWEZIG ZIJN!!
 
 		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
 				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
@@ -57,7 +61,7 @@ public class AssemblyLineTest{
 	}
 	@Test
 	public void TestSetValidCurrentJobs(){
-		List<Job> jobs = new ArrayList<>();
+		List<IJob> jobs = new ArrayList<>();
 		Order order1 = new Order("Jef", model, 1);
 		jobs.add(new Job(order1));
 		jobs.add(new Job(order1));
@@ -68,7 +72,7 @@ public class AssemblyLineTest{
 
 	@Test (expected=IllegalArgumentException.class)
 	public void TestSetInvalidCurrentJobs(){
-		List<Job> jobs = null;
+		List<IJob> jobs = null;
 		line.setCurrentJobs(jobs);
 		assertEquals(2, line.getCurrentJobs().size());
 		assertEquals(jobs, line.getCurrentJobs());
@@ -88,7 +92,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestSetValidWorkBenches(){
-		List<WorkBench> workbenches = new ArrayList<WorkBench>();
+		List<IWorkBench> workbenches = new ArrayList<IWorkBench>();
 		workbenches.add(new WorkBench(new HashSet<String>(), "test"));
 		workbenches.add(new WorkBench(new HashSet<String>(), "test2"));
 		line.setWorkbenches(workbenches);
@@ -98,7 +102,7 @@ public class AssemblyLineTest{
 
 	@Test (expected = IllegalArgumentException.class)
 	public void TestSetInvalidWorkBenches(){
-		List<WorkBench> workbenches = null;
+		List<IWorkBench> workbenches = null;
 		line.setWorkbenches(workbenches);
 		assertEquals(0, line.getWorkbenches().size());
 		assertEquals(workbenches, line.getWorkbenches());
@@ -136,7 +140,7 @@ public class AssemblyLineTest{
 		Order order1 = new Order("Jef", model, 1);
 		Job job1 = new Job(order1);
 		Job job2 = new Job(order1);
-		List<Job> jobs = new ArrayList<>();
+		List<IJob> jobs = new ArrayList<>();
 		jobs.add(job1);
 		jobs.add(job2);
 		line.addMultipleJobs(jobs);
@@ -271,7 +275,7 @@ public class AssemblyLineTest{
 	public void TestAdvanceAfterTenOClock(){
 		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
 		Order order1 = new Order("Jef", model, 1);
-		Job job = new Job(order1);
+		IJob job = new Job(order1);
 		line.addJob(job);
 		line.addWorkBench(bench);
 		bench.setCurrentJob(Optional.fromNullable(job));
@@ -292,14 +296,14 @@ public class AssemblyLineTest{
 	@Test
 	public void TestConvertOrderToJobOneCar(){
 		Order order = new Order("Stef", model, 1);
-		List<Job> jobs = line.convertOrderToJob(order);
+		List<IJob> jobs = line.convertOrderToJob(order);
 		assertEquals(1, jobs.size());
 		assertEquals(7, jobs.get(0).getTasks().size());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void TestConvertIllegalOrderToJobOneCar(){
-		List<Job> jobs = line.convertOrderToJob(null);
+		List<IJob> jobs = line.convertOrderToJob(null);
 		assertEquals(1, jobs.size());
 		assertEquals(7, jobs.get(0).getTasks().size());
 	}
@@ -307,7 +311,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestConvertOrderToJobTwoCars(){
 		Order order = new Order("Stef", model, 2);
-		List<Job> jobs = line.convertOrderToJob(order);
+		List<IJob> jobs = line.convertOrderToJob(order);
 		assertEquals(2, jobs.size());
 		assertEquals(7, jobs.get(0).getTasks().size());
 	}
@@ -432,15 +436,15 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		assertEquals("-workbench 1: test", line.toString());
 		Order order = new Order("Stef", model, 1);
-		Job job = new Job(order);
-		Task task = new Task("Paint");
-		Action action = new Action("Paint car blue");
-		task.addAction(action);
-		job.addTask(task);
+		IJob job = new Job(order);
+		ITask task = new Task("Paint");
+		IAction action = new Action("Paint car blue");
+		((Task) task).addAction(action);
+		((Job) job).addTask(task);
 		bench1.setCurrentJob(Optional.fromNullable(job));
 		bench1.chooseTasksOutOfJob();
 		assertEquals("-workbench 1: test,  *Paint: not completed", line.toString());
-		action.setCompleted(true);
+		((Action) action).setCompleted(true);
 		assertEquals("-workbench 1: test,  *Paint: completed", line.toString());
 	}
 
@@ -450,12 +454,12 @@ public class AssemblyLineTest{
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
 		Order order = new Order("Stef", model, 1);
-		Job job = new Job(order);
-		Task task = new Task("Paint");
-		Action action = new Action("Paint car blue");
-		action.setCompleted(false);
-		task.addAction(action);
-		job.addTask(task);
+		IJob job = new Job(order);
+		ITask task = new Task("Paint");
+		IAction action = new Action("Paint car blue");
+		((Action) action).setCompleted(false);
+		((Task) task).addAction(action);
+		((Job) job).addTask(task);
 		line.addJob(job);
 		bench1.setCurrentJob(Optional.fromNullable(job));
 		bench1.chooseTasksOutOfJob();		
