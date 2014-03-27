@@ -43,9 +43,9 @@ public class Clock {
 	}
 	
 	/**
-	 * Reset the clock to 0 (12am, the beginning of a day)
+	 * Reset the clock to 0 (12pm, the beginning of a day)
 	 */
-	public void reset(){
+	private void reset(){
 		this.minute = 0;
 	}
 
