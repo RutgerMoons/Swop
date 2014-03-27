@@ -16,13 +16,7 @@ import assembly.AssemblyLine;
  * 
  */
 public class runProgram {
-	private static Clock clock;
-	private static CarModelCatalogue catalogue;
-	private static OrderBook orderBook;
-	private static AssemblyLine assemblyLine;
 	private static UserInterface userInterface;
-	private static UIFacade UIFacade;
-	private static UserBook userBook;
 	private static UserHandler userHandler;
 	private static OrderHandler orderHandler;
 	private static AssembleHandler assembleHandler;
@@ -37,31 +31,18 @@ public class runProgram {
 	 * Initializes all datastructures that the program needs from the start.
 	 */
 	public static void initializeData() {
-		clock = new Clock();
-		assemblyLine = new AssemblyLine(clock);
-		CarPartCatalogue cat = new CarPartCatalogue();
-		catalogue = new CarModelCatalogue(cat);
-		
-		CarPartCatalogueFiller carPartFiller = new CarPartCatalogueFiller(cat);
-		carPartFiller.initializeCarParts();
-		
-		CarModelCatalogueFiller carModelFiller = new CarModelCatalogueFiller();
-		catalogue.initializeCatalogue(carModelFiller.getInitialModels());
 
-		orderBook = new OrderBook(assemblyLine);
-		userBook = new UserBook();
 		userInterface = new UserInterface();
-		orderHandler = new OrderHandler(userInterface, orderBook, catalogue);
-		assembleHandler = new AssembleHandler(userInterface, assemblyLine);
-		advanceAssemblyLineHandler = new AdvanceAssemblyLineHandler(
-				userInterface, assemblyLine, clock);
+		orderHandler = new OrderHandler(userInterface);
+		assembleHandler = new AssembleHandler(userInterface);
+		advanceAssemblyLineHandler = new AdvanceAssemblyLineHandler(userInterface);
 
 		ArrayList<UseCaseHandler> handlers = new ArrayList<UseCaseHandler>();
 		handlers.add(orderHandler);
 		handlers.add(assembleHandler);
 		handlers.add(advanceAssemblyLineHandler);
 
-		userHandler = new UserHandler(userInterface, userBook, handlers);
+		userHandler = new UserHandler(userInterface);
 	}
 
 	/**

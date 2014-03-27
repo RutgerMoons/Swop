@@ -3,6 +3,8 @@ package ui;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
 
+import exception.RoleNotYetAssignedException;
+import facade.IFacade;
 import users.GarageHolder;
 import users.Manager;
 import users.User;
@@ -17,8 +19,8 @@ import users.Worker;
  */
 public class UserHandler {
 	
-	private UserBook userBook; 
 	private UIFacade UIFacade;
+	private IFacade iFacade;
 	private ArrayList<UseCaseHandler> handlers;
 	
 	/**
@@ -32,26 +34,14 @@ public class UserHandler {
 	 * @throws NullPointerException
 	 * 			if one of the given arguments is null.
 	 */
-	public UserHandler(UIFacade UIFacade, UserBook userBook, ArrayList<UseCaseHandler> handlers)throws NullPointerException{
-		if(UIFacade == null || userBook == null || handlers == null) {
+	public UserHandler(UIFacade UIFacade, IFacade iFacade, ArrayList<UseCaseHandler> handlers) throws NullPointerException{
+		if(UIFacade == null || iFacade == null || handlers == null) {
 			throw new NullPointerException();
 		}
 			
 		this.UIFacade = UIFacade;
-		this.userBook = userBook;
+		this.iFacade = iFacade;
 		this.handlers = handlers;
-	}
-	
-	/**
-	 * User who has completed the login-process, and is being used as the current user.
-	 */
-	private User currentUser;
-	
-	/**
-	 * Method that returns the user who has completed the login-process.
-	 */
-	public User getCurrentUser(){
-		return currentUser;
 	}
 	
 	/**
@@ -60,14 +50,14 @@ public class UserHandler {
 	 */
 	public void login() {
 		String name = this.UIFacade.getName();
-				
-		//check if user is new user
-		if(userBook.getUserBook().containsKey(name)) {
-			this.currentUser = userBook.getUserBook().get(name);
-		}
-		else {
-				currentUser = assignRole(name);
-				userBook.addUser(currentUser);
+		try {		
+			iFacade.login(name);
+		} catch (RoleNotYetAssignedException r) {
+			String role = this.UIFacade.chooseRole();
+			iFacade.createAndAddUser(name, role);
+		} catch (IllegalArgumentException i) {
+			UIFacade.invalidAnswerPrompt();
+			login();
 		}
 	}
 	
