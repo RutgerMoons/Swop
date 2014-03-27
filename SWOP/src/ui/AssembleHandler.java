@@ -18,8 +18,7 @@ import assembly.WorkBench;
 public class AssembleHandler extends UseCaseHandler{
 
 	private UIFacade UIFacade;
-	private AssemblyLine assemblyLine;
-
+	
 	/**
 	 * Construct a new AssembleHandler.
 	 * @param UIFacade
@@ -27,9 +26,8 @@ public class AssembleHandler extends UseCaseHandler{
 	 * @param assemblyLine
 	 * 			The assemblyline at which the user can perform assemblytasks.
 	 */
-	public AssembleHandler(UIFacade UIFacade, AssemblyLine assemblyLine){
+	public AssembleHandler(UIFacade UIFacade){
 		this.UIFacade = UIFacade;
-		this.assemblyLine = assemblyLine;
 	}
 
 	/**
