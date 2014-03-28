@@ -8,6 +8,8 @@ public class ImmutableJob implements IJob {
 
 	private Job job;
 	public ImmutableJob(Job job){
+		if(job==null)
+			throw new IllegalArgumentException();
 		this.job = job;
 	}
 	@Override

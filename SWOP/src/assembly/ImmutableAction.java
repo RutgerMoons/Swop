@@ -4,6 +4,8 @@ public class ImmutableAction implements IAction {
 
 	private Action action;
 	public ImmutableAction(Action action){
+		if(action==null)
+			throw new IllegalArgumentException();
 		this.action = action;
 	}
 	@Override

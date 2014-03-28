@@ -9,6 +9,8 @@ public class ImmutableWorkBench implements IWorkBench {
 
 	private WorkBench bench;
 	public ImmutableWorkBench(WorkBench bench){
+		if(bench==null)
+			throw new IllegalArgumentException();
 		this.bench = bench;
 	}
 	@Override

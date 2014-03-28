@@ -12,7 +12,7 @@ import car.ICarModel;
  * of an order. Each order also has an estimated time. This is an estimation of
  * when the order will be completed. This time is expressed in days and minutes.
  */
-public class Order implements IOrder{
+public class Order implements IOrder {
 
 	private ICarModel description;
 	private String garageholder;
@@ -28,6 +28,8 @@ public class Order implements IOrder{
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
 		this.setPendingCars(quantity);
+		int[] estimated = {0,0};
+		this.setEstimatedTime(estimated);
 	}
 
 	/**
@@ -142,11 +144,9 @@ public class Order implements IOrder{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + description.hashCode();
 		result = prime * result + Arrays.hashCode(estimatedTime);
-		result = prime * result
-				+ ((garageholder == null) ? 0 : garageholder.hashCode());
+		result = prime * result + garageholder.hashCode();
 		result = prime * result + pendingCars;
 		result = prime * result + quantity;
 		return result;

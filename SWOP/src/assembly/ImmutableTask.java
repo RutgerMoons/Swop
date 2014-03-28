@@ -7,6 +7,8 @@ public class ImmutableTask implements ITask{
 	private Task task;
 
 	public ImmutableTask(Task task){
+		if(task==null)
+			throw new IllegalArgumentException();
 		this.task = task;
 	}
 	@Override
