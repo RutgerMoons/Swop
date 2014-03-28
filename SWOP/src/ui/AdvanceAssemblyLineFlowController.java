@@ -12,11 +12,9 @@ import assembly.AssemblyLine;
  * Defines the program flow for the 'Advance Assembly Line' use case.
  *
  */
-public class AdvanceAssemblyLineHandler extends UseCaseHandler{
+public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 
-	private UIFacade UIfacade;
-	private AssemblyLine assemblyLine;
-	private Clock clock;
+	private IClientCommunication UIfacade;
 
 	/**
 	 * Construct a new AdvanceAssemblyHandler.
@@ -27,24 +25,11 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	 * @param clock
 	 * 			The clock used by the given assemblyline.
 	 */
-	public AdvanceAssemblyLineHandler(UIFacade UIFacade, AssemblyLine assemblyLine, Clock clock){
-		UIfacade = UIFacade;
-		this.assemblyLine = assemblyLine;
-		this.clock = clock;
+	public AdvanceAssemblyLineFlowController(IClientCommunication iClientCommunication, String accessRight) {
+		super(accessRight);
+		UIfacade = iClientCommunication;
 	}
 
-	/**
-	 * Indicates if the user is authorized to be part of the use case.
-	 * @param user
-	 * 			The user of which we want to get to know if he's authorized.
-	 * @return
-	 * 			A boolean indicating if the user is authorized.
-	 */
-	@Override
-	public boolean mayUseThisHandler(User user){
-		if (user instanceof Manager) return true;
-		else return false;
-	}
 
 	/**
 	 * Execute the use case.
@@ -52,14 +37,12 @@ public class AdvanceAssemblyLineHandler extends UseCaseHandler{
 	 * 			primary actor in this use case
 	 */
 	@Override
-	public void executeUseCase(User user){
-		if(mayUseThisHandler(user)){
-			if(this.UIfacade.askAdvance()){
-				showCurrentAssemblyLine();
-				showFutureAssemblyLine();
-				if(this.UIfacade.askContinue())
-					advanceAssemblyLine();
-			}
+	public void executeUseCase(){
+		if(this.UIfacade.askAdvance()){
+			showCurrentAssemblyLine();
+			showFutureAssemblyLine();
+			if(this.UIfacade.askContinue())
+				advanceAssemblyLine();
 		}
 	}
 

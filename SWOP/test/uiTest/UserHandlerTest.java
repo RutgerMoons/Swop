@@ -14,32 +14,32 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.UIFacade;
-import ui.UseCaseHandler;
-import ui.UserHandler;
-import ui.UserInterface;
+import ui.IClientCommunication;
+import ui.UseCaseFlowController;
+import ui.UserFlowController;
+import ui.ClientCommunication;
 import facade.Facade;
 import facade.IFacade;
 
 @RunWith(Parameterized.class) 
 public class UserHandlerTest {
 
-	public UIFacade UIFacade;
+	public IClientCommunication UIFacade;
 	public IFacade facade;
 //	public UserBook userbook;
-	public ArrayList<UseCaseHandler> handlers;
-	public UserHandler userH;
+	public ArrayList<UseCaseFlowController> handlers;
+	public UserFlowController userH;
 //	public AssemblyLine ass;
 //	public Job job;
 
-	public UserHandlerTest(UIFacade ui){
+	public UserHandlerTest(IClientCommunication ui){
 		this.UIFacade = ui;
 	}
 
 	@Before
 	public void setup(){
 		facade = new Facade();
-		handlers = new ArrayList<UseCaseHandler>();
+		handlers = new ArrayList<UseCaseFlowController>();
 		
 	}
 	
@@ -53,11 +53,11 @@ public class UserHandlerTest {
 		ByteArrayOutputStream myout = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(myout));
 		
-		this.UIFacade = new UserInterface();
+		this.UIFacade = new ClientCommunication();
 		assertNotNull(UIFacade);
 		assertNotNull(facade);
 		assertNotNull(handlers);
-		this.userH = new UserHandler(UIFacade, facade, handlers);
+		this.userH = new UserFlowController(UIFacade, facade, handlers);
 		
 		userH.login();
 		userH.login();
@@ -287,6 +287,6 @@ public class UserHandlerTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> instancesToTest() { 
 		return Arrays.asList(
-				new Object[][]{{new UserInterface()}});
+				new Object[][]{{new ClientCommunication()}});
 	}
 }

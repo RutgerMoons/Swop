@@ -21,9 +21,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.OrderHandler;
-import ui.UIFacade;
-import ui.UserInterface;
+import ui.OrderFlowController;
+import ui.IClientCommunication;
+import ui.ClientCommunication;
 import users.GarageHolder;
 import users.Worker;
 import assembly.AssemblyLine;
@@ -44,11 +44,11 @@ import clock.Clock;
 @RunWith(Parameterized.class)
 public class OrderHandlerTest {
 
-	private UIFacade ui;
-	private OrderHandler handler;
+	private IClientCommunication ui;
+	private OrderFlowController handler;
 	private OrderBook book;
 
-	public OrderHandlerTest(UIFacade ui) {
+	public OrderHandlerTest(IClientCommunication ui) {
 		this.ui = ui;
 	}
 
@@ -57,7 +57,7 @@ public class OrderHandlerTest {
 		AssemblyLine line = new AssemblyLine(new Clock());
 		book = new OrderBook(line);
 		CarModelCatalogue catalogue = new CarModelCatalogue(new CarPartCatalogue());
-		handler = new OrderHandler(ui, book, catalogue);
+		handler = new OrderFlowController(ui, book, catalogue);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class OrderHandlerTest {
 		AssemblyLine line = new AssemblyLine(new Clock());
 		OrderBook book = new OrderBook(line);
 		CarModelCatalogue catalogue = new CarModelCatalogue(new CarPartCatalogue());
-		OrderHandler handler = new OrderHandler(ui, book, catalogue);
+		OrderFlowController handler = new OrderFlowController(ui, book, catalogue);
 		assertNotNull(handler);
 	}
 
@@ -132,8 +132,8 @@ public class OrderHandlerTest {
 		CarModelCatalogue catalogue = new CarModelCatalogue(catalogueCarPart);
 		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
 		catalogue.initializeCatalogue(filler.getInitialModels());
-		ui = new UserInterface();
-		handler = new OrderHandler(ui, book, catalogue);
+		ui = new ClientCommunication();
+		handler = new OrderFlowController(ui, book, catalogue);
 
 		ByteArrayOutputStream myout = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(myout));
@@ -180,8 +180,8 @@ public class OrderHandlerTest {
 		CarModelCatalogue catalogue = new CarModelCatalogue(catalogueCarPart);
 		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
 		catalogue.initializeCatalogue(filler.getInitialModels());
-		ui = new UserInterface();
-		handler = new OrderHandler(ui, book, catalogue);
+		ui = new ClientCommunication();
+		handler = new OrderFlowController(ui, book, catalogue);
 
 		ByteArrayOutputStream myout = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(myout));
@@ -213,8 +213,8 @@ public class OrderHandlerTest {
 		CarModelCatalogue catalogue = new CarModelCatalogue(catalogueCarPart);
 		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
 		catalogue.initializeCatalogue(filler.getInitialModels());
-		ui = new UserInterface();
-		handler = new OrderHandler(ui, book, catalogue);
+		ui = new ClientCommunication();
+		handler = new OrderFlowController(ui, book, catalogue);
 
 		CarModel model = new CarModel("Volvo", new Airco("manual"), new Body(
 				"sedan"), new Color("blue"), new Engine("standard"),
@@ -279,8 +279,8 @@ public class OrderHandlerTest {
 		CarModelCatalogue catalogue = new CarModelCatalogue(catalogueCarPart);
 		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
 		catalogue.initializeCatalogue(filler.getInitialModels());
-		ui = new UserInterface();
-		handler = new OrderHandler(ui, book, catalogue);
+		ui = new ClientCommunication();
+		handler = new OrderFlowController(ui, book, catalogue);
 
 		CarModel model = new CarModel("Volvo", new Airco("manual"), new Body(
 				"sedan"), new Color("blue"), new Engine("standard"),
@@ -315,7 +315,7 @@ public class OrderHandlerTest {
 
 	@Parameterized.Parameters
 	public static Collection<Object[]> primeNumbers() {
-		return Arrays.asList(new Object[][] { { new UserInterface() } });
+		return Arrays.asList(new Object[][] { { new ClientCommunication() } });
 	}
 
 }

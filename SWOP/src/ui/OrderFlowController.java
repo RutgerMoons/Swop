@@ -14,38 +14,24 @@ import car.CarModelCatalogue;
  * Defines the program flow for the 'Order New Car' use case.
  *
  */
-public class OrderHandler extends UseCaseHandler{
+public class OrderFlowController extends UseCaseFlowController{
 
-	private OrderBook orderBook;
-	private UIFacade UIFacade;
-	private CarModelCatalogue catalogue;
+	private IClientCommunication UIFacade;
 
 	/**
 	 * Construct a new OrderHandler
-	 * @param UIFacade
+	 * @param iClientCommunication
 	 * 			The UIfacade this OrderHandler has to use to communicate with the user.
 	 * @param orderBook
 	 * 			The OrderBook this OrderHandler has to access if it needs an OrderBook.
 	 * @param catalogue
 	 * 			The CarModelCatalogue from which this OrderHandler can get its possible CarModels.
 	 */
-	public OrderHandler (UIFacade UIFacade, OrderBook orderBook, CarModelCatalogue catalogue){
-		this.UIFacade = UIFacade;
-		this.orderBook = orderBook;
-		this.catalogue = catalogue;
+	public OrderFlowController (IClientCommunication iClientCommunication, String accessRight){
+		super(accessRight);
+		this.UIFacade = iClientCommunication;
 	}
 
-	/**
-	 * Indicates if the user is authorized to be part of the use case.
-	 * @param user
-	 * 			The user of which we want to get to know if he's authorized.
-	 * @return
-	 * 			A boolean indicating if the user is authorized.
-	 */
-	@Override
-	public boolean mayUseThisHandler(User user){
-		return user instanceof GarageHolder;
-	}
 
 	/**
 	 * Execute the use case.
@@ -53,18 +39,13 @@ public class OrderHandler extends UseCaseHandler{
 	 * 			primary actor in this use case
 	 */
 	@Override
-	public void executeUseCase(User user) throws IllegalArgumentException{
-		if (user == null) {
-			throw new IllegalArgumentException();
-		}
-		if(mayUseThisHandler(user)){
-			showOrders(user);
-			Order order = placeNewOrder(user);
+	public void executeUseCase() throws IllegalArgumentException{
+		showOrders(user);
+		Order order = placeNewOrder(user);
 
-			// order == null if order isn't confirmed by user
-			if(order != null) {
-				showNewOrder(order);
-			}
+		// order == null if order isn't confirmed by user
+		if(order != null) {
+			showNewOrder(order);
 		}
 	}
 

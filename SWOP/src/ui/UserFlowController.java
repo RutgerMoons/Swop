@@ -2,14 +2,10 @@ package ui;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
+import java.util.List;
 
 import exception.RoleNotYetAssignedException;
 import facade.IFacade;
-import users.GarageHolder;
-import users.Manager;
-import users.User;
-import users.UserBook;
-import users.Worker;
 
 /**
  * 
@@ -17,31 +13,31 @@ import users.Worker;
  * In between login and logout it calls executes the proper UseCaseHandler, depending on which user has logged in.
  *
  */
-public class UserHandler {
+public class UserFlowController {
 	
-	private UIFacade UIFacade;
+	private ArrayList<UseCaseFlowController> useCaseFlowControllers;
 	private IFacade iFacade;
-	private ArrayList<UseCaseHandler> handlers;
+	private IClientCommunication ClientCommunication;
 	
 	/**
 	 * Creates a new UserHandler.
-	 * @param UIFacade
+	 * @param iClientCommunication
 	 * 			The UIfacade this UserHandler has to use to communicate with the user.
 	 * @param userBook
 	 * 			The UserBook this Userhandler uses to complete the login-process.
-	 * @param handlers
+	 * @param useCaseFlowControllers
 	 * 			An ArrayList containing all the UseCaseHandlers.
 	 * @throws NullPointerException
 	 * 			if one of the given arguments is null.
 	 */
-	public UserHandler(UIFacade UIFacade, IFacade iFacade, ArrayList<UseCaseHandler> handlers) throws NullPointerException{
-		if(UIFacade == null || iFacade == null || handlers == null) {
+	public UserFlowController(IClientCommunication iClientCommunication, IFacade iFacade, ArrayList<UseCaseFlowController> useCaseFlowControllers) throws NullPointerException{
+		if(iClientCommunication == null || iFacade == null || useCaseFlowControllers == null) {
 			throw new NullPointerException();
 		}
 			
-		this.UIFacade = UIFacade;
+		this.ClientCommunication = iClientCommunication;
 		this.iFacade = iFacade;
-		this.handlers = handlers;
+		this.useCaseFlowControllers = useCaseFlowControllers;
 	}
 	
 	/**
@@ -49,36 +45,24 @@ public class UserHandler {
 	 * or create a new user with the given name and assign that user to the current user.
 	 */
 	public void login() {
-		String name = this.UIFacade.getName();
+		String name = this.ClientCommunication.getName();
 		try {		
 			iFacade.login(name);
 		} catch (RoleNotYetAssignedException r) {
-			String role = this.UIFacade.chooseRole();
+			String role = this.ClientCommunication.chooseRole();
 			iFacade.createAndAddUser(name, role);
 		} catch (IllegalArgumentException i) {
-			UIFacade.invalidAnswerPrompt();
+			ClientCommunication.invalidAnswerPrompt();
 			login();
 		}
 	}
 	
 	/**
-	 * Create a new user of the type given by the user.
-	 * @param name
-	 * 			The new user's name.
-	 * @return
-	 * 			The newly created user.
+	 * Set the currentUser to null, indicating there is currently no user logged in.
 	 */
-	private User assignRole(String name) {
-		String role = this.UIFacade.chooseRole();
-		if (role.equalsIgnoreCase("garageholder"))
-			return new GarageHolder(name);
-		else if (role.equalsIgnoreCase("manager"))
-			return new Manager(name);
-		else if (role.equalsIgnoreCase("worker"))
-			return new Worker(name);
-		else { // this is never reached
-			return null;
-		}
+	public void logout(){
+		ClientCommunication.logout();
+		iFacade.logout();
 	}
 	
 	/**
@@ -87,20 +71,26 @@ public class UserHandler {
 	 * 			If the user doesn't have authorization to execute any of the use cases.
 	 */
 	public void performDuties(){
-		UseCaseHandler useCaseHandler = currentUser.getRightHandler(handlers);
-	
+		List<String> accessRights = iFacade.getAccessRights();
+		UseCaseFlowController useCaseHandler = selectUseCaseFlowController(accessRights, useCaseFlowControllers);
+		
 		if(useCaseHandler == null) {
 			throw new IllegalArgumentException();
 		}
 		else {
-			useCaseHandler.executeUseCase(currentUser);
+			useCaseHandler.executeUseCase();
 		}
 	}
+
+	private UseCaseFlowController selectUseCaseFlowController(List<String> accessRights, ArrayList<UseCaseFlowController> flowControllers) {
+		int index = ClientCommunication.getFlowControllerIndex(accessRights);
 	
-	/**
-	 * Set the currentUser to null, indicating there is currently no user logged in.
-	 */
-	public void logOut(){
-		this.currentUser = null;
+		String accessRight = accessRights.get(index-1);
+		for(UseCaseFlowController flowController : flowControllers){
+			if(flowController.getAccessRight().equals(accessRight)){
+				return flowController;
+			}
+		}
+		return null;
 	}
 }

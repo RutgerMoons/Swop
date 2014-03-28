@@ -12,7 +12,7 @@ import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import ui.UserInterface;
+import ui.ClientCommunication;
 
 public class UserInterfaceTest {
 
@@ -32,7 +32,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			String name = userInterface.getName();
 			
 			String output = myout.toString();
@@ -53,7 +53,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			String name = userInterface.getName();
 			
 			String output = myout.toString();
@@ -73,7 +73,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			int quantity = userInterface.getQuantity();
 			
 			String output = myout.toString();
@@ -96,7 +96,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			int quantity = userInterface.getQuantity();
 			
 			String output = myout.toString();
@@ -123,7 +123,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			int quantity = userInterface.getQuantity();
 			
 			String output = myout.toString();
@@ -148,7 +148,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.invalidAnswerPrompt();
 			
 			String output = myout.toString();
@@ -173,7 +173,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.invalidUserPrompt();
 			
 			String output = myout.toString();
@@ -198,7 +198,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			boolean b = userInterface.askContinue();
 			
 			String output = myout.toString();
@@ -227,7 +227,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			String test = userInterface.askFinished();
 			
 			String output = myout.toString();
@@ -251,7 +251,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			boolean b = userInterface.askAdvance();
 			
 			String output = myout.toString();
@@ -279,7 +279,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			int time = userInterface.getElapsedTime();
 			
 			String output = myout.toString();
@@ -305,7 +305,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			int time = userInterface.getElapsedTime();
 			
 			String output = myout.toString();
@@ -331,7 +331,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			ArrayList<String> messages = new ArrayList<>();
 			messages.add("5 Lada");
 			messages.add("10 Polo");
@@ -354,7 +354,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.showPendingOrders(null);
 			
 			String output = myout.toString();
@@ -374,7 +374,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			ArrayList<String> messages = new ArrayList<>();
 			messages.add("5 Lada");
 			messages.add("10 Polo");
@@ -397,7 +397,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.showCompletedOrders(null);
 			
 			String output = myout.toString();
@@ -415,7 +415,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.showOrder(5, "Lada", new int[] {0, 125});
 			
 			String output = myout.toString();
@@ -437,7 +437,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.showOrder(5, "Lada", new int[] {-1, 125});
 			
 			String output = myout.toString();
@@ -455,7 +455,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.showWorkBenchCompleted();
 			
 			String output = myout.toString();
@@ -474,7 +474,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.showAssemblyLine(assemblyline, tense);;
 			
 			String output = myout.toString();
@@ -495,7 +495,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.showChosenTask(task);
 			
 			String output = myout.toString();
@@ -516,7 +516,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			userInterface.showBlockingBenches(blocking);
 			
 			String output = myout.toString();
@@ -544,7 +544,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			String role = userInterface.chooseRole();
 			
 			String output = myout.toString();
@@ -571,7 +571,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			String role = userInterface.chooseRole();
 			
 			String output = myout.toString();
@@ -598,7 +598,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			String role = userInterface.chooseRole();
 			
 			String output = myout.toString();
@@ -626,7 +626,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			int quantity = userInterface.chooseWorkBench(3, new ArrayList<String>(Arrays.asList("w1","w2","w3")));
 			
 			String output = myout.toString();
@@ -662,7 +662,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			int quantity = userInterface.chooseTask(new ArrayList<String>(Arrays.asList("t1","t2","t3")));
 			
 			String output = myout.toString();
@@ -689,7 +689,7 @@ public class UserInterfaceTest {
 			final ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			            
-			UserInterface userInterface = new UserInterface();
+			ClientCommunication userInterface = new ClientCommunication();
 			HashSet<String> set = new HashSet<String>(new ArrayList<String>(Arrays.asList("Lada","Polo")));
 			assertEquals(2, set.size());
 			String model = userInterface.chooseModel(set);

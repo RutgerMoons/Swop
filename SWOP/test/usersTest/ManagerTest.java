@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import ui.AdvanceAssemblyLineHandler;
-import ui.OrderHandler;
-import ui.UseCaseHandler;
+import ui.AdvanceAssemblyLineFlowController;
+import ui.OrderFlowController;
+import ui.UseCaseFlowController;
 import users.Manager;
 
 public class ManagerTest {
@@ -28,13 +28,13 @@ public class ManagerTest {
 	
 	@Test
 	public void TestGetRightHandler(){
-		assertNull(manager.getRightHandler(new ArrayList<UseCaseHandler>()));
-		AdvanceAssemblyLineHandler rightHandler = new AdvanceAssemblyLineHandler(null, null, null);
-		OrderHandler wrongHandler = new OrderHandler(null, null, null);
-		ArrayList<UseCaseHandler> useCaseHandlers = new ArrayList<>();
+		assertNull(manager.getRightHandler(new ArrayList<UseCaseFlowController>()));
+		AdvanceAssemblyLineFlowController rightHandler = new AdvanceAssemblyLineFlowController(null, null, null);
+		OrderFlowController wrongHandler = new OrderFlowController(null, null, null);
+		ArrayList<UseCaseFlowController> useCaseHandlers = new ArrayList<>();
 		useCaseHandlers.add(wrongHandler);
 		useCaseHandlers.add(rightHandler);
-		UseCaseHandler returnHandler = manager.getRightHandler(useCaseHandlers);
+		UseCaseFlowController returnHandler = manager.getRightHandler(useCaseHandlers);
 		assertEquals(rightHandler, returnHandler);
 	}
 }

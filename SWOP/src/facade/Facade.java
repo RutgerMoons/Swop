@@ -1,10 +1,10 @@
 package facade;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import order.OrderBook;
 import users.*;
-import users.UserBook;
 import assembly.AssemblyLine;
 import car.CarModel;
 import car.CarModelCatalogue;
@@ -21,8 +21,9 @@ public class Facade implements IFacade {
 	private CarPartCatalogue carPartCatalogue;
 	private CarModelCatalogue carModelCatalogue;
 	private OrderBook orderBook;
-	private UserBook userBook;
 	private User user;
+	private UserBook userBook;
+	private UserFactory userFactory;
 	
 	public Facade() {
 		this.clock = new Clock();
@@ -31,6 +32,7 @@ public class Facade implements IFacade {
 		this.carModelCatalogue = new CarModelCatalogue(carPartCatalogue);
 		this.orderBook = new OrderBook(assemblyLine);
 		this.userBook = new UserBook();
+		this.userFactory = new UserFactory();
 		
 		CarPartCatalogueFiller carPartFiller = new CarPartCatalogueFiller(carPartCatalogue);
 		carPartFiller.initializeCarParts();
@@ -116,13 +118,13 @@ public class Facade implements IFacade {
 
 	@Override
 	public void createAndAddUser(String userName, String role) throws IllegalArgumentException {
-		if(userName == null || role == null) {
-			throw new IllegalArgumentException();
-		}
-		//TODO: visitor pattern
-		this.user = new Manager(userName);
+		this.user = userFactory.createUser(userName, role);
 		this.userBook.addUser(this.user);
-		
+	}
+	
+	@Override
+	public void logout() {
+		this.user = null;
 	}
 
 	@Override
@@ -135,6 +137,11 @@ public class Facade implements IFacade {
 	public ArrayList<String> getCompletedOrders() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public List<String> getAccessRights() {
+		return this.user.getAccessRights();
 	}
 
 }

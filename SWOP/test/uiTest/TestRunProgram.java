@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
-import ui.runProgram;
+import ui.AssemAssist;
 
 public class TestRunProgram {
 
@@ -25,7 +25,7 @@ public class TestRunProgram {
 			myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 
-			runProgram.main(new String[0]);
+			AssemAssist.main(new String[0]);
 			
 		} catch(NoSuchElementException e){ //dit moet omdat je het maar 2 keer uitvoert
 			String output = myout.toString();

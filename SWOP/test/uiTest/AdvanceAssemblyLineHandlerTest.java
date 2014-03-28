@@ -15,9 +15,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.AdvanceAssemblyLineHandler;
-import ui.UIFacade;
-import ui.UserInterface;
+import ui.AdvanceAssemblyLineFlowController;
+import ui.IClientCommunication;
+import ui.ClientCommunication;
 import users.GarageHolder;
 import users.Manager;
 import assembly.Action;
@@ -40,12 +40,12 @@ import com.google.common.base.Optional;
 
 @RunWith(Parameterized.class) 
 public class AdvanceAssemblyLineHandlerTest {
-	public UIFacade uiFacade;
-	public AdvanceAssemblyLineHandler advAss;
+	public IClientCommunication uiFacade;
+	public AdvanceAssemblyLineFlowController advAss;
 	public AssemblyLine assembly;
 	public IJob job;
 
-	public AdvanceAssemblyLineHandlerTest(UIFacade ui){
+	public AdvanceAssemblyLineHandlerTest(IClientCommunication ui){
 		uiFacade = ui;
 	}
 
@@ -53,7 +53,7 @@ public class AdvanceAssemblyLineHandlerTest {
 	public void setup(){
 		Clock clock = new Clock();
 		assembly = new AssemblyLine(clock);
-		advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
+		advAss = new AdvanceAssemblyLineFlowController(uiFacade, assembly, clock);
 		CarModel model = new CarModel("it's me", new Airco("manual"), new Body("break"), new Color("red"), new Engine("bla"), new Gearbox("manual"), new Seat("vinyl grey"), new Wheel("comfort"));
 		Order order = new Order("Luigi", model, 5);
 		job = new Job(order);
@@ -127,10 +127,10 @@ public class AdvanceAssemblyLineHandlerTest {
 			ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			
-			uiFacade = new UserInterface();
+			uiFacade = new ClientCommunication();
 			Clock clock = new Clock();
 			assembly = new AssemblyLine(clock);
-			advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
+			advAss = new AdvanceAssemblyLineFlowController(uiFacade, assembly, clock);
 			
 			assembly.addJob(job);
 			
@@ -157,7 +157,7 @@ public class AdvanceAssemblyLineHandlerTest {
 			ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			
-			uiFacade = new UserInterface();
+			uiFacade = new ClientCommunication();
 			Clock clock = new Clock();
 			assembly = new AssemblyLine(clock);
 			
@@ -173,7 +173,7 @@ public class AdvanceAssemblyLineHandlerTest {
 			assembly.addJob(job);
 			((WorkBench) assembly.getWorkbenches().get(0)).setCurrentJob(Optional.fromNullable(job));
 			((WorkBench) assembly.getWorkbenches().get(0)).chooseTasksOutOfJob();
-			advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
+			advAss = new AdvanceAssemblyLineFlowController(uiFacade, assembly, clock);
 			
 			advAss.advanceAssemblyLine();
 			advAss.advanceAssemblyLine();
@@ -210,10 +210,10 @@ public class AdvanceAssemblyLineHandlerTest {
 			ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			
-			uiFacade = new UserInterface();
+			uiFacade = new ClientCommunication();
 			Clock clock = new Clock();
 			assembly = new AssemblyLine(clock);
-			advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
+			advAss = new AdvanceAssemblyLineFlowController(uiFacade, assembly, clock);
 			
 			assembly.addJob(job);
 			
@@ -240,10 +240,10 @@ public class AdvanceAssemblyLineHandlerTest {
 		ByteArrayOutputStream myout = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(myout));
 		
-		uiFacade = new UserInterface();
+		uiFacade = new ClientCommunication();
 		Clock clock = new Clock();
 		assembly = new AssemblyLine(clock);
-		advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
+		advAss = new AdvanceAssemblyLineFlowController(uiFacade, assembly, clock);
 		
 		
 		advAss.advanceAssemblyLine();
@@ -266,10 +266,10 @@ public class AdvanceAssemblyLineHandlerTest {
 			ByteArrayOutputStream myout = new ByteArrayOutputStream();
 			System.setOut(new PrintStream(myout));
 			
-			uiFacade = new UserInterface();
+			uiFacade = new ClientCommunication();
 			Clock clock = new Clock();
 			assembly = new AssemblyLine(clock);
-			advAss = new AdvanceAssemblyLineHandler(uiFacade, assembly, clock);
+			advAss = new AdvanceAssemblyLineFlowController(uiFacade, assembly, clock);
 			
 			assembly.addJob(job);
 			Manager manager = new Manager("name");
@@ -304,7 +304,7 @@ public class AdvanceAssemblyLineHandlerTest {
 	@Parameterized.Parameters
 	public static Collection<Object[]> instancesToTest() { 
 		return Arrays.asList(
-				new Object[][]{{new UserInterface()}});
+				new Object[][]{{new ClientCommunication()}});
 	}
 	
 	

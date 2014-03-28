@@ -3,6 +3,7 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -10,11 +11,11 @@ import java.util.Set;
  * A text-based user interface to interact with the system.
  *
  */
-public class UserInterface implements UIFacade{
+public class ClientCommunication implements IClientCommunication{
 	
 	private Scanner inputReader;
 	
-	public UserInterface() {
+	public ClientCommunication() {
 		this.inputReader = new Scanner(System.in);
 	}
 	
@@ -338,6 +339,28 @@ public class UserInterface implements UIFacade{
 		show(catalogueInString);
 		
 		return askQuestionLoop("Which model do you want to order?", catalogueInString);
+	}
+
+	@Override
+	public int getFlowControllerIndex(List<String> accessRights) {
+		System.out.println("Options:");
+		int i = 1;
+		for (String accessRight : accessRights) {
+			System.out.println(i + ": " + accessRight);
+			i++;
+		}
+		
+		int index = askNumber("What do you want to perform?");
+		while (index < 1 || index > accessRights.size()) {
+			invalidAnswerPrompt();
+			index = askNumber("What do you want to perform?");
+		}
+		return index;
+	}
+
+	@Override
+	public void logout() {
+		System.out.println("Session finished correctly.");		
 	}
 }
 

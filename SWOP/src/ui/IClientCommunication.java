@@ -1,14 +1,20 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-/**
- * 
+/**TODO: fix deze documentatie
  * Interface for the userinterface. Any userinterface that is attached to this program has to implement all these methods somehow.
  *
  */
-public interface UIFacade {
+public interface IClientCommunication {
+	
+	/**
+	 * presents the user with all of his possible use cases 
+	 * and the user indicates which use case to perform
+	 */
+	public int getFlowControllerIndex(List<String> accessRights);
 	
 	/**
 	 * Get the users' name.
@@ -162,5 +168,9 @@ public interface UIFacade {
 	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
 	public boolean askAdvance();
+
+	public void logout();
+	
+	
 	
 }

@@ -16,9 +16,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.OrderHandler;
-import ui.UIFacade;
-import ui.UserInterface;
+import ui.OrderFlowController;
+import ui.IClientCommunication;
+import ui.ClientCommunication;
 import users.GarageHolder;
 import clock.Clock;
 import car.Airco;
@@ -42,14 +42,14 @@ import assembly.AssemblyLine;
 @RunWith(Parameterized.class)
 public class OrderNewCarScenario {
 
-	private UIFacade ui;
-	private OrderHandler handler;
+	private IClientCommunication ui;
+	private OrderFlowController handler;
 	private OrderBook book;
 	private GarageHolder holder;
 	private Order order;
 	private CarModelCatalogue catalogue;
 
-	public OrderNewCarScenario(UIFacade ui) {
+	public OrderNewCarScenario(IClientCommunication ui) {
 		this.ui = ui;
 		holder = new GarageHolder("Stef");
 		AssemblyLine line = new AssemblyLine(new Clock());
@@ -81,8 +81,8 @@ public class OrderNewCarScenario {
 		InputStream in = new ByteArrayInputStream(input.getBytes());
 		System.setIn(in);
 
-		ui = new UserInterface();
-		handler = new OrderHandler(ui, book, catalogue);
+		ui = new ClientCommunication();
+		handler = new OrderFlowController(ui, book, catalogue);
 		book.addOrder(order);
 
 		ByteArrayOutputStream myout = new ByteArrayOutputStream();
@@ -137,8 +137,8 @@ public class OrderNewCarScenario {
 		InputStream in = new ByteArrayInputStream(input.getBytes());
 		System.setIn(in);
 
-		ui = new UserInterface();
-		handler = new OrderHandler(ui, book, catalogue);
+		ui = new ClientCommunication();
+		handler = new OrderFlowController(ui, book, catalogue);
 
 		CarModel model = new CarModel("Volvo", new Airco("manual"), new Body(
 				"sedan"), new Color("blue"), new Engine("standard"),
@@ -169,7 +169,7 @@ public class OrderNewCarScenario {
 
 	@Parameterized.Parameters
 	public static Collection<Object[]> primeNumbers() {
-		return Arrays.asList(new Object[][] { { new UserInterface() } });
+		return Arrays.asList(new Object[][] { { new ClientCommunication() } });
 	}
 
 }

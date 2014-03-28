@@ -15,33 +15,22 @@ import assembly.WorkBench;
  * Defines the program flow for the 'Perform Assembly Tasks' use case.
  *
  */
-public class AssembleHandler extends UseCaseHandler{
+public class AssembleFlowController extends UseCaseFlowController {
 
-	private UIFacade UIFacade;
-	
+	private IClientCommunication UIFacade;
+
 	/**
 	 * Construct a new AssembleHandler.
-	 * @param UIFacade
+	 * @param iClientCommunication
 	 * 			The UIfacade this AssembleHandler has to use to communicate with the user.
 	 * @param assemblyLine
 	 * 			The assemblyline at which the user can perform assemblytasks.
 	 */
-	public AssembleHandler(UIFacade UIFacade){
-		this.UIFacade = UIFacade;
+	public AssembleFlowController(IClientCommunication iClientCommunication, String accessRight) {
+		super(accessRight);
+		this.UIFacade = iClientCommunication;
 	}
 
-	/**
-	 * Indicates if the user is authorized to be part of the use case.
-	 * @param user
-	 * 			The user of which we want to get to know if he's authorized.
-	 * @return
-	 * 			A boolean indicating if the user is authorized.
-	 */
-	@Override
-	public boolean mayUseThisHandler(User user){
-		if (user instanceof Worker) return true;
-		else return false;
-	}
 
 	/**
 	 * Execute the use case.
@@ -49,11 +38,10 @@ public class AssembleHandler extends UseCaseHandler{
 	 * 			primary actor in this use case
 	 */
 	@Override
-	public void executeUseCase(User user){
-		if(mayUseThisHandler(user)){
-			WorkBench workBench = chooseWorkBench(user);
-			chooseTask(user,workBench);
-		}
+	public void executeUseCase(){
+		WorkBench workBench = chooseWorkBench(user);
+		chooseTask(user,workBench);
+
 	} 
 
 	/**

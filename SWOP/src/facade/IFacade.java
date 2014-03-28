@@ -1,6 +1,7 @@
 package facade;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import car.CarModel;
 import exception.RoleNotYetAssignedException;
@@ -42,9 +43,13 @@ public interface IFacade {
 	 */
 	public void login(String userName) throws RoleNotYetAssignedException;
 	
+	public void logout();
+	
 	public void createAndAddUser(String userName, String role);
 	
 	public ArrayList<String> getPendingOrders();
 	
 	public ArrayList<String> getCompletedOrders();
+	
+	public List<String> getAccessRights();
 }
