@@ -2,13 +2,24 @@ package car;
 
 import java.util.Map;
 
+/**
+ * Create an Immutable CarModel, only the getters are accessible.
+ *
+ */
 public class ImmutableCarModel implements ICarModel {
 
 	private ICarModel model;
-	public ImmutableCarModel(ICarModel description){
-		if(description==null)
+	
+	/**
+	 * Create an Immutable CarModel.
+	 * 
+	 * @param model
+	 * 			The mutable CarModel.
+	 */
+	public ImmutableCarModel(ICarModel model){
+		if(model==null)
 			throw new IllegalArgumentException();
-		this.model = description;
+		this.model = model;
 	}
 	@Override
 	public Map<Class<?>, CarPart> getCarParts() {

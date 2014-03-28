@@ -27,11 +27,7 @@ public class Task implements ITask {
 		this.setTaskDescription(taskDescription);
 	}
 
-	/**
-	 * Get the Actions that this Task contains.
-	 * 
-	 * @return An Immutable list of Actions.
-	 */
+	
 	public List<IAction> getActions() {
 		return new ImmutableList.Builder<IAction>().addAll(actionList).build();
 	}
@@ -66,12 +62,7 @@ public class Task implements ITask {
 			actionList.add(action);
 	}
 
-	/**
-	 * Checks if the Task is completed.
-	 * 
-	 * @return True if all Actions are completed. False if one or more Actions
-	 *         are completed.
-	 */
+	
 	public boolean isCompleted() {
 		for (IAction action : getActions())
 			if (!action.isCompleted())
@@ -79,11 +70,7 @@ public class Task implements ITask {
 		return true;
 	}
 
-	/**
-	 * Get the description of this Task.
-	 * 
-	 * @return The description of this Task.
-	 */
+	
 	public String getTaskDescription() {
 		return taskDescription;
 	}

@@ -4,14 +4,26 @@ import java.util.List;
 
 import order.IOrder;
 
+/**
+ * Create an Immutable Job, only the getters are accessible.
+ * 
+ */
 public class ImmutableJob implements IJob {
 
 	private IJob job;
-	public ImmutableJob(IJob job){
-		if(job==null)
+
+	/**
+	 * Create the Immutable Job.
+	 * 
+	 * @param job
+	 * 			The mutable Job.
+	 */
+	public ImmutableJob(IJob job) {
+		if (job == null)
 			throw new IllegalArgumentException();
 		this.job = job;
 	}
+
 	@Override
 	public IOrder getOrder() {
 		return job.getOrder();
@@ -26,19 +38,19 @@ public class ImmutableJob implements IJob {
 	public boolean isCompleted() {
 		return job.isCompleted();
 	}
-	
+
 	@Override
-	public int hashCode(){
+	public int hashCode() {
 		return job.hashCode();
 	}
-	
+
 	@Override
-	public boolean equals(Object obj){
+	public boolean equals(Object obj) {
 		return job.equals(obj);
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return job.toString();
 	}
 

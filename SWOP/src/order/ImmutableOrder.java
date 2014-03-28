@@ -2,10 +2,20 @@ package order;
 
 import car.ICarModel;
 
+/**
+ * Create an Immutable Order, only the getters are accessible.
+ *
+ */
 public class ImmutableOrder implements IOrder {
 
 	private Order order;
 
+	/**
+	 * Create an Immutable Order.
+	 * 
+	 * @param order
+	 * 			The mutable Order.
+	 */
 	public ImmutableOrder(Order order){
 		if(order==null)
 			throw new IllegalArgumentException();

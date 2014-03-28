@@ -42,10 +42,7 @@ public class CarModel implements ICarModel {
 			throw new IllegalArgumentException();
 	}
 
-	/**
-	 * This method returns a deep copy of the the hashmap including all the car
-	 * parts.
-	 */
+	
 	public Map<Class<?>, CarPart> getCarParts() {
 		return new ImmutableMap.Builder<Class<?>, CarPart>()
 				.putAll(carParts).build();
@@ -85,10 +82,7 @@ public class CarModel implements ICarModel {
 		return true;
 	}
 
-	/**
-	 * Returns the description/name of the model. Since a String is immutable, a
-	 * clone is not necessary.
-	 */
+	
 	public String getDescription() {
 		return this.description;
 	}

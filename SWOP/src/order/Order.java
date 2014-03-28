@@ -43,9 +43,7 @@ public class Order implements IOrder {
 		this.garageholder = holder;
 	}
 
-	/**
-	 * Returns the name of the garageholder.
-	 */
+	
 	public String getGarageHolder() {
 		return this.garageholder;
 	}
@@ -63,9 +61,7 @@ public class Order implements IOrder {
 		this.pendingCars = quantity2;
 	}
 
-	/**
-	 * Method for retrieving the amount of cars still to be completed.
-	 */
+	
 	public int getPendingCars() {
 		return this.pendingCars;
 	}
@@ -82,9 +78,7 @@ public class Order implements IOrder {
 		this.quantity = quantity;
 	}
 
-	/**
-	 * Method for retrieving the amount of cars ordered.
-	 */
+	
 	public int getQuantity() {
 		return this.quantity;
 	}
@@ -101,20 +95,12 @@ public class Order implements IOrder {
 		this.description = description2;
 	}
 
-	/**
-	 * Returns the name of the ordered carModel.
-	 */
+	
 	public ICarModel getDescription() {
 		return new ImmutableCarModel(description);
 	}
 
-	/**
-	 * Get the estimated time untill completion.
-	 * 
-	 * @return An array of 2 integers, with the first the days untill completion
-	 *         (1 is tomorrow), the second integer gives the time of completion
-	 *         (in minutes) on that day.
-	 */
+
 	public int[] getEstimatedTime() {
 		return this.estimatedTime;
 	}

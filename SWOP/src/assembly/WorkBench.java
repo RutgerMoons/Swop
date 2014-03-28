@@ -25,7 +25,7 @@ public class WorkBench implements IWorkBench {
 	 * @param responsibilities
 	 *            A list of strings. The types of Tasks that have to be
 	 *            performed by this WorkBench.
-	 * @param workbench_name
+	 * @param workbenchName
 	 *            A name for this workbench
 	 * @throws IllegalArgumentException
 	 *             -if workbenchName==null or isEmpty -if responsibilities==null
@@ -41,21 +41,12 @@ public class WorkBench implements IWorkBench {
 		setCurrentJob(nullJob);
 	}
 
-	/**
-	 * Get the name of the workbench
-	 * 
-	 * @return The name of the workbench
-	 */
+	
 	public String getWorkbenchName() {
 		return workbenchName;
 	}
 
-	/**
-	 * Get the current Job(Car) that is on this WorkBench.
-	 * 
-	 * @return The current Job this WorkBench is working on. If there is no Job
-	 *         available, the Job is represented by Optional.absent().
-	 */
+
 	public Optional<IJob> getCurrentJob() {
 		if(currentJob.isPresent()){
 			IJob immutable = new ImmutableJob(currentJob.get());
@@ -79,12 +70,7 @@ public class WorkBench implements IWorkBench {
 		this.currentJob = optional;
 	}
 
-	/**
-	 * Get the list of responsibilities of this WorkBench. So the types of Tasks
-	 * that have to be performed by this workbench.
-	 * 
-	 * @return A list of responsibilities.
-	 */
+	
 	public Set<String> getResponsibilities() {
 		return new ImmutableSet.Builder<String>().addAll(responsibilities)
 				.build();
@@ -118,11 +104,7 @@ public class WorkBench implements IWorkBench {
 		responsibilities.add(responibility);
 	}
 
-	/**
-	 * Get the current tasks that have to be completed by this WorkBench.
-	 * 
-	 * @return An Immutable list of tasks.
-	 */
+
 	public List<ITask> getCurrentTasks() {
 		return new ImmutableList.Builder<ITask>().addAll(currentTasks).build();
 	}
@@ -159,12 +141,7 @@ public class WorkBench implements IWorkBench {
 		setCurrentTasks(tasks);
 	}
 
-	/**
-	 * Check if the WorkBench has completed all of his Tasks.
-	 * 
-	 * @return True if all the Tasks are completed. False if one or more Tasks
-	 *         are not completed yet.
-	 */
+	
 	public boolean isCompleted() {
 		for (ITask task : getCurrentTasks())
 			if (!task.isCompleted())

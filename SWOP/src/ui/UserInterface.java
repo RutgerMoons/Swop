@@ -142,7 +142,7 @@ public class UserInterface implements UIFacade{
 
 	/**
 	 * Show the user's completed orders.
-	 * @param pendingOrders
+	 * @param completedOrders
 	 * 			An ArrayList of Strings.
 	 * 			Each String in this ArrayList represents an order. 
 	 * 			It contains the quantity and the name of the model, separated by comma's.
@@ -160,7 +160,7 @@ public class UserInterface implements UIFacade{
 	 * Show the user the order he is about to place.
 	 * @param quantity
 	 * 			An integer representing the quantity of cars the user is about to order.
-	 * @param carModel
+	 * @param model
 	 * 			A String representing the name of the carmodel the user is about to order.
 	 * @param estimatedTime
 	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
@@ -277,8 +277,11 @@ public class UserInterface implements UIFacade{
 	/**
 	 * returns the number of the workbench at which the user is currently residing
 	 * 
-	 * @param The amount of workbenches in the assemblyline
-	 * this is necessary to validate the user input
+	 * @param numberOfWorkBenches
+	 * The amount of workbenches in the assemblyline this is necessary to validate the user input
+	 * 
+	 * @param workbenches
+	 * 			The name of the workbenches.
 	 */
 	@Override
 	public int chooseWorkBench(int numberOfWorkBenches, ArrayList<String> workbenches){
@@ -302,7 +305,8 @@ public class UserInterface implements UIFacade{
 	/**
 	 * the user indicates which tasks he wants to perform
 	 * 
-	 * @param The tasks at the user's current workbench
+	 * @param tasks 
+	 * The tasks at the user's current workbench
 	 */
 	@Override
 	public int chooseTask(ArrayList<String> tasks){

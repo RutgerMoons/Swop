@@ -1,7 +1,7 @@
 package car;
 
 /**
- * Abstract class representing a part of a car. 
+ * Abstract class representing a part of a car.
  */
 public abstract class CarPart {
 
@@ -9,23 +9,23 @@ public abstract class CarPart {
 
 	/**
 	 * 
-	 * @param type One of the possible types for this CarPart
-	 * @effect the description of this object equals type,
-	 * 			| unless type == null
-	 * 			| or type is not one of the possible types for this CarPart
+	 * @param description
+	 *            The type of this carpart.
+	 * @post the description of this object equals type, | unless type == null |
+	 *       or type is not one of the possible types for this CarPart
 	 * @throws IllegalArgumentException
-	 * 			if description==null or isEmpty
+	 *             if description==null or isEmpty
 	 */
-	public void setType(String description){
-		if(description==null || description.isEmpty())
+	public void setType(String description) {
+		if (description == null || description.isEmpty())
 			throw new IllegalArgumentException();
-		this.type = description;  
+		this.type = description;
 	}
 
 	/**
 	 * Returns the description of this type.
 	 */
-	public String getType(){
+	public String getType() {
 		return type;
 	}
 
@@ -55,7 +55,5 @@ public abstract class CarPart {
 	public String toString() {
 		return getType();
 	}
-
-
 
 }

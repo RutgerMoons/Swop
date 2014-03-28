@@ -5,9 +5,20 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
+/**
+ * Create an Immutable WorkBench, only the getters are accessible.
+ *
+ */
 public class ImmutableWorkBench implements IWorkBench {
 
 	private IWorkBench bench;
+	
+	/**
+	 * Create an Immutable WorkBench.
+	 *  
+	 * @param bench
+	 * 			The mutable WorkBench.
+	 */
 	public ImmutableWorkBench(IWorkBench bench){
 		if(bench==null)
 			throw new IllegalArgumentException();

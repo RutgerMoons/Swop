@@ -21,12 +21,7 @@ public class Action implements IAction {
 		this.setDescription(description);
 	}
 
-	/**
-	 * Check if the action is completed.
-	 * 
-	 * @return True if action is fully completed. False if action is not fully
-	 *         completed.
-	 */
+	
 	public boolean isCompleted() {
 		return isCompleted;
 	}
@@ -42,11 +37,7 @@ public class Action implements IAction {
 		this.isCompleted = isCompleted;
 	}
 
-	/**
-	 * Get the description of the action.
-	 * 
-	 * @return A String representing description of the action.
-	 */
+	
 	public String getDescription() {
 		return description;
 	}

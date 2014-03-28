@@ -1,8 +1,18 @@
 package assembly;
 
+/**
+ * Create an Immutable Action, only the getters are accessible.
+ *
+ */
 public class ImmutableAction implements IAction {
 
 	private IAction action;
+	/**
+	 * Create the Immutable Action.
+	 * 
+	 * @param action
+	 * 			The mutable action.
+	 */
 	public ImmutableAction(IAction action){
 		if(action==null)
 			throw new IllegalArgumentException();

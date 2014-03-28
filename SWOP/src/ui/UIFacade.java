@@ -29,6 +29,7 @@ public interface UIFacade {
 	 * @param catalogue
 	 * 			A Set which contains Strings that represent the names of all possible car models that can be ordered.
 	 * @return
+	 * 		The name of the model.
 	 */
 	public String chooseModel(Set<String> catalogue);
 	
@@ -105,7 +106,7 @@ public interface UIFacade {
 	
 	/**
 	 * Show the user's completed orders.
-	 * @param pendingOrders
+	 * @param completedOrders
 	 * 			An ArrayList of Strings.
 	 * 			Each String in this ArrayList represents an order. 
 	 * 			It contains the quantity and the name of the model, separated by comma's.

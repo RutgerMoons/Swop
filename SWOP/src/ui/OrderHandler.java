@@ -146,8 +146,8 @@ public class OrderHandler extends UseCaseHandler{
 
 	/**
 	 * Shows the new order the user has just placed (with estimated completion time)
-	 * @param user
 	 * @param order
+	 * 			The order you want to show.
 	 */
 	public void showNewOrder(Order order){
 		UIFacade.showOrder(order.getQuantity(), order.getDescription().toString(), order.getEstimatedTime());
