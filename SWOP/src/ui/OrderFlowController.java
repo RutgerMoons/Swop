@@ -41,7 +41,7 @@ public class OrderFlowController extends UseCaseFlowController{
 	@Override
 	public void executeUseCase() throws IllegalArgumentException{
 		showOrders(user);
-		Order order = placeNewOrder(user);
+		Order order = placeNewOrder(user); 
 
 		// order == null if order isn't confirmed by user
 		if(order != null) {

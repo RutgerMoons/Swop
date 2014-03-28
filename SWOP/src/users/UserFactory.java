@@ -38,7 +38,7 @@ public class UserFactory {
 		if (userName == null) {
 			throw new IllegalArgumentException();
 		}
-		ArrayList<String> accessRights = new ArrayList<String>(Arrays.asList("Advance assemblyLine"));
+		ArrayList<String> accessRights = new ArrayList<String>(Arrays.asList("Advance assemblyline"));
 		return new Manager(userName, accessRights);
 	}
 	

@@ -11,6 +11,9 @@ public abstract class UseCaseFlowController {
 	private final String accessRight;
 	
 	public UseCaseFlowController(String accessRight){
+		if (accessRight == null) {
+			throw new NullPointerException();
+		}
 		this.accessRight = accessRight;
 	}
 	
