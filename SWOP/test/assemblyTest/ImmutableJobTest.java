@@ -33,7 +33,7 @@ public class ImmutableJobTest {
 
 		Job job = new Job(new Order("Stef", model, 1));
 		IJob immutable = new ImmutableJob(job);
-		assertEquals(model, immutable.getOrder().getDescription());
+		assertEquals(immutable.getOrder().getDescription(), model);
 		List<ITask> tasks = new ArrayList<>();
 		tasks.add(new Task("Test"));
 		job.setTasks(tasks);

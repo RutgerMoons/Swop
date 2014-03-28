@@ -1,11 +1,11 @@
 package car;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public interface ICarModel {
 
 	
-	public HashMap<Class<?>,CarPart> getCarParts();
+	public Map<Class<?>, CarPart> getCarParts();
 	
 	public String getDescription();
 }

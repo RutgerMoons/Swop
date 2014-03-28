@@ -81,9 +81,8 @@ public class AssemblyLine {
 	 * @return A list of IWorkBenches.
 	 */
 	public List<IWorkBench> getWorkbenches() {
-		ImmutableList<IWorkBench> immutable = new ImmutableList.Builder<IWorkBench>()
-				.addAll(workbenches).build();
-		return immutable;
+		return new ImmutableList.Builder<IWorkBench>().addAll(workbenches)
+				.build();
 	}
 
 	/**
@@ -106,9 +105,7 @@ public class AssemblyLine {
 	 * @return A list representing the current jobs.
 	 */
 	public List<IJob> getCurrentJobs() {
-		ImmutableList<IJob> immutable = new ImmutableList.Builder<IJob>().addAll(
-				currentJobs).build();
-		return immutable;
+		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
 	}
 
 	/**
@@ -315,7 +312,7 @@ public class AssemblyLine {
 
 			jobs.add(job);
 		}
-		return jobs;
+		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
 
 	/**
@@ -416,9 +413,9 @@ public class AssemblyLine {
 		for (IWorkBench bench : getWorkbenches()) {
 			WorkBench copy = new WorkBench(bench.getResponsibilities(),
 					bench.getWorkbenchName());
-			copy.setCurrentJob(bench.getCurrentJob()); 
+			copy.setCurrentJob(bench.getCurrentJob());
 			copy.setCurrentTasks(bench.getCurrentTasks());
-			clones.add(copy); 
+			clones.add(copy);
 		}
 		line.setWorkbenches(clones);
 		try {

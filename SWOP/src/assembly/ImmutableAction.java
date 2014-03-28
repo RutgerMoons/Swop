@@ -2,8 +2,8 @@ package assembly;
 
 public class ImmutableAction implements IAction {
 
-	private Action action;
-	public ImmutableAction(Action action){
+	private IAction action;
+	public ImmutableAction(IAction action){
 		if(action==null)
 			throw new IllegalArgumentException();
 		this.action = action;

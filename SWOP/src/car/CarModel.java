@@ -1,8 +1,9 @@
 package car;
 
 import java.util.HashMap;
-import java.util.Set;
-import java.util.Map.Entry;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Class representing a certain carmodel. Each carmodel has all the essential
@@ -45,20 +46,9 @@ public class CarModel implements ICarModel {
 	 * This method returns a deep copy of the the hashmap including all the car
 	 * parts.
 	 */
-	public HashMap<Class<?>, CarPart> getCarParts() {
-		return copy(carParts);
-	}
-
-	/**
-	 * Method that returns a deep clone of the given hashmap.
-	 */
-	private HashMap<Class<?>, CarPart> copy(HashMap<Class<?>, CarPart> carParts2) {
-		HashMap<Class<?>, CarPart> newMap = new HashMap<Class<?>, CarPart>();
-		Set<Entry<Class<?>, CarPart>> set1 = carParts2.entrySet();
-		for (Entry<Class<?>, CarPart> entry : set1) {
-			newMap.put(entry.getKey(), entry.getValue());
-		}
-		return newMap;
+	public Map<Class<?>, CarPart> getCarParts() {
+		return new ImmutableMap.Builder<Class<?>, CarPart>()
+				.putAll(carParts).build();
 	}
 
 	/**

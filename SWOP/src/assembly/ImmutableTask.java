@@ -4,9 +4,9 @@ import java.util.List;
 
 public class ImmutableTask implements ITask{
 
-	private Task task;
+	private ITask task;
 
-	public ImmutableTask(Task task){
+	public ImmutableTask(ITask task){
 		if(task==null)
 			throw new IllegalArgumentException();
 		this.task = task;

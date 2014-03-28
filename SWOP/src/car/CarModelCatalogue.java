@@ -1,17 +1,10 @@
 package car;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSetMultimap;
-import com.google.common.collect.Multimap;
 
 /**
  * A class representing a catalogue consisting out of carmodels.
@@ -38,9 +31,8 @@ public class CarModelCatalogue {
 	 * Returns an immutable Map of carmodels with their names.
 	 */
 	public Map<String, CarModel> getCatalogue() {
-		ImmutableMap<String, CarModel> immutable = new ImmutableMap.Builder<String, CarModel>()
+		return new ImmutableMap.Builder<String, CarModel>()
 				.putAll(data).build();
-		return immutable;
 	}
 
 	/**

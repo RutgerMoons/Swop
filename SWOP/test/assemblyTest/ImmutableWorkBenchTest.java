@@ -57,7 +57,7 @@ public class ImmutableWorkBenchTest {
 		bench.setCurrentJob(jobOptional);
 		bench.chooseTasksOutOfJob();
 		
-		assertEquals(job, immutable.getCurrentJob().get());
+		assertEquals(immutable.getCurrentJob().get(), job );
 		assertEquals(task, immutable.getCurrentTasks().get(0));
 		assertEquals(bench.toString(), immutable.toString());
 		assertFalse(immutable.isCompleted());

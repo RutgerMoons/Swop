@@ -211,7 +211,7 @@ public class AssemblyLineTest{
 		line.addJob(job);
 		line.addWorkBench(bench);
 		line.advance();
-		assertEquals(job, bench.getCurrentJob().get());
+		assertEquals(bench.getCurrentJob().get(), job);
 	}
 
 	@Test
@@ -224,9 +224,9 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.advance();
-		assertEquals(job, bench1.getCurrentJob().get());
+		assertEquals(bench1.getCurrentJob().get(), job);
 		line.advance();
-		assertEquals(job, bench2.getCurrentJob().get());
+		assertEquals(bench2.getCurrentJob().get(), job);
 	}
 
 
@@ -242,10 +242,10 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.advance();
-		assertEquals(job1, bench1.getCurrentJob().get());
+		assertEquals(bench1.getCurrentJob().get(), job1);
 		line.advance();
-		assertEquals(job2, bench1.getCurrentJob().get());
-		assertEquals(job1, bench2.getCurrentJob().get());
+		assertEquals(bench1.getCurrentJob().get(), job2);
+		assertEquals(bench2.getCurrentJob().get(), job1);
 	}
 
 	@Test
@@ -263,9 +263,9 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
 		line.advance();
-		assertEquals(job, bench1.getCurrentJob().get());
+		assertEquals(bench1.getCurrentJob().get(), job);
 		line.advance();
-		assertEquals(job, bench2.getCurrentJob().get());
+		assertEquals(bench2.getCurrentJob().get(), job);
 		action.setCompleted(true);
 		line.advance();
 		assertEquals(0, line.getCurrentJobs().size());
@@ -376,7 +376,7 @@ public class AssemblyLineTest{
 		line.advance();
 		line.calculateEstimatedTime(order);
 		assertEquals(2, order.getEstimatedTime()[0]);
-		assertEquals(beginTime + 720, order.getEstimatedTime()[1]);
+		assertEquals(beginTime + 780, order.getEstimatedTime()[1]);
 	}
 
 

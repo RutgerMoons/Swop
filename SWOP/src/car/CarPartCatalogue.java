@@ -1,13 +1,6 @@
 package car;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.Map.Entry;
-
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
@@ -31,9 +24,7 @@ public class CarPartCatalogue {
 	 * note: the description of CarPart cannot equal null
 	 */
 	public boolean isValidCarPart(CarPart carPart) {
-		return carPart != null && // carPartCatalogue.get(carPart.getClass()).contains(carPart.getDescription());
-				// }
-				carPartCatalogue.get(carPart.getClass()).contains(carPart);
+		return carPart != null && carPartCatalogue.get(carPart.getClass()).contains(carPart);
 	}
 
 	/**
@@ -52,10 +43,9 @@ public class CarPartCatalogue {
 	/**
 	 * Returns a deep copy clone of the carPartCatalogue.
 	 */
-	public ImmutableMultimap<Class<?>, CarPart> getMap() {
-		ImmutableMultimap<Class<?>, CarPart> copy = new ImmutableSetMultimap.Builder<Class<?>, CarPart>()
+	public Multimap<Class<?>, CarPart> getMap() {
+		return new ImmutableSetMultimap.Builder<Class<?>, CarPart>()
 				.putAll(this.carPartCatalogue).build();
-		return copy;
 	}
 
 }

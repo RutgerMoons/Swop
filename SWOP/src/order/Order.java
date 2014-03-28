@@ -3,6 +3,7 @@ package order;
 import java.util.Arrays;
 
 import car.ICarModel;
+import car.ImmutableCarModel;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes
@@ -104,7 +105,7 @@ public class Order implements IOrder {
 	 * Returns the name of the ordered carModel.
 	 */
 	public ICarModel getDescription() {
-		return this.description;
+		return new ImmutableCarModel(description);
 	}
 
 	/**

@@ -14,6 +14,7 @@ import car.CarPartCatalogue;
 import car.CarPartCatalogueFiller;
 
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 
 
 public class CarPartCatalogueTest {
@@ -55,7 +56,7 @@ public class CarPartCatalogueTest {
 		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(cat);
 		filler.initializeCarParts();
 		cat.addCarPart(Airco.class, new Airco("manual"));
-		ImmutableMultimap<Class<?>, CarPart> map = cat.getMap();
+		Multimap<Class<?>, CarPart> map = cat.getMap();
 		//System.out.println(map.toString());
 		assertEquals(7,map.keySet().size());
 		

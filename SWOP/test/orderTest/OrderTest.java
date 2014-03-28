@@ -30,7 +30,7 @@ public class OrderTest {
 	public void test1Constructor(){
 		Order order = new Order("Mario",model,3);
 		assertNotNull(order);
-		assertEquals(model,order.getDescription());
+		assertEquals(order.getDescription(), model);
 		assertEquals("Mario",order.getGarageHolder());
 		assertEquals(3,order.getQuantity());
 		assertEquals(3, order.getPendingCars());

@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
  * Represents a single task that contains a certain amount of Actions.
  * 
  */
-public class Task implements ITask{
+public class Task implements ITask {
 
 	private List<IAction> actionList;
 	private String taskDescription;
@@ -19,8 +19,8 @@ public class Task implements ITask{
 	 * 
 	 * @param taskDescription
 	 *            The description you want to give to this Task.
-	 * @throws	IllegalArgumentException
-	 * 			if taskDescription==null or isEmpty.
+	 * @throws IllegalArgumentException
+	 *             if taskDescription==null or isEmpty.
 	 */
 	public Task(String taskDescription) {
 		setActions(new ArrayList<IAction>());
@@ -33,9 +33,7 @@ public class Task implements ITask{
 	 * @return An Immutable list of Actions.
 	 */
 	public List<IAction> getActions() {
-		ImmutableList<IAction> immutable = new ImmutableList.Builder<IAction>()
-				.addAll(actionList).build();
-		return immutable;
+		return new ImmutableList.Builder<IAction>().addAll(actionList).build();
 	}
 
 	/**

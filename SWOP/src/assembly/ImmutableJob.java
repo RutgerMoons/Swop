@@ -6,8 +6,8 @@ import order.IOrder;
 
 public class ImmutableJob implements IJob {
 
-	private Job job;
-	public ImmutableJob(Job job){
+	private IJob job;
+	public ImmutableJob(IJob job){
 		if(job==null)
 			throw new IllegalArgumentException();
 		this.job = job;

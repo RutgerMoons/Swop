@@ -26,7 +26,7 @@ public class ImmutableOrderTest {
 				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
 		Order order = new Order("Mario",model,3);
 		IOrder immutable = new ImmutableOrder(order);
-		assertEquals(order.getDescription(), immutable.getDescription());
+		assertEquals(immutable.getDescription(), model);
 		assertEquals(order.getEstimatedTime(), immutable.getEstimatedTime());
 		assertEquals(order.getGarageHolder(), immutable.getGarageHolder());
 		assertEquals(order.getPendingCars(), immutable.getPendingCars());

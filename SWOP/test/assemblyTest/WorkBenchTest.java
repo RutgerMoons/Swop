@@ -56,7 +56,7 @@ public class WorkBenchTest {
 		IJob job = new Job(new Order("Jef", model, 1));
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		assertNotNull(workBench.getCurrentJob());
-		assertEquals(job, workBench.getCurrentJob().get());
+		assertEquals(workBench.getCurrentJob().get(), job);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)

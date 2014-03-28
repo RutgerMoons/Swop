@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Represents a WorkBench from an assemblyline.
@@ -27,8 +28,7 @@ public class WorkBench implements IWorkBench {
 	 * @param workbench_name
 	 *            A name for this workbench
 	 * @throws IllegalArgumentException
-	 *             -if workbenchName==null or isEmpty
-	 *             -if responsibilities==null
+	 *             -if workbenchName==null or isEmpty -if responsibilities==null
 	 */
 	public WorkBench(Set<String> responsibilities, String workbenchName) {
 		if (workbenchName == null || workbenchName.isEmpty()) {
@@ -57,6 +57,11 @@ public class WorkBench implements IWorkBench {
 	 *         available, the Job is represented by Optional.absent().
 	 */
 	public Optional<IJob> getCurrentJob() {
+		if(currentJob.isPresent()){
+			IJob immutable = new ImmutableJob(currentJob.get());
+			Optional<IJob> job = Optional.fromNullable(immutable);
+			return job;
+		}
 		return currentJob;
 	}
 
@@ -81,7 +86,8 @@ public class WorkBench implements IWorkBench {
 	 * @return A list of responsibilities.
 	 */
 	public Set<String> getResponsibilities() {
-		return responsibilities;
+		return new ImmutableSet.Builder<String>().addAll(responsibilities)
+				.build();
 	}
 
 	/**
@@ -109,7 +115,7 @@ public class WorkBench implements IWorkBench {
 	public void addResponsibility(String responibility) {
 		if (responibility == null || responibility.isEmpty())
 			throw new IllegalArgumentException();
-		getResponsibilities().add(responibility);
+		responsibilities.add(responibility);
 	}
 
 	/**
@@ -118,9 +124,7 @@ public class WorkBench implements IWorkBench {
 	 * @return An Immutable list of tasks.
 	 */
 	public List<ITask> getCurrentTasks() {
-		ImmutableList<ITask> immutable = new ImmutableList.Builder<ITask>()
-				.addAll(currentTasks).build();
-		return immutable;
+		return new ImmutableList.Builder<ITask>().addAll(currentTasks).build();
 	}
 
 	/**

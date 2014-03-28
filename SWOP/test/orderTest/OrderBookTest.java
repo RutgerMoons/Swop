@@ -11,6 +11,8 @@ import order.OrderBook;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Multimap;
+
 import clock.Clock;
 import car.Airco;
 import car.Body;
@@ -49,17 +51,13 @@ public class OrderBookTest {
 		assertFalse(orderBook.getPendingOrders().isEmpty());
 		Order order2 = new Order("Mario",model2,2);
 		orderBook.addOrder(order2);
-		assertEquals(1,orderBook.getPendingOrders().size());
+		assertEquals(1,orderBook.getPendingOrders().keySet().size());
 		assertEquals(2,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		orderBook.updateOrderBook(order2);
 		assertEquals(1,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		assertEquals(1,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
 		orderBook.updateOrderBook(order);
 		assertEquals(0,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
-		assertEquals(2,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
-		HashMap<String,ArrayList<Order>> test = orderBook.getCompletedOrders();	 
-		test.get(order.getGarageHolder()).remove(0);
-		assertEquals(1,test.get(order.getGarageHolder()).size());
 		assertEquals(2,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
 	}
 

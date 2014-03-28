@@ -1,17 +1,17 @@
 package car;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class ImmutableCarModel implements ICarModel {
 
-	private CarModel model;
-	public ImmutableCarModel(CarModel model){
-		if(model==null)
+	private ICarModel model;
+	public ImmutableCarModel(ICarModel description){
+		if(description==null)
 			throw new IllegalArgumentException();
-		this.model = model;
+		this.model = description;
 	}
 	@Override
-	public HashMap<Class<?>, CarPart> getCarParts() {
+	public Map<Class<?>, CarPart> getCarParts() {
 		return model.getCarParts();
 	}
 

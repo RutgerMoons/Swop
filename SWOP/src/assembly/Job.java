@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableList;
  * Represents a Job. A Job is actually 1 car.
  * 
  */
-public class Job implements IJob{
+public class Job implements IJob {
 
 	private IOrder order;
 	private List<ITask> taskList;
@@ -24,7 +24,7 @@ public class Job implements IJob{
 	 * @param order
 	 *            The order on which the Job is based.
 	 * @throws IllegalArgumentException
-	 * 			if order==null
+	 *             if order==null
 	 */
 	public Job(IOrder order) {
 		setOrder(order);
@@ -61,9 +61,7 @@ public class Job implements IJob{
 	 * @return An Immutable list of tasks.
 	 */
 	public List<ITask> getTasks() {
-		ImmutableList<ITask> imutableList = new ImmutableList.Builder<ITask>()
-				.addAll(taskList).build();
-		return imutableList;
+		return new ImmutableList.Builder<ITask>().addAll(taskList).build();
 	}
 
 	/**

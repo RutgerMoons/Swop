@@ -1,6 +1,5 @@
 package order;
 
-import car.CarModel;
 import car.ICarModel;
 
 public interface IOrder {

@@ -7,8 +7,8 @@ import com.google.common.base.Optional;
 
 public class ImmutableWorkBench implements IWorkBench {
 
-	private WorkBench bench;
-	public ImmutableWorkBench(WorkBench bench){
+	private IWorkBench bench;
+	public ImmutableWorkBench(IWorkBench bench){
 		if(bench==null)
 			throw new IllegalArgumentException();
 		this.bench = bench;

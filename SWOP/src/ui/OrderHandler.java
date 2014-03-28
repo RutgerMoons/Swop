@@ -1,6 +1,7 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import order.Order;
 import order.OrderBook;
@@ -73,14 +74,14 @@ public class OrderHandler extends UseCaseHandler{
 	 * @param user
 	 */
 	public void showOrders(User user){
-		ArrayList<Order> pendingOrders;
-		ArrayList<Order> completedOrders;
+		List<Order> pendingOrders;
+		List<Order> completedOrders;
 		ArrayList<String> pendingOrdersStrings = new ArrayList<String>();
 		ArrayList<String> completedOrdersStrings = new ArrayList<String>();
 
 		if(this.orderBook.getPendingOrders().containsKey(user.getName()) &&
 				!this.orderBook.getPendingOrders().get(user.getName()).isEmpty()) {
-			pendingOrders = this.orderBook.getPendingOrders().get(user.getName());
+			pendingOrders = (List<Order>) this.orderBook.getPendingOrders().get(user.getName());
 			for(Order order: pendingOrders){
 				pendingOrdersStrings.add(order.toString());
 			}
@@ -90,7 +91,7 @@ public class OrderHandler extends UseCaseHandler{
 		}
 
 		if(this.orderBook.getCompletedOrders().containsKey(user.getName())) {
-			completedOrders = this.orderBook.getCompletedOrders().get(user.getName());
+			completedOrders = (List<Order>) this.orderBook.getCompletedOrders().get(user.getName());
 			for(Order order: completedOrders){
 				completedOrdersStrings.add(order.toString());
 			}
