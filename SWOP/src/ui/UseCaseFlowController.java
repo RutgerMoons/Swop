@@ -10,9 +10,9 @@ import facade.IFacade;
  */
 public abstract class UseCaseFlowController {
 	
-	private final String accessRight;
-	private IClientCommunication clientCommunication;
-	private IFacade iFacade;
+	protected final String accessRight;
+	protected IClientCommunication clientCommunication;
+	protected IFacade facade;
 	
 	public UseCaseFlowController(String accessRight, IClientCommunication clientCommunication, IFacade iFacade){
 		if (accessRight == null || clientCommunication == null || iFacade == null) {
@@ -20,7 +20,7 @@ public abstract class UseCaseFlowController {
 		}
 		this.accessRight = accessRight;
 		this.clientCommunication = clientCommunication;
-		this.iFacade = iFacade;
+		this.facade = iFacade;
 	}
 	
 	/**

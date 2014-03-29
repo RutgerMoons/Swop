@@ -11,7 +11,7 @@ import facade.IFacade;
  */
 public class AssemAssist {
 	
-	private static IFacade iFacade;
+	private static IFacade facade;
 	private static ArrayList<UseCaseFlowController> flowControllers;
 	private static UserFlowController userFlowController;
 	private static ClientCommunication clientCommunication;
@@ -23,10 +23,10 @@ public class AssemAssist {
 	public static void initializeData() {
 
 		clientCommunication = new ClientCommunication();
-		iFacade = new Facade();
-		FlowControllerFactory flowControllerFactory = new FlowControllerFactory(clientCommunication);
+		facade = new Facade();
+		FlowControllerFactory flowControllerFactory = new FlowControllerFactory(clientCommunication, facade);
 		flowControllers = flowControllerFactory.createFlowControllers();
-		userFlowController = new UserFlowController(clientCommunication, iFacade, flowControllers);
+		userFlowController = new UserFlowController(clientCommunication, facade, flowControllers);
 	}
 
 	public static void main(String[] args) {

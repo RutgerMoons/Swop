@@ -17,15 +17,12 @@ import facade.IFacade;
  */
 public class AssembleFlowController extends UseCaseFlowController {
 
-	private IClientCommunication clientCommunication;
-	private IFacade iFacade;
-
 	/**
 	 * Construct a new AssembleHandler.
 	 * @param iClientCommunication
 	 * 			The UIfacade this AssembleHandler has to use to communicate with the user.
 	 */
-	public AssembleFlowController(IClientCommunication iClientCommunication, Facade facade,  String accessRight){
+	public AssembleFlowController(String accessRight, IClientCommunication iClientCommunication, IFacade facade) {
 		super(accessRight, iClientCommunication, facade);
 	}
 
@@ -44,7 +41,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * Get the workbench at which the user wants to perform tasks.
 	 */
 	public void chooseWorkBench(){
-		ArrayList<String> workbenches = iFacade.getWorkBenchNames();
+		ArrayList<String> workbenches = facade.getWorkBenchNames();
 		int workbenchIndex = this.clientCommunication.chooseWorkBench(workbenches.size(), workbenches) - 1;
 		chooseTask(workbenchIndex);
 	}
@@ -54,7 +51,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * 
 	 */
 	public void chooseTask(int workbenchIndex){
-		ArrayList<String> tasksAtWorkbench = iFacade.getTasksOfChosenWorkBench(workbenchIndex);
+		ArrayList<String> tasksAtWorkbench = facade.getTasksOfChosenWorkBench(workbenchIndex);
 		if(tasksAtWorkbench.isEmpty()){
 			clientCommunication.showWorkBenchCompleted();
 			if(clientCommunication.askContinue())
@@ -64,7 +61,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 			int chosenTaskNumber = this.clientCommunication.chooseTask(tasksAtWorkbench)-1;
 			this.clientCommunication.showChosenTask(tasksAtWorkbench.get(chosenTaskNumber).toString());
 			this.clientCommunication.askFinished();
-			iFacade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber);
+			facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber);
 			chooseTask(workbenchIndex);
 		}
 	}

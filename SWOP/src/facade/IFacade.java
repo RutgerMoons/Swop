@@ -11,30 +11,35 @@ import exception.RoleNotYetAssignedException;
 
 public interface IFacade {
 
+	public void advanceAssemblyLine() throws IllegalStateException;
+	
+	public void advanceClock(int time);
+	
 	public boolean canAssemblyLineAdvance();
 	
-	public ArrayList<Integer> getBlockingWorkBenches();
-	
-	public void advanceAssemblyLine();
-	
-	public void advanceClock(int[] time);
-	
-	public void startNewDay();
-	
-	public ArrayList<String> getWorkBenchNames();
-	
-	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex);
-	
 	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex);
+	
+	public void createAndAddUser(String userName, String role);
+	
+	public List<String> getAccessRights();
+	
+	public String getAssemblyLineAsString();
+	
+	public ArrayList<Integer> getBlockingWorkBenches();
 	
 	public String getCarModelFromCatalogue(String carModelName) throws IllegalArgumentException;
 	
 	public Set<String> getCarModels();
 	
-	/**
-	 * creates a new order and returns the estimated time
-	 */
-	public int[] processOrder(String carModelName, int quantity);
+	public ArrayList<String> getCompletedOrders() throws NoCompletedOrdersException;
+	
+	public String getFutureAssemblyLineAsString();
+	
+	public ArrayList<String> getPendingOrders() throws NoPendingOrdersException;
+	
+	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex);
+	
+	public ArrayList<String> getWorkBenchNames();
 	
 	/*
 	 * login:
@@ -50,11 +55,10 @@ public interface IFacade {
 	
 	public void logout();
 	
-	public void createAndAddUser(String userName, String role);
+	/**
+	 * creates a new order and returns the estimated time
+	 */
+	public int[] processOrder(String carModelName, int quantity);
 	
-	public ArrayList<String> getPendingOrders() throws NoPendingOrdersException;
-	
-	public ArrayList<String> getCompletedOrders() throws NoCompletedOrdersException;
-	
-	public List<String> getAccessRights();
+	public void startNewDay();
 }

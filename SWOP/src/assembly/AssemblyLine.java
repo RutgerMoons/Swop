@@ -452,4 +452,21 @@ public class AssemblyLine {
 		}
 		return assemblyLineString.replaceFirst(",", "");
 	}
+	
+	public boolean canAdvance() {
+		List<IWorkBench> workBenches = getWorkbenches();
+		for (int i = 0; i < workBenches.size(); i++)
+			if(!workBenches.get(i).isCompleted())
+				return false;
+		return true;
+	}
+	
+	public ArrayList<Integer> getBlockingWorkBenches() {
+		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
+		List<IWorkBench> workBenches = getWorkbenches();
+		for (int i = 0; i < workBenches.size(); i++)
+			if(!workBenches.get(i).isCompleted())
+				notCompletedBenches.add(i+1);
+		return notCompletedBenches;
+	}
 }

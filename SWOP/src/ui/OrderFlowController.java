@@ -12,20 +12,16 @@ import facade.IFacade;
  * Defines the program flow for the 'Order New Car' use case.
  *
  */
-public class OrderFlowController extends UseCaseFlowController{
-
-	private IClientCommunication clientCommunication;
-	private IFacade iFacade;
+public class OrderFlowController extends UseCaseFlowController {
 
 	/**
 	 * Construct a new OrderHandler
 	 * @param iClientCommunication
 	 * 			The UIfacade this OrderHandler has to use to communicate with the user.
 	 */
-	public OrderFlowController (IClientCommunication iClientCommunication, Facade facade,  String accessRight){
+	public OrderFlowController(String accessRight, IClientCommunication iClientCommunication, IFacade facade) {
 		super(accessRight, iClientCommunication, facade);
 	}
-
 
 	/**
 	 * Execute the use case.
@@ -41,9 +37,9 @@ public class OrderFlowController extends UseCaseFlowController{
 	 */
 	public void showOrders(){
 		try {
-			ArrayList<String> pendingOrders = iFacade.getPendingOrders();
+			ArrayList<String> pendingOrders = facade.getPendingOrders();
 			this.clientCommunication.showPendingOrders(pendingOrders);
-			ArrayList<String> completedOrders = iFacade.getCompletedOrders();
+			ArrayList<String> completedOrders = facade.getCompletedOrders();
 			this.clientCommunication.showCompletedOrders(completedOrders);
 		} catch (NoPendingOrdersException e) {
 			this.clientCommunication.showPendingOrders(null);
@@ -61,9 +57,9 @@ public class OrderFlowController extends UseCaseFlowController{
 			this.executeUseCase();
 		}
 		else{
-			String model = clientCommunication.chooseModel(iFacade.getCarModels());
+			String model = clientCommunication.chooseModel(facade.getCarModels());
 			// Om ��n of andere reden vind ie het niet nodig om de IllegalArgument te catchen?
-			String realModel = iFacade.getCarModelFromCatalogue(model);
+			String realModel = facade.getCarModelFromCatalogue(model);
 			int quantity = clientCommunication.getQuantity();
 			int[] estimatedTime = new int[1];
 			estimatedTime[0] = -1;
@@ -72,7 +68,7 @@ public class OrderFlowController extends UseCaseFlowController{
 				this.executeUseCase();
 			}
 			else{
-				int[] time = iFacade.processOrder(realModel, quantity);
+				int[] time = facade.processOrder(realModel, quantity);
 				clientCommunication.showOrder(quantity, realModel, time);
 			}
 		}

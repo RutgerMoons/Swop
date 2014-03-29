@@ -79,6 +79,7 @@ public class UserFlowController {
 		}
 		else {
 			useCaseHandler.executeUseCase();
+			logout();
 		}
 	}
 

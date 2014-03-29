@@ -2,11 +2,7 @@ package ui;
 
 import java.util.ArrayList;
 
-import users.Manager;
-import users.User;
-import clock.Clock;
-import facade.Facade;
-import assembly.AssemblyLine;
+import facade.IFacade;
 
 /**
  * 
@@ -14,8 +10,6 @@ import assembly.AssemblyLine;
  *
  */
 public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
-
-	private IClientCommunication UIfacade;
 
 	/**
 	 * Construct a new AdvanceAssemblyHandler.
@@ -26,10 +20,9 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 	 * @param clock
 	 * 			The clock used by the given assemblyline.
 	 */
-	public AdvanceAssemblyLineFlowController(IClientCommunication iClientCommunication, Facade facade,  String accessRight){
+	public AdvanceAssemblyLineFlowController(String accessRight, IClientCommunication iClientCommunication, IFacade facade){
 		super(accessRight, iClientCommunication, facade);
 	}
-
 
 	/**
 	 * Execute the use case.
@@ -38,11 +31,14 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 	 */
 	@Override
 	public void executeUseCase(){
-		if(this.UIfacade.askAdvance()){
+		if(this.clientCommunication.askAdvance()) {
 			showCurrentAssemblyLine();
 			showFutureAssemblyLine();
-			if(this.UIfacade.askContinue())
+			if(this.clientCommunication.askContinue())
 				advanceAssemblyLine();
+		} 
+		else {
+			
 		}
 	}
 
@@ -50,14 +46,14 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 	 * Show the user the current assemblyline.
 	 */
 	public void showCurrentAssemblyLine() {
-		this.UIfacade.showAssemblyLine(this.assemblyLine.toString(), "current");
+		this.clientCommunication.showAssemblyLine(facade.getAssemblyLineAsString(), "current");
 	}
 
 	/**
 	 * Show the user what the assemblyline would look like if he succesfully advances the assemblyline.
 	 */
 	public void showFutureAssemblyLine(){
-		this.UIfacade.showAssemblyLine(this.assemblyLine.getFutureAssemblyLine().toString(), "future");
+		this.clientCommunication.showAssemblyLine(facade.getFutureAssemblyLineAsString(), "future");
 	}
 
 	/**
@@ -65,30 +61,25 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 	 * Show which benches are preventing the assemblyline from advancing.
 	 */
 	public void advanceAssemblyLine() {
-		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
-		for (int i = 0; i < this.assemblyLine.getWorkbenches().size(); i++)
-			if(!this.assemblyLine.getWorkbenches().get(i).isCompleted())
-				notCompletedBenches.add(i+1);
-
-		if(notCompletedBenches.isEmpty()){
-			int elapsed = this.UIfacade.getElapsedTime();
+		if(facade.canAssemblyLineAdvance()){
+			int elapsed = this.clientCommunication.getElapsedTime();
 			if (elapsed >= 0) {
-				clock.advanceTime(elapsed);
+				facade.advanceClock(elapsed);
 			}
 			else {
-				clock.startNewDay();
+				facade.startNewDay();
 			}
 			try{
-				assemblyLine.advance();
+				facade.advanceAssemblyLine();
 			} catch(IllegalStateException e){
 				System.out.println("You can't advance the assemblyline, because there are no orders.");
 			}
 		}
-		else{
-			this.UIfacade.showBlockingBenches(notCompletedBenches);
+		else {
+			this.clientCommunication.showBlockingBenches(facade.getBlockingWorkBenches());
 		}
 		showCurrentAssemblyLine();
-		this.UIfacade.askFinished();
+		this.clientCommunication.askFinished();
 	}
 
 }

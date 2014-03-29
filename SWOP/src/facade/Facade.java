@@ -27,10 +27,10 @@ import exception.RoleNotYetAssignedException;
 
 public class Facade implements IFacade {
 
-	private Clock clock;
 	private AssemblyLine assemblyLine;
-	private CarPartCatalogue carPartCatalogue;
 	private CarModelCatalogue carModelCatalogue;
+	private CarPartCatalogue carPartCatalogue;
+	private Clock clock;
 	private OrderBook orderBook;
 	private User user;
 	private UserBook userBook;
@@ -55,54 +55,19 @@ public class Facade implements IFacade {
 	}
 
 	@Override
+	public void advanceAssemblyLine() throws IllegalStateException {
+		assemblyLine.advance();
+	}
+
+	@Override
+	public void advanceClock(int time) {
+		clock.advanceTime(time);
+
+	}
+
+	@Override
 	public boolean canAssemblyLineAdvance() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public ArrayList<Integer> getBlockingWorkBenches() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void advanceAssemblyLine() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void advanceClock(int[] time) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void startNewDay() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public ArrayList<String> getWorkBenchNames() {
-		ArrayList<String> workbenches = new ArrayList<String>();
-		for(IWorkBench w : this.assemblyLine.getWorkbenches()){
-			workbenches.add(w.getWorkbenchName());
-		}
-		return workbenches;
-	}
-
-	@Override
-	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex) {
-		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
-		ArrayList<String> tasks = new ArrayList<String>();
-		for(ITask task : workbench.getCurrentTasks()){
-			if(!task.isCompleted()){
-				tasks.add(task.toString());
-			}
-		}
-		return tasks;
+		return assemblyLine.canAdvance();
 	}
 
 	@Override
@@ -117,6 +82,28 @@ public class Facade implements IFacade {
 	}
 
 	@Override
+	public void createAndAddUser(String userName, String role) throws IllegalArgumentException {
+		this.user = userFactory.createUser(userName, role);
+		this.userBook.addUser(this.user);
+	}
+
+	@Override
+	public List<String> getAccessRights() {
+		return this.user.getAccessRights();
+	}
+	
+	@Override
+	public String getAssemblyLineAsString() {
+		return assemblyLine.toString();
+	}
+
+
+	@Override
+	public ArrayList<Integer> getBlockingWorkBenches() {
+		return assemblyLine.getBlockingWorkBenches();
+	}
+
+	@Override
 	public String getCarModelFromCatalogue(String carModelName) throws IllegalArgumentException{
 		for(String model : this.carModelCatalogue.getCatalogue().keySet()){
 			if(model.equalsIgnoreCase(carModelName)){
@@ -127,49 +114,8 @@ public class Facade implements IFacade {
 	}
 
 	@Override
-	public int[] processOrder(String carModelName, int quantity) {
-		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
-		Order order = new Order(user.getName(), carModel, quantity);
-		this.orderBook.addOrder(order);
-		return order.getEstimatedTime();
-	}
-
-	@Override
-	public void login(String userName) throws RoleNotYetAssignedException, IllegalArgumentException {
-		if(userName == null) {
-			throw new IllegalArgumentException();
-		}
-		if(!userBook.getUserBook().containsKey(userName)) {
-			throw new RoleNotYetAssignedException();
-		}
-
-		this.user = userBook.getUserBook().get(userName);
-	}
-
-	@Override
-	public void createAndAddUser(String userName, String role) throws IllegalArgumentException {
-		this.user = userFactory.createUser(userName, role);
-		this.userBook.addUser(this.user);
-	}
-
-	@Override
-	public void logout() {
-		this.user = null;
-	}
-
-	@Override
-	public ArrayList<String> getPendingOrders() throws NoPendingOrdersException {
-		ArrayList<String> pendingOrders = new ArrayList<String>();
-		ArrayList<Order> orders = orderBook.getPendingOrders().get(user.getName());
-		if(this.orderBook.getPendingOrders().containsKey(user) && !this.orderBook.getPendingOrders().get(user).isEmpty()){
-			for (Order order : orders){
-				pendingOrders.add(order.toString());
-			}
-			return pendingOrders;
-		}
-		else{
-			throw new NoPendingOrdersException();
-		}
+	public Set<String> getCarModels() {
+		return this.carModelCatalogue.getCatalogue().keySet();
 	}
 
 	@Override
@@ -187,14 +133,78 @@ public class Facade implements IFacade {
 	}
 
 	@Override
-	public List<String> getAccessRights() {
-		return this.user.getAccessRights();
+	public String getFutureAssemblyLineAsString() {
+		return assemblyLine.getFutureAssemblyLine().toString();
+	}
+	
+	@Override
+	public ArrayList<String> getPendingOrders() throws NoPendingOrdersException {
+		ArrayList<String> pendingOrders = new ArrayList<String>();
+		ArrayList<Order> orders = orderBook.getPendingOrders().get(user.getName());
+		if(this.orderBook.getPendingOrders().containsKey(user) && !this.orderBook.getPendingOrders().get(user).isEmpty()){
+			for (Order order : orders){
+				pendingOrders.add(order.toString());
+			}
+			return pendingOrders;
+		}
+		else{
+			throw new NoPendingOrdersException();
+		}
 	}
 
 	@Override
-	public Set<String> getCarModels() {
-		return this.carModelCatalogue.getCatalogue().keySet();
+	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex) {
+		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
+		ArrayList<String> tasks = new ArrayList<String>();
+		for(ITask task : workbench.getCurrentTasks()){
+			if(!task.isCompleted()){
+				tasks.add(task.toString());
+			}
+		}
+		return tasks;
 	}
+
+	@Override
+	public ArrayList<String> getWorkBenchNames() {
+		ArrayList<String> workbenches = new ArrayList<String>();
+		for(IWorkBench w : this.assemblyLine.getWorkbenches()){
+			workbenches.add(w.getWorkbenchName());
+		}
+		return workbenches;
+	}
+
+	@Override
+	public void login(String userName) throws RoleNotYetAssignedException, IllegalArgumentException {
+		if(userName == null) {
+			throw new IllegalArgumentException();
+		}
+		if(!userBook.getUserBook().containsKey(userName)) {
+			throw new RoleNotYetAssignedException();
+		}
+
+		this.user = userBook.getUserBook().get(userName);
+	}
+
+	@Override
+	public void logout() {
+		this.user = null;
+	}
+
+	@Override
+	public int[] processOrder(String carModelName, int quantity) {
+		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
+		Order order = new Order(user.getName(), carModel, quantity);
+		this.orderBook.addOrder(order);
+		return order.getEstimatedTime();
+	}
+
+	@Override
+	public void startNewDay() {
+		clock.startNewDay();
+
+	}
+
+
 
 
 

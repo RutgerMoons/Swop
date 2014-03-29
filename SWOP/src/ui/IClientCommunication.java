@@ -11,24 +11,25 @@ import java.util.Set;
 public interface IClientCommunication {
 	
 	/**
-	 * presents the user with all of his possible use cases 
-	 * and the user indicates which use case to perform
+	 * Ask if the user wants to advance the assemblyline.
+	 * @return
+	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	public int getFlowControllerIndex(List<String> accessRights);
+	public boolean askAdvance();
 	
 	/**
-	 * Get the users' name.
+	 * Ask the user if he wants to continue.
 	 * @return
-	 * 			A String that represents the user's name.
+	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	public String getName();
+	public boolean askContinue();
 	
 	/**
-	 * Let the user indicate which role he fulfills.
+	 * Ask if the user is finished.
 	 * @return
-	 * 			A String that represents which role the user fulfills.
+	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	public String chooseRole();
+	public String askFinished();
 	
 	/**
 	 * Choose the car model the user wants to order.
@@ -39,18 +40,21 @@ public interface IClientCommunication {
 	public String chooseModel(Set<String> catalogue);
 	
 	/**
-	 * Ask if the user is finished.
+	 * Let the user indicate which role he fulfills.
 	 * @return
-	 * 			A String that equals either "Y" (for yes) or "N" (for no).
+	 * 			A String that represents which role the user fulfills.
 	 */
-	public String askFinished();
+	public String chooseRole();
 	
 	/**
-	 * Let the user indicate how many cars he wants to order.
+	 * Let the user indicate which task he wants to perform.
+	 * @param tasks
+	 * 			ArrayList that contains Strings. Each String represents the description of one of the tasks.
 	 * @return
-	 * 			a positive integer representing the quantity
+	 * 			A strictly positive integer.
+	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
 	 */
-	public int getQuantity();
+	public int chooseTask(ArrayList<String> tasks);
 	
 	/**
 	 * Let the user indicate which workbench he's working at.
@@ -65,30 +69,31 @@ public interface IClientCommunication {
 	public int chooseWorkBench(int numberOfWorkbenches, ArrayList<String> workbenches);
 	
 	/**
-	 * Let the user indicate which task he wants to perform.
-	 * @param tasks
-	 * 			ArrayList that contains Strings. Each String represents the description of one of the tasks.
+	 * Let the user indicate how much time has passed.
 	 * @return
-	 * 			A strictly positive integer.
-	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
+	 * 			An integer representing the elapsed time (in minutes).
 	 */
-	public int chooseTask(ArrayList<String> tasks);
+	public int getElapsedTime();
 	
 	/**
-	 * Show the user the task he has chosen.
-	 * @param task
-	 * 			A String that represents the task. 
-	 * 			This String contains the task description, "Required actions:", and all the actions required.
-	 * 			Each of these elements are separated by a comma.
+	 * presents the user with all of his possible use cases 
+	 * and the user indicates which use case to perform
 	 */
-	public void showChosenTask(String task);
+	public int getFlowControllerIndex(List<String> accessRights);
 	
 	/**
-	 * Ask the user if he wants to continue.
+	 * Get the users' name.
 	 * @return
-	 * 			A String that equals either "Y" (for yes) or "N" (for no).
+	 * 			A String that represents the user's name.
 	 */
-	public boolean askContinue();
+	public String getName();
+	
+	/**
+	 * Let the user indicate how many cars he wants to order.
+	 * @return
+	 * 			a positive integer representing the quantity
+	 */
+	public int getQuantity();
 	
 	/**
 	 * Notify the user that the answer he has given is not a valid answer.
@@ -100,14 +105,35 @@ public interface IClientCommunication {
 	 */
 	public void invalidUserPrompt();
 	
+	public void logout();
+	
 	/**
-	 * Show the user's pending orders.
-	 * @param pendingOrders
-	 * 			An ArrayList of Strings.
-	 * 			Each String in this ArrayList represents an order. 
-	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
+	 * Show the user the assemblyline.
+	 * @param assemblyline
+	 * 			A String representing the assemblyline.
+	 * 			The String contains all the workbenches in the assemblyline 
+	 * 			and all the tasks at each workbench (with indication whether the task has been completed), 
+	 * 			each of them separated by a comma.
+	 * @param tense
+	 * 			String that indicates whether the other parameter is a current or future assemblyline.
 	 */
-	public void showPendingOrders(ArrayList<String> pendingOrders);
+	public void showAssemblyLine(String assemblyline, String tense);
+	
+	/**
+	 * Show the user which benches are keeping the assemblyline from advancing.
+	 * @param notCompletedBenches
+	 * 			A list of integers. Each integer represents the number of a workbench that is blocking the assemblyline.
+	 */
+	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches);
+	
+	/**
+	 * Show the user the task he has chosen.
+	 * @param task
+	 * 			A String that represents the task. 
+	 * 			This String contains the task description, "Required actions:", and all the actions required.
+	 * 			Each of these elements are separated by a comma.
+	 */
+	public void showChosenTask(String task);
 	
 	/**
 	 * Show the user's completed orders.
@@ -117,11 +143,6 @@ public interface IClientCommunication {
 	 * 			It contains the quantity and the name of the model, separated by comma's.
 	 */
 	public void showCompletedOrders(ArrayList<String> completedOrders);
-	
-	/**
-	 * Notify the user that all the tasks at the workbench he's working on are completed.
-	 */
-	public void showWorkBenchCompleted();
 	
 	//estimatedTime kan -1 zijn!! --> dan moet de estimatedTime niet geprint worden 
 	/**
@@ -137,39 +158,18 @@ public interface IClientCommunication {
 	public void showOrder(int quantity, String carModel, int[] estimatedTime);
 	
 	/**
-	 * Show the user the assemblyline.
-	 * @param assemblyline
-	 * 			A String representing the assemblyline.
-	 * 			The String contains all the workbenches in the assemblyline 
-	 * 			and all the tasks at each workbench (with indication whether the task has been completed), 
-	 * 			each of them separated by a comma.
-	 * @param tense
-	 * 			String that indicates whether the other parameter is a current or future assemblyline.
+	 * Show the user's pending orders.
+	 * @param pendingOrders
+	 * 			An ArrayList of Strings.
+	 * 			Each String in this ArrayList represents an order. 
+	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
 	 */
-	public void showAssemblyLine(String assemblyline, String tense);
-	
-	/**
-	 * Let the user indicate how much time has passed.
-	 * @return
-	 * 			An integer representing the elapsed time (in minutes).
-	 */
-	public int getElapsedTime();
-	
-	/**
-	 * Show the user which benches are keeping the assemblyline from advancing.
-	 * @param notCompletedBenches
-	 * 			A list of integers. Each integer represents the number of a workbench that is blocking the assemblyline.
-	 */
-	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches);
-	
-	/**
-	 * Ask if the user wants to advance the assemblyline.
-	 * @return
-	 * 			A String that equals either "Y" (for yes) or "N" (for no).
-	 */
-	public boolean askAdvance();
+	public void showPendingOrders(ArrayList<String> pendingOrders);
 
-	public void logout();
+	/**
+	 * Notify the user that all the tasks at the workbench he's working on are completed.
+	 */
+	public void showWorkBenchCompleted();
 	
 	
 	
