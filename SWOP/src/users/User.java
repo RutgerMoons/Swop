@@ -1,10 +1,7 @@
 package users;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import ui.UseCaseFlowController;
 
 /**
  * Represents a single User. This is an abstract class, choose 1 of it's subclasses to instantiate. 
@@ -13,15 +10,19 @@ import ui.UseCaseFlowController;
 public abstract class User {
 
 	private String name;
-	private ArrayList<String> accessRights;
+	private List<String> accessRights;
 	/**
 	 * Each user has a name. This name is given when a new User is constructed.
 	 * 
 	 * @throws IllegalArgumentException
 	 * 			if name==null or isEmpty
 	 */
-	public User(String name, List<String> accessRights){
+	public User(String name, List<String> accessRights) throws IllegalArgumentException {
+		if (accessRights == null) {
+			throw new IllegalArgumentException();
+		}
 		this.setName(name);
+		this.accessRights = accessRights;
 	}
 
 	/**
