@@ -16,9 +16,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.AssembleHandler;
-import ui.UIFacade;
-import ui.UserInterface;
+import ui.AssembleFlowController;
+import ui.IClientCommunication;
+import ui.ClientCommunication;
 import users.Worker;
 import assembly.Action;
 import assembly.AssemblyLine;
@@ -44,21 +44,21 @@ import com.google.common.base.Optional;
 @RunWith(Parameterized.class)
 public class PerformAssemblyTasksScenario {
 	
-	private UIFacade ui;
-	private AssembleHandler handler;
+	private IClientCommunication ui;
+	private AssembleFlowController handler;
 	private AssemblyLine line;
 	private IJob job;
 	private Order order;
 	private Worker worker;
 
-	public PerformAssemblyTasksScenario(UIFacade ui) {
+	public PerformAssemblyTasksScenario(IClientCommunication ui) {
 		this.ui = ui;
 	}
 
 	@Before
 	public void initialize() {
 		line = new AssemblyLine(new Clock());
-		handler = new AssembleHandler(ui, line);
+		handler = new AssembleFlowController(ui, line);
 		worker = new Worker("Mario");
 		CarModel model = new CarModel("Volkswagen", new Airco("manual"),
 				new Body("sedan"), new Color("blue"), new Engine(
@@ -95,9 +95,9 @@ public class PerformAssemblyTasksScenario {
 		InputStream in = new ByteArrayInputStream(input.getBytes());
 		System.setIn(in);
 
-		ui = new UserInterface();
+		ui = new ClientCommunication();
 		line = new AssemblyLine(new Clock());
-		handler = new AssembleHandler(ui, line);
+		handler = new AssembleFlowController(ui, line);
 		
 		WorkBench bench = (WorkBench) line.getWorkbenches().get(0);
 		bench.setCurrentJob(Optional.fromNullable(job));
@@ -148,9 +148,9 @@ public class PerformAssemblyTasksScenario {
 		InputStream in = new ByteArrayInputStream(input.getBytes());
 		System.setIn(in);
 
-		ui = new UserInterface();
+		ui = new ClientCommunication();
 		line = new AssemblyLine(new Clock());
-		handler = new AssembleHandler(ui, line);
+		handler = new AssembleFlowController(ui, line);
 		
 		WorkBench bench = (WorkBench) line.getWorkbenches().get(0);
 		bench.setCurrentJob(Optional.fromNullable(job));
@@ -181,6 +181,6 @@ public class PerformAssemblyTasksScenario {
 
 	@Parameterized.Parameters
 	public static Collection<Object[]> primeNumbers() {
-		return Arrays.asList(new Object[][] { { new UserInterface() } });
+		return Arrays.asList(new Object[][] { { new ClientCommunication() } });
 	}
 }

@@ -1,8 +1,7 @@
 package users;
 
-import java.util.ArrayList;
-
-import ui.*;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a single User. This is an abstract class, choose 1 of it's subclasses to instantiate. 
@@ -11,14 +10,19 @@ import ui.*;
 public abstract class User {
 
 	private String name;
+	private List<String> accessRights;
 	/**
 	 * Each user has a name. This name is given when a new User is constructed.
 	 * 
 	 * @throws IllegalArgumentException
 	 * 			if name==null or isEmpty
 	 */
-	public User(String name){
+	public User(String name, List<String> accessRights) throws IllegalArgumentException {
+		if (accessRights == null) {
+			throw new IllegalArgumentException();
+		}
 		this.setName(name);
+		this.accessRights = accessRights;
 	}
 
 	/**
@@ -40,12 +44,9 @@ public abstract class User {
 	}
 	
 	/**
-	 * Method for checking which handler is the right handler for the current user.
+	 * returns the access rights
 	 */
-	public UseCaseHandler getRightHandler(ArrayList<UseCaseHandler> handlers){
-		for (int i = 0; i < handlers.size(); i++) {
-			if (handlers.get(i).mayUseThisHandler(this)) return handlers.get(i);
-		}
-		return null;
+	public List<String> getAccessRights() {
+		return Collections.unmodifiableList(accessRights);
 	}
 }

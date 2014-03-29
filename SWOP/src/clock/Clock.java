@@ -35,6 +35,7 @@ public class Clock {
 		if (elapsedTime < 0) throw new IllegalArgumentException("argument can't be negative");
 		else if (this.minute + elapsedTime > MINUTESINADAY){
 			setMinutes((this.minute + elapsedTime) % MINUTESINADAY);
+			//TODO: wat als er meer dan 1 dag tegelijk advanced moet worden?
 			day++;
 		}
 		else setMinutes(this.minute + elapsedTime);
@@ -43,9 +44,9 @@ public class Clock {
 	}
 	
 	/**
-	 * Reset the clock to 0 (12am, the beginning of a day)
+	 * Reset the clock to 0 (12pm, the beginning of a day)
 	 */
-	public void reset(){
+	private void reset(){
 		this.minute = 0;
 	}
 

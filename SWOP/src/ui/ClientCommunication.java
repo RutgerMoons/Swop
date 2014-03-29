@@ -3,6 +3,7 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -10,11 +11,11 @@ import java.util.Set;
  * A text-based user interface to interact with the system.
  *
  */
-public class UserInterface implements UIFacade{
+public class ClientCommunication implements IClientCommunication{
 	
 	private Scanner inputReader;
 	
-	public UserInterface() {
+	public ClientCommunication() {
 		this.inputReader = new Scanner(System.in);
 	}
 	
@@ -142,7 +143,7 @@ public class UserInterface implements UIFacade{
 
 	/**
 	 * Show the user's completed orders.
-	 * @param completedOrders
+	 * @param pendingOrders
 	 * 			An ArrayList of Strings.
 	 * 			Each String in this ArrayList represents an order. 
 	 * 			It contains the quantity and the name of the model, separated by comma's.
@@ -160,7 +161,7 @@ public class UserInterface implements UIFacade{
 	 * Show the user the order he is about to place.
 	 * @param quantity
 	 * 			An integer representing the quantity of cars the user is about to order.
-	 * @param model
+	 * @param carModel
 	 * 			A String representing the name of the carmodel the user is about to order.
 	 * @param estimatedTime
 	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
@@ -277,11 +278,8 @@ public class UserInterface implements UIFacade{
 	/**
 	 * returns the number of the workbench at which the user is currently residing
 	 * 
-	 * @param numberOfWorkBenches
-	 * The amount of workbenches in the assemblyline this is necessary to validate the user input
-	 * 
-	 * @param workbenches
-	 * 			The name of the workbenches.
+	 * @param The amount of workbenches in the assemblyline
+	 * this is necessary to validate the user input
 	 */
 	@Override
 	public int chooseWorkBench(int numberOfWorkBenches, ArrayList<String> workbenches){
@@ -305,8 +303,7 @@ public class UserInterface implements UIFacade{
 	/**
 	 * the user indicates which tasks he wants to perform
 	 * 
-	 * @param tasks 
-	 * The tasks at the user's current workbench
+	 * @param The tasks at the user's current workbench
 	 */
 	@Override
 	public int chooseTask(ArrayList<String> tasks){
@@ -342,6 +339,28 @@ public class UserInterface implements UIFacade{
 		show(catalogueInString);
 		
 		return askQuestionLoop("Which model do you want to order?", catalogueInString);
+	}
+
+	@Override
+	public int getFlowControllerIndex(List<String> accessRights) {
+		System.out.println("Options:");
+		int i = 1;
+		for (String accessRight : accessRights) {
+			System.out.println(i + ": " + accessRight);
+			i++;
+		}
+		
+		int index = askNumber("What do you want to perform?");
+		while (index < 1 || index > accessRights.size()) {
+			invalidAnswerPrompt();
+			index = askNumber("What do you want to perform?");
+		}
+		return index;
+	}
+
+	@Override
+	public void logout() {
+		System.out.println("Session finished correctly.");		
 	}
 }
 

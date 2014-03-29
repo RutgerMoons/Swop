@@ -18,9 +18,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.AssembleHandler;
-import ui.UIFacade;
-import ui.UserInterface;
+import ui.AssembleFlowController;
+import ui.IClientCommunication;
+import ui.ClientCommunication;
 import users.GarageHolder;
 import users.Worker;
 import assembly.Action;
@@ -44,18 +44,18 @@ import com.google.common.base.Optional;
 @RunWith(Parameterized.class)
 public class AssembleHandlerTest {
 
-	private UIFacade ui;
-	private AssembleHandler handler;
+	private IClientCommunication ui;
+	private AssembleFlowController handler;
 	private AssemblyLine line;
 
-	public AssembleHandlerTest(UIFacade ui) {
+	public AssembleHandlerTest(IClientCommunication ui) {
 		this.ui = ui;
 	}
 
 	@Before
 	public void initialize() {
 		line = new AssemblyLine(new Clock());
-		handler = new AssembleHandler(ui, line);
+		handler = new AssembleFlowController(ui, line);
 	}
 
 	@Test
@@ -91,9 +91,9 @@ public class AssembleHandlerTest {
 		InputStream in = new ByteArrayInputStream(input.getBytes());
 		System.setIn(in);
 
-		ui = new UserInterface();
+		ui = new ClientCommunication();
 		line = new AssemblyLine(new Clock());
-		handler = new AssembleHandler(ui, line);
+		handler = new AssembleFlowController(ui, line);
 
 		WorkBench bench = (WorkBench) line.getWorkbenches().get(0);
 		bench.setCurrentJob(Optional.fromNullable(job));
@@ -109,6 +109,6 @@ public class AssembleHandlerTest {
 
 	@Parameterized.Parameters
 	public static Collection<Object[]> primeNumbers() {
-		return Arrays.asList(new Object[][] { { new UserInterface() } });
+		return Arrays.asList(new Object[][] { { new ClientCommunication() } });
 	}
 }
