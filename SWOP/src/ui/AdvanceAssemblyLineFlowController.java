@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import users.Manager;
 import users.User;
 import clock.Clock;
+import facade.Facade;
 import assembly.AssemblyLine;
 
 /**
@@ -25,9 +26,8 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 	 * @param clock
 	 * 			The clock used by the given assemblyline.
 	 */
-	public AdvanceAssemblyLineFlowController(IClientCommunication iClientCommunication, String accessRight) {
-		super(accessRight);
-		UIfacade = iClientCommunication;
+	public AdvanceAssemblyLineFlowController(IClientCommunication iClientCommunication, Facade facade,  String accessRight){
+		super(accessRight, iClientCommunication, facade);
 	}
 
 

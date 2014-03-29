@@ -23,9 +23,7 @@ public class OrderFlowController extends UseCaseFlowController{
 	 * 			The UIfacade this OrderHandler has to use to communicate with the user.
 	 */
 	public OrderFlowController (IClientCommunication iClientCommunication, Facade facade,  String accessRight){
-		super(accessRight);
-		this.clientCommunication = iClientCommunication;
-		this.iFacade = facade;
+		super(accessRight, iClientCommunication, facade);
 	}
 
 
@@ -64,7 +62,7 @@ public class OrderFlowController extends UseCaseFlowController{
 		}
 		else{
 			String model = clientCommunication.chooseModel(iFacade.getCarModels());
-			// Om één of andere reden vind ie het niet nodig om de IllegalArgument te catchen?
+			// Om ï¿½ï¿½n of andere reden vind ie het niet nodig om de IllegalArgument te catchen?
 			String realModel = iFacade.getCarModelFromCatalogue(model);
 			int quantity = clientCommunication.getQuantity();
 			int[] estimatedTime = new int[1];

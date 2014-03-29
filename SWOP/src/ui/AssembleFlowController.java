@@ -25,10 +25,8 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * @param iClientCommunication
 	 * 			The UIfacade this AssembleHandler has to use to communicate with the user.
 	 */
-	public AssembleFlowController(IClientCommunication iClientCommunication, Facade iFacade, String accessRight) {
-		super(accessRight);
-		this.clientCommunication = iClientCommunication;
-		this.iFacade=iFacade;
+	public AssembleFlowController(IClientCommunication iClientCommunication, Facade facade,  String accessRight){
+		super(accessRight, iClientCommunication, facade);
 	}
 
 
