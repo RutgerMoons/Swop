@@ -2,8 +2,11 @@ package facade;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import car.CarModel;
+import exception.NoCompletedOrdersException;
+import exception.NoPendingOrdersException;
 import exception.RoleNotYetAssignedException;
 
 public interface IFacade {
@@ -24,12 +27,14 @@ public interface IFacade {
 	
 	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex);
 	
-	public CarModel getCarModelFromCatalogue(String carModelName);
+	public String getCarModelFromCatalogue(String carModelName) throws IllegalArgumentException;
+	
+	public Set<String> getCarModels();
 	
 	/**
 	 * creates a new order and returns the estimated time
 	 */
-	public int[] processOrder(String userName, String carModelName, int quantity);
+	public int[] processOrder(String carModelName, int quantity);
 	
 	/*
 	 * login:
@@ -47,9 +52,9 @@ public interface IFacade {
 	
 	public void createAndAddUser(String userName, String role);
 	
-	public ArrayList<String> getPendingOrders();
+	public ArrayList<String> getPendingOrders() throws NoPendingOrdersException;
 	
-	public ArrayList<String> getCompletedOrders();
+	public ArrayList<String> getCompletedOrders() throws NoCompletedOrdersException;
 	
 	public List<String> getAccessRights();
 }

@@ -3,32 +3,32 @@ package ui;
 import java.util.ArrayList;
 
 import users.User;
-import users.Worker;
 import assembly.Action;
-import assembly.AssemblyLine;
 import assembly.IWorkBench;
 import assembly.Task;
 import assembly.WorkBench;
+import facade.Facade;
+import facade.IFacade;
 
 /**
- * 
+ * TODO : update documentatie
  * Defines the program flow for the 'Perform Assembly Tasks' use case.
  *
  */
 public class AssembleFlowController extends UseCaseFlowController {
 
-	private IClientCommunication UIFacade;
+	private IClientCommunication clientCommunication;
+	private IFacade iFacade;
 
 	/**
 	 * Construct a new AssembleHandler.
 	 * @param iClientCommunication
 	 * 			The UIfacade this AssembleHandler has to use to communicate with the user.
-	 * @param assemblyLine
-	 * 			The assemblyline at which the user can perform assemblytasks.
 	 */
-	public AssembleFlowController(IClientCommunication iClientCommunication, String accessRight) {
+	public AssembleFlowController(IClientCommunication iClientCommunication, Facade iFacade, String accessRight) {
 		super(accessRight);
-		this.UIFacade = iClientCommunication;
+		this.clientCommunication = iClientCommunication;
+		this.iFacade=iFacade;
 	}
 
 
@@ -39,68 +39,35 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 */
 	@Override
 	public void executeUseCase(){
-		WorkBench workBench = chooseWorkBench(user);
-		chooseTask(user,workBench);
-
+		chooseWorkBench();
 	} 
 
 	/**
 	 * Get the workbench at which the user wants to perform tasks.
-	 * @param user
-	 * @return
-	 * 			The workbench the user has chosen to perform tasks at.
 	 */
-	public WorkBench chooseWorkBench(User user){
-		ArrayList<String> workbenches = new ArrayList<String>();
-		for(IWorkBench w : this.assemblyLine.getWorkbenches()){
-			workbenches.add(w.getWorkbenchName());
-		}
-
-		int workbenchIndex = this.UIFacade.chooseWorkBench(assemblyLine.getWorkbenches().size(), workbenches) - 1;
-		return (WorkBench) this.assemblyLine.getWorkbenches().get(workbenchIndex);
+	public void chooseWorkBench(){
+		ArrayList<String> workbenches = iFacade.getWorkBenchNames();
+		int workbenchIndex = this.clientCommunication.chooseWorkBench(workbenches.size(), workbenches) - 1;
+		chooseTask(workbenchIndex);
 	}
 
 	/**
 	 * Let the user choose and perform a task from the tasks at the workbench he has previously chosen.
-	 * @param user
-	 * @param workbench
-	 * 			WorkBench at which the user wants to perform assemblytasks.
+	 * 
 	 */
-	public void chooseTask(User user, WorkBench workbench){
-		if(workbench.isCompleted()){
-			UIFacade.showWorkBenchCompleted();
-			if(UIFacade.askContinue())
-				executeUseCase(user);
+	public void chooseTask(int workbenchIndex){
+		ArrayList<String> tasksAtWorkbench = iFacade.getTasksOfChosenWorkBench(workbenchIndex);
+		if(tasksAtWorkbench.isEmpty()){
+			clientCommunication.showWorkBenchCompleted();
+			if(clientCommunication.askContinue())
+				executeUseCase();
 		}
-		else{		
-			ArrayList<Task> tasks = new ArrayList<Task>();
-			ArrayList<String> tasksStrings = new ArrayList<String>();
-			for (int i = 0; i < workbench.getCurrentTasks().size(); i++) {
-				if(!workbench.getCurrentTasks().get(i).isCompleted()){
-					tasks.add((Task) workbench.getCurrentTasks().get(i));
-					tasksStrings.add(workbench.getCurrentTasks().get(i).getTaskDescription());
-				}
-			}	
-			int chosenTaskNumber = this.UIFacade.chooseTask(tasksStrings)-1;
-			this.UIFacade.showChosenTask(tasks.get(chosenTaskNumber).toString());
-			endTask(user, tasks.get(chosenTaskNumber), workbench);
+		else{	
+			int chosenTaskNumber = this.clientCommunication.chooseTask(tasksAtWorkbench)-1;
+			this.clientCommunication.showChosenTask(tasksAtWorkbench.get(chosenTaskNumber).toString());
+			this.clientCommunication.askFinished();
+			iFacade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber);
+			chooseTask(workbenchIndex);
 		}
 	}
-
-	/**
-	 * End/complete the given task.
-	 * @param user
-	 * @param task
-	 * @param workbench
-	 * 			WorkBench at which the given task was performed.
-	 */
-	private void endTask(User user, Task task, WorkBench workbench){
-		this.UIFacade.askFinished();
-
-		for (int i = 0; i < task.getActions().size(); i++) {
-			((Action) task.getActions().get(i)).setCompleted(true);
-		}
-		chooseTask(user, workbench);
-	}
-
 }

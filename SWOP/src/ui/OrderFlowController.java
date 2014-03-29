@@ -2,134 +2,81 @@ package ui;
 
 import java.util.ArrayList;
 
-import order.Order;
-import order.OrderBook;
-import users.GarageHolder;
-import users.User;
-import car.CarModel;
-import car.CarModelCatalogue;
+import exception.NoCompletedOrdersException;
+import exception.NoPendingOrdersException;
+import facade.Facade;
+import facade.IFacade;
 
 /**
- * 
+ * TODO : documentatie updaten
  * Defines the program flow for the 'Order New Car' use case.
  *
  */
 public class OrderFlowController extends UseCaseFlowController{
 
-	private IClientCommunication UIFacade;
+	private IClientCommunication clientCommunication;
+	private IFacade iFacade;
 
 	/**
 	 * Construct a new OrderHandler
 	 * @param iClientCommunication
 	 * 			The UIfacade this OrderHandler has to use to communicate with the user.
-	 * @param orderBook
-	 * 			The OrderBook this OrderHandler has to access if it needs an OrderBook.
-	 * @param catalogue
-	 * 			The CarModelCatalogue from which this OrderHandler can get its possible CarModels.
 	 */
-	public OrderFlowController (IClientCommunication iClientCommunication, String accessRight){
+	public OrderFlowController (IClientCommunication iClientCommunication, Facade facade,  String accessRight){
 		super(accessRight);
-		this.UIFacade = iClientCommunication;
+		this.clientCommunication = iClientCommunication;
+		this.iFacade = facade;
 	}
 
 
 	/**
 	 * Execute the use case.
-	 * @param user
-	 * 			primary actor in this use case
 	 */
 	@Override
 	public void executeUseCase() throws IllegalArgumentException{
-		showOrders(user);
-		Order order = placeNewOrder(user); 
-
-		// order == null if order isn't confirmed by user
-		if(order != null) {
-			showNewOrder(order);
-		}
+		this.showOrders();
+		placeNewOrder(); 
 	}
 
 	/**
 	 * Shows the user's current pending (with estimated time of completion) and completed orders.
-	 * @param user
 	 */
-	public void showOrders(User user){
-		ArrayList<Order> pendingOrders;
-		ArrayList<Order> completedOrders;
-		ArrayList<String> pendingOrdersStrings = new ArrayList<String>();
-		ArrayList<String> completedOrdersStrings = new ArrayList<String>();
-
-		if(this.orderBook.getPendingOrders().containsKey(user.getName()) &&
-				!this.orderBook.getPendingOrders().get(user.getName()).isEmpty()) {
-			pendingOrders = this.orderBook.getPendingOrders().get(user.getName());
-			for(Order order: pendingOrders){
-				pendingOrdersStrings.add(order.toString());
-			}
+	public void showOrders(){
+		try {
+			ArrayList<String> pendingOrders = iFacade.getPendingOrders();
+			this.clientCommunication.showPendingOrders(pendingOrders);
+			ArrayList<String> completedOrders = iFacade.getCompletedOrders();
+			this.clientCommunication.showCompletedOrders(completedOrders);
+		} catch (NoPendingOrdersException e) {
+			this.clientCommunication.showPendingOrders(null);
+		} catch (NoCompletedOrdersException e){
+			this.clientCommunication.showCompletedOrders(null);
 		}
-		else {
-			pendingOrdersStrings = null;
-		}
-
-		if(this.orderBook.getCompletedOrders().containsKey(user.getName())) {
-			completedOrders = this.orderBook.getCompletedOrders().get(user.getName());
-			for(Order order: completedOrders){
-				completedOrdersStrings.add(order.toString());
-			}
-		}	
-		else {
-			completedOrdersStrings = null;
-		}
-
-		this.UIFacade.showPendingOrders(pendingOrdersStrings);
-		this.UIFacade.showCompletedOrders(completedOrdersStrings);
-
 	}
 
 	/**
-	 * Creates a new order. 
-	 * @param user
-	 * @return
-	 * 			Returns null if the user cancels his order somewhere in this process.
-	 * 			Otherwise, it returns the order the user has just placed.
+	 * Retrieves all the needed input of the user for processing an order.
+	 * All this information it gives to the iFacade.
 	 */
-	public Order placeNewOrder(User user){
-		boolean wantToOrder = this.UIFacade.askContinue();
-		if(!wantToOrder) {
-			return null;
+	public void placeNewOrder(){
+		if(!this.clientCommunication.askContinue()) {
+			this.executeUseCase();
 		}
 		else{
-			String model = UIFacade.chooseModel(catalogue.getCatalogue().keySet());
-
-			//TODO wat doet dit?
-			//--> 1e lijn weg
-			//--> 2e lijn: CarModel carModel = catalogue.getCatalogue().get(model);
-			// ===>hashmap in catalogue moet objecten van het type carModel bevatten, 
-			//       zo wordt ervoor gezorgd dat elk carModel maar 1 keer aangemaakt wordt, en in elk order van dat model naar dat ene object verwezen wordt
-			CarModel carModel = catalogue.getCatalogue().get(model);
-
-			int quantity = UIFacade.getQuantity();
+			String model = clientCommunication.chooseModel(iFacade.getCarModels());
+			// Om één of andere reden vind ie het niet nodig om de IllegalArgument te catchen?
+			String realModel = iFacade.getCarModelFromCatalogue(model);
+			int quantity = clientCommunication.getQuantity();
 			int[] estimatedTime = new int[1];
 			estimatedTime[0] = -1;
-			UIFacade.showOrder(quantity, carModel.toString(), estimatedTime);
-
-			if(!this.UIFacade.askContinue()){
-				executeUseCase(user);
-				return null;
+			clientCommunication.showOrder(quantity, realModel, estimatedTime);
+			if(!this.clientCommunication.askContinue()){
+				this.executeUseCase();
 			}
 			else{
-				Order order = new Order(user.getName(), carModel, quantity);
-				orderBook.addOrder(order);
-				return order;
+				int[] time = iFacade.processOrder(realModel, quantity);
+				clientCommunication.showOrder(quantity, realModel, time);
 			}
 		}
-	}
-
-	/**
-	 * Shows the new order the user has just placed (with estimated completion time)
-	 * @param user
-	 * @param order
-	 */
-	public void showNewOrder(Order order){
-		UIFacade.showOrder(order.getQuantity(), order.getDescription().toString(), order.getEstimatedTime());
 	}
 }
