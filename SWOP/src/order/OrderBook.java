@@ -33,8 +33,7 @@ public class OrderBook {
 	}
 
 	/**
-	 * Method for retrieving all the pending orders. A clone of the hashmap will
-	 * be returned.
+	 * Method for retrieving all the pending orders. An Immutable MultiMap will be returned.
 	 */
 	public Multimap<String, Order> getPendingOrders() {
 		return new ImmutableListMultimap.Builder<String, Order>().putAll(pendingOrders).build();
@@ -42,8 +41,7 @@ public class OrderBook {
 
 
 	/**
-	 * Method for retrieving all the completed orders. A clone of the hashmap
-	 * will be returned.
+	 * Method for retrieving all the completed orders. An Immutable MultiMap will be returned.
 	 */
 	public Multimap<String, Order> getCompletedOrders() {
 		return new ImmutableListMultimap.Builder<String, Order>().putAll(completedOrders).build();

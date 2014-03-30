@@ -19,7 +19,7 @@ public class AssemAssist {
 
 	/**
 	 * Initializes all datastructures that the program needs from the start.
-	 */
+	 */ 
 	public static void initializeData() {
 
 		clientCommunication = new ClientCommunication();

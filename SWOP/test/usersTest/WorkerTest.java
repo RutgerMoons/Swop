@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import ui.AssembleFlowController;
 import ui.OrderFlowController;
 import ui.UseCaseFlowController;
+import users.Manager;
 import users.Worker;
 
 public class WorkerTest {
@@ -18,24 +20,22 @@ public class WorkerTest {
 	private Worker worker;
 	@Before
 	public void initialize(){
-		worker = new Worker("Jos");
+		worker = new Worker("Jos", new ArrayList<String>(Arrays.asList(new String[] {"Complete assembly tasks"})));
 	}
 	
 	@Test
 	public void TestConstructor(){
 		assertEquals("Jos", worker.getName());
+		assertEquals("Complete assembly tasks", worker.getAccessRights().get(0));
 	}
 	
-	@Test
-	public void TestGetRightHandler(){
-		assertNull(worker.getRightHandler(new ArrayList<UseCaseFlowController>()));
-		AssembleFlowController rightHandler = new AssembleFlowController(null, null);
-		OrderFlowController wrongHandler = new OrderFlowController(null, null, null);
-		ArrayList<UseCaseFlowController> useCaseHandlers = new ArrayList<>();
-		useCaseHandlers.add(wrongHandler);
-		useCaseHandlers.add(rightHandler);
-		UseCaseFlowController returnHandler = worker.getRightHandler(useCaseHandlers);
-		assertEquals(rightHandler, returnHandler);
+	@Test (expected = IllegalArgumentException.class)
+	public void TestSetIllegalName1(){
+		new Worker("", new ArrayList<String>(Arrays.asList(new String[] {"Complete assembly tasks"})));
 	}
-
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void TestSetIllegalName2(){
+		new Worker(null, new ArrayList<String>(Arrays.asList(new String[] {"Complete assembly tasks"})));
+	}
 }

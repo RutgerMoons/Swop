@@ -1,15 +1,13 @@
 package usersTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ui.AdvanceAssemblyLineFlowController;
-import ui.OrderFlowController;
-import ui.UseCaseFlowController;
 import users.GarageHolder;
 
 public class GarageHolderTest {
@@ -17,34 +15,23 @@ public class GarageHolderTest {
 	private GarageHolder garageHolder;
 	@Before
 	public void initialize(){
-		garageHolder = new GarageHolder("Jos");
+		garageHolder = new GarageHolder("Jos", new ArrayList<String>(Arrays.asList(new String[] {"Order"})));
 	}
 	
 	@Test
 	public void TestConstructor(){
 		assertEquals("Jos", garageHolder.getName());
-	}
-	
-	@Test
-	public void TestGetRightHandler(){
-		assertNull(garageHolder.getRightHandler(new ArrayList<UseCaseFlowController>()));
-		OrderFlowController rightHandler = new OrderFlowController(null, null, null);
-		AdvanceAssemblyLineFlowController  wrongHandler = new AdvanceAssemblyLineFlowController(null, null, null);
-		ArrayList<UseCaseFlowController> useCaseHandlers = new ArrayList<>();
-		useCaseHandlers.add(wrongHandler);
-		useCaseHandlers.add(rightHandler);
-		UseCaseFlowController returnHandler = garageHolder.getRightHandler(useCaseHandlers);
-		assertEquals(rightHandler, returnHandler);
+		assertEquals("Order", garageHolder.getAccessRights().get(0));
 	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void TestSetIllegalName1(){
-		new GarageHolder("");
+		new GarageHolder("", new ArrayList<String>(Arrays.asList(new String[] {"Order"})));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void TestSetIllegalName2(){
-		new GarageHolder(null);
+		new GarageHolder(null, new ArrayList<String>(Arrays.asList(new String[] {"Order"})));
 	}
 	
 }

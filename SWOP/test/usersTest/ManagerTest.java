@@ -1,15 +1,13 @@
 package usersTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ui.AdvanceAssemblyLineFlowController;
-import ui.OrderFlowController;
-import ui.UseCaseFlowController;
 import users.Manager;
 
 public class ManagerTest {
@@ -18,23 +16,22 @@ public class ManagerTest {
 	
 	@Before
 	public void initialize(){
-		manager = new Manager("Jos");
+		manager = new Manager("Jos", new ArrayList<String>(Arrays.asList(new String[] {"Advance assemblyline"})));
 	}
 
 	@Test
 	public void TestConstructor(){
 		assertEquals("Jos", manager.getName());
+		assertEquals("Advance assemblyline", manager.getAccessRights().get(0));
 	}
 	
-	@Test
-	public void TestGetRightHandler(){
-		assertNull(manager.getRightHandler(new ArrayList<UseCaseFlowController>()));
-		AdvanceAssemblyLineFlowController rightHandler = new AdvanceAssemblyLineFlowController(null, null, null);
-		OrderFlowController wrongHandler = new OrderFlowController(null, null, null);
-		ArrayList<UseCaseFlowController> useCaseHandlers = new ArrayList<>();
-		useCaseHandlers.add(wrongHandler);
-		useCaseHandlers.add(rightHandler);
-		UseCaseFlowController returnHandler = manager.getRightHandler(useCaseHandlers);
-		assertEquals(rightHandler, returnHandler);
+	@Test (expected = IllegalArgumentException.class)
+	public void TestSetIllegalName1(){
+		new Manager("", new ArrayList<String>(Arrays.asList(new String[] {"Advance assemblyline"})));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void TestSetIllegalName2(){
+		new Manager(null, new ArrayList<String>(Arrays.asList(new String[] {"Advance assemblyline"})));
 	}
 }

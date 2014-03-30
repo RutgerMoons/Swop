@@ -140,8 +140,8 @@ public class Facade implements IFacade {
 	@Override
 	public ArrayList<String> getPendingOrders() throws NoPendingOrdersException {
 		ArrayList<String> pendingOrders = new ArrayList<String>();
-		ArrayList<Order> orders = orderBook.getPendingOrders().get(user.getName());
-		if(this.orderBook.getPendingOrders().containsKey(user) && !this.orderBook.getPendingOrders().get(user).isEmpty()){
+		List<Order> orders = (List<Order>) orderBook.getPendingOrders().get(user.getName());
+		if(this.orderBook.getPendingOrders().containsKey(user) && !this.orderBook.getPendingOrders().get(user.getName()).isEmpty()){
 			for (Order order : orders){
 				pendingOrders.add(order.toString());
 			}
