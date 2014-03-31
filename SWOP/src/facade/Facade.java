@@ -125,11 +125,8 @@ public class Facade implements IFacade {
 			for(Order order: orderBook.getCompletedOrders().get(user.getName())){
 				completedOrders.add(order.toString());
 			}
-			return completedOrders;
 		}	
-		else{
-			throw new NoCompletedOrdersException();
-		}
+		return completedOrders;
 	}
 
 	@Override
@@ -141,15 +138,13 @@ public class Facade implements IFacade {
 	public ArrayList<String> getPendingOrders() throws NoPendingOrdersException {
 		ArrayList<String> pendingOrders = new ArrayList<String>();
 		List<Order> orders = (List<Order>) orderBook.getPendingOrders().get(user.getName());
-		if(this.orderBook.getPendingOrders().containsKey(user) && !this.orderBook.getPendingOrders().get(user.getName()).isEmpty()){
+		if(this.orderBook.getPendingOrders().containsKey(user.getName()) && !this.orderBook.getPendingOrders().get(user.getName()).isEmpty()){
 			for (Order order : orders){
 				pendingOrders.add(order.toString());
 			}
-			return pendingOrders;
 		}
-		else{
-			throw new NoPendingOrdersException();
-		}
+		return pendingOrders;
+
 	}
 
 	@Override

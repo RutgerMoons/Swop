@@ -173,11 +173,10 @@ public class AdvanceAssemblyLineHandlerTest {
 	public void test() {
 		String path = System.getProperty("java.class.path");
 		TextUITester tester = new TextUITester(
-				"java -cp " + path + " ui.AssemAssist"); //C:\\Users\\Stef\\workspace\\Swop\\bin\\
+				"java -cp C:\\Users\\Stef\\workspace\\Swop\\bin\\ ui.AssemAssist"); //
 		// UserFlowController controller = new UserFlowController(communication,
 		// facade, new ArrayList<UseCaseFlowController>(Arrays.asList(advAss)));
 		// controller.login();
-		TextUITester abc = new TextUITester("java ui.AssemAssist");
 		String s = System.lineSeparator();
 		tester.expectLine("Hello user, what's your name?");
 		tester.sendLine("Mario");
