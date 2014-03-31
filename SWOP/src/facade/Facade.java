@@ -32,7 +32,6 @@ public class Facade implements IFacade {
 	private CarPartCatalogue carPartCatalogue;
 	private Clock clock;
 	private OrderBook orderBook;
-	private User user;
 	private UserBook userBook;
 	private UserFactory userFactory;
 
@@ -83,13 +82,18 @@ public class Facade implements IFacade {
 
 	@Override
 	public void createAndAddUser(String userName, String role) throws IllegalArgumentException {
-		this.user = userFactory.createUser(userName, role);
-		this.userBook.addUser(this.user);
+		User currentUser = userFactory.createUser(userName, role);
+		this.userBook.addUser(currentUser);
+		try {
+			this.userBook.login(userName);
+		} catch (RoleNotYetAssignedException r) {
+			System.err.println("Something went wrong at login, this shouldn't happen.");
+		}
 	}
 
 	@Override
 	public List<String> getAccessRights() {
-		return this.user.getAccessRights();
+		return this.userBook.getCurrentUser().getAccessRights();
 	}
 	
 	@Override
@@ -121,8 +125,8 @@ public class Facade implements IFacade {
 	@Override
 	public ArrayList<String> getCompletedOrders() {
 		ArrayList<String> completedOrders = new ArrayList<String>();
-		if(this.orderBook.getCompletedOrders().containsKey(user.getName())) {
-			for(Order order: orderBook.getCompletedOrders().get(user.getName())){
+		if(this.orderBook.getCompletedOrders().containsKey(userBook.getCurrentUser().getName())) {
+			for(Order order: orderBook.getCompletedOrders().get(userBook.getCurrentUser().getName())){
 				completedOrders.add(order.toString());
 			}
 		}	
@@ -137,8 +141,9 @@ public class Facade implements IFacade {
 	@Override
 	public ArrayList<String> getPendingOrders() {
 		ArrayList<String> pendingOrders = new ArrayList<String>();
-		List<Order> orders = (List<Order>) orderBook.getPendingOrders().get(user.getName());
-		if(this.orderBook.getPendingOrders().containsKey(user.getName()) && !this.orderBook.getPendingOrders().get(user.getName()).isEmpty()){
+		List<Order> orders = (List<Order>) orderBook.getPendingOrders().get(userBook.getCurrentUser().getName());
+		if(this.orderBook.getPendingOrders().containsKey(userBook.getCurrentUser().getName()) 
+				&& !this.orderBook.getPendingOrders().get(userBook.getCurrentUser().getName()).isEmpty()){
 			for (Order order : orders){
 				pendingOrders.add(order.toString());
 			}
@@ -170,25 +175,18 @@ public class Facade implements IFacade {
 
 	@Override
 	public void login(String userName) throws RoleNotYetAssignedException, IllegalArgumentException {
-		if(userName == null) {
-			throw new IllegalArgumentException();
-		}
-		if(!userBook.getUserBook().containsKey(userName)) {
-			throw new RoleNotYetAssignedException();
-		}
-
-		this.user = userBook.getUserBook().get(userName);
+		userBook.login(userName);
 	}
 
 	@Override
 	public void logout() {
-		this.user = null;
+		userBook.logout();
 	}
 
 	@Override
 	public int[] processOrder(String carModelName, int quantity) {
 		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
-		Order order = new Order(user.getName(), carModel, quantity);
+		Order order = new Order(userBook.getCurrentUser().getName(), carModel, quantity);
 		this.orderBook.addOrder(order);
 		return order.getEstimatedTime();
 	}

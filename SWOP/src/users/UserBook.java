@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import exception.RoleNotYetAssignedException;
+
 
 /**
  * Class that is responsible for keeping track of all the users in the system.
@@ -11,6 +13,7 @@ import java.util.Set;
 public class UserBook {
 	
 	private HashMap<String,User> userBook = new HashMap<String,User>();
+	private User currentUser;
 	
 	/**
 	 * Returns the User Book
@@ -51,5 +54,30 @@ public class UserBook {
 		}
 	}
 	
+	/**
+	 * Returns the current user
+	 */
+	public User getCurrentUser() {
+		return currentUser;
+	}
+	
+	public void login(String name) throws RoleNotYetAssignedException {
+		if (name == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		if (!userBook.containsKey(name)) {
+			throw new RoleNotYetAssignedException();
+		}
+		
+		this.currentUser = userBook.get(name); 
+	}
+	
+	/**
+	 * logs the user out
+	 */
+	public void logout() {
+		this.currentUser = null;
+	}
 	
 }
