@@ -134,7 +134,7 @@ public class ClientCommunication implements IClientCommunication{
 	 */
 	@Override
 	public void showPendingOrders(ArrayList<String> pendingOrders) {
-		if(pendingOrders != null){
+		if(!pendingOrders.isEmpty()){
 			pendingOrders.add(0,"Your pending orders:");
 			show(pendingOrders);
 		}
@@ -150,7 +150,7 @@ public class ClientCommunication implements IClientCommunication{
 	 */
 	@Override
 	public void showCompletedOrders(ArrayList<String> completedOrders) {
-		if(completedOrders != null){
+		if(!completedOrders.isEmpty()){
 			completedOrders.add(0,"Your completed orders:");
 			show(completedOrders);
 		}

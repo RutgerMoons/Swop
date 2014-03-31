@@ -31,11 +31,11 @@ public interface IFacade {
 	
 	public Set<String> getCarModels();
 	
-	public ArrayList<String> getCompletedOrders() throws NoCompletedOrdersException;
+	public ArrayList<String> getCompletedOrders();
 	
 	public String getFutureAssemblyLineAsString();
 	
-	public ArrayList<String> getPendingOrders() throws NoPendingOrdersException;
+	public ArrayList<String> getPendingOrders();
 	
 	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex);
 	

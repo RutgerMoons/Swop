@@ -36,16 +36,11 @@ public class OrderFlowController extends UseCaseFlowController {
 	 * Shows the user's current pending (with estimated time of completion) and completed orders.
 	 */
 	public void showOrders(){
-		try {
 			ArrayList<String> pendingOrders = facade.getPendingOrders();
 			this.clientCommunication.showPendingOrders(pendingOrders);
 			ArrayList<String> completedOrders = facade.getCompletedOrders();
 			this.clientCommunication.showCompletedOrders(completedOrders);
-		} catch (NoPendingOrdersException e) {
-			this.clientCommunication.showPendingOrders(null);
-		} catch (NoCompletedOrdersException e){
-			this.clientCommunication.showCompletedOrders(null);
-		}
+
 	}
 
 	/**
