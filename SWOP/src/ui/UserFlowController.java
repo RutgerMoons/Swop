@@ -52,7 +52,6 @@ public class UserFlowController {
 			String role = this.ClientCommunication.chooseRole();
 			iFacade.createAndAddUser(name, role);
 		} catch (IllegalArgumentException i) {
-			i.printStackTrace();
 			ClientCommunication.invalidAnswerPrompt();
 			login();
 		}
