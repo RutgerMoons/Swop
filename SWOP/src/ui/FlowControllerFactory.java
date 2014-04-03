@@ -2,6 +2,7 @@ package ui;
 
 import java.util.ArrayList;
 
+import users.AccessRight;
 import facade.Facade;
 
 public class FlowControllerFactory {
@@ -19,9 +20,9 @@ public class FlowControllerFactory {
 	
 	public ArrayList<UseCaseFlowController> createFlowControllers() {
 		ArrayList<UseCaseFlowController> flowControllers = new ArrayList<UseCaseFlowController>();
-		flowControllers.add(new AdvanceAssemblyLineFlowController("Advance assemblyline", iClientCommunication, facade));
-		flowControllers.add(new AssembleFlowController("Complete assembly tasks", iClientCommunication, facade));
-		flowControllers.add(new OrderFlowController("Order", iClientCommunication, facade));
+		flowControllers.add(new AdvanceAssemblyLineFlowController(AccessRight.ADVANCE, iClientCommunication, facade));
+		flowControllers.add(new AssembleFlowController(AccessRight.ASSEMBLE, iClientCommunication, facade));
+		flowControllers.add(new OrderFlowController(AccessRight.ORDER, iClientCommunication, facade));
 		return flowControllers;
 	}
 	

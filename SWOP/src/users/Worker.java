@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Worker extends User {
 
-	public Worker(String name, List<String> accessRights) {
+	public Worker(String name, List<AccessRight> accessRights) {
 		super(name, accessRights);
 	}
 	

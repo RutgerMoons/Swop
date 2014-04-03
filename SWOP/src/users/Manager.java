@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Manager extends User {
 
-	public Manager(String name, List<String> accessRights) {
+	public Manager(String name, List<AccessRight> accessRights) {
 		super(name, accessRights);
 	}
 

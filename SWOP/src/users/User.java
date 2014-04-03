@@ -10,14 +10,14 @@ import java.util.List;
 public abstract class User {
 
 	private String name;
-	private List<String> accessRights;
+	private List<AccessRight> accessRights;
 	/**
 	 * Each user has a name. This name is given when a new User is constructed.
 	 * 
 	 * @throws IllegalArgumentException
 	 * 			if name==null or isEmpty
 	 */
-	public User(String name, List<String> accessRights) throws IllegalArgumentException {
+	public User(String name, List<AccessRight> accessRights) throws IllegalArgumentException {
 		if (accessRights == null) {
 			throw new IllegalArgumentException();
 		}
@@ -46,7 +46,7 @@ public abstract class User {
 	/**
 	 * returns the access rights
 	 */
-	public List<String> getAccessRights() {
+	public List<AccessRight> getAccessRights() {
 		return Collections.unmodifiableList(accessRights);
 	}
 }

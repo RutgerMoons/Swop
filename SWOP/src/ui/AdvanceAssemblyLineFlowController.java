@@ -1,5 +1,6 @@
 package ui;
 
+import users.AccessRight;
 import facade.Facade;
 
 /**
@@ -18,7 +19,7 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 	 * @param clock
 	 * 			The clock used by the given assemblyline.
 	 */
-	public AdvanceAssemblyLineFlowController(String accessRight, IClientCommunication iClientCommunication, Facade facade){
+	public AdvanceAssemblyLineFlowController(AccessRight accessRight, IClientCommunication iClientCommunication, Facade facade){
 		super(accessRight, iClientCommunication, facade);
 	}
 

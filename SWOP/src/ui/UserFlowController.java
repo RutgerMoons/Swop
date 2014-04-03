@@ -4,6 +4,7 @@ import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
+import users.AccessRight;
 import exception.RoleNotYetAssignedException;
 import facade.Facade;
 
@@ -71,7 +72,7 @@ public class UserFlowController {
 	 * 			If the user doesn't have authorization to execute any of the use cases.
 	 */
 	public void performDuties(){
-		List<String> accessRights = facade.getAccessRights();
+		List<AccessRight> accessRights = facade.getAccessRights();
 		UseCaseFlowController useCaseHandler = selectUseCaseFlowController(accessRights, useCaseFlowControllers);
 		
 		if(useCaseHandler == null) {
@@ -82,10 +83,14 @@ public class UserFlowController {
 		}
 	}
 
-	private UseCaseFlowController selectUseCaseFlowController(List<String> accessRights, ArrayList<UseCaseFlowController> flowControllers) {
-		int index = ClientCommunication.getFlowControllerIndex(accessRights);
+	private UseCaseFlowController selectUseCaseFlowController(List<AccessRight> accessRights, ArrayList<UseCaseFlowController> flowControllers) {
+		ArrayList<String> accessRightsAsStrings = new ArrayList<String>();
+		for (AccessRight a : accessRights) {
+			accessRightsAsStrings.add(a.toString());
+		}
+		int index = ClientCommunication.getFlowControllerIndex(accessRightsAsStrings);
 	
-		String accessRight = accessRights.get(index-1);
+		AccessRight accessRight = accessRights.get(index-1);
 		for(UseCaseFlowController flowController : flowControllers){
 			if(flowController.getAccessRight().equals(accessRight)){
 				return flowController;

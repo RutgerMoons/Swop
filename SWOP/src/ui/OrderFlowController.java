@@ -2,6 +2,7 @@ package ui;
 
 import java.util.ArrayList;
 
+import users.AccessRight;
 import facade.Facade;
 
 /**
@@ -16,7 +17,7 @@ public class OrderFlowController extends UseCaseFlowController {
 	 * @param iClientCommunication
 	 * 			The UIfacade this OrderHandler has to use to communicate with the user.
 	 */
-	public OrderFlowController(String accessRight, IClientCommunication iClientCommunication, Facade facade) {
+	public OrderFlowController(AccessRight accessRight, IClientCommunication iClientCommunication, Facade facade) {
 		super(accessRight, iClientCommunication, facade);
 	}
 

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import order.Order;
 import order.OrderBook;
+import users.AccessRight;
 import users.User;
 import users.UserBook;
 import users.UserFactory;
@@ -21,8 +22,6 @@ import car.CarModelCatalogueFiller;
 import car.CarPartCatalogue;
 import car.CarPartCatalogueFiller;
 import clock.Clock;
-import exception.NoCompletedOrdersException;
-import exception.NoPendingOrdersException;
 import exception.RoleNotYetAssignedException;
 
 public class Facade {
@@ -86,7 +85,7 @@ public class Facade {
 		}
 	}
 
-	public List<String> getAccessRights() {
+	public List<AccessRight> getAccessRights() {
 		return this.userBook.getCurrentUser().getAccessRights();
 	}
 	
