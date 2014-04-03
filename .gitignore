@@ -14,3 +14,4 @@ o2kdg1st.zyx.txt
 *.out
 *.pdf
 *.synctex.gz
+*.classpath
