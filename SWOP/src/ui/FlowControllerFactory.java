@@ -2,14 +2,14 @@ package ui;
 
 import java.util.ArrayList;
 
-import facade.IFacade;
+import facade.Facade;
 
 public class FlowControllerFactory {
 
 	private final IClientCommunication iClientCommunication;
-	private final IFacade facade;
+	private final Facade facade;
 	
-	public FlowControllerFactory(IClientCommunication iClientCommunication, IFacade facade) {
+	public FlowControllerFactory(IClientCommunication iClientCommunication, Facade facade) {
 		if (iClientCommunication == null || facade == null) {
 			throw new IllegalArgumentException();
 		}

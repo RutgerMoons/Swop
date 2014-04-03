@@ -1,6 +1,7 @@
 package ui;
 
-import facade.IFacade;
+import facade.Facade;
+
 
 
 /**
@@ -12,15 +13,15 @@ public abstract class UseCaseFlowController {
 	
 	protected final String accessRight;
 	protected IClientCommunication clientCommunication;
-	protected IFacade facade;
+	protected Facade facade;
 	
-	public UseCaseFlowController(String accessRight, IClientCommunication clientCommunication, IFacade iFacade){
-		if (accessRight == null || clientCommunication == null || iFacade == null) {
+	public UseCaseFlowController(String accessRight, IClientCommunication clientCommunication, Facade facade){
+		if (accessRight == null || clientCommunication == null || facade == null) {
 			throw new NullPointerException();
 		}
 		this.accessRight = accessRight;
 		this.clientCommunication = clientCommunication;
-		this.facade = iFacade;
+		this.facade = facade;
 	}
 	
 	/**

@@ -3,7 +3,6 @@ package ui;
 import java.util.ArrayList;
 
 import facade.Facade;
-import facade.IFacade;
 
 /**
  * This is the class where the program starts running.
@@ -11,7 +10,7 @@ import facade.IFacade;
  */
 public class AssemAssist {
 	
-	private static IFacade facade;
+	private static Facade facade;
 	private static ArrayList<UseCaseFlowController> flowControllers;
 	private static UserFlowController userFlowController;
 	private static ClientCommunication clientCommunication;

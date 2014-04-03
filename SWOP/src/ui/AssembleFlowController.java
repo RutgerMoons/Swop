@@ -2,13 +2,7 @@ package ui;
 
 import java.util.ArrayList;
 
-import users.User;
-import assembly.Action;
-import assembly.IWorkBench;
-import assembly.Task;
-import assembly.WorkBench;
 import facade.Facade;
-import facade.IFacade;
 
 /**
  * TODO : update documentatie
@@ -22,7 +16,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * @param iClientCommunication
 	 * 			The UIfacade this AssembleHandler has to use to communicate with the user.
 	 */
-	public AssembleFlowController(String accessRight, IClientCommunication iClientCommunication, IFacade facade) {
+	public AssembleFlowController(String accessRight, IClientCommunication iClientCommunication, Facade facade) {
 		super(accessRight, iClientCommunication, facade);
 	}
 
