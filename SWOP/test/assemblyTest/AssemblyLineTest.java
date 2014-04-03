@@ -376,7 +376,7 @@ public class AssemblyLineTest{
 		line.advance();
 		line.calculateEstimatedTime(order);
 		assertEquals(2, order.getEstimatedTime()[0]);
-		assertEquals(beginTime + 780, order.getEstimatedTime()[1]);
+		assertEquals(beginTime + 720, order.getEstimatedTime()[1]);
 	}
 
 
