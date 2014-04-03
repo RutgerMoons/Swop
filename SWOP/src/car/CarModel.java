@@ -44,8 +44,7 @@ public class CarModel implements ICarModel {
 
 	
 	public Map<Class<?>, CarPart> getCarParts() {
-		return new ImmutableMap.Builder<Class<?>, CarPart>()
-				.putAll(carParts).build();
+		return carParts;
 	}
 
 	/**

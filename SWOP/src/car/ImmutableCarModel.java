@@ -2,6 +2,8 @@ package car;
 
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
+
 /**
  * Create an Immutable CarModel, only the getters are accessible.
  *
@@ -23,7 +25,8 @@ public class ImmutableCarModel implements ICarModel {
 	}
 	@Override
 	public Map<Class<?>, CarPart> getCarParts() {
-		return model.getCarParts();
+		return new ImmutableMap.Builder<Class<?>, CarPart>()
+				.putAll(model.getCarParts()).build();
 	}
 
 	@Override

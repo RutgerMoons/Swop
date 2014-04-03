@@ -26,13 +26,6 @@ public class Action implements IAction {
 		return isCompleted;
 	}
 
-	/**
-	 * Set the completed state of this action.
-	 * 
-	 * @param isCompleted
-	 *            if true, the action is completed. if false, the action is not
-	 *            completed.
-	 */
 	public void setCompleted(boolean isCompleted) {
 		this.isCompleted = isCompleted;
 	}
@@ -42,15 +35,6 @@ public class Action implements IAction {
 		return description;
 	}
 
-	/**
-	 * Set the description of this action.
-	 * 
-	 * @param description
-	 *            The description you want to give to this action represented as
-	 *            a String.
-	 * @throws IllegalArgumentException
-	 *             If description==null or empty
-	 */
 	public void setDescription(String description) {
 		if (description == null || description.isEmpty())
 			throw new IllegalArgumentException();

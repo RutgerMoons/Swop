@@ -1,5 +1,7 @@
 package assembly;
 
+import exception.ImmutableException;
+
 public interface IAction {
 	
 	/**
@@ -9,6 +11,18 @@ public interface IAction {
 	 *         completed.
 	 */
 	public boolean isCompleted();
+
+	/**
+	 * Set the completed state of this action.
+	 * 
+	 * @param isCompleted
+	 *            if true, the action is completed. if false, the action is not
+	 *            completed.
+	 * @throws ImmutableException 
+	 * 			  If the IAction is an ImmutableAction.
+	 */
+	public void setCompleted(boolean isCompleted) throws ImmutableException;
+	
 	
 	/**
 	 * Get the description of the action.
@@ -17,5 +31,18 @@ public interface IAction {
 	 */
 	public String getDescription();
 	
+	
+	/**
+	 * Set the description of this action.
+	 * 
+	 * @param description
+	 *            The description you want to give to this action represented as
+	 *            a String.
+	 * @throws ImmutableException 
+	 * 			  If the IAction is an ImmutableAction.
+	 * @throws IllegalArgumentException
+	 *             If description==null or empty
+	 */
+	public void setDescription(String description) throws ImmutableException;
 	
 }
