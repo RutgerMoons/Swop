@@ -3,8 +3,6 @@ package assembly;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-
 /**
  * Represents a single task that contains a certain amount of Actions.
  * 
@@ -29,17 +27,9 @@ public class Task implements ITask {
 
 	
 	public List<IAction> getActions() {
-		return new ImmutableList.Builder<IAction>().addAll(actionList).build();
+		return actionList;
 	}
 
-	/**
-	 * Set the list of Actions that this Task contains.
-	 * 
-	 * @param actions
-	 *            A list of Actions.
-	 * @throws IllegalArgumentException
-	 *             If actions==null
-	 */
 	public void setActions(List<IAction> actions) {
 		if (actions == null)
 			throw new IllegalArgumentException();
@@ -47,14 +37,6 @@ public class Task implements ITask {
 			this.actionList = actions;
 	}
 
-	/**
-	 * Add an Action to this Task.
-	 * 
-	 * @param action
-	 *            The action you want to add.
-	 * @throws IllegalArgumentException
-	 *             if action==null
-	 */
 	public void addAction(IAction action) {
 		if (action == null)
 			throw new IllegalArgumentException();
@@ -75,14 +57,6 @@ public class Task implements ITask {
 		return taskDescription;
 	}
 
-	/**
-	 * Set the description of this Task.
-	 * 
-	 * @param taskDescription
-	 *            The description you want to give to this Task.
-	 * @throws IllegalArgumentException
-	 *             if taskDescription==null or isEmpty
-	 */
 	public void setTaskDescription(String taskDescription) {
 		if (taskDescription == null || taskDescription.isEmpty())
 			throw new IllegalArgumentException();

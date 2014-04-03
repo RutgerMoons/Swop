@@ -2,10 +2,8 @@ package ui;
 
 import java.util.ArrayList;
 
-import exception.NoCompletedOrdersException;
-import exception.NoPendingOrdersException;
+import users.AccessRight;
 import facade.Facade;
-import facade.IFacade;
 
 /**
  * TODO : documentatie updaten
@@ -19,7 +17,7 @@ public class OrderFlowController extends UseCaseFlowController {
 	 * @param iClientCommunication
 	 * 			The UIfacade this OrderHandler has to use to communicate with the user.
 	 */
-	public OrderFlowController(String accessRight, IClientCommunication iClientCommunication, IFacade facade) {
+	public OrderFlowController(AccessRight accessRight, IClientCommunication iClientCommunication, Facade facade) {
 		super(accessRight, iClientCommunication, facade);
 	}
 

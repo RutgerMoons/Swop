@@ -8,7 +8,6 @@ import java.util.Set;
 import order.Order;
 import car.Airco;
 import car.Body;
-import car.CarModel;
 import car.Color;
 import car.Engine;
 import car.Gearbox;
@@ -19,6 +18,8 @@ import clock.Clock;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+
+import exception.ImmutableException;
 
 /**
  * 
@@ -238,7 +239,12 @@ public class AssemblyLine {
 												// dus de auto('s), dan moet
 												// je de job natuurlijk
 												// removen.
-			((Order) lastJob.get().getOrder()).completeCar();
+			 try {
+				lastJob.get().getOrder().completeCar();
+			} catch (ImmutableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		if ((22 * 60 - getClock().getMinutes()) < 0) {// overtime zetten

@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class GarageHolder extends User {
 
-	public GarageHolder(String name, List<String> accessRights) {
+	public GarageHolder(String name, List<AccessRight> accessRights) {
 		super(name, accessRights);
 	}
 

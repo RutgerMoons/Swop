@@ -1,5 +1,7 @@
 package assembly;
 
+import exception.ImmutableException;
+
 /**
  * Create an Immutable Action, only the getters are accessible.
  *
@@ -31,6 +33,14 @@ public class ImmutableAction implements IAction {
 	@Override
 	public String toString(){
 		return action.toString();
+	}
+	@Override
+	public void setCompleted(boolean isCompleted) throws ImmutableException {
+		throw new ImmutableException();
+	}
+	@Override
+	public void setDescription(String description) throws ImmutableException {
+		throw new ImmutableException();
 	}
 
 }

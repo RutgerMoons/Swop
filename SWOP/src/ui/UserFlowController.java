@@ -4,8 +4,9 @@ import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
+import users.AccessRight;
 import exception.RoleNotYetAssignedException;
-import facade.IFacade;
+import facade.Facade;
 
 /**
  * 
@@ -16,7 +17,7 @@ import facade.IFacade;
 public class UserFlowController {
 	
 	private ArrayList<UseCaseFlowController> useCaseFlowControllers;
-	private IFacade iFacade;
+	private Facade facade;
 	private IClientCommunication ClientCommunication;
 	
 	/**
@@ -30,13 +31,13 @@ public class UserFlowController {
 	 * @throws NullPointerException
 	 * 			if one of the given arguments is null.
 	 */
-	public UserFlowController(IClientCommunication iClientCommunication, IFacade iFacade, ArrayList<UseCaseFlowController> useCaseFlowControllers) throws NullPointerException{
-		if(iClientCommunication == null || iFacade == null || useCaseFlowControllers == null) {
+	public UserFlowController(IClientCommunication iClientCommunication, Facade facade, ArrayList<UseCaseFlowController> useCaseFlowControllers) throws NullPointerException{
+		if(iClientCommunication == null || facade == null || useCaseFlowControllers == null) {
 			throw new NullPointerException();
 		}
 			
 		this.ClientCommunication = iClientCommunication;
-		this.iFacade = iFacade;
+		this.facade = facade;
 		this.useCaseFlowControllers = useCaseFlowControllers;
 	}
 	
@@ -47,10 +48,10 @@ public class UserFlowController {
 	public void login() {
 		String name = this.ClientCommunication.getName();
 		try {		
-			iFacade.login(name);
+			facade.login(name);
 		} catch (RoleNotYetAssignedException r) {
 			String role = this.ClientCommunication.chooseRole();
-			iFacade.createAndAddUser(name, role);
+			facade.createAndAddUser(name, role);
 		} catch (IllegalArgumentException i) {
 			ClientCommunication.invalidAnswerPrompt();
 			login();
@@ -62,7 +63,7 @@ public class UserFlowController {
 	 */
 	public void logout(){
 		ClientCommunication.logout();
-		iFacade.logout();
+		facade.logout();
 	}
 	
 	/**
@@ -71,7 +72,7 @@ public class UserFlowController {
 	 * 			If the user doesn't have authorization to execute any of the use cases.
 	 */
 	public void performDuties(){
-		List<String> accessRights = iFacade.getAccessRights();
+		List<AccessRight> accessRights = facade.getAccessRights();
 		UseCaseFlowController useCaseHandler = selectUseCaseFlowController(accessRights, useCaseFlowControllers);
 		
 		if(useCaseHandler == null) {
@@ -82,10 +83,14 @@ public class UserFlowController {
 		}
 	}
 
-	private UseCaseFlowController selectUseCaseFlowController(List<String> accessRights, ArrayList<UseCaseFlowController> flowControllers) {
-		int index = ClientCommunication.getFlowControllerIndex(accessRights);
+	private UseCaseFlowController selectUseCaseFlowController(List<AccessRight> accessRights, ArrayList<UseCaseFlowController> flowControllers) {
+		ArrayList<String> accessRightsAsStrings = new ArrayList<String>();
+		for (AccessRight a : accessRights) {
+			accessRightsAsStrings.add(a.toString());
+		}
+		int index = ClientCommunication.getFlowControllerIndex(accessRightsAsStrings);
 	
-		String accessRight = accessRights.get(index-1);
+		AccessRight accessRight = accessRights.get(index-1);
 		for(UseCaseFlowController flowController : flowControllers){
 			if(flowController.getAccessRight().equals(accessRight)){
 				return flowController;
