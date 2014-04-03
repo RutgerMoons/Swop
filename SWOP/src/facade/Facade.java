@@ -197,8 +197,4 @@ public class Facade implements IFacade {
 
 	}
 
-
-
-
-
 }
