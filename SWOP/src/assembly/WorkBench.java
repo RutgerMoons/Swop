@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * Represents a WorkBench from an assemblyline.
@@ -56,14 +54,6 @@ public class WorkBench implements IWorkBench {
 		return currentJob;
 	}
 
-	/**
-	 * Allocate a new Job(Car) to this WorkBench.
-	 * 
-	 * @param optional
-	 *            The job you want to allocate to the WorkBench.
-	 * @throws IllegalArgumentException
-	 *             if currentJob == null
-	 */
 	public void setCurrentJob(Optional<IJob> optional) {
 		if (optional == null)
 			throw new IllegalArgumentException();
@@ -72,32 +62,15 @@ public class WorkBench implements IWorkBench {
 
 	
 	public Set<String> getResponsibilities() {
-		return new ImmutableSet.Builder<String>().addAll(responsibilities)
-				.build();
+		return responsibilities;
 	}
 
-	/**
-	 * Set a new list of responsibilities for thies WorkBench.
-	 * 
-	 * @param responsibilities
-	 *            A list of responsibilities.
-	 * @throws IllegalArgumentException
-	 *             If responsibilities==null
-	 */
 	public void setResponsibilities(Set<String> responsibilities) {
 		if (responsibilities == null)
 			throw new IllegalArgumentException();
 		this.responsibilities = responsibilities;
 	}
 
-	/**
-	 * Add a responsibility to this WorkBench.
-	 * 
-	 * @param responibility
-	 *            The responsibility you want to add.
-	 * @throws IllegalArgumentException
-	 *             If responsibility==null or isEmpty.
-	 */
 	public void addResponsibility(String responibility) {
 		if (responibility == null || responibility.isEmpty())
 			throw new IllegalArgumentException();
@@ -106,27 +79,15 @@ public class WorkBench implements IWorkBench {
 
 
 	public List<ITask> getCurrentTasks() {
-		return new ImmutableList.Builder<ITask>().addAll(currentTasks).build();
+		return currentTasks;
 	}
 
-	/**
-	 * Set the tasks that have to be completed by this WorkBench.
-	 * 
-	 * @param list
-	 *            A list of tasks.
-	 * @throws IllegalArgumentException
-	 *             If currentTasks==null
-	 */
 	public void setCurrentTasks(List<ITask> list) {
 		if (list == null)
 			throw new IllegalArgumentException();
 		this.currentTasks = list;
 	}
 
-	/**
-	 * Selects the Tasks that are valid for this Workbench. The taskDescription
-	 * is checked against the responsibilities from the Workbench.
-	 */
 	public void chooseTasksOutOfJob() {
 		if (getCurrentJob() == null || !getCurrentJob().isPresent()) {
 			setCurrentTasks(new ArrayList<ITask>());

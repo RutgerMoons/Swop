@@ -1,6 +1,7 @@
 package order;
 
 import car.ICarModel;
+import exception.ImmutableException;
 
 public interface IOrder {
 
@@ -33,6 +34,23 @@ public interface IOrder {
 	 */
 	public int[] getEstimatedTime();
 	
+	/**
+	 * Set the estimated time, the first integer gives the days from today
+	 * before it's finished (so 1 is tomorrow); the second integer gives the
+	 * time of completion (in minutes) on that day.
+	 * 
+	 * @param array
+	 * @throws ImmutableException 
+	 * 			If the IOrder is an ImmutableOrder.
+	 */
+	public void setEstimatedTime(int[] array) throws ImmutableException;
 	
+	/**
+	 * Method for decreasing the amount of pendingCars each time an car of the
+	 * order is completed.
+	 * @throws ImmutableException 
+	 * 			If the IOrder is an ImmutableOrder
+	 */
+	public void completeCar() throws ImmutableException;
 	
 }

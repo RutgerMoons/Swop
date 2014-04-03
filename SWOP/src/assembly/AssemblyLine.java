@@ -8,7 +8,6 @@ import java.util.Set;
 import order.Order;
 import car.Airco;
 import car.Body;
-import car.CarModel;
 import car.Color;
 import car.Engine;
 import car.Gearbox;

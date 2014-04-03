@@ -2,7 +2,11 @@ package assembly;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+
+import exception.ImmutableException;
 import order.IOrder;
+import order.ImmutableOrder;
 
 /**
  * Create an Immutable Job, only the getters are accessible.
@@ -26,12 +30,12 @@ public class ImmutableJob implements IJob {
 
 	@Override
 	public IOrder getOrder() {
-		return job.getOrder();
+		return new ImmutableOrder(job.getOrder());
 	}
 
 	@Override
 	public List<ITask> getTasks() {
-		return job.getTasks();
+		return new ImmutableList.Builder<ITask>().addAll(job.getTasks()).build();
 	}
 
 	@Override
@@ -52,6 +56,24 @@ public class ImmutableJob implements IJob {
 	@Override
 	public String toString() {
 		return job.toString();
+	}
+
+	@Override
+	public void setOrder(IOrder order) throws ImmutableException {
+		throw new ImmutableException();
+		
+	}
+
+	@Override
+	public void setTasks(List<ITask> tasks) throws ImmutableException {
+		throw new ImmutableException();
+		
+	}
+
+	@Override
+	public void addTask(ITask task) throws ImmutableException {
+		throw new ImmutableException();
+		
 	}
 
 }

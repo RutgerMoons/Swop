@@ -3,7 +3,6 @@ package order;
 import java.util.Arrays;
 
 import car.ICarModel;
-import car.ImmutableCarModel;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes
@@ -54,11 +53,11 @@ public class Order implements IOrder {
 	 * the given amount is lower than zero. If so an IllegalArgumentException is
 	 * thrown.
 	 */
-	private void setPendingCars(int quantity2) {
-		if (quantity2 < 0) {
+	private void setPendingCars(int quantity) {
+		if (quantity < 0) {
 			throw new IllegalArgumentException();
 		}
-		this.pendingCars = quantity2;
+		this.pendingCars = quantity;
 	}
 
 	
@@ -97,7 +96,7 @@ public class Order implements IOrder {
 
 	
 	public ICarModel getDescription() {
-		return new ImmutableCarModel(description);
+		return description;
 	}
 
 
@@ -105,13 +104,6 @@ public class Order implements IOrder {
 		return this.estimatedTime;
 	}
 
-	/**
-	 * Set the estimated time, the first integer gives the days from today
-	 * before it's finished (so 1 is tomorrow); the second integer gives the
-	 * time of completion (in minutes) on that day.
-	 * 
-	 * @param array
-	 */
 	public void setEstimatedTime(int[] array) {
 		if (array == null || array.length != 2 || array[0] < 0 || array[1] < 0) {
 			throw new IllegalArgumentException();
@@ -119,10 +111,6 @@ public class Order implements IOrder {
 		this.estimatedTime = array;
 	}
 
-	/**
-	 * Method for decreasing the amount of pendingCars each time an car of the
-	 * order is completed.
-	 */
 	public void completeCar() {
 		this.setPendingCars(--pendingCars);
 	}

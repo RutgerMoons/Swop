@@ -1,6 +1,8 @@
 package order;
 
 import car.ICarModel;
+import car.ImmutableCarModel;
+import exception.ImmutableException;
 
 /**
  * Create an Immutable Order, only the getters are accessible.
@@ -8,18 +10,18 @@ import car.ICarModel;
  */
 public class ImmutableOrder implements IOrder {
 
-	private Order order;
+	private IOrder order;
 
 	/**
 	 * Create an Immutable Order.
 	 * 
-	 * @param order
+	 * @param iOrder
 	 * 			The mutable Order.
 	 */
-	public ImmutableOrder(Order order){
-		if(order==null)
+	public ImmutableOrder(IOrder iOrder){
+		if(iOrder==null)
 			throw new IllegalArgumentException();
-		this.order = order;
+		this.order = iOrder;
 	}
 	
 	@Override
@@ -39,7 +41,7 @@ public class ImmutableOrder implements IOrder {
 
 	@Override
 	public ICarModel getDescription() {
-		return order.getDescription();
+		return new ImmutableCarModel(order.getDescription());
 	}
 
 	@Override
@@ -60,5 +62,15 @@ public class ImmutableOrder implements IOrder {
 	@Override
 	public String toString(){
 		return order.toString();
+	}
+
+	@Override
+	public void setEstimatedTime(int[] array) throws ImmutableException {
+		throw new ImmutableException();
+	}
+
+	@Override
+	public void completeCar() throws ImmutableException {
+		throw new ImmutableException();
 	}
 }

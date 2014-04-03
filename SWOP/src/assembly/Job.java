@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import order.IOrder;
-import order.Order;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * 
@@ -31,19 +28,10 @@ public class Job implements IJob {
 		setTasks(new ArrayList<ITask>());
 	}
 
-	
 	public IOrder getOrder() {
 		return order;
 	}
 
-	/**
-	 * Allocate a new Order to this Job.
-	 * 
-	 * @param order
-	 *            The Order you want to allocate to this Job.
-	 * @throws IllegalArgumentException
-	 *             If order==null
-	 */
 	public void setOrder(IOrder order) {
 		if (order == null)
 			throw new IllegalArgumentException();
@@ -53,18 +41,9 @@ public class Job implements IJob {
 
 	
 	public List<ITask> getTasks() {
-		return new ImmutableList.Builder<ITask>().addAll(taskList).build();
+		return taskList;
 	}
 
-	/**
-	 * Set a new list of tasks that have to be completed before the Job(Car) is
-	 * finished.
-	 * 
-	 * @param tasks
-	 *            A list of tasks.
-	 * @throws IllegalArgumentException
-	 *             If tasks==null
-	 */
 	public void setTasks(List<ITask> tasks) {
 		if (tasks == null)
 			throw new IllegalArgumentException();
@@ -72,14 +51,6 @@ public class Job implements IJob {
 			this.taskList = tasks;
 	}
 
-	/**
-	 * Add a new task to the Job.
-	 * 
-	 * @param task
-	 *            The task you want to add.
-	 * @throws IllegalArgumentException
-	 *             If task==null
-	 */
 	public void addTask(ITask task) {
 		if (task == null)
 			throw new IllegalArgumentException();
