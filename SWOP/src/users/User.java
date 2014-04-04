@@ -7,21 +7,21 @@ import java.util.List;
  * Represents a single User. This is an abstract class, choose 1 of it's subclasses to instantiate. 
  *
  */
-public abstract class User {
+public class User {
 
-	private String name;
+	private final String name;
 	private List<AccessRight> accessRights;
 	/**
 	 * Each user has a name. This name is given when a new User is constructed.
 	 * 
 	 * @throws IllegalArgumentException
-	 * 			if name==null or isEmpty
+	 * 			if name == null or isEmpty or AccessRights == null
 	 */
 	public User(String name, List<AccessRight> accessRights) throws IllegalArgumentException {
-		if (accessRights == null) {
+		if (name == null || name.isEmpty() || accessRights == null) {
 			throw new IllegalArgumentException();
 		}
-		this.setName(name);
+		this.name = name;
 		this.accessRights = accessRights;
 	}
 
@@ -30,17 +30,6 @@ public abstract class User {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * Method for assigning a new name to the user.
-	 * @throws IllegalArgumentException
-	 * 			if name==null || isEmpty.
-	 */
-	public void setName(String name) {
-		if(name==null || name.isEmpty())
-			throw new IllegalArgumentException();
-		this.name = name;
 	}
 	
 	/**

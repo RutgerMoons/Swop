@@ -31,7 +31,7 @@ public class UserFactory {
 			throw new IllegalArgumentException();
 		}
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(Arrays.asList(new AccessRight[] {AccessRight.ORDER}));
-		return new GarageHolder(userName, accessRights);
+		return new User(userName, accessRights);
 	}
 
 	private User createManager(String userName) {
@@ -39,7 +39,7 @@ public class UserFactory {
 			throw new IllegalArgumentException();
 		}
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(Arrays.asList(new AccessRight[] {AccessRight.ADVANCE}));
-		return new Manager(userName, accessRights);
+		return new User(userName, accessRights);
 	}
 	
 	private User createWorker(String userName) {
@@ -47,7 +47,7 @@ public class UserFactory {
 			throw new IllegalArgumentException();
 		}
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(Arrays.asList(new AccessRight[] {AccessRight.ASSEMBLE}));
-		return new Worker(userName, accessRights);
+		return new User(userName, accessRights);
 	}
 
 	
