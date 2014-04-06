@@ -1,28 +1,20 @@
 package orderTest;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import order.Order;
 import order.OrderBook;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Multimap;
-
-import clock.Clock;
-import car.Airco;
-import car.Body;
-import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
 import assembly.AssemblyLine;
+import car.CarModel;
+import car.CarPart;
+import car.CarPartType;
+import clock.Clock;
+import exception.AlreadyInMapException;
 
 
 /*
@@ -33,14 +25,26 @@ public class OrderBookTest {
 	CarModel model1;
 	CarModel model2;
 	@Before
-	public void setUp(){
+	public void setUp() throws AlreadyInMapException{
 		orderBook = new OrderBook(new AssemblyLine(new Clock()));
-		model1 = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+		model1 = new CarModel("Volkswagen");
+		model1.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model1.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model1.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model1.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model1.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model1.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model1.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
 		
-		model2 = new CarModel("BMW", new Airco("automatic climate control"), new Body("break"), new Color("red"), 
-				new Engine("performance 2.5l 6 cilinders"), new Gearbox("5 speed automatic"), new Seat("leather white"), new Wheel("sports (low profile)"));
-	}
+		model2 = new CarModel("BMW");
+		model2.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model2.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model2.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model2.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model2.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model2.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model2.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+}
 
 	@Test
 	public void test1() {

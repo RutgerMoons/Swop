@@ -1,51 +1,57 @@
 package assemblyTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import order.Order;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.base.Optional;
-
-import car.Airco;
-import car.Body;
-import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
 import assembly.Action;
 import assembly.IJob;
-import assembly.ITask;
 import assembly.IWorkBench;
-import assembly.ImmutableJob;
 import assembly.ImmutableWorkBench;
 import assembly.Job;
 import assembly.Task;
 import assembly.WorkBench;
+import car.CarModel;
+import car.CarPart;
+import car.CarPartType;
+
+import com.google.common.base.Optional;
+
+import exception.AlreadyInMapException;
+import exception.ImmutableException;
 
 public class ImmutableWorkBenchTest {
-
-
-	@Test
-	public void test() {
-		CarModel model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
-
-		
-		
+	IWorkBench bench;
+	IWorkBench immutable;
+	@Before
+	public void initialize(){
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("paint");
-		WorkBench bench = new WorkBench(responsibilities, "paintbooth");
-		IWorkBench immutable = new ImmutableWorkBench(bench);
+
+		bench = new WorkBench(responsibilities, "paintbooth");
+		immutable = new ImmutableWorkBench(bench);
+		
+	}
+	@Test
+	public void test() throws AlreadyInMapException, ImmutableException {
+		CarModel model = new CarModel("Volkswagen");
+		
+		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		
 		assertEquals("paintbooth", immutable.getWorkbenchName());
 		assertTrue(immutable.getResponsibilities().contains("paint"));
 		
@@ -66,5 +72,30 @@ public class ImmutableWorkBenchTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void illegalConstructorTest(){
 		new ImmutableWorkBench(null);
+	}
+	
+	@Test(expected=ImmutableException.class)
+	public void testImmutable1() throws ImmutableException{
+		immutable.setCurrentJob(null);
+	}
+	
+	@Test(expected=ImmutableException.class)
+	public void testImmutable2() throws ImmutableException{
+		immutable.setResponsibilities(null);
+	}
+	
+	@Test(expected=ImmutableException.class)
+	public void testImmutable3() throws ImmutableException{
+		immutable.addResponsibility(null);
+	}
+	
+	@Test(expected=ImmutableException.class)
+	public void testImmutable4() throws ImmutableException{
+		immutable.setCurrentTasks(null);
+	}
+	
+	@Test(expected=ImmutableException.class)
+	public void testImmutable5() throws ImmutableException{
+		immutable.chooseTasksOutOfJob();
 	}
 }

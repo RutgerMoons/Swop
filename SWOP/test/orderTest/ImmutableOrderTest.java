@@ -1,31 +1,41 @@
 package orderTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import order.IOrder;
 import order.ImmutableOrder;
 import order.Order;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
-import car.Airco;
-import car.Body;
 import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
+import car.CarPart;
+import car.CarPartType;
+import exception.AlreadyInMapException;
+import exception.ImmutableException;
 
 public class ImmutableOrderTest {
-
+	CarModel model;
+	IOrder order;
+	IOrder immutable;
+	@Before
+	public void initialize() throws AlreadyInMapException{
+		model = new CarModel("Volkswagen");
+		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		order = new Order("Mario",model,3);
+		immutable = new ImmutableOrder(order);
+	}
 
 	@Test
 	public void test() {
-		CarModel model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
-		Order order = new Order("Mario",model,3);
-		IOrder immutable = new ImmutableOrder(order);
+		
 		assertEquals(immutable.getDescription(), model);
 		assertEquals(order.getEstimatedTime(), immutable.getEstimatedTime());
 		assertEquals(order.getGarageHolder(), immutable.getGarageHolder());
@@ -39,5 +49,16 @@ public class ImmutableOrderTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void invalidConstructorTest(){
 		new ImmutableOrder(null);
+	}
+	
+	@Test(expected = ImmutableException.class)
+	public void testImmutable1() throws ImmutableException{
+		int[] array = {0,0};
+		immutable.setEstimatedTime(array);
+	}
+	
+	@Test(expected = ImmutableException.class)
+	public void testImmutable2() throws ImmutableException{
+		immutable.completeCar();
 	}
 }

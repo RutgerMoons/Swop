@@ -1,20 +1,22 @@
 package orderTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.awt.Color;
+
 import order.Order;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import car.Airco;
-import car.Body;
-import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
 import assembly.Action;
+import car.CarModel;
+import car.CarPart;
+import car.CarPartType;
+import exception.AlreadyInMapException;
 
 
 
@@ -22,9 +24,15 @@ public class OrderTest {
 
 	private CarModel model;
 	@Before
-	public void initializeModel(){
-		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+	public void initializeModel() throws AlreadyInMapException{
+		model = new CarModel("Volkswagen");
+		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
 	}
 	@Test
 	public void test1Constructor(){
@@ -109,9 +117,16 @@ public class OrderTest {
 	}
 
 	@Test
-	public void TestEqualsAndHashcode(){
-		CarModel model2 = new CarModel("BMW", new Airco("manual"), new Body("break"), new Color("red"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+	public void TestEqualsAndHashcode() throws AlreadyInMapException{
+		CarModel model2 = new CarModel("BMW");
+		model2.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model2.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model2.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model2.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model2.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model2.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model2.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		
 		Order order1 = new Order("Jan", model, 2);
 		assertFalse(order1.equals(null));
 		assertFalse(order1.equals(new Action("Paint")));
@@ -129,8 +144,6 @@ public class OrderTest {
 	
 	@Test
 	public void testToString(){
-		CarModel model2 = new CarModel("BMW", new Airco("manual"), new Body("break"), new Color("red"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
 		Order order1 = new Order("Jan", model, 2);
 		int[] array = {1,100};
 		order1.setEstimatedTime(array);

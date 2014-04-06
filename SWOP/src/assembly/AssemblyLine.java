@@ -236,8 +236,6 @@ public class AssemblyLine {
 			 try {
 				lastJob.get().getOrder().completeCar();
 			} catch (ImmutableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 

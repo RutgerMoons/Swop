@@ -21,26 +21,29 @@ import assembly.ITask;
 import assembly.Job;
 import assembly.Task;
 import assembly.WorkBench;
-import car.Airco;
-import car.Body;
 import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
+import car.CarPart;
+import car.CarPartType;
 
 import com.google.common.base.Optional;
+
+import exception.AlreadyInMapException;
 
 public class WorkBenchTest {
 
 	private WorkBench workBench;
 	private CarModel model;
 	@Before
-	public void initialize(){
+	public void initialize() throws AlreadyInMapException{
 		workBench = new WorkBench(new HashSet<String>(), "name");
-		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+		model = new CarModel("Volkswagen");
+		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
 	}
 	
 	@Test
@@ -254,6 +257,6 @@ public class WorkBenchTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void TestInvalidConstructor(){
-		WorkBench bench = new WorkBench(new HashSet<String>(), null);
+		new WorkBench(new HashSet<String>(), null);
 	}
 }

@@ -17,22 +17,24 @@ import assembly.Action;
 import assembly.ITask;
 import assembly.Job;
 import assembly.Task;
-import car.Airco;
-import car.Body;
 import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
+import car.CarPart;
+import car.CarPartType;
+import exception.AlreadyInMapException;
 
 public class JobTest {
 	
 	private CarModel model;
 	@Before
-	public void initializeModel(){
-		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+	public void initializeModel() throws AlreadyInMapException{
+		model = new CarModel("Volkswagen");
+		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
 	}
 
 	@Test
