@@ -1,8 +1,8 @@
 package users;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.util.Map;
 
 import exception.RoleNotYetAssignedException;
 
@@ -20,25 +20,8 @@ public class UserBook {
 	 * 
 	 * @return A HashMap containing the values in the user book
 	 */
-	public HashMap<String,User> getUserBook() {
-		return copy(userBook);
-	}
-	
-	/**
-	 * Get a deep clone of a HashMap<String,User>.
-	 * @param map
-	 * 			The original data.
-	 * @return
-	 * 			A HashMap<String,User>.
-	 */
-	public HashMap<String, User> copy(HashMap<String, User> map){
-		HashMap<String, User> copy = new HashMap<>();
-		
-		Set<Entry<String, User>> dataSet = map.entrySet();
-		for(Entry<String, User> entry: dataSet){
-			copy.put(entry.getKey(), entry.getValue());
-		}
-		return copy;
+	public Map<String, User> getUserBook() {
+		return Collections.unmodifiableMap(userBook);
 	}
 	
 	/**

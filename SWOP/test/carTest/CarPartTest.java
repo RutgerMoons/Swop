@@ -1,8 +1,10 @@
 package carTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import assembly.Action;
@@ -61,4 +63,22 @@ public class CarPartTest {
 		CarPart part = new CarPart("manual", false, CarPartType.AIRCO);
 		assertEquals("AIRCO: manual", part.toString());
 	}
+	
+	@Test
+	public void testTaskDescription(){
+		assertEquals("Airco", new CarPart("manual", true, CarPartType.AIRCO).getTaskDescription());
+		assertEquals("Assembly", new CarPart("manual", true, CarPartType.BODY).getTaskDescription());
+		assertEquals("Paint", new CarPart("manual", true, CarPartType.COLOR).getTaskDescription());
+		assertEquals("Engine", new CarPart("manual", true, CarPartType.ENGINE).getTaskDescription());
+		assertEquals("Gearbox", new CarPart("manual", true, CarPartType.GEARBOX).getTaskDescription());
+		assertEquals("Seats", new CarPart("manual", true, CarPartType.SEATS).getTaskDescription());
+		assertEquals("Spoiler", new CarPart("manual", true, CarPartType.SPOILER).getTaskDescription());
+		assertEquals("Wheels", new CarPart("manual", true, CarPartType.WHEEL).getTaskDescription());
+	}
+	
+	@Test
+	public void testActionDescription(){
+		assertEquals("Put on manual airco", new CarPart("manual", true, CarPartType.AIRCO).getActionDescription());
+	}
+	
 }
