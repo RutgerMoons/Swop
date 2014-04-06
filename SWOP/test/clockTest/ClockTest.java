@@ -43,4 +43,5 @@ public class ClockTest {
 		clock.startNewDay();
 		assertEquals(1, clock.getDay());
 	}
+	
 }

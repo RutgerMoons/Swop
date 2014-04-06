@@ -42,13 +42,6 @@ public class Clock {
 		
 		
 	}
-	
-	/**
-	 * Reset the clock to 0 (12pm, the beginning of a day)
-	 */
-	private void reset(){
-		this.minute = 0;
-	}
 
 	/**
 	 * Get the current day.
