@@ -3,9 +3,17 @@ package car;
 /**
  * Abstract class representing a part of a car.
  */
-public abstract class CarPart {
+public class CarPart {
 
-	private String type;
+	private String description;
+	private boolean isOptional;
+	private CarPartType type;
+
+	public CarPart(String description, boolean isOptional, CarPartType type) {
+		setDescription(description);
+		setOptional(isOptional);
+		setType(type);
+	}
 
 	/**
 	 * 
@@ -16,23 +24,75 @@ public abstract class CarPart {
 	 * @throws IllegalArgumentException
 	 *             if description==null or isEmpty
 	 */
-	public void setType(String description) {
+	public void setDescription(String description) {
 		if (description == null || description.isEmpty())
 			throw new IllegalArgumentException();
-		this.type = description;
+		this.description = description;
 	}
 
 	/**
 	 * Returns the description of this type.
 	 */
-	public String getType() {
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public String toString() {
+		return getType().toString() + ": " + getDescription();
+	}
+
+	public boolean isOptional() {
+		return isOptional;
+	}
+
+	public void setOptional(boolean isOptional) {
+		this.isOptional = isOptional;
+	}
+
+	public CarPartType getType() {
 		return type;
+	}
+
+	public void setType(CarPartType type) {
+		if (type == null)
+			throw new IllegalArgumentException();
+		this.type = type;
+	}
+
+	public String getTaskDescription() {
+		switch (getType()) {
+		case AIRCO:
+			return "Airco";
+		case BODY:
+			return "Assembly";
+		case COLOR:
+			return "Paint";
+		case ENGINE:
+			return "Engine";
+		case GEARBOX:
+			return "Gearbox";
+		case SEATS:
+			return "Seats";
+		case SPOILER:
+			return "Spoiler";
+		case WHEEL:
+			return "Wheels";
+		default:
+			return "";
+		}
+	}
+	
+	public String getActionDescription() {
+		return "Put on " + getDescription() + " " + getType().toString().toLowerCase();
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + description.hashCode();
+		result = prime * result + (isOptional ? 1231 : 1237);
 		result = prime * result + type.hashCode();
 		return result;
 	}
@@ -46,14 +106,13 @@ public abstract class CarPart {
 		if (getClass() != obj.getClass())
 			return false;
 		CarPart other = (CarPart) obj;
-		if (!type.equals(other.type))
+		if (!description.equals(other.description))
+			return false;
+		if (isOptional != other.isOptional)
+			return false;
+		if (type != other.type)
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return getType();
 	}
 
 }
