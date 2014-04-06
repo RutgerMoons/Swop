@@ -46,11 +46,6 @@ public class WorkBench implements IWorkBench {
 
 
 	public Optional<IJob> getCurrentJob() {
-		if(currentJob.isPresent()){
-			IJob immutable = new ImmutableJob(currentJob.get());
-			Optional<IJob> job = Optional.fromNullable(immutable);
-			return job;
-		}
 		return currentJob;
 	}
 

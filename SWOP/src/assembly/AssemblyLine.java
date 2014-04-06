@@ -6,18 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import order.Order;
-import car.Airco;
-import car.Body;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
+import car.CarPart;
 import car.ICarModel;
-import car.Seat;
-import car.Wheel;
 import clock.Clock;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+
+import exception.ImmutableException;
 
 /**
  * 
@@ -237,7 +233,10 @@ public class AssemblyLine {
 												// dus de auto('s), dan moet
 												// je de job natuurlijk
 												// removen.
-			((Order) lastJob.get().getOrder()).completeCar();
+			 try {
+				lastJob.get().getOrder().completeCar();
+			} catch (ImmutableException e) {
+			}
 		}
 
 		if ((22 * 60 - getClock().getMinutes()) < 0) {// overtime zetten
@@ -255,60 +254,20 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	public List<IJob> convertOrderToJob(Order order) {
+	public List<IJob> convertOrderToJob(Order order){
 		if (order == null)
 			throw new IllegalArgumentException();
 
 		ICarModel model = order.getDescription();
-
-		// Het is lelijk ik weet het, maar het kan echt niet anders.. denk ik
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
-			Job job = new Job(order);
-
-			Task assembly = new Task("Assembly");
-			Action actionAssembly = new Action("Put on a "
-					+ model.getCarParts().get(Body.class) + "body");
-			assembly.addAction(actionAssembly);
-
-			Task paint = new Task("Paint");
-			Action actionPaint = new Action("Paint car "
-					+ model.getCarParts().get(Color.class));
-			paint.addAction(actionPaint);
-
-			Task engine = new Task("Engine");
-			Action actionEngine = new Action("Install the "
-					+ model.getCarParts().get(Engine.class) + " engine");
-			engine.addAction(actionEngine);
-
-			Task gearbox = new Task("Gearbox");
-			Action actionGearbox = new Action("Put in the "
-					+ model.getCarParts().get(Gearbox.class) + " gearbox");
-			gearbox.addAction(actionGearbox);
-
-			Task seats = new Task("Seats");
-			Action actionSeats = new Action("Install "
-					+ model.getCarParts().get(Seat.class) + " seats");
-			seats.addAction(actionSeats);
-
-			Task airco = new Task("Airco");
-			Action actionAirco = new Action("Install the "
-					+ model.getCarParts().get(Airco.class) + " airco");
-			airco.addAction(actionAirco);
-
-			Task wheels = new Task("Wheels");
-			Action actionWheels = new Action("Put on "
-					+ model.getCarParts().get(Wheel.class) + " wheels");
-			wheels.addAction(actionWheels);
-
-			job.addTask(paint);
-			job.addTask(assembly);
-			job.addTask(engine);
-			job.addTask(gearbox);
-			job.addTask(seats);
-			job.addTask(airco);
-			job.addTask(wheels);
-
+			Job job = new Job(order);	
+			for(CarPart part: model.getCarParts().values()){
+				Task task = new Task(part.getTaskDescription());
+				IAction action = new Action(part.getActionDescription());
+				task.addAction(action);
+				job.addTask(task);
+			}
 			jobs.add(job);
 		}
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();

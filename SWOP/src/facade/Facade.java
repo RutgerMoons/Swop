@@ -6,6 +6,7 @@ import java.util.Set;
 
 import order.Order;
 import order.OrderBook;
+import users.AccessRight;
 import users.User;
 import users.UserBook;
 import users.UserFactory;
@@ -21,11 +22,9 @@ import car.CarModelCatalogueFiller;
 import car.CarPartCatalogue;
 import car.CarPartCatalogueFiller;
 import clock.Clock;
-import exception.NoCompletedOrdersException;
-import exception.NoPendingOrdersException;
 import exception.RoleNotYetAssignedException;
 
-public class Facade implements IFacade {
+public class Facade {
 
 	private AssemblyLine assemblyLine;
 	private CarModelCatalogue carModelCatalogue;
@@ -53,23 +52,19 @@ public class Facade implements IFacade {
 		}
 	}
 
-	@Override
 	public void advanceAssemblyLine() throws IllegalStateException {
 		assemblyLine.advance();
 	}
 
-	@Override
 	public void advanceClock(int time) {
 		clock.advanceTime(time);
 
 	}
 
-	@Override
 	public boolean canAssemblyLineAdvance() {
 		return assemblyLine.canAdvance();
 	}
 
-	@Override
 	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex,
 			int taskIndex) {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
@@ -80,7 +75,6 @@ public class Facade implements IFacade {
 		}
 	}
 
-	@Override
 	public void createAndAddUser(String userName, String role) throws IllegalArgumentException {
 		User currentUser = userFactory.createUser(userName, role);
 		this.userBook.addUser(currentUser);
@@ -91,23 +85,19 @@ public class Facade implements IFacade {
 		}
 	}
 
-	@Override
-	public List<String> getAccessRights() {
+	public List<AccessRight> getAccessRights() {
 		return this.userBook.getCurrentUser().getAccessRights();
 	}
 	
-	@Override
 	public String getAssemblyLineAsString() {
 		return assemblyLine.toString();
 	}
 
 
-	@Override
 	public ArrayList<Integer> getBlockingWorkBenches() {
 		return assemblyLine.getBlockingWorkBenches();
 	}
 
-	@Override
 	public String getCarModelFromCatalogue(String carModelName) throws IllegalArgumentException{
 		for(String model : this.carModelCatalogue.getCatalogue().keySet()){
 			if(model.equalsIgnoreCase(carModelName)){
@@ -117,12 +107,10 @@ public class Facade implements IFacade {
 		throw new IllegalArgumentException();
 	}
 
-	@Override
 	public Set<String> getCarModels() {
 		return this.carModelCatalogue.getCatalogue().keySet();
 	}
 
-	@Override
 	public ArrayList<String> getCompletedOrders() {
 		ArrayList<String> completedOrders = new ArrayList<String>();
 		if(this.orderBook.getCompletedOrders().containsKey(userBook.getCurrentUser().getName())) {
@@ -133,12 +121,10 @@ public class Facade implements IFacade {
 		return completedOrders;
 	}
 
-	@Override
 	public String getFutureAssemblyLineAsString() {
 		return assemblyLine.getFutureAssemblyLine().toString();
 	}
 	
-	@Override
 	public ArrayList<String> getPendingOrders() {
 		ArrayList<String> pendingOrders = new ArrayList<String>();
 		List<Order> orders = (List<Order>) orderBook.getPendingOrders().get(userBook.getCurrentUser().getName());
@@ -152,7 +138,6 @@ public class Facade implements IFacade {
 
 	}
 
-	@Override
 	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex) {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
 		ArrayList<String> tasks = new ArrayList<String>();
@@ -164,7 +149,6 @@ public class Facade implements IFacade {
 		return tasks;
 	}
 
-	@Override
 	public ArrayList<String> getWorkBenchNames() {
 		ArrayList<String> workbenches = new ArrayList<String>();
 		for(IWorkBench w : this.assemblyLine.getWorkbenches()){
@@ -173,17 +157,14 @@ public class Facade implements IFacade {
 		return workbenches;
 	}
 
-	@Override
 	public void login(String userName) throws RoleNotYetAssignedException, IllegalArgumentException {
 		userBook.login(userName);
 	}
 
-	@Override
 	public void logout() {
 		userBook.logout();
 	}
 
-	@Override
 	public int[] processOrder(String carModelName, int quantity) {
 		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
 		Order order = new Order(userBook.getCurrentUser().getName(), carModel, quantity);
@@ -191,14 +172,9 @@ public class Facade implements IFacade {
 		return order.getEstimatedTime();
 	}
 
-	@Override
 	public void startNewDay() {
 		clock.startNewDay();
 
 	}
-
-
-
-
 
 }

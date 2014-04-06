@@ -20,17 +20,15 @@ import assembly.IWorkBench;
 import assembly.Job;
 import assembly.Task;
 import assembly.WorkBench;
-import car.Airco;
-import car.Body;
 import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
+import car.CarPart;
+import car.CarPartType;
 import clock.Clock;
 
 import com.google.common.base.Optional;
+
+import exception.AlreadyInMapException;
+import exception.ImmutableException;
 
 public class AssemblyLineTest{
 
@@ -42,8 +40,7 @@ public class AssemblyLineTest{
 		line = new AssemblyLine(new Clock());
 		line.setWorkbenches(new ArrayList<IWorkBench>()); //DIT MOET GEBEUREN OMDAT ER ANDERS AL 3 WORKBENCHES AANWEZIG ZIJN!!
 
-		model = new CarModel("Volkswagen", new Airco("manual"), new Body("sedan"), new Color("blue"), 
-				new Engine("standard 2l 4 cilinders"), new Gearbox("6 speed manual"), new Seat("leather black"), new Wheel("comfort"));
+		model = new CarModel("Volkswagen");
 	}
 
 	@Test
@@ -294,8 +291,15 @@ public class AssemblyLineTest{
 	}
 
 	@Test
-	public void TestConvertOrderToJobOneCar(){
+	public void TestConvertOrderToJobOneCar() throws AlreadyInMapException{
 		Order order = new Order("Stef", model, 1);
+		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
 		List<IJob> jobs = line.convertOrderToJob(order);
 		assertEquals(1, jobs.size());
 		assertEquals(7, jobs.get(0).getTasks().size());
@@ -309,8 +313,18 @@ public class AssemblyLineTest{
 	}
 
 	@Test
-	public void TestConvertOrderToJobTwoCars(){
+	public void TestConvertOrderToJobTwoCars() throws AlreadyInMapException{
 		Order order = new Order("Stef", model, 2);
+		
+		
+		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
+		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
+		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
+		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		
 		List<IJob> jobs = line.convertOrderToJob(order);
 		assertEquals(2, jobs.size());
 		assertEquals(7, jobs.get(0).getTasks().size());
@@ -376,7 +390,7 @@ public class AssemblyLineTest{
 		line.advance();
 		line.calculateEstimatedTime(order);
 		assertEquals(2, order.getEstimatedTime()[0]);
-		assertEquals(beginTime + 780, order.getEstimatedTime()[1]);
+		assertEquals(beginTime + 720, order.getEstimatedTime()[1]);
 	}
 
 
@@ -449,7 +463,7 @@ public class AssemblyLineTest{
 	}
 
 	@Test
-	public void TestOvertime(){
+	public void TestOvertime() throws ImmutableException{
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
@@ -457,9 +471,9 @@ public class AssemblyLineTest{
 		IJob job = new Job(order);
 		ITask task = new Task("Paint");
 		IAction action = new Action("Paint car blue");
-		((Action) action).setCompleted(false);
-		((Task) task).addAction(action);
-		((Job) job).addTask(task);
+		action.setCompleted(false);
+		task.addAction(action);
+		job.addTask(task);
 		line.addJob(job);
 		bench1.setCurrentJob(Optional.fromNullable(job));
 		bench1.chooseTasksOutOfJob();		
@@ -476,5 +490,27 @@ public class AssemblyLineTest{
 		line.addWorkBench(bench1);
 		AssemblyLine future = line.getFutureAssemblyLine();
 		assertEquals(line.getWorkbenches().get(0).getCurrentJob(), future.getWorkbenches().get(0).getCurrentJob());
+	}
+	
+	@Test
+	public void testCanAdvanceAndBlockingWorkBenches() throws ImmutableException{
+		assertTrue(line.canAdvance());
+		
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		bench1.addResponsibility("Paint");
+		line.addWorkBench(bench1);
+		Order order = new Order("Stef", model, 1);
+		IJob job = new Job(order);
+		ITask task = new Task("Paint");
+		IAction action = new Action("Paint car blue");
+		action.setCompleted(false);
+		task.addAction(action);
+		job.addTask(task);
+		line.addJob(job);
+		bench1.setCurrentJob(Optional.fromNullable(job));
+		bench1.chooseTasksOutOfJob();		
+		assertFalse(line.canAdvance());
+		
+		assertEquals(1, (int)line.getBlockingWorkBenches().get(0));
 	}
 }

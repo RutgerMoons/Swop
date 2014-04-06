@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import exception.ImmutableException;
 import assembly.Action;
 import assembly.IAction;
 import assembly.ImmutableAction;
@@ -28,5 +29,19 @@ public class ImmutableActionTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void illegalConstructorTest(){
 		new ImmutableAction(null);
+	}
+	
+	@Test (expected= ImmutableException.class)
+	public void testImmutableException() throws ImmutableException{
+		Action action = new Action("Test");
+		IAction immutable = new ImmutableAction(action);
+		immutable.setCompleted(true);
+	}
+	
+	@Test (expected= ImmutableException.class)
+	public void testImmutableException2() throws ImmutableException{
+		Action action = new Action("Test");
+		IAction immutable = new ImmutableAction(action);
+		immutable.setDescription("blabla");
 	}
 }

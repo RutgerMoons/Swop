@@ -30,24 +30,24 @@ public class UserFactory {
 		if (userName == null) {
 			throw new IllegalArgumentException();
 		}
-		ArrayList<String> accessRights = new ArrayList<String>(Arrays.asList(new String[] {"Order"}));
-		return new GarageHolder(userName, accessRights);
+		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(Arrays.asList(new AccessRight[] {AccessRight.ORDER}));
+		return new User(userName, accessRights);
 	}
 
 	private User createManager(String userName) {
 		if (userName == null) {
 			throw new IllegalArgumentException();
 		}
-		ArrayList<String> accessRights = new ArrayList<String>(Arrays.asList(new String[] {"Advance assemblyline"}));
-		return new Manager(userName, accessRights);
+		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(Arrays.asList(new AccessRight[] {AccessRight.ADVANCE}));
+		return new User(userName, accessRights);
 	}
 	
 	private User createWorker(String userName) {
 		if (userName == null) {
 			throw new IllegalArgumentException();
 		}
-		ArrayList<String> accessRights = new ArrayList<String>(Arrays.asList(new String[] {"Complete assembly tasks"}));
-		return new Worker(userName, accessRights);
+		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(Arrays.asList(new AccessRight[] {AccessRight.ASSEMBLE}));
+		return new User(userName, accessRights);
 	}
 
 	

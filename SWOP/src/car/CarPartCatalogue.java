@@ -10,7 +10,7 @@ import com.google.common.collect.Multimap;
  */
 public class CarPartCatalogue {
 
-	private Multimap<Class<?>, CarPart> carPartCatalogue;
+	private Multimap<CarPartType, CarPart> carPartCatalogue;
 
 	public CarPartCatalogue() {
 		this.carPartCatalogue = HashMultimap.create();
@@ -24,27 +24,27 @@ public class CarPartCatalogue {
 	 * note: the description of CarPart cannot equal null
 	 */
 	public boolean isValidCarPart(CarPart carPart) {
-		return carPart != null && carPartCatalogue.get(carPart.getClass()).contains(carPart);
+		return carPart != null && carPartCatalogue.get(carPart.getType()).contains(carPart);
 	}
 
 	/**
 	 * This methods adds an entry for a carPart if the class is valid the list
 	 * is not null
 	 */
-	public void addCarPart(Class<?> key, CarPart value)
+	public void addCarPart(CarPart value)
 			throws IllegalArgumentException {
-		if (key == null || value == null) {
+		if (value == null) {
 			throw new IllegalArgumentException();
 		} else {
-			carPartCatalogue.put(key, value);
+			carPartCatalogue.put(value.getType(), value);
 		}
 	}
 
 	/**
 	 * Returns a deep copy clone of the carPartCatalogue.
 	 */
-	public Multimap<Class<?>, CarPart> getMap() {
-		return new ImmutableSetMultimap.Builder<Class<?>, CarPart>()
+	public Multimap<CarPartType, CarPart> getMap() {
+		return new ImmutableSetMultimap.Builder<CarPartType, CarPart>()
 				.putAll(this.carPartCatalogue).build();
 	}
 
