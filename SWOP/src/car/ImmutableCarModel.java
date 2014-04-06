@@ -24,8 +24,8 @@ public class ImmutableCarModel implements ICarModel {
 		this.model = model;
 	}
 	@Override
-	public Map<Class<?>, CarPart> getCarParts() {
-		return new ImmutableMap.Builder<Class<?>, CarPart>()
+	public Map<CarPartType, CarPart> getCarParts() {
+		return new ImmutableMap.Builder<CarPartType, CarPart>()
 				.putAll(model.getCarParts()).build();
 	}
 

@@ -24,8 +24,8 @@ public class CarPartCatalogueFiller {
 	 */
 	private Set<CarPart> getInitialAirco() {
 		Set<CarPart> initialAircos = new HashSet<CarPart>();
-		initialAircos.add(new Airco("manual"));
-		initialAircos.add(new Airco("automatic climate control"));
+		initialAircos.add(new CarPart("manual", true, CarPartType.AIRCO));
+		initialAircos.add(new CarPart("automatic climate control", true, CarPartType.AIRCO));
 		return initialAircos;
 	}
 	
@@ -34,8 +34,8 @@ public class CarPartCatalogueFiller {
 	 */
 	private Set<CarPart> getInitialBody() {
 		Set<CarPart> initialBodies = new HashSet<CarPart>();
-		initialBodies.add(new Body("break"));
-		initialBodies.add(new Body("sedan"));
+		initialBodies.add(new CarPart("break", false, CarPartType.BODY));
+		initialBodies.add(new CarPart("sedan", false, CarPartType.BODY));
 		return initialBodies;
 	}
 	
@@ -44,10 +44,10 @@ public class CarPartCatalogueFiller {
 	 */
 	private Set<CarPart> getInitialColors() {
 		Set<CarPart> initialColors = new HashSet<CarPart>();
-		initialColors.add(new Color("red"));
-		initialColors.add(new Color("blue"));
-		initialColors.add(new Color("black"));
-		initialColors.add(new Color("white"));
+		initialColors.add(new CarPart("red", false, CarPartType.COLOR));
+		initialColors.add(new CarPart("blue", false, CarPartType.COLOR));
+		initialColors.add(new CarPart("black", false, CarPartType.COLOR));
+		initialColors.add(new CarPart("white", false, CarPartType.COLOR));
 		return initialColors;
 	}
 	
@@ -56,8 +56,8 @@ public class CarPartCatalogueFiller {
 	 */
 	private Set<CarPart> getInitialEngine() {
 		Set<CarPart> initialEngines = new HashSet<CarPart>();
-		initialEngines.add(new Engine("standard 2l 4 cilinders"));
-		initialEngines.add(new Engine("performance 2.5l 6 cilinders"));
+		initialEngines.add(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
+		initialEngines.add(new CarPart("performance 2.5l 6 cilinders", false, CarPartType.ENGINE));
 		return initialEngines;
 	}
 	
@@ -66,8 +66,8 @@ public class CarPartCatalogueFiller {
 	 */
 	private Set<CarPart> getInitialGearbox() {
 		HashSet<CarPart> initialGearBox = new HashSet<CarPart>();
-		initialGearBox.add(new Gearbox("6 speed manual"));
-		initialGearBox.add(new Gearbox("5 speed automatic"));
+		initialGearBox.add(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
+		initialGearBox.add(new CarPart("5 speed automatic", false, CarPartType.GEARBOX));
 		return initialGearBox;
 	}
 	
@@ -76,9 +76,9 @@ public class CarPartCatalogueFiller {
 	 */
 	private Set<CarPart> getInitialSeat() {
 		HashSet<CarPart> initialSeats = new HashSet<CarPart>();
-		initialSeats.add(new Seat("leather black"));
-		initialSeats.add(new Seat("leather white"));
-		initialSeats.add(new Seat("vinyl grey"));
+		initialSeats.add(new CarPart("leather black", false, CarPartType.SEATS));
+		initialSeats.add(new CarPart("leather white", false, CarPartType.SEATS));
+		initialSeats.add(new CarPart("vinyl grey", false, CarPartType.SEATS));
 		return initialSeats;
 	}
 	
@@ -87,8 +87,8 @@ public class CarPartCatalogueFiller {
 	 */
 	private Set<CarPart> getInitialWheel() {
 		HashSet<CarPart> initialWheels = new HashSet<CarPart>();
-		initialWheels.add(new Wheel("comfort"));
-		initialWheels.add(new Wheel("sports (low profile)"));
+		initialWheels.add(new CarPart("comfort", false, CarPartType.WHEEL));
+		initialWheels.add(new CarPart("sports (low profile)", false, CarPartType.WHEEL));
 		return initialWheels;
 	}
 	
@@ -96,20 +96,20 @@ public class CarPartCatalogueFiller {
 	 * Method for initializing all the different carParts.
 	 */
 	public void initializeCarParts(){
-		for(CarPart ac: this.getInitialAirco())
-			this.catalogue.addCarPart(Airco.class, ac);
-		for(CarPart ac: this.getInitialBody())
-			this.catalogue.addCarPart(Body.class, ac);
-		for(CarPart ac: this.getInitialColors())
-			this.catalogue.addCarPart(Color.class, ac);
-		for(CarPart ac: this.getInitialEngine())
-			this.catalogue.addCarPart(Engine.class, ac);
-		for(CarPart ac: this.getInitialGearbox())
-			this.catalogue.addCarPart(Gearbox.class, ac);
-		for(CarPart ac: this.getInitialSeat())
-			this.catalogue.addCarPart(Seat.class, ac);
-		for(CarPart ac: this.getInitialWheel())
-			this.catalogue.addCarPart(Wheel.class, ac);
+		for(CarPart obj: this.getInitialAirco())
+			this.catalogue.addCarPart(obj);
+		for(CarPart obj: this.getInitialBody())
+			this.catalogue.addCarPart(obj);
+		for(CarPart obj: this.getInitialColors())
+			this.catalogue.addCarPart(obj);
+		for(CarPart obj: this.getInitialEngine())
+			this.catalogue.addCarPart(obj);
+		for(CarPart obj: this.getInitialGearbox())
+			this.catalogue.addCarPart(obj);
+		for(CarPart obj: this.getInitialSeat())
+			this.catalogue.addCarPart(obj);
+		for(CarPart obj: this.getInitialWheel())
+			this.catalogue.addCarPart(obj);
 		
 	}
 }

@@ -3,7 +3,7 @@ package car;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
+import exception.AlreadyInMapException;
 
 /**
  * Class representing a certain carmodel. Each carmodel has all the essential
@@ -13,38 +13,24 @@ import com.google.common.collect.ImmutableMap;
 public class CarModel implements ICarModel {
 
 	private String description;
-	private HashMap<Class<?>, CarPart> carParts;
+	private HashMap<CarPartType, CarPart> carParts;
 
-	public CarModel(String description, Airco airco, Body body, Color color,
-			Engine engine, Gearbox gear, Seat seat, Wheel wheel) {
-		carParts = new HashMap<Class<?>, CarPart>();
+	public CarModel(String description) {
+		carParts = new HashMap<CarPartType, CarPart>();
 		this.setDescription(description);
-		this.setCarParts(airco, body, color, engine, gear, seat, wheel);
 	}
 
-	/**
-	 * Method for assigning given objects to certain attributes. The method
-	 * checks before assigning if the given objects are different from null. If
-	 * this isn't the case, an IllegalArgumentException is thrown.
-	 */
-	private void setCarParts(Airco airco, Body body, Color color,
-			Engine engine, Gearbox gear, Seat seat, Wheel wheel) {
-		if (airco != null && body != null && color != null && engine != null
-				&& gear != null && seat != null && wheel != null) {
-			this.carParts.put(Airco.class, airco);
-			this.carParts.put(Body.class, body);
-			this.carParts.put(Color.class, color);
-			this.carParts.put(Engine.class, engine);
-			this.carParts.put(Gearbox.class, gear);
-			this.carParts.put(Seat.class, seat);
-			this.carParts.put(Wheel.class, wheel);
-		} else
-			throw new IllegalArgumentException();
-	}
-
-	
-	public Map<Class<?>, CarPart> getCarParts() {
+	public Map<CarPartType, CarPart> getCarParts() {
 		return carParts;
+	}
+
+	public void addCarPart(CarPart part) throws AlreadyInMapException {
+		if (part == null)
+			throw new IllegalArgumentException();
+		if (carParts.containsKey(part.getType())
+				&& !carParts.get(part.getType()).equals(part))
+			throw new AlreadyInMapException();
+		carParts.put(part.getType(), part);
 	}
 
 	/**
@@ -52,8 +38,18 @@ public class CarModel implements ICarModel {
 	 * different from null and if it is different from the empty string.
 	 */
 	private void setDescription(String description) {
-		if (!description.equals(null) && !description.equals(""))
-			this.description = description;
+		if (description == null || description.isEmpty())
+			throw new IllegalArgumentException();
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	@Override
+	public String toString() {
+		return getDescription();
 	}
 
 	@Override
@@ -74,20 +70,11 @@ public class CarModel implements ICarModel {
 		if (getClass() != obj.getClass())
 			return false;
 		CarModel other = (CarModel) obj;
-		if (!carParts.values().containsAll(other.carParts.values()))
-			return false;
 		if (!description.equals(other.description))
+			return false;
+		if (!carParts.equals(other.carParts))
 			return false;
 		return true;
 	}
 
-	
-	public String getDescription() {
-		return this.description;
-	}
-
-	@Override
-	public String toString() {
-		return getDescription();
-	}
 }

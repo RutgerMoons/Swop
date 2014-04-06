@@ -6,14 +6,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import car.Airco;
-import car.Body;
-import car.CarModelCatalogueFiller;
 import car.CarPart;
 import car.CarPartCatalogue;
 import car.CarPartCatalogueFiller;
+import car.CarPartType;
 
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 
@@ -24,11 +21,8 @@ public class CarPartCatalogueTest {
 		CarPartCatalogue catalogue = new CarPartCatalogue();
 		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(catalogue);
 		filler.initializeCarParts();
-		Airco airco = new Airco("manual");
+		CarPart airco = new CarPart("manual", true, CarPartType.AIRCO);
 		assertTrue(catalogue.isValidCarPart(airco));
-		Airco airco2 = new Airco("manual");
-		assertTrue(airco.equals(airco2));
-		
 	}
 	
 	@Test 
@@ -36,9 +30,9 @@ public class CarPartCatalogueTest {
 		CarPartCatalogue catalogue = new CarPartCatalogue();
 		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(catalogue);
 		filler.initializeCarParts();
-		Airco airco = new Airco("bla");
+		CarPart airco = new CarPart("bla", true, CarPartType.AIRCO);
 		assertFalse(catalogue.isValidCarPart(airco));
-		Body body = null;
+		CarPart body = null;
 		assertFalse(catalogue.isValidCarPart(body));
 	}
 	
@@ -47,7 +41,7 @@ public class CarPartCatalogueTest {
 		CarPartCatalogue cat = new CarPartCatalogue();
 		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(cat);
 		filler.initializeCarParts();
-		cat.addCarPart(null, new Airco("manual"));
+		cat.addCarPart(null);
 	}
 	
 	@Test
@@ -55,12 +49,10 @@ public class CarPartCatalogueTest {
 		CarPartCatalogue cat = new CarPartCatalogue();
 		CarPartCatalogueFiller filler = new CarPartCatalogueFiller(cat);
 		filler.initializeCarParts();
-		cat.addCarPart(Airco.class, new Airco("manual"));
-		Multimap<Class<?>, CarPart> map = cat.getMap();
+		Multimap<CarPartType, CarPart> map = cat.getMap();
 		//System.out.println(map.toString());
 		assertEquals(7,map.keySet().size());
 		
-		cat.addCarPart(CarPart.class, new Body("break"));
 		assertEquals(7,map.keySet().size());
 	}
 	

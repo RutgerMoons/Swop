@@ -1,34 +1,26 @@
 package carTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import car.Airco;
-import car.Body;
 import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
+import car.CarPart;
+import car.CarPartType;
 import car.ICarModel;
 import car.ImmutableCarModel;
-import car.Seat;
-import car.Wheel;
+import exception.AlreadyInMapException;
 
 public class ImmutableCarModelTest {
 
 	@Test
-	public void test() {
-		Airco airco = new Airco("manual");
-		Body body = new Body("break");
-		Color color = new Color("red");
-		Engine engine = new Engine("standard 2l 4 cilinders");
-		Gearbox gear = new Gearbox("6 speed manual");
-		Seat seat = new Seat("leather black");
-		Wheel wheel = new Wheel("comfort");
-		CarModel car = new CarModel("car1",airco,body,color,engine,gear,seat,wheel);
-	
+	public void test() throws AlreadyInMapException {
+
+		CarModel car = new CarModel("car1");
+		car.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
+		car.addCarPart(new CarPart("break", false, CarPartType.BODY));
+		
 		ICarModel immutable = new ImmutableCarModel(car);
 		assertEquals(car.getCarParts(), immutable.getCarParts());
 		assertEquals(car.getDescription(), immutable.getDescription());
