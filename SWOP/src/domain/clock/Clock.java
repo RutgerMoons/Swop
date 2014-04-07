@@ -1,5 +1,9 @@
 package domain.clock;
 
+import java.util.ArrayList;
+
+import domain.observer.ClockObserver;
+
 /**
  * Represents a clock that stores the current time (in minutes) and the current day.
  */
@@ -9,6 +13,12 @@ public class Clock {
 	private final int MINUTESSTARTOFDAY= 360;
 	private int minutes;
 	private int days;
+	private ArrayList<ClockObserver> observers;
+	
+	public Clock() {
+		observers = new ArrayList<ClockObserver>();
+	}
+	
 	/**
 	 * Get the current time (in minutes).
 	 * @return
@@ -73,6 +83,12 @@ public class Clock {
 	
 	public ImmutableClock getImmutableClock() {
 		return new ImmutableClock(getDays(), getMinutes());
+	}
+	
+	public void attachObserver(ClockObserver observer) {
+		if (observer == null) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 
