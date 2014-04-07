@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import domain.order.Delay;
-
 public class LogHistoryDays extends LogHistory {
 	
 	private int carsProducedToday;
