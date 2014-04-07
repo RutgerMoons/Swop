@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
@@ -14,7 +13,6 @@ import domain.car.ICarModel;
 import domain.clock.Clock;
 import domain.exception.ImmutableException;
 import domain.order.Order;
-
 
 /**
  * 
@@ -25,9 +23,9 @@ import domain.order.Order;
 public class AssemblyLine {
 
 	private Clock clock;
-	private List<IWorkBench> workbenches;
 	private List<IJob> currentJobs;
 	private int overtime;
+	private List<IWorkBench> workbenches;
 
 	/**
 	 * Construct a new AssemblyLine.
@@ -44,110 +42,6 @@ public class AssemblyLine {
 		workbenches = new ArrayList<IWorkBench>();
 		currentJobs = new ArrayList<IJob>();
 		initializeWorkbenches();
-	}
-
-	/**
-	 * Initializes the workbenches at the start of the program.
-	 * 
-	 */
-	private void initializeWorkbenches() {// gemakkelijk om een nieuwe workbench
-		// toe te voegen om te initializeren
-		Set<String> responsibilitiesCarBodyPost = new HashSet<>();
-		responsibilitiesCarBodyPost.add("Paint");
-		responsibilitiesCarBodyPost.add("Assembly");
-		addWorkBench(new WorkBench(responsibilitiesCarBodyPost, "car body"));
-
-		Set<String> responsibilitiesDrivetrainPost = new HashSet<>();
-		responsibilitiesDrivetrainPost.add("Engine");
-		responsibilitiesDrivetrainPost.add("Gearbox");
-		addWorkBench(new WorkBench(responsibilitiesDrivetrainPost, "drivetrain"));
-
-		Set<String> responsibilitiesAccesoiresPost = new HashSet<>();
-		responsibilitiesAccesoiresPost.add("Seats");
-		responsibilitiesAccesoiresPost.add("Airco");
-		responsibilitiesAccesoiresPost.add("Wheels");
-		addWorkBench(new WorkBench(responsibilitiesAccesoiresPost,
-				"accessories"));
-
-	}
-
-	/**
-	 * Get the IWorkBenches that are assigned to this AssemblyLine.
-	 * 
-	 * @return A list of IWorkBenches.
-	 */
-	public List<IWorkBench> getWorkbenches() {
-		return new ImmutableList.Builder<IWorkBench>().addAll(workbenches)
-				.build();
-	}
-
-	/**
-	 * Assign a list of workbenches to this AssemblyLine.
-	 * 
-	 * @param workbenches
-	 *            A list of IWorkBenches.
-	 * @throws IllegalArgumentException
-	 *             If workbenches==null
-	 */
-	public void setWorkbenches(List<IWorkBench> workbenches) {
-		if (workbenches == null)
-			throw new IllegalArgumentException();
-		this.workbenches = workbenches;
-	}
-
-	/**
-	 * Get all the pending jobs for this AssemblyLine.
-	 * 
-	 * @return A list representing the current jobs.
-	 */
-	public List<IJob> getCurrentJobs() {
-		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
-	}
-
-	/**
-	 * Assign a list of jobs you want to the AssemblyLine.
-	 * 
-	 * @param currentJobs
-	 *            A list of Jobs.
-	 * @throws IllegalArgumentException
-	 *             If currentJobs==null
-	 */
-	public void setCurrentJobs(List<IJob> currentJobs) {
-		if (currentJobs == null)
-			throw new IllegalArgumentException();
-		this.currentJobs = currentJobs;
-	}
-
-	/**
-	 * Get the overtime of the previous day.
-	 * 
-	 * @return An integer representing the overtime.
-	 */
-	public int getOvertime() {
-		return overtime;
-	}
-
-	/**
-	 * Set the overtime in hours.
-	 * 
-	 * @param overtime
-	 *            An integer representing the overtime in hours.
-	 * @throws IllegalArgumentException
-	 *             If overtime<0
-	 */
-	public void setOvertime(int overtime) {
-		if (overtime < 0)
-			throw new IllegalArgumentException();
-		this.overtime = overtime;
-	}
-
-	/**
-	 * Get the clock.
-	 * 
-	 * @return The Clock that's available.
-	 */
-	public Clock getClock() {
-		return clock;
 	}
 
 	/**
@@ -234,8 +128,10 @@ public class AssemblyLine {
 												// dus de auto('s), dan moet
 												// je de job natuurlijk
 												// removen.
-			 try {
+			try {
 				lastJob.get().getOrder().completeCar();
+				// TODO:
+				// 		add line for observer
 			} catch (ImmutableException e) {
 			}
 		}
@@ -243,35 +139,6 @@ public class AssemblyLine {
 		if ((22 * 60 - getClock().getMinutes()) < 0) {// overtime zetten
 			overtime = Math.abs(22 * 60 - getClock().getMinutes());
 		}
-	}
-
-	/**
-	 * This method converts an order to a list of Jobs, 1 for each car.
-	 * 
-	 * @param order
-	 *            The order that needs to be converted to a list of jobs.
-	 * @return A list of jobs.
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if order==null
-	 */
-	public List<IJob> convertOrderToJob(Order order){
-		if (order == null)
-			throw new IllegalArgumentException();
-
-		ICarModel model = order.getDescription();
-		List<IJob> jobs = new ArrayList<>();
-		for (int i = 0; i < order.getQuantity(); i++) {
-			Job job = new Job(order);	
-			for(CarPart part: model.getCarParts().values()){
-				Task task = new Task(part.getTaskDescription());
-				IAction action = new Action(part.getActionDescription());
-				task.addAction(action);
-				job.addTask(task);
-			}
-			jobs.add(job);
-		}
-		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
 
 	/**
@@ -324,13 +191,13 @@ public class AssemblyLine {
 			nbOfCarsToday = nbOfCarsPerDay;
 
 		if (timeTillFirstWorkbench / 60 <= nbOfCarsToday) {
-			days = clock.getDay();
+			days = clock.getDays();
 			time += clock.getMinutes();
 		} else {
 			days = 1; // je weet al dat vandaag het niet gaat lukken
 			timeTillFirstWorkbench -= nbOfCarsToday * 60;
 			days += (timeTillFirstWorkbench / 60) / nbOfCarsPerDay
-					+ clock.getDay();
+					+ clock.getDays();
 			time = (timeTillFirstWorkbench / 60) % nbOfCarsPerDay * 60
 					+ beginTime;
 		}
@@ -340,24 +207,68 @@ public class AssemblyLine {
 		order.setEstimatedTime(array);
 	}
 
+	public boolean canAdvance() {
+		List<IWorkBench> workBenches = getWorkbenches();
+		for (int i = 0; i < workBenches.size(); i++)
+			if (!workBenches.get(i).isCompleted())
+				return false;
+		return true;
+	}
+
 	/**
-	 * Get the index of the last job that belongs to the order from the
-	 * currentJobList.
+	 * This method converts an order to a list of Jobs, 1 for each car.
 	 * 
 	 * @param order
-	 *            The order you want the index from.
-	 * @return The index.
+	 *            The order that needs to be converted to a list of jobs.
+	 * @return A list of jobs.
+	 * 
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	private int getIndexOf(Order order) {
+	public List<IJob> convertOrderToJob(Order order) {
 		if (order == null)
 			throw new IllegalArgumentException();
-		int index = -1;
-		for (IJob job : getCurrentJobs())
-			if (job.getOrder().equals(order))
-				index = getCurrentJobs().indexOf(job) + order.getQuantity();
-		return index;
+
+		ICarModel model = order.getDescription();
+		List<IJob> jobs = new ArrayList<>();
+		for (int i = 0; i < order.getQuantity(); i++) {
+			Job job = new Job(order);
+			for (CarPart part : model.getCarParts().values()) {
+				Task task = new Task(part.getTaskDescription());
+				IAction action = new Action(part.getActionDescription());
+				task.addAction(action);
+				job.addTask(task);
+			}
+			jobs.add(job);
+		}
+		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
+	}
+
+	public ArrayList<Integer> getBlockingWorkBenches() {
+		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
+		List<IWorkBench> workBenches = getWorkbenches();
+		for (int i = 0; i < workBenches.size(); i++)
+			if (!workBenches.get(i).isCompleted())
+				notCompletedBenches.add(i + 1);
+		return notCompletedBenches;
+	}
+
+	/**
+	 * Get the clock.
+	 * 
+	 * @return The Clock that's available.
+	 */
+	public Clock getClock() {
+		return clock;
+	}
+
+	/**
+	 * Get all the pending jobs for this AssemblyLine.
+	 * 
+	 * @return A list representing the current jobs.
+	 */
+	public List<IJob> getCurrentJobs() {
+		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
 	}
 
 	/**
@@ -385,6 +296,112 @@ public class AssemblyLine {
 		return line;
 	}
 
+	/**
+	 * Get the index of the last job that belongs to the order from the
+	 * currentJobList.
+	 * 
+	 * @param order
+	 *            The order you want the index from.
+	 * @return The index.
+	 * @throws IllegalArgumentException
+	 *             if order==null
+	 */
+	private int getIndexOf(Order order) {
+		if (order == null)
+			throw new IllegalArgumentException();
+		int index = -1;
+		for (IJob job : getCurrentJobs())
+			if (job.getOrder().equals(order))
+				index = getCurrentJobs().indexOf(job) + order.getQuantity();
+		return index;
+	}
+
+	/**
+	 * Get the overtime of the previous day.
+	 * 
+	 * @return An integer representing the overtime.
+	 */
+	public int getOvertime() {
+		return overtime;
+	}
+
+	/**
+	 * Get the IWorkBenches that are assigned to this AssemblyLine.
+	 * 
+	 * @return A list of IWorkBenches.
+	 */
+	public List<IWorkBench> getWorkbenches() {
+		return new ImmutableList.Builder<IWorkBench>().addAll(workbenches)
+				.build();
+	}
+
+	/**
+	 * Initializes the workbenches at the start of the program.
+	 * 
+	 */
+	private void initializeWorkbenches() {// gemakkelijk om een nieuwe workbench
+		// toe te voegen om te initializeren
+		Set<String> responsibilitiesCarBodyPost = new HashSet<>();
+		responsibilitiesCarBodyPost.add("Paint");
+		responsibilitiesCarBodyPost.add("Assembly");
+		addWorkBench(new WorkBench(responsibilitiesCarBodyPost, "car body"));
+
+		Set<String> responsibilitiesDrivetrainPost = new HashSet<>();
+		responsibilitiesDrivetrainPost.add("Engine");
+		responsibilitiesDrivetrainPost.add("Gearbox");
+		addWorkBench(new WorkBench(responsibilitiesDrivetrainPost, "drivetrain"));
+
+		Set<String> responsibilitiesAccesoiresPost = new HashSet<>();
+		responsibilitiesAccesoiresPost.add("Seats");
+		responsibilitiesAccesoiresPost.add("Airco");
+		responsibilitiesAccesoiresPost.add("Wheels");
+		addWorkBench(new WorkBench(responsibilitiesAccesoiresPost,
+				"accessories"));
+
+	}
+
+	/**
+	 * Assign a list of jobs you want to the AssemblyLine.
+	 * 
+	 * @param currentJobs
+	 *            A list of Jobs.
+	 * @throws IllegalArgumentException
+	 *             If currentJobs==null
+	 */
+	public void setCurrentJobs(List<IJob> currentJobs) {
+		if (currentJobs == null)
+			throw new IllegalArgumentException();
+		this.currentJobs = currentJobs;
+	}
+
+	/**
+	 * Set the overtime in hours.
+	 * 
+	 * @param overtime
+	 *            An integer representing the overtime in hours.
+	 * @throws IllegalArgumentException
+	 *             If overtime<0
+	 */
+	public void setOvertime(int overtime) {
+		if (overtime < 0)
+			throw new IllegalArgumentException();
+		this.overtime = overtime;
+	}
+
+	/**
+	 * Assign a list of workbenches to this AssemblyLine.
+	 * 
+	 * @param workbenches
+	 *            A list of IWorkBenches.
+	 * @throws IllegalArgumentException
+	 *             If workbenches==null
+	 */
+	public void setWorkbenches(List<IWorkBench> workbenches) {
+		if (workbenches == null)
+			throw new IllegalArgumentException();
+		this.workbenches = workbenches;
+	}
+
 	@Override
 	public String toString() {
 		String assemblyLineString = "";
@@ -407,22 +424,5 @@ public class AssemblyLine {
 			}
 		}
 		return assemblyLineString.replaceFirst(",", "");
-	}
-	
-	public boolean canAdvance() {
-		List<IWorkBench> workBenches = getWorkbenches();
-		for (int i = 0; i < workBenches.size(); i++)
-			if(!workBenches.get(i).isCompleted())
-				return false;
-		return true;
-	}
-	
-	public ArrayList<Integer> getBlockingWorkBenches() {
-		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
-		List<IWorkBench> workBenches = getWorkbenches();
-		for (int i = 0; i < workBenches.size(); i++)
-			if(!workBenches.get(i).isCompleted())
-				notCompletedBenches.add(i+1);
-		return notCompletedBenches;
 	}
 }

@@ -39,9 +39,9 @@ public class ClockTest {
 
 	@Test
 	public void TestStartNewDay() {
-		assertEquals(0, clock.getDay());
+		assertEquals(0, clock.getDays());
 		clock.startNewDay();
-		assertEquals(1, clock.getDay());
+		assertEquals(1, clock.getDays());
 	}
 	
 }

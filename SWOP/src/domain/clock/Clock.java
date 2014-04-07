@@ -7,20 +7,20 @@ public class Clock {
 	
 	private final int MINUTESINADAY = 1440;
 	private final int MINUTESSTARTOFDAY= 360;
-	private int minute;
-	private int day;
+	private int minutes;
+	private int days;
 	/**
 	 * Get the current time (in minutes).
 	 * @return
 	 * 			An integer that represents the current time, expressed in minutes.
 	 */
 	public int getMinutes(){
-		return minute;
+		return minutes;
 	}
 	
 	private void setMinutes(int min) {
 		if (min >= 0) {
-			this.minute = min % MINUTESINADAY;
+			this.minutes = min % MINUTESINADAY;
 		}
 	}
 	
@@ -33,12 +33,12 @@ public class Clock {
 	 */
 	public void advanceTime(int elapsedTime) throws IllegalArgumentException{
 		if (elapsedTime < 0) throw new IllegalArgumentException("argument can't be negative");
-		else if (this.minute + elapsedTime > MINUTESINADAY){
-			setMinutes((this.minute + elapsedTime) % MINUTESINADAY);
+		else if (this.minutes + elapsedTime > MINUTESINADAY){
+			setMinutes((this.minutes + elapsedTime) % MINUTESINADAY);
 			//TODO: wat als er meer dan 1 dag tegelijk advanced moet worden?
-			day++;
+			days++;
 		}
-		else setMinutes(this.minute + elapsedTime);
+		else setMinutes(this.minutes + elapsedTime);
 		
 		
 	}
@@ -49,15 +49,15 @@ public class Clock {
 	 * 			An integer that represents the current day. 
 	 * 			The 'current day' is interpreted as how many days the program has been running. (first day == 0)
 	 */
-	public int getDay() {
-		return this.day;
+	public int getDays() {
+		return this.days;
 	}
 	
 	/**
 	 * the amount of days is incremented with one
 	 */
 	private void incrementDay() {
-		this.day++;
+		this.days++;
 	}
 	
 	/**
@@ -69,6 +69,10 @@ public class Clock {
 			incrementDay();
 		}
 		setMinutes(MINUTESSTARTOFDAY);
+	}
+	
+	public ImmutableClock getImmutableClock() {
+		return new ImmutableClock(getDays(), getMinutes());
 	}
 
 
