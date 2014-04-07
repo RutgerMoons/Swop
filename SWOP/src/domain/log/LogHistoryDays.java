@@ -1,7 +1,10 @@
 package domain.log;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.List;
+
+import domain.order.Delay;
 
 public class LogHistoryDays extends LogHistory {
 	
@@ -29,7 +32,7 @@ public class LogHistoryDays extends LogHistory {
 	}
 
 	@Override
-	public Iterator<Integer> getCompleteHistory() {
+	public List<Integer> getCompleteHistory() {
 		ArrayList<Integer> complete = new ArrayList<>();
 		for (Integer i : history) {
 			complete.add(i);
@@ -37,7 +40,11 @@ public class LogHistoryDays extends LogHistory {
 		for (Integer i : completeHistory) {
 			complete.add(i);
 		}
-		return complete.iterator();
+		return Collections.unmodifiableList(complete);
+	}
+	
+	public List<Integer> getHistory() {
+		return Collections.unmodifiableList(history);
 	}
 
 }

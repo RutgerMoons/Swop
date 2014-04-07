@@ -24,4 +24,14 @@ public class Delay {
 	public int getDelay() {
 		return delay;
 	}
+	
+	/**
+	 * returns the delay and the day on which it occurred as:
+	 * <DAY>: <DELAY>
+	 */
+	@Override
+	public String toString() {
+		return this.completed.getDays() + ": " + this.getDelay();
+		
+	}
 }

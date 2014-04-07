@@ -1,7 +1,8 @@
 package domain.log;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.List;
 
 import domain.order.Delay;
 
@@ -26,7 +27,7 @@ public class LogHistoryDelays extends LogHistory {
 	}
 
 	@Override
-	public Iterator<Integer> getCompleteHistory() {
+	public List<Integer> getCompleteHistory() {
 		ArrayList<Integer> complete = new ArrayList<>();
 		for (Delay d : history) {
 			complete.add(d.getDelay());
@@ -34,7 +35,7 @@ public class LogHistoryDelays extends LogHistory {
 		for (Integer i : completeHistory) {
 			complete.add(i);
 		}
-		return complete.iterator();
+		return Collections.unmodifiableList(complete);
 	}
 	
 	public void addNewDelay(Delay newDelay) {
@@ -45,6 +46,10 @@ public class LogHistoryDelays extends LogHistory {
 			latestDelay = newDelay;
 			shift();
 		}
+	}
+	
+	public List<Delay> getHistory() {
+		return Collections.unmodifiableList(history);
 	}
 
 }

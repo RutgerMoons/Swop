@@ -1,6 +1,6 @@
 package domain.log;
 
-import java.util.Iterator;
+import java.util.List;
 
 
 
@@ -17,7 +17,7 @@ public abstract class LogHistory {
 	 */
 	public abstract void shift();
 	
-	public abstract Iterator<?> getCompleteHistory();
+	public abstract List<?> getCompleteHistory();
 	
 	
 	
