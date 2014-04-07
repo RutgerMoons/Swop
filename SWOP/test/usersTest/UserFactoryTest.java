@@ -5,9 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import users.AccessRight;
-import users.User;
-import users.UserFactory;
+import domain.users.AccessRight;
+import domain.users.User;
+import domain.users.UserFactory;
+
 
 public class UserFactoryTest {
 

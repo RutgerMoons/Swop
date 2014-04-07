@@ -8,10 +8,11 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import users.AccessRight;
-import users.User;
-import users.UserBook;
-import exception.RoleNotYetAssignedException;
+import domain.exception.RoleNotYetAssignedException;
+import domain.users.AccessRight;
+import domain.users.User;
+import domain.users.UserBook;
+
 
 public class UserBookTest {
 	UserBook book;

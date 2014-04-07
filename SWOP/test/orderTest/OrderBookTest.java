@@ -3,18 +3,18 @@ package orderTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import order.Order;
-import order.OrderBook;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import assembly.AssemblyLine;
-import car.CarModel;
-import car.CarPart;
-import car.CarPartType;
-import clock.Clock;
-import exception.AlreadyInMapException;
+import domain.assembly.AssemblyLine;
+import domain.car.CarModel;
+import domain.car.CarPart;
+import domain.car.CarPartType;
+import domain.clock.Clock;
+import domain.exception.AlreadyInMapException;
+import domain.order.Order;
+import domain.order.OrderBook;
 
 
 /*

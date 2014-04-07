@@ -8,14 +8,14 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import car.CarModel;
-import car.CarModelCatalogue;
-import car.CarModelCatalogueFiller;
-import car.CarPart;
-import car.CarPartCatalogue;
-import car.CarPartCatalogueFiller;
-import car.CarPartType;
-import exception.AlreadyInMapException;
+import domain.car.CarModel;
+import domain.car.CarModelCatalogue;
+import domain.car.CarModelCatalogueFiller;
+import domain.car.CarPart;
+import domain.car.CarPartCatalogue;
+import domain.car.CarPartCatalogueFiller;
+import domain.car.CarPartType;
+import domain.exception.AlreadyInMapException;
 
 public class CatalogueTest {
 

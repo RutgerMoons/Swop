@@ -6,29 +6,30 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import order.Order;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import assembly.Action;
-import assembly.AssemblyLine;
-import assembly.IAction;
-import assembly.IJob;
-import assembly.ITask;
-import assembly.IWorkBench;
-import assembly.Job;
-import assembly.Task;
-import assembly.WorkBench;
-import car.CarModel;
-import car.CarPart;
-import car.CarPartType;
-import clock.Clock;
 
 import com.google.common.base.Optional;
 
-import exception.AlreadyInMapException;
-import exception.ImmutableException;
+import domain.assembly.Action;
+import domain.assembly.AssemblyLine;
+import domain.assembly.IAction;
+import domain.assembly.IJob;
+import domain.assembly.ITask;
+import domain.assembly.IWorkBench;
+import domain.assembly.Job;
+import domain.assembly.Task;
+import domain.assembly.WorkBench;
+import domain.car.CarModel;
+import domain.car.CarPart;
+import domain.car.CarPartType;
+import domain.clock.Clock;
+import domain.exception.AlreadyInMapException;
+import domain.exception.ImmutableException;
+import domain.order.Order;
+
 
 public class AssemblyLineTest{
 

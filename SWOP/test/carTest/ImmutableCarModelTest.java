@@ -5,12 +5,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import car.CarModel;
-import car.CarPart;
-import car.CarPartType;
-import car.ICarModel;
-import car.ImmutableCarModel;
-import exception.AlreadyInMapException;
+import domain.car.CarModel;
+import domain.car.CarPart;
+import domain.car.CarPartType;
+import domain.car.ICarModel;
+import domain.car.ImmutableCarModel;
+import domain.exception.AlreadyInMapException;
 
 public class ImmutableCarModelTest {
 

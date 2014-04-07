@@ -9,34 +9,36 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
 
-import order.Order;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.AssembleFlowController;
 import ui.IClientCommunication;
 import ui.ClientCommunication;
-import users.Worker;
-import assembly.Action;
-import assembly.AssemblyLine;
-import assembly.IJob;
-import assembly.Job;
-import assembly.Task;
-import assembly.WorkBench;
-import car.Airco;
-import car.Body;
-import car.CarModel;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
-import clock.Clock;
 
 import com.google.common.base.Optional;
+
+import controller.AssembleFlowController;
+
+import domain.assembly.Action;
+import domain.assembly.AssemblyLine;
+import domain.assembly.IJob;
+import domain.assembly.Job;
+import domain.assembly.Task;
+import domain.assembly.WorkBench;
+import domain.car.Airco;
+import domain.car.Body;
+import domain.car.CarModel;
+import domain.car.Color;
+import domain.car.Engine;
+import domain.car.Gearbox;
+import domain.car.Seat;
+import domain.car.Wheel;
+import domain.clock.Clock;
+import domain.order.Order;
+import domain.users.Worker;
 /**
  * Assumption user is already correctly logged in.
  *

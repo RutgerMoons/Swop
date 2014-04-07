@@ -8,9 +8,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import assembly.Action;
-import assembly.IAction;
-import assembly.Task;
+import domain.assembly.Action;
+import domain.assembly.IAction;
+import domain.assembly.Task;
+
 
 public class TaskTest {
 

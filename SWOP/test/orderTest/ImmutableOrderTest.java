@@ -2,18 +2,18 @@ package orderTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import order.IOrder;
-import order.ImmutableOrder;
-import order.Order;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import car.CarModel;
-import car.CarPart;
-import car.CarPartType;
-import exception.AlreadyInMapException;
-import exception.ImmutableException;
+import domain.car.CarModel;
+import domain.car.CarPart;
+import domain.car.CarPartType;
+import domain.exception.AlreadyInMapException;
+import domain.exception.ImmutableException;
+import domain.order.IOrder;
+import domain.order.ImmutableOrder;
+import domain.order.Order;
 
 public class ImmutableOrderTest {
 	CarModel model;

@@ -5,11 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import exception.ImmutableException;
-import assembly.Action;
-import assembly.ITask;
-import assembly.ImmutableTask;
-import assembly.Task;
+import domain.assembly.Action;
+import domain.assembly.ITask;
+import domain.assembly.ImmutableTask;
+import domain.assembly.Task;
+import domain.exception.ImmutableException;
+
 
 public class ImmutableTaskTest {
 	ITask task;

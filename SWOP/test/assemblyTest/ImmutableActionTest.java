@@ -6,10 +6,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import exception.ImmutableException;
-import assembly.Action;
-import assembly.IAction;
-import assembly.ImmutableAction;
+import domain.assembly.Action;
+import domain.assembly.IAction;
+import domain.assembly.ImmutableAction;
+import domain.exception.ImmutableException;
+
 
 public class ImmutableActionTest {
 

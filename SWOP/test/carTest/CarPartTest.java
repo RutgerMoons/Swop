@@ -7,9 +7,9 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import assembly.Action;
-import car.CarPart;
-import car.CarPartType;
+import domain.assembly.Action;
+import domain.car.CarPart;
+import domain.car.CarPartType;
 
 public class CarPartTest {
 

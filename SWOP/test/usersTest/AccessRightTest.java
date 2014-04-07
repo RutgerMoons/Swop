@@ -5,7 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-import users.AccessRight;
+import domain.users.AccessRight;
+
 
 public class AccessRightTest {
 

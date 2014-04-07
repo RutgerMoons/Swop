@@ -4,16 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import order.Order;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import assembly.Action;
-import car.CarModel;
-import car.CarPart;
-import car.CarPartType;
-import exception.AlreadyInMapException;
+import domain.assembly.Action;
+import domain.car.CarModel;
+import domain.car.CarPart;
+import domain.car.CarPartType;
+import domain.exception.AlreadyInMapException;
+import domain.order.Order;
 
 public class OrderTest {
 

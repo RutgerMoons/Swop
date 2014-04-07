@@ -9,31 +9,32 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
 
-import order.Order;
-import order.OrderBook;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.OrderFlowController;
+import controller.OrderFlowController;
+
 import ui.IClientCommunication;
 import ui.ClientCommunication;
-import users.GarageHolder;
-import clock.Clock;
-import car.Airco;
-import car.Body;
-import car.CarModel;
-import car.CarModelCatalogue;
-import car.CarModelCatalogueFiller;
-import car.CarPartCatalogue;
-import car.CarPartCatalogueFiller;
-import car.Color;
-import car.Engine;
-import car.Gearbox;
-import car.Seat;
-import car.Wheel;
-import assembly.AssemblyLine;
+import domain.assembly.AssemblyLine;
+import domain.car.Airco;
+import domain.car.Body;
+import domain.car.CarModel;
+import domain.car.CarModelCatalogue;
+import domain.car.CarModelCatalogueFiller;
+import domain.car.CarPartCatalogue;
+import domain.car.CarPartCatalogueFiller;
+import domain.car.Color;
+import domain.car.Engine;
+import domain.car.Gearbox;
+import domain.car.Seat;
+import domain.car.Wheel;
+import domain.clock.Clock;
+import domain.order.Order;
+import domain.order.OrderBook;
+import domain.users.GarageHolder;
 
 /**
  * Assumption : the garageholder is succesfully logged in.

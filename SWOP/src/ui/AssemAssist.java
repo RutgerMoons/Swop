@@ -2,7 +2,12 @@ package ui;
 
 import java.util.ArrayList;
 
-import facade.Facade;
+import controller.FlowControllerFactory;
+import controller.UseCaseFlowController;
+import controller.UserFlowController;
+
+import domain.facade.Facade;
+
 
 /**
  * This is the class where the program starts running.

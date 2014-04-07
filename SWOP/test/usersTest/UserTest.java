@@ -8,9 +8,10 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import users.AccessRight;
-import users.User;
-import users.UserBook;
+import domain.users.AccessRight;
+import domain.users.User;
+import domain.users.UserBook;
+
 
 public class UserTest {
 	User user;

@@ -6,12 +6,13 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import car.CarPart;
-import car.CarPartCatalogue;
-import car.CarPartCatalogueFiller;
-import car.CarPartType;
 
 import com.google.common.collect.Multimap;
+
+import domain.car.CarPart;
+import domain.car.CarPartCatalogue;
+import domain.car.CarPartCatalogueFiller;
+import domain.car.CarPartType;
 
 
 public class CarPartCatalogueTest {

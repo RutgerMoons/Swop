@@ -8,19 +8,19 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import order.Order;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import assembly.Action;
-import assembly.ITask;
-import assembly.Job;
-import assembly.Task;
-import car.CarModel;
-import car.CarPart;
-import car.CarPartType;
-import exception.AlreadyInMapException;
+import domain.assembly.Action;
+import domain.assembly.ITask;
+import domain.assembly.Job;
+import domain.assembly.Task;
+import domain.car.CarModel;
+import domain.car.CarPart;
+import domain.car.CarPartType;
+import domain.exception.AlreadyInMapException;
+import domain.order.Order;
 
 public class JobTest {
 	
