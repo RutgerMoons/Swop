@@ -35,7 +35,7 @@ public class ImmutableClock {
 	 * if aClock is not earlier than this clock, return 0
 	 */
 	public int minus(ImmutableClock aClock) throws IllegalArgumentException {
-		if (aClock.isEarlierThan(this)) {
+		if (this.isEarlierThan(aClock)) {
 			return 0;
 		}
 		return ((this.getDays() - aClock.getDays()) * MINUTESINADAY) + (this.getMinutes() - aClock.getMinutes());

@@ -1,6 +1,5 @@
 package domain.log;
 
-import java.util.Collections;
 import java.util.List;
 
 import domain.clock.ImmutableClock;
@@ -24,6 +23,10 @@ public class Logger {
 		this.currentTime = currentTime;
 	}
 
+	public ImmutableClock getCurrentTime(){
+		return this.currentTime;
+	}
+	
 	public void startNewDay() {
 		this.logHistoryDays.shift();
 	}
@@ -48,7 +51,6 @@ public class Logger {
 	}
 	
 	private int median(List<Integer> list) {
-		Collections.sort(list);
 		if (list.size() % 2 == 1) {
 			return list.get(list.size() / 2);
 		} else {

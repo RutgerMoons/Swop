@@ -18,7 +18,7 @@ public class Delay {
 	}
 	
 	private int calculateDelay() {
-		return this.completed.minus(estimated);
+		return this.completed.minus(this.estimated);
 	}
 	
 	public int getDelay() {
