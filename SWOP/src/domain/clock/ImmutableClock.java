@@ -44,8 +44,8 @@ public class ImmutableClock {
 	@Override
 	public String toString() {
 		return 
-				"day " + getDays() +
-				(getMinutes() / 60) + " hours " + 
+				"day " + getDays() + ", " +
+				(getMinutes() / 60) + " hours, " + 
 				(getMinutes() % 60) + " minutes.";	
 	}
 	
