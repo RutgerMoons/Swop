@@ -11,7 +11,10 @@ import com.google.common.collect.ImmutableList;
 import domain.car.CarPart;
 import domain.car.ICarModel;
 import domain.clock.Clock;
+import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
+import domain.observer.AssemblyLineObserver;
+import domain.observer.ClockObserver;
 import domain.order.Order;
 
 /**
@@ -26,6 +29,7 @@ public class AssemblyLine {
 	private List<IJob> currentJobs;
 	private int overtime;
 	private List<IWorkBench> workbenches;
+	private ArrayList<AssemblyLineObserver> observers;
 
 	/**
 	 * Construct a new AssemblyLine.
@@ -132,6 +136,7 @@ public class AssemblyLine {
 				lastJob.get().getOrder().completeCar();
 				// TODO:
 				// 		add line for observer
+				notifyObserverCompleteOrder(lastJob.get().getOrder().getEstimatedTime());
 			} catch (ImmutableException e) {
 			}
 		}
@@ -202,9 +207,7 @@ public class AssemblyLine {
 					+ beginTime;
 		}
 
-		array[0] = days;
-		array[1] = time;
-		order.setEstimatedTime(array);
+		order.setEstimatedTime(new ImmutableClock(days, time)); //TODO
 	}
 
 	public boolean canAdvance() {
@@ -425,4 +428,25 @@ public class AssemblyLine {
 		}
 		return assemblyLineString.replaceFirst(",", "");
 	}
+	
+	public void attachObserver(AssemblyLineObserver observer) {
+		if (observer == null) {
+			throw new IllegalArgumentException();
+		}
+		observers.add(observer);
+	}
+	
+	public void detachObserver(AssemblyLineObserver observer) {
+		if (observer == null) {
+			throw new IllegalArgumentException();
+		}
+		observers.remove(observer);
+	}
+	
+	public void notifyObserverCompleteOrder(ImmutableClock aClock) {
+		for (AssemblyLineObserver observer : observers) {
+			observer.updateCompletedOrder(aClock);
+		}
+	}
+	
 }

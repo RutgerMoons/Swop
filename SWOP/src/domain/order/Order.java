@@ -1,8 +1,8 @@
 package domain.order;
 
-import java.util.Arrays;
-
 import domain.car.ICarModel;
+import domain.clock.ImmutableClock;
+import domain.exception.ImmutableException;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes
@@ -17,7 +17,7 @@ public class Order implements IOrder {
 	private ICarModel description;
 	private String garageholder;
 	private int quantity, pendingCars;
-	int[] estimatedTime;
+	private ImmutableClock estimatedTime;
 
 	/**
 	 * Constructor of an Order, given the name of the orderer, the type of
@@ -28,8 +28,8 @@ public class Order implements IOrder {
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
 		this.setPendingCars(quantity);
-		int[] estimated = {0,0};
-		this.setEstimatedTime(estimated);
+		ImmutableClock estimated = null; //TODO
+		//this.setEstimatedTime(estimated);
 	}
 
 	/**
@@ -100,15 +100,15 @@ public class Order implements IOrder {
 	}
 
 
-	public int[] getEstimatedTime() {
+	public ImmutableClock getEstimatedTime() {
 		return this.estimatedTime;
 	}
 
-	public void setEstimatedTime(int[] array) {
-		if (array == null || array.length != 2 || array[0] < 0 || array[1] < 0) {
+	public void setEstimatedTime(ImmutableClock clock) {
+		if (clock == null) {
 			throw new IllegalArgumentException();
 		}
-		this.estimatedTime = array;
+		this.estimatedTime = clock;
 	}
 
 	public void completeCar() {
@@ -120,7 +120,6 @@ public class Order implements IOrder {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + description.hashCode();
-		result = prime * result + Arrays.hashCode(estimatedTime);
 		result = prime * result + garageholder.hashCode();
 		result = prime * result + pendingCars;
 		result = prime * result + quantity;
@@ -150,10 +149,11 @@ public class Order implements IOrder {
 		String orderInString = this.getQuantity() + " " + this.getDescription();
 		if (this.getPendingCars() > 0) {
 			orderInString += " Estimated completion time: "
-					+ this.getEstimatedTime()[0] + " days and "
-					+ this.getEstimatedTime()[1] / 60 + " hours and "
-					+ this.getEstimatedTime()[1] % 60 + " minutes";
+					+ this.getEstimatedTime().getDays() + " days and "
+					+ this.getEstimatedTime().getMinutes() / 60 + " hours and "
+					+ this.getEstimatedTime().getMinutes() % 60 + " minutes";
 		}
 		return orderInString;
 	}
+
 }

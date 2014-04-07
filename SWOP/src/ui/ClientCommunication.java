@@ -326,17 +326,13 @@ public class ClientCommunication implements IClientCommunication{
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
 	@Override
-	public void showOrder(int quantity, String model, int[] estimatedTime) {
-		if(estimatedTime[0] == -1) {
-			show(new ArrayList<String>(Arrays.asList("Your order:",quantity + " " + model)));
-		} 
-		else {
-			show(new ArrayList<String>(Arrays.asList("Your order:",	quantity + " " + 
-																	model + " Estimated completion time: day " + 
-																	estimatedTime[0] + " " + 
-																	estimatedTime[1]/60 + "h" + 
-																	estimatedTime[1]%60)));
+	public void showOrder(int quantity, String model, String estimatedTime) {
+		if (model == null || estimatedTime == null) {
+			throw new IllegalArgumentException();
 		}
+		show(new ArrayList<String>(Arrays.asList("Your order:",	quantity + " " + 
+																model + " Estimated completion time: " + 
+																estimatedTime)));
 	}
 
 	/**

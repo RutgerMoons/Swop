@@ -41,4 +41,12 @@ public class ImmutableClock {
 		return ((this.getDays() - aClock.getDays()) * MINUTESINADAY) + (this.getMinutes() - aClock.getMinutes());
 	}
 	
+	@Override
+	public String toString() {
+		return 
+				"day " + getDays() +
+				(getMinutes() / 60) + " hours " + 
+				(getMinutes() % 60) + " minutes.";	
+	}
+	
 }

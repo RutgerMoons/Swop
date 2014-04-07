@@ -155,7 +155,7 @@ public interface IClientCommunication {
 	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
-	public void showOrder(int quantity, String carModel, int[] estimatedTime);
+	public void showOrder(int quantity, String carModel, String estimatedTime);
 	
 	/**
 	 * Show the user's pending orders.

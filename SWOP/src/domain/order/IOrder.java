@@ -1,6 +1,7 @@
 package domain.order;
 
 import domain.car.ICarModel;
+import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 
 public interface IOrder {
@@ -32,7 +33,7 @@ public interface IOrder {
 	 *         (1 is tomorrow), the second integer gives the time of completion
 	 *         (in minutes) on that day.
 	 */
-	public int[] getEstimatedTime();
+	public ImmutableClock getEstimatedTime();
 	
 	/**
 	 * Set the estimated time, the first integer gives the days from today
@@ -43,7 +44,7 @@ public interface IOrder {
 	 * @throws ImmutableException 
 	 * 			If the IOrder is an ImmutableOrder.
 	 */
-	public void setEstimatedTime(int[] array) throws ImmutableException;
+	public void setEstimatedTime(ImmutableClock clock) throws ImmutableException;
 	
 	/**
 	 * Method for decreasing the amount of pendingCars each time an car of the

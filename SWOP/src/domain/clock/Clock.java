@@ -42,15 +42,18 @@ public class Clock {
 	 * 			If elapsedTime<0
 	 */
 	public void advanceTime(int elapsedTime) throws IllegalArgumentException{
-		if (elapsedTime < 0) throw new IllegalArgumentException("argument can't be negative");
+		if (elapsedTime < 0) {
+			throw new IllegalArgumentException("argument can't be negative");
+		}
 		else if (this.minutes + elapsedTime > MINUTESINADAY){
 			setMinutes((this.minutes + elapsedTime) % MINUTESINADAY);
 			//TODO: wat als er meer dan 1 dag tegelijk advanced moet worden?
-			days++;
+			incrementDay();
 		}
-		else setMinutes(this.minutes + elapsedTime);
-		
-		
+		else {
+			setMinutes(this.minutes + elapsedTime);
+		}
+		notifyObserversAdvanceTime();
 	}
 
 	/**
@@ -79,6 +82,7 @@ public class Clock {
 			incrementDay();
 		}
 		setMinutes(MINUTESSTARTOFDAY);
+		notifyObserversStartNewDay();
 	}
 	
 	public ImmutableClock getImmutableClock() {
@@ -88,6 +92,27 @@ public class Clock {
 	public void attachObserver(ClockObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
+		}
+		observers.add(observer);
+	}
+	
+	public void detachObserver(ClockObserver observer) {
+		if (observer == null) {
+			throw new IllegalArgumentException();
+		}
+		observers.remove(observer);
+	}
+	
+	public void notifyObserversAdvanceTime() {
+		ImmutableClock currentTime = getImmutableClock();
+		for (ClockObserver observer : observers) {
+			observer.advanceTime(currentTime);
+		}
+	}
+	
+	public void notifyObserversStartNewDay() {
+		for (ClockObserver observer : observers) {
+			observer.startNewDay();
 		}
 	}
 
