@@ -34,7 +34,7 @@ import domain.job.Action;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
-import domain.order.Order;
+import domain.order.StandardOrder;
 import domain.users.Manager;
 import domain.users.Worker;
 
@@ -56,7 +56,7 @@ public class AdvanceAssemblyLineScenario {
 		assembly = new AssemblyLine(clock);
 		advAss = new AdvanceAssemblyLineFlowController(uiFacade, assembly, clock);
 		CarModel model = new CarModel("it's me", new Airco("manual"), new Body("break"), new Color("red"), new Engine("bla"), new Gearbox("manual"), new Seat("vinyl grey"), new Wheel("comfort"));
-		Order order = new Order("Luigi", model, 5);
+		StandardOrder order = new StandardOrder("Luigi", model, 5);
 		job = new Job(order);
 	}
 	
@@ -156,7 +156,7 @@ public class AdvanceAssemblyLineScenario {
 			advAss = new AdvanceAssemblyLineFlowController(uiFacade, assembly, clock);
 			
 			CarModel model = new CarModel("it's me", new Airco("manual"), new Body("break"), new Color("red"), new Engine("bla"), new Gearbox("manual"), new Seat("vinyl grey"), new Wheel("comfort"));
-			Order order = new Order("Luigi", model, 5);
+			StandardOrder order = new StandardOrder("Luigi", model, 5);
 			IJob job = new Job(order);
 			Action action = new Action("action");
 			action.setCompleted(false);

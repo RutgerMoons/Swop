@@ -19,7 +19,7 @@ import domain.job.ITask;
 import domain.job.ImmutableJob;
 import domain.job.Job;
 import domain.job.Task;
-import domain.order.Order;
+import domain.order.StandardOrder;
 
 public class ImmutableJobTest {
 	IJob job;
@@ -36,7 +36,7 @@ public class ImmutableJobTest {
 		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
 		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
 		
-		job = new Job(new Order("Stef", model, 1));
+		job = new Job(new StandardOrder("Stef", model, 1));
 		immutable = new ImmutableJob(job);
 	}
 	

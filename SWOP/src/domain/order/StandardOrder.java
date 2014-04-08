@@ -12,7 +12,7 @@ import domain.car.ICarModel;
  * of an order. Each order also has an estimated time. This is an estimation of
  * when the order will be completed. This time is expressed in days and minutes.
  */
-public class Order implements IOrder {
+public class StandardOrder implements IOrder {
 
 	private ICarModel description;
 	private String garageholder;
@@ -23,7 +23,7 @@ public class Order implements IOrder {
 	 * Constructor of an Order, given the name of the orderer, the type of
 	 * carModel and the amount of cars to be ordered.
 	 */
-	public Order(String holder, ICarModel description, int quantity) {
+	public StandardOrder(String holder, ICarModel description, int quantity) {
 		this.setDescription(description);
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
@@ -135,7 +135,7 @@ public class Order implements IOrder {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Order other = (Order) obj;
+		StandardOrder other = (StandardOrder) obj;
 		if (!description.equals(other.description))
 			return false;
 		if (!garageholder.equals(other.garageholder))

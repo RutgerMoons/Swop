@@ -29,7 +29,7 @@ import domain.job.IJob;
 import domain.job.ITask;
 import domain.job.Job;
 import domain.job.Task;
-import domain.order.Order;
+import domain.order.StandardOrder;
 
 
 public class WorkBenchTest {
@@ -59,7 +59,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestSetCurrentJob(){
 		workBench.isCompleted();
-		IJob job = new Job(new Order("Jef", model, 1));
+		IJob job = new Job(new StandardOrder("Jef", model, 1));
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		assertNotNull(workBench.getCurrentJob());
 		assertEquals(workBench.getCurrentJob().get(), job);
@@ -142,7 +142,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestChooseNextTasks(){
 		workBench.addResponsibility("Paint");
-		IJob job = new Job(new Order("Jef", model, 1));
+		IJob job = new Job(new StandardOrder("Jef", model, 1));
 		Task task = new Task("Paint");
 		task.addAction(new Action("Spray Colour"));
 		((Job) job).addTask(task);
@@ -156,7 +156,7 @@ public class WorkBenchTest {
 	public void TestChooseNextTasksTwoCompatibleTasks(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		IJob job = new Job(new Order("Jef", model, 1));
+		IJob job = new Job(new StandardOrder("Jef", model, 1));
 		ITask task1 = new Task("Paint");
 		
 		((Task) task1).addAction(new Action("Spray Colour"));
@@ -175,7 +175,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestChooseNextTasksOneCompatibleOneInCompatibleTask(){
 		workBench.addResponsibility("Paint");
-		IJob job = new Job(new Order("Jef", model, 1));
+		IJob job = new Job(new StandardOrder("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
@@ -198,7 +198,7 @@ public class WorkBenchTest {
 	public void TestNotCompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		IJob job = new Job(new Order("Jef", model, 1));
+		IJob job = new Job(new StandardOrder("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
@@ -215,7 +215,7 @@ public class WorkBenchTest {
 	public void TestOneCompletedOneIncompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		IJob job = new Job(new Order("Jef", model, 1));
+		IJob job = new Job(new StandardOrder("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
@@ -234,7 +234,7 @@ public class WorkBenchTest {
 	public void TestTwoCompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		IJob job = new Job(new Order("Jef", model, 1));
+		IJob job = new Job(new StandardOrder("Jef", model, 1));
 		Task task1 = new Task("Paint");
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);

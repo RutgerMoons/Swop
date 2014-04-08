@@ -24,7 +24,7 @@ import domain.job.Action;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
-import domain.order.Order;
+import domain.order.StandardOrder;
 
 
 public class ImmutableWorkBenchTest {
@@ -54,7 +54,7 @@ public class ImmutableWorkBenchTest {
 		assertEquals("paintbooth", immutable.getWorkbenchName());
 		assertTrue(immutable.getResponsibilities().contains("paint"));
 		
-		IJob job = new Job(new Order("Stef", model, 1));
+		IJob job = new Job(new StandardOrder("Stef", model, 1));
 		Task task= new Task("paint");
 		task.addAction(new Action("paint blue"));
 		((Job) job).addTask(task);

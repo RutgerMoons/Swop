@@ -32,7 +32,7 @@ import domain.car.Gearbox;
 import domain.car.Seat;
 import domain.car.Wheel;
 import domain.clock.Clock;
-import domain.order.Order;
+import domain.order.StandardOrder;
 import domain.order.OrderBook;
 import domain.users.GarageHolder;
 
@@ -47,7 +47,7 @@ public class OrderNewCarScenario {
 	private OrderFlowController handler;
 	private OrderBook book;
 	private GarageHolder holder;
-	private Order order;
+	private StandardOrder order;
 	private CarModelCatalogue catalogue;
 
 	public OrderNewCarScenario(IClientCommunication ui) {
@@ -68,7 +68,7 @@ public class OrderNewCarScenario {
 				"sedan"), new Color("blue"), new Engine("standard"),
 				new Gearbox("manual"), new Seat("black leather"), new Wheel(
 						"black"));
-		order = new Order("Stef", model, 1);
+		order = new StandardOrder("Stef", model, 1);
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class OrderNewCarScenario {
 				"sedan"), new Color("blue"), new Engine("standard"),
 				new Gearbox("manual"), new Seat("black leather"), new Wheel(
 						"black"));
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		book.addOrder(order);
 
 		ByteArrayOutputStream myout = new ByteArrayOutputStream();
