@@ -6,6 +6,9 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
+import domain.job.IJob;
+import domain.job.ITask;
+
 /**
  * Represents a WorkBench from an assemblyline.
  * 

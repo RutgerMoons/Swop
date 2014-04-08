@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +19,7 @@ import ui.ClientCommunication;
 import com.google.common.base.Optional;
 
 import controller.AdvanceAssemblyLineFlowController;
-
-import domain.assembly.Action;
 import domain.assembly.AssemblyLine;
-import domain.assembly.IJob;
-import domain.assembly.Job;
-import domain.assembly.Task;
 import domain.assembly.WorkBench;
 import domain.car.Airco;
 import domain.car.Body;
@@ -36,6 +30,10 @@ import domain.car.Gearbox;
 import domain.car.Seat;
 import domain.car.Wheel;
 import domain.clock.Clock;
+import domain.job.Action;
+import domain.job.IJob;
+import domain.job.Job;
+import domain.job.Task;
 import domain.order.Order;
 import domain.users.Manager;
 import domain.users.Worker;

@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import domain.assembly.Action;
 import domain.car.CarModel;
 import domain.car.CarPart;
 import domain.car.CarPartType;
 import domain.exception.AlreadyInMapException;
+import domain.job.Action;
 
 public class CarModelTest {
 

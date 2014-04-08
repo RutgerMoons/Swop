@@ -8,6 +8,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import domain.exception.ImmutableException;
+import domain.job.IJob;
+import domain.job.ITask;
+import domain.job.ImmutableJob;
 
 
 /**

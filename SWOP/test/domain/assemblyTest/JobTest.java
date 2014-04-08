@@ -9,17 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.Action;
-import domain.assembly.ITask;
-import domain.assembly.Job;
-import domain.assembly.Task;
 import domain.car.CarModel;
 import domain.car.CarPart;
 import domain.car.CarPartType;
 import domain.exception.AlreadyInMapException;
+import domain.job.Action;
+import domain.job.ITask;
+import domain.job.Job;
+import domain.job.Task;
 import domain.order.Order;
 
 public class JobTest {

@@ -1,4 +1,4 @@
-package domain.assembly;
+package domain.job;
 
 /**
  * This class represents an Action that is available for the workers.
