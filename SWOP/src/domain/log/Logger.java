@@ -5,7 +5,7 @@ import java.util.List;
 import domain.clock.ImmutableClock;
 import domain.order.Delay;
 
-public class Logger {
+public class Logger implements LogsClock, LogsAssemblyLine {
 
 	private LogHistoryDays logHistoryDays;
 	private LogHistoryDelays logHistoryDelays;
@@ -16,7 +16,8 @@ public class Logger {
 		this.logHistoryDelays = new LogHistoryDelays(numberOfDaysOfDetailedHistory);
 	}
 
-	public void advanceClock(ImmutableClock currentTime) {
+	@Override
+	public void advanceTime(ImmutableClock currentTime) {
 		if (currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -27,6 +28,7 @@ public class Logger {
 		return this.currentTime;
 	}
 	
+	@Override
 	public void startNewDay() {
 		this.logHistoryDays.shift();
 	}
