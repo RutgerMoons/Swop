@@ -33,6 +33,7 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 		this.logHistoryDays.shift();
 	}
 
+	@Override
 	public void updateCompletedOrder(ImmutableClock estimatedTimeOfCompletion) {
 		if (estimatedTimeOfCompletion == null) {
 			throw new IllegalArgumentException();
