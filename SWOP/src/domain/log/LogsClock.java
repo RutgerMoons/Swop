@@ -1,10 +1,10 @@
 package domain.log;
 
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 
 public interface LogsClock {
 
-	public void advanceTime(ImmutableClock currentTime);
+	public void advanceTime(UnmodifiableClock currentTime);
 	
 	public void startNewDay();
 	

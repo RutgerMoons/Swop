@@ -1,14 +1,14 @@
 package domain.order;
 
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 
 public class Delay {
 	
-	private final ImmutableClock estimated;
-	private final ImmutableClock completed;
+	private final UnmodifiableClock estimated;
+	private final UnmodifiableClock completed;
 	private final int delay;
 	
-	public Delay(ImmutableClock estimated, ImmutableClock completed) {
+	public Delay(UnmodifiableClock estimated, UnmodifiableClock completed) {
 		if (estimated == null || completed == null) {
 			throw new IllegalArgumentException();
 		}

@@ -2,14 +2,14 @@ package domain.log;
 
 import java.util.List;
 
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 import domain.order.Delay;
 
 public class Logger implements LogsClock, LogsAssemblyLine {
 
 	private LogHistoryDays logHistoryDays;
 	private LogHistoryDelays logHistoryDelays;
-	private ImmutableClock currentTime;
+	private UnmodifiableClock currentTime;
 
 	public Logger(int numberOfDaysOfDetailedHistory) {
 		this.logHistoryDays = new LogHistoryDays(numberOfDaysOfDetailedHistory);
@@ -17,14 +17,14 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	}
 
 	@Override
-	public void advanceTime(ImmutableClock currentTime) {
+	public void advanceTime(UnmodifiableClock currentTime) {
 		if (currentTime == null) {
 			throw new IllegalArgumentException();
 		}
 		this.currentTime = currentTime;
 	}
 
-	public ImmutableClock getCurrentTime(){
+	public UnmodifiableClock getCurrentTime(){
 		return this.currentTime;
 	}
 	
@@ -34,7 +34,7 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	}
 
 	@Override
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfCompletion) {
+	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfCompletion) {
 		if (estimatedTimeOfCompletion == null) {
 			throw new IllegalArgumentException();
 		}

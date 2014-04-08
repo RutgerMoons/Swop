@@ -1,9 +1,9 @@
 package domain.log;
 
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 
 public interface LogsAssemblyLine {
 
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder);
+	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfOrder);
 	
 }

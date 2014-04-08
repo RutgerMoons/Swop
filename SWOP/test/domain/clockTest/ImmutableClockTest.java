@@ -5,17 +5,17 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 
 public class ImmutableClockTest {
 
-	ImmutableClock clock;
+	UnmodifiableClock clock;
 	
 	@Before
 	public void testConstructor() {
 		int days = 1;
 		int minutes = 500;
-		clock = new ImmutableClock(days, minutes);
+		clock = new UnmodifiableClock(days, minutes);
 		assertNotNull(clock);
 		assertEquals(1, clock.getDays());
 		assertEquals(500, clock.getMinutes());
@@ -23,25 +23,25 @@ public class ImmutableClockTest {
 	
 	@Test
 	public void isEarlierThanTest1(){
-		ImmutableClock otherClock = new ImmutableClock(5,200);
+		UnmodifiableClock otherClock = new UnmodifiableClock(5,200);
 		assertTrue(clock.isEarlierThan(otherClock));
 	}
 	
 	@Test
 	public void isEarlierThanTest2(){
-		ImmutableClock otherClock = new ImmutableClock(1,200);
+		UnmodifiableClock otherClock = new UnmodifiableClock(1,200);
 		assertFalse(clock.isEarlierThan(otherClock));
 	}
 	
 	@Test
 	public void isEarlierThanTest3(){
-		ImmutableClock otherClock = new ImmutableClock(1,500);
+		UnmodifiableClock otherClock = new UnmodifiableClock(1,500);
 		assertTrue(clock.isEarlierThan(otherClock));
 	}
 	
 	@Test
 	public void isEarlierThanTest4(){
-		ImmutableClock otherClock = new ImmutableClock(1,600);
+		UnmodifiableClock otherClock = new UnmodifiableClock(1,600);
 		assertTrue(clock.isEarlierThan(otherClock));
 	}
 	
@@ -52,14 +52,14 @@ public class ImmutableClockTest {
 	
 	@Test
 	public void minusTest1(){
-		ImmutableClock otherClock = new ImmutableClock(1,600);
+		UnmodifiableClock otherClock = new UnmodifiableClock(1,600);
 		int result = clock.minus(otherClock);
 		assertEquals(0,result);
 	}
 	
 	@Test
 	public void minusTest2(){
-		ImmutableClock otherClock = new ImmutableClock(1,200);
+		UnmodifiableClock otherClock = new UnmodifiableClock(1,200);
 		int result = clock.minus(otherClock);
 		assertEquals(300,result);
 	}

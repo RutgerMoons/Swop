@@ -1,6 +1,6 @@
 package domain.observer;
 
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 import domain.log.LogsClock;
 
 public class ClockObserver {
@@ -19,7 +19,7 @@ public class ClockObserver {
 	 * Clock update ClockObserver
 	 * ClockObserver update logger
 	 */
-	public void advanceTime(ImmutableClock currentTime) {
+	public void advanceTime(UnmodifiableClock currentTime) {
 		logger.advanceTime(currentTime);
 	}
 

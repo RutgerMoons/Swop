@@ -2,7 +2,7 @@ package domain.order;
 
 import domain.car.ICarModel;
 import domain.car.ImmutableCarModel;
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 
 /**
@@ -46,7 +46,7 @@ public class ImmutableOrder implements IOrder {
 	}
 
 	@Override
-	public ImmutableClock getEstimatedTime() {
+	public UnmodifiableClock getEstimatedTime() {
 		return order.getEstimatedTime();
 	}
 	
@@ -66,7 +66,7 @@ public class ImmutableOrder implements IOrder {
 	}
 
 	@Override
-	public void setEstimatedTime(ImmutableClock clock) throws ImmutableException {
+	public void setEstimatedTime(UnmodifiableClock clock) throws ImmutableException {
 		throw new ImmutableException();
 	}
 

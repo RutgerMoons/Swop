@@ -11,7 +11,7 @@ import com.google.common.collect.ImmutableList;
 import domain.car.CarPart;
 import domain.car.ICarModel;
 import domain.clock.Clock;
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
@@ -207,7 +207,7 @@ public class AssemblyLine {
 					+ beginTime;
 		}
 
-		order.setEstimatedTime(new ImmutableClock(days, time)); //TODO
+		order.setEstimatedTime(new UnmodifiableClock(days, time)); //TODO
 	}
 
 	public boolean canAdvance() {
@@ -443,7 +443,7 @@ public class AssemblyLine {
 		observers.remove(observer);
 	}
 	
-	public void notifyObserverCompleteOrder(ImmutableClock aClock) {
+	public void notifyObserverCompleteOrder(UnmodifiableClock aClock) {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}

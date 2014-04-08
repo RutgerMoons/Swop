@@ -1,12 +1,12 @@
 package domain.clock;
 
-public class ImmutableClock {
+public class UnmodifiableClock {
 
 	private final int days;
 	private final int minutes;
 	private final int MINUTESINADAY = 1440;
 	
-	public ImmutableClock(int days, int minutes) {
+	public UnmodifiableClock(int days, int minutes) {
 		this.days = days;
 		this.minutes = minutes;
 	}
@@ -22,7 +22,7 @@ public class ImmutableClock {
 	/**
 	 * return if this clock has the earliest time stamp or both clocks have the same time stamp
 	 */
-	public boolean isEarlierThan(ImmutableClock aClock) {
+	public boolean isEarlierThan(UnmodifiableClock aClock) {
 		if (aClock == null) {
 			throw new IllegalArgumentException();
 		}
@@ -34,7 +34,7 @@ public class ImmutableClock {
 	 * returns the difference in time in minutes
 	 * if aClock is not earlier than this clock, return 0
 	 */
-	public int minus(ImmutableClock aClock) throws IllegalArgumentException {
+	public int minus(UnmodifiableClock aClock) throws IllegalArgumentException {
 		if (this.isEarlierThan(aClock)) {
 			return 0;
 		}

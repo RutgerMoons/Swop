@@ -1,7 +1,7 @@
 package domain.order;
 
 import domain.car.ICarModel;
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 
 /**
@@ -17,7 +17,7 @@ public class Order implements IOrder {
 	private ICarModel description;
 	private String garageholder;
 	private int quantity, pendingCars;
-	private ImmutableClock estimatedTime;
+	private UnmodifiableClock estimatedTime;
 
 	/**
 	 * Constructor of an Order, given the name of the orderer, the type of
@@ -28,7 +28,7 @@ public class Order implements IOrder {
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
 		this.setPendingCars(quantity);
-		ImmutableClock estimated = null; //TODO
+		UnmodifiableClock estimated = null; //TODO
 		//this.setEstimatedTime(estimated);
 	}
 
@@ -100,11 +100,11 @@ public class Order implements IOrder {
 	}
 
 
-	public ImmutableClock getEstimatedTime() {
+	public UnmodifiableClock getEstimatedTime() {
 		return this.estimatedTime;
 	}
 
-	public void setEstimatedTime(ImmutableClock clock) {
+	public void setEstimatedTime(UnmodifiableClock clock) {
 		if (clock == null) {
 			throw new IllegalArgumentException();
 		}

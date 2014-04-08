@@ -1,6 +1,6 @@
 package domain.observer;
 
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
 import domain.log.LogsAssemblyLine;
 
 public class AssemblyLineObserver {
@@ -14,7 +14,7 @@ public class AssemblyLineObserver {
 		this.logger = logger;
 	}
 	
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder) {
+	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfOrder) {
 		logger.updateCompletedOrder(estimatedTimeOfOrder);
 	}
 	
