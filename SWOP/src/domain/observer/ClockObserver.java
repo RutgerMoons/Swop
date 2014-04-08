@@ -1,12 +1,17 @@
 package domain.observer;
 
 import domain.clock.ImmutableClock;
-import domain.log.Logger;
+import domain.log.LogsClock;
 
-public class ClockObserver extends Observer {
+public class ClockObserver {
 	
-	public ClockObserver(Logger logger) {
-		super(logger);
+	private LogsClock logger;
+	
+	public ClockObserver(LogsClock logger) {
+		if (logger == null) {
+			throw new IllegalArgumentException();
+		}
+		this.logger = logger;
 	}
 	
 	/*
@@ -15,7 +20,7 @@ public class ClockObserver extends Observer {
 	 * ClockObserver update logger
 	 */
 	public void advanceTime(ImmutableClock currentTime) {
-		logger.advanceClock(currentTime);
+		logger.advanceTime(currentTime);
 	}
 
 	public void startNewDay() {
