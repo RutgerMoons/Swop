@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
-
+import domain.exception.ImmutableException;
 import domain.facade.Facade;
 
 
@@ -44,7 +44,10 @@ public class AssemAssist {
 	public static void startProgram() {
 		do {
 			userFlowController.login();
-			userFlowController.performDuties();
+			try {
+				userFlowController.performDuties();
+			} catch (IllegalArgumentException | ImmutableException e) {
+			}
 			userFlowController.logout();
 		} while (true);
 

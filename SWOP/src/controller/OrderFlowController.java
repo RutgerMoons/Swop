@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ui.IClientCommunication;
+import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -26,9 +27,10 @@ public class OrderFlowController extends UseCaseFlowController {
 
 	/**
 	 * Execute the use case.
+	 * @throws ImmutableException 
 	 */
 	@Override
-	public void executeUseCase() throws IllegalArgumentException{
+	public void executeUseCase() throws IllegalArgumentException, ImmutableException{
 		this.showOrders();
 		placeNewOrder(); 
 	}
@@ -47,8 +49,9 @@ public class OrderFlowController extends UseCaseFlowController {
 	/**
 	 * Retrieves all the needed input of the user for processing an order.
 	 * All this information it gives to the iFacade.
+	 * @throws ImmutableException 
 	 */
-	public void placeNewOrder(){
+	public void placeNewOrder() throws ImmutableException{
 		if(!this.clientCommunication.askContinue()) {
 			this.executeUseCase();
 		}
