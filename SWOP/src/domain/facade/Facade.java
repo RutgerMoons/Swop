@@ -14,7 +14,11 @@ import domain.car.CarModelTemplate;
 import domain.car.CarPart;
 import domain.car.CarPartType;
 import domain.clock.Clock;
+<<<<<<< HEAD
 import domain.exception.AlreadyInMapException;
+=======
+import domain.exception.ImmutableException;
+>>>>>>> baa5af167436240a9bf6a5b7f4c65e6c362a71f5
 import domain.exception.RoleNotYetAssignedException;
 import domain.job.Action;
 import domain.job.IAction;
@@ -176,12 +180,18 @@ public class Facade {
 		userBook.logout();
 	}
 
+<<<<<<< HEAD
 	
 	
 	public String processOrder(String carModelName, int quantity) {
 
 		StandardOrder order = new StandardOrder(userBook.getCurrentUser()
 				.getName(),picker.getModel(), quantity);
+=======
+	public String processOrder(String carModelName, int quantity) throws ImmutableException {
+		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
+		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity);
+>>>>>>> baa5af167436240a9bf6a5b7f4c65e6c362a71f5
 		this.orderBook.addOrder(order);
 		return order.getEstimatedTime().toString();
 	}

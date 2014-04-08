@@ -3,11 +3,13 @@ package domain.order;
 import java.util.List;
 
 
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.assembly.AssemblyLine;
+import domain.exception.ImmutableException;
 
 /**
  * this class will be used to keep record of two kinds of orders. these two
@@ -86,8 +88,9 @@ public class OrderBook {
 	 * this arraylist is added to pendingOrders.
 	 * 
 	 * @param order
+	 * @throws ImmutableException 
 	 */
-	public void addOrder(StandardOrder order) {
+	public void addOrder(StandardOrder order) throws ImmutableException {
 
 		this.pendingOrders.put(order.getGarageHolder(), order);
 

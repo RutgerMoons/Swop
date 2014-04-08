@@ -27,6 +27,8 @@ public interface IOrder {
 	 */
 	public ICarModel getDescription();
 	
+	public int getProductionTime();
+	
 	public UnmodifiableClock getDeadline() throws NotImplementedException;
 	
 	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException;

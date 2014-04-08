@@ -17,5 +17,7 @@ public class AssemblyLineObserver {
 		logger.updateCompletedOrder(estimatedTimeOfOrder);
 	}
 	
+	//TODO: list van loggers en hun methodes
+	
 	
 }

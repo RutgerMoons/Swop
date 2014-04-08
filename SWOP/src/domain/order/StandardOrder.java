@@ -2,6 +2,7 @@ package domain.order;
 
 
 import java.util.Arrays;
+
 import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NotImplementedException;
@@ -179,5 +180,10 @@ public class StandardOrder implements IOrder {
 	@Override
 	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException {
 		throw new NotImplementedException();
+	}
+	
+	@Override
+	public int getProductionTime() {
+		return this.getDescription().getTemplate().getshizzle();
 	}
 }
