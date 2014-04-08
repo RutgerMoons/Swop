@@ -30,7 +30,7 @@ import domain.job.IJob;
 import domain.job.ITask;
 import domain.job.Job;
 import domain.job.Task;
-import domain.order.Order;
+import domain.order.StandardOrder;
 
 
 public class AssemblyLineTest{
@@ -62,7 +62,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestSetValidCurrentJobs(){
 		List<IJob> jobs = new ArrayList<>();
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		jobs.add(new Job(order1));
 		jobs.add(new Job(order1));
 		line.setCurrentJobs(jobs);
@@ -110,7 +110,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAddOneValidJob(){
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
 		assertEquals(1, line.getCurrentJobs().size());
@@ -125,7 +125,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestAddTwoValidJobs(){
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		Job job1 = new Job(order1);
 		Job job2 = new Job(order1);
 		line.addJob(job1);
@@ -137,7 +137,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestAddMultipleJobs(){
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		Job job1 = new Job(order1);
 		Job job2 = new Job(order1);
 		List<IJob> jobs = new ArrayList<>();
@@ -156,7 +156,7 @@ public class AssemblyLineTest{
 
 	@Test (expected = IllegalArgumentException.class)
 	public void TestAddOneValidJobOneInvalidJob(){
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
 		assertEquals(1, line.getCurrentJobs().size());
@@ -206,7 +206,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestAdvanceOneWorkbench(){
 		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
 		line.addWorkBench(bench);
@@ -218,7 +218,7 @@ public class AssemblyLineTest{
 	public void TestAdvanceTwoWorkbenches(){
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		Job job = new Job(order1);
 		line.addJob(job);
 		line.addWorkBench(bench1);
@@ -234,7 +234,7 @@ public class AssemblyLineTest{
 	public void TestAdvanceTwoWorkbenchesTwoJobs(){
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		Job job1 = new Job(order1);
 		Job job2 = new Job(order1);
 		line.addJob(job1);
@@ -253,7 +253,7 @@ public class AssemblyLineTest{
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		bench2.addResponsibility("Body");
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		Job job = new Job(order1);
 		Task task = new Task("Body");
 		Action action = new Action("Spray Colour");
@@ -274,7 +274,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestAdvanceAfterTenOClock(){
 		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
-		Order order1 = new Order("Jef", model, 1);
+		StandardOrder order1 = new StandardOrder("Jef", model, 1);
 		IJob job = new Job(order1);
 		line.addJob(job);
 		line.addWorkBench(bench);
@@ -295,7 +295,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestConvertOrderToJobOneCar() throws AlreadyInMapException{
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
 		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
 		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
@@ -317,7 +317,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestConvertOrderToJobTwoCars() throws AlreadyInMapException{
-		Order order = new Order("Stef", model, 2);
+		StandardOrder order = new StandardOrder("Stef", model, 2);
 		
 		
 		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
@@ -336,7 +336,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestEstimatedTime1(){
-		Order order = new Order("Stef", model, 2);
+		StandardOrder order = new StandardOrder("Stef", model, 2);
 		line.addMultipleJobs(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
@@ -349,7 +349,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestEstimatedTime2(){
-		Order order = new Order("Stef", model, 20);
+		StandardOrder order = new StandardOrder("Stef", model, 20);
 		line.addMultipleJobs(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
@@ -362,7 +362,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestEstimatedTime3(){
-		Order order = new Order("Stef", model, 40);
+		StandardOrder order = new StandardOrder("Stef", model, 40);
 		line.addMultipleJobs(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
@@ -375,7 +375,7 @@ public class AssemblyLineTest{
 
 	@Test(expected = IllegalStateException.class)
 	public void TestEstimatedTime4(){
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		line.addMultipleJobs(line.convertOrderToJob(order));
 		line.calculateEstimatedTime(order);
 	}
@@ -383,7 +383,7 @@ public class AssemblyLineTest{
 	@Test
 	public void TestEstimatedTime5(){
 
-		Order order = new Order("Stef", model, 40);
+		StandardOrder order = new StandardOrder("Stef", model, 40);
 		line.addJob(new Job(order));
 		line.addMultipleJobs(line.convertOrderToJob(order));
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
@@ -400,7 +400,7 @@ public class AssemblyLineTest{
 	@Test(expected= IllegalStateException.class)
 	public void TestEstimatedTime6(){
 
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
@@ -418,7 +418,7 @@ public class AssemblyLineTest{
 		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
 		line.addWorkBench(bench1);
 		line.addWorkBench(bench2);
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		line.addJob(new Job(order));
 		line.addMultipleJobs(line.convertOrderToJob(order));
 		line.calculateEstimatedTime(order);
@@ -435,7 +435,7 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void TestFutureAssemblyLine(){
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		Job job = new Job(order);
 		line.addJob(job);
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
@@ -452,7 +452,7 @@ public class AssemblyLineTest{
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
 		assertEquals("-workbench 1: test", line.toString());
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		IJob job = new Job(order);
 		ITask task = new Task("Paint");
 		IAction action = new Action("Paint car blue");
@@ -470,7 +470,7 @@ public class AssemblyLineTest{
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		IJob job = new Job(order);
 		ITask task = new Task("Paint");
 		IAction action = new Action("Paint car blue");
@@ -502,7 +502,7 @@ public class AssemblyLineTest{
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
-		Order order = new Order("Stef", model, 1);
+		StandardOrder order = new StandardOrder("Stef", model, 1);
 		IJob job = new Job(order);
 		ITask task = new Task("Paint");
 		IAction action = new Action("Paint car blue");

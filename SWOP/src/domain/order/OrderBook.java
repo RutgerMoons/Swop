@@ -24,8 +24,8 @@ public class OrderBook {
 	 */
 	// private HashMap<String, ArrayList<Order>> pendingOrders;
 	// private HashMap<String, ArrayList<Order>> completedOrders;
-	private Multimap<String, Order> pendingOrders;
-	private Multimap<String, Order> completedOrders;
+	private Multimap<String, StandardOrder> pendingOrders;
+	private Multimap<String, StandardOrder> completedOrders;
 	private AssemblyLine assemblyLine;
 
 	public OrderBook(AssemblyLine assemblyLine) {
@@ -36,16 +36,16 @@ public class OrderBook {
 	/**
 	 * Method for retrieving all the pending orders. An Immutable MultiMap will be returned.
 	 */
-	public Multimap<String, Order> getPendingOrders() {
-		return new ImmutableListMultimap.Builder<String, Order>().putAll(pendingOrders).build();
+	public Multimap<String, StandardOrder> getPendingOrders() {
+		return new ImmutableListMultimap.Builder<String, StandardOrder>().putAll(pendingOrders).build();
 	}
 
 
 	/**
 	 * Method for retrieving all the completed orders. An Immutable MultiMap will be returned.
 	 */
-	public Multimap<String, Order> getCompletedOrders() {
-		return new ImmutableListMultimap.Builder<String, Order>().putAll(completedOrders).build();
+	public Multimap<String, StandardOrder> getCompletedOrders() {
+		return new ImmutableListMultimap.Builder<String, StandardOrder>().putAll(completedOrders).build();
 	}
 
 	/**
@@ -57,12 +57,12 @@ public class OrderBook {
 	 * 
 	 * @param order
 	 */
-	public void updateOrderBook(Order order) {
+	public void updateOrderBook(StandardOrder order) {
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
 
-		List<Order> pending = (List<Order>) this.pendingOrders.get(order.getGarageHolder());
+		List<StandardOrder> pending = (List<StandardOrder>) this.pendingOrders.get(order.getGarageHolder());
 		if (pending.contains(order)) {
 			pending.remove(order);
 			this.completedOrders.put(order.getGarageHolder(), order);
@@ -87,7 +87,7 @@ public class OrderBook {
 	 * 
 	 * @param order
 	 */
-	public void addOrder(Order order) {
+	public void addOrder(StandardOrder order) {
 
 		this.pendingOrders.put(order.getGarageHolder(), order);
 

@@ -13,7 +13,7 @@ import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.order.IOrder;
 import domain.order.ImmutableOrder;
-import domain.order.Order;
+import domain.order.StandardOrder;
 
 public class ImmutableOrderTest {
 	CarModel model;
@@ -29,7 +29,7 @@ public class ImmutableOrderTest {
 		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
 		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
 		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
-		order = new Order("Mario",model,3);
+		order = new StandardOrder("Mario",model,3);
 		immutable = new ImmutableOrder(order);
 	}
 

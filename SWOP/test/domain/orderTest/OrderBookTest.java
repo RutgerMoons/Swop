@@ -13,7 +13,7 @@ import domain.car.CarPart;
 import domain.car.CarPartType;
 import domain.clock.Clock;
 import domain.exception.AlreadyInMapException;
-import domain.order.Order;
+import domain.order.StandardOrder;
 import domain.order.OrderBook;
 
 
@@ -50,10 +50,10 @@ public class OrderBookTest {
 	public void test1() {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
-		Order order = new Order("Mario", model1,3);
+		StandardOrder order = new StandardOrder("Mario", model1,3);
 		orderBook.addOrder(order);
 		assertFalse(orderBook.getPendingOrders().isEmpty());
-		Order order2 = new Order("Mario",model2,2);
+		StandardOrder order2 = new StandardOrder("Mario",model2,2);
 		orderBook.addOrder(order2);
 		assertEquals(1,orderBook.getPendingOrders().keySet().size());
 		assertEquals(2,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
@@ -76,7 +76,7 @@ public class OrderBookTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void test3(){
 		orderBook.initializeBook();
-		Order order = new Order(null,null,0);
+		StandardOrder order = new StandardOrder(null,null,0);
 		orderBook.updateOrderBook(order);
 		
 	}

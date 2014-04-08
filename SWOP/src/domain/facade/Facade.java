@@ -17,7 +17,7 @@ import domain.job.Action;
 import domain.job.IAction;
 import domain.job.ITask;
 import domain.job.Task;
-import domain.order.Order;
+import domain.order.StandardOrder;
 import domain.order.OrderBook;
 import domain.users.AccessRight;
 import domain.users.User;
@@ -114,7 +114,7 @@ public class Facade {
 	public ArrayList<String> getCompletedOrders() {
 		ArrayList<String> completedOrders = new ArrayList<String>();
 		if(this.orderBook.getCompletedOrders().containsKey(userBook.getCurrentUser().getName())) {
-			for(Order order: orderBook.getCompletedOrders().get(userBook.getCurrentUser().getName())){
+			for(StandardOrder order: orderBook.getCompletedOrders().get(userBook.getCurrentUser().getName())){
 				completedOrders.add(order.toString());
 			}
 		}	
@@ -127,10 +127,10 @@ public class Facade {
 	
 	public ArrayList<String> getPendingOrders() {
 		ArrayList<String> pendingOrders = new ArrayList<String>();
-		List<Order> orders = (List<Order>) orderBook.getPendingOrders().get(userBook.getCurrentUser().getName());
+		List<StandardOrder> orders = (List<StandardOrder>) orderBook.getPendingOrders().get(userBook.getCurrentUser().getName());
 		if(this.orderBook.getPendingOrders().containsKey(userBook.getCurrentUser().getName()) 
 				&& !this.orderBook.getPendingOrders().get(userBook.getCurrentUser().getName()).isEmpty()){
-			for (Order order : orders){
+			for (StandardOrder order : orders){
 				pendingOrders.add(order.toString());
 			}
 		}
@@ -167,7 +167,7 @@ public class Facade {
 
 	public String processOrder(String carModelName, int quantity) {
 		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
-		Order order = new Order(userBook.getCurrentUser().getName(), carModel, quantity);
+		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity);
 		this.orderBook.addOrder(order);
 		return order.getEstimatedTime().toString();
 	}

@@ -2,7 +2,7 @@ package domain.order;
 
 import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
-import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes
@@ -12,18 +12,21 @@ import domain.exception.ImmutableException;
  * of an order. Each order also has an estimated time. This is an estimation of
  * when the order will be completed. This time is expressed in days and minutes.
  */
-public class Order implements IOrder {
+public class StandardOrder implements IOrder {
 
 	private ICarModel description;
 	private String garageholder;
 	private int quantity, pendingCars;
 	private UnmodifiableClock estimatedTime;
+	private UnmodifiableClock orderTime;
+
+	
 
 	/**
 	 * Constructor of an Order, given the name of the orderer, the type of
 	 * carModel and the amount of cars to be ordered.
 	 */
-	public Order(String holder, ICarModel description, int quantity) {
+	public StandardOrder(String holder, ICarModel description, int quantity) {
 		this.setDescription(description);
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
@@ -99,6 +102,16 @@ public class Order implements IOrder {
 		return description;
 	}
 
+	public UnmodifiableClock getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(UnmodifiableClock orderTime) {
+		if(orderTime == null){
+			throw new IllegalArgumentException();
+		}
+		this.orderTime = orderTime;
+	}
 
 	public UnmodifiableClock getEstimatedTime() {
 		return this.estimatedTime;
@@ -134,7 +147,7 @@ public class Order implements IOrder {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Order other = (Order) obj;
+		StandardOrder other = (StandardOrder) obj;
 		if (!description.equals(other.description))
 			return false;
 		if (!garageholder.equals(other.garageholder))
@@ -154,6 +167,16 @@ public class Order implements IOrder {
 					+ this.getEstimatedTime().getMinutes() % 60 + " minutes";
 		}
 		return orderInString;
+	}
+
+	@Override
+	public UnmodifiableClock getDeadline() throws NotImplementedException {
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException {
+		throw new NotImplementedException();
 	}
 
 }

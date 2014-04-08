@@ -20,7 +20,7 @@ import domain.job.Job;
 import domain.job.Task;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
-import domain.order.Order;
+import domain.order.StandardOrder;
 
 /**
  * 
@@ -164,7 +164,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	public void calculateEstimatedTime(Order order) {
+	public void calculateEstimatedTime(StandardOrder order) {
 		if (getWorkbenches().size() == 0)
 			throw new IllegalStateException("There are no workbenches!");
 		int indexLastJob = getIndexOf(order);
@@ -233,7 +233,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	public List<IJob> convertOrderToJob(Order order) {
+	public List<IJob> convertOrderToJob(StandardOrder order) {
 		if (order == null)
 			throw new IllegalArgumentException();
 
@@ -314,7 +314,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	private int getIndexOf(Order order) {
+	private int getIndexOf(StandardOrder order) {
 		if (order == null)
 			throw new IllegalArgumentException();
 		int index = -1;

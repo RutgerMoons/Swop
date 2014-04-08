@@ -35,7 +35,7 @@ import domain.job.Action;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
-import domain.order.Order;
+import domain.order.StandardOrder;
 import domain.users.Worker;
 /**
  * Assumption user is already correctly logged in.
@@ -48,7 +48,7 @@ public class PerformAssemblyTasksScenario {
 	private AssembleFlowController handler;
 	private AssemblyLine line;
 	private IJob job;
-	private Order order;
+	private StandardOrder order;
 	private Worker worker;
 
 	public PerformAssemblyTasksScenario(IClientCommunication ui) {
@@ -65,7 +65,7 @@ public class PerformAssemblyTasksScenario {
 						"standard 2l 4 cilinders"), new Gearbox(
 						"6 speed manual"), new Seat("leather black"),
 				new Wheel("comfort"));
-		order = new Order("Jef", model, 1);
+		order = new StandardOrder("Jef", model, 1);
 		job = new Job(order);
 		Task task = new Task("Paint");
 		Action action = new Action("Paint car blue");
