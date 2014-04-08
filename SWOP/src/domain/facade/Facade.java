@@ -1,24 +1,21 @@
 package domain.facade;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
+import domain.car.CarModel;
 import domain.car.CarModelCatalogue;
 import domain.car.CarModelCatalogueFiller;
-import domain.car.CarModelTemplate;
-import domain.car.CarPart;
-import domain.car.CarPartType;
+import domain.car.CarModelSpecification;
+import domain.car.CarOption;
+import domain.car.CarOptionCategogry;
 import domain.clock.Clock;
-<<<<<<< HEAD
 import domain.exception.AlreadyInMapException;
-=======
 import domain.exception.ImmutableException;
->>>>>>> baa5af167436240a9bf6a5b7f4c65e6c362a71f5
 import domain.exception.RoleNotYetAssignedException;
 import domain.job.Action;
 import domain.job.IAction;
@@ -52,7 +49,7 @@ public class Facade {
 		picker = new PartPicker();
 		
 		CarModelCatalogueFiller carModelFiller = new CarModelCatalogueFiller();
-		for (CarModelTemplate model : carModelFiller.getInitialModels()) {
+		for (CarModelSpecification model : carModelFiller.getInitialModels()) {
 			carModelCatalogue.addModel(model);
 		}
 	}
@@ -180,18 +177,10 @@ public class Facade {
 		userBook.logout();
 	}
 
-<<<<<<< HEAD
-	
-	
-	public String processOrder(String carModelName, int quantity) {
-
-		StandardOrder order = new StandardOrder(userBook.getCurrentUser()
-				.getName(),picker.getModel(), quantity);
-=======
 	public String processOrder(String carModelName, int quantity) throws ImmutableException {
-		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
+		CarModel carModel = picker.getModel();
+		
 		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity);
->>>>>>> baa5af167436240a9bf6a5b7f4c65e6c362a71f5
 		this.orderBook.addOrder(order);
 		return order.getEstimatedTime().toString();
 	}
@@ -207,7 +196,7 @@ public class Facade {
 
 	public Set<String> getCarPartTypes() {
 		Set<String> types = new HashSet<>();
-		for(CarPartType type: CarPartType.values()){
+		for(CarOptionCategogry type: CarOptionCategogry.values()){
 			types.add(type.toString());
 		}
 		return types;
@@ -215,15 +204,15 @@ public class Facade {
 
 	public Set<String> getParts(String type) {
 		Set<String> parts = new HashSet<>();
-		for(CarPart part: picker.getStillAvailableCarParts(CarPartType.valueOf(type))){
+		for(CarOption part: picker.getStillAvailableCarParts(CarOptionCategogry.valueOf(type))){
 			parts.add(part.toString());
 		}
 		return parts;
 	}
 
 	public void addPartToModel(String type, String part) {
-		CarPartType carPartType = CarPartType.valueOf(type);
-		for(CarPart actualPart: picker.getModel().getTemplate().getCarParts().get(carPartType)){
+		CarOptionCategogry carOptionCategogry = CarOptionCategogry.valueOf(type);
+		for(CarOption actualPart: picker.getModel().getSpecification().getCarParts().get(carOptionCategogry)){
 			if(actualPart.toString().equals(part))
 				try {
 					picker.getModel().addCarPart(actualPart);

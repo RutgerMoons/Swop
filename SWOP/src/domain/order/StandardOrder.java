@@ -184,6 +184,6 @@ public class StandardOrder implements IOrder {
 	
 	@Override
 	public int getProductionTime() {
-		return this.getDescription().getTemplate().getshizzle();
+		return this.getDescription().getSpecification().getshizzle();
 	}
 }

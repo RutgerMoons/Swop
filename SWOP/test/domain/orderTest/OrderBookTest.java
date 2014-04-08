@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import domain.assembly.AssemblyLine;
 import domain.car.CarModel;
-import domain.car.CarPart;
-import domain.car.CarPartType;
+import domain.car.CarOption;
+import domain.car.CarOptionCategogry;
 import domain.clock.Clock;
 import domain.exception.AlreadyInMapException;
 import domain.order.StandardOrder;
@@ -28,22 +28,22 @@ public class OrderBookTest {
 	public void setUp() throws AlreadyInMapException{
 		orderBook = new OrderBook(new AssemblyLine(new Clock()));
 		model1 = new CarModel("Volkswagen");
-		model1.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model1.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model1.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model1.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
-		model1.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
-		model1.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model1.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		model1.addCarPart(new CarOption("manual", true, CarOptionCategogry.AIRCO));
+		model1.addCarPart(new CarOption("sedan", false, CarOptionCategogry.BODY));
+		model1.addCarPart(new CarOption("red", false, CarOptionCategogry.COLOR));
+		model1.addCarPart(new CarOption("standard 2l 4 cilinders", false, CarOptionCategogry.ENGINE));
+		model1.addCarPart(new CarOption("6 speed manual", false, CarOptionCategogry.GEARBOX));
+		model1.addCarPart(new CarOption("leather black", false, CarOptionCategogry.SEATS));
+		model1.addCarPart(new CarOption("comfort", false, CarOptionCategogry.WHEEL));
 		
 		model2 = new CarModel("BMW");
-		model2.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model2.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model2.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model2.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
-		model2.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
-		model2.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model2.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		model2.addCarPart(new CarOption("manual", true, CarOptionCategogry.AIRCO));
+		model2.addCarPart(new CarOption("sedan", false, CarOptionCategogry.BODY));
+		model2.addCarPart(new CarOption("red", false, CarOptionCategogry.COLOR));
+		model2.addCarPart(new CarOption("standard 2l 4 cilinders", false, CarOptionCategogry.ENGINE));
+		model2.addCarPart(new CarOption("6 speed manual", false, CarOptionCategogry.GEARBOX));
+		model2.addCarPart(new CarOption("leather black", false, CarOptionCategogry.SEATS));
+		model2.addCarPart(new CarOption("comfort", false, CarOptionCategogry.WHEEL));
 }
 
 	@Test

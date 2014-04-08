@@ -8,7 +8,7 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
-import domain.car.CarPart;
+import domain.car.CarOption;
 import domain.car.ICarModel;
 import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
@@ -241,7 +241,7 @@ public class AssemblyLine {
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
 			Job job = new Job(order);
-			for (CarPart part : model.getCarParts().values()) {
+			for (CarOption part : model.getCarParts().values()) {
 				Task task = new Task(part.getTaskDescription());
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);

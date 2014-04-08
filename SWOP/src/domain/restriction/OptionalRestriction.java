@@ -1,26 +1,26 @@
 package domain.restriction;
 
-import domain.car.CarPart;
-import domain.car.CarPartType;
+import domain.car.CarOption;
+import domain.car.CarOptionCategogry;
 
 
 public class OptionalRestriction{
 	
-	private CarPartType type;
+	private CarOptionCategogry type;
 	private Boolean optional;
-	private CarPart part;
+	private CarOption part;
 
-	public OptionalRestriction(CarPart part, CarPartType type, Boolean optional){
+	public OptionalRestriction(CarOption part, CarOptionCategogry type, Boolean optional){
 		this.type = type;
 		this.optional = optional;
 		this.part = part;
 	}
 	
-	public CarPart getCarPart(){
+	public CarOption getCarPart(){
 		return part;
 	}
 	
-	public CarPartType getCarPartType(){
+	public CarOptionCategogry getCarPartType(){
 		return type;
 	}
 	

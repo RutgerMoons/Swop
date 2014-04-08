@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableMap;
 public class CarModelCatalogue {
 
 	// private HashMap<String, HashMap<Class<?>, CarPart>> data;
-	private Map<String, CarModelTemplate> data;
+	private Map<String, CarModelSpecification> data;
 
 	/**
 	 * Default constructor. When a carModelCatalogue is constructed, a
@@ -22,14 +22,14 @@ public class CarModelCatalogue {
 	 * carModelCatalogueFiller.
 	 */
 	public CarModelCatalogue() {
-		data = new HashMap<String, CarModelTemplate>();
+		data = new HashMap<String, CarModelSpecification>();
 	}
 
 	/**
 	 * Returns an immutable Map of carmodels with their names.
 	 */
-	public Map<String, CarModelTemplate> getCatalogue() {
-		return new ImmutableMap.Builder<String, CarModelTemplate>()
+	public Map<String, CarModelSpecification> getCatalogue() {
+		return new ImmutableMap.Builder<String, CarModelSpecification>()
 				.putAll(data).build();
 	}
 
@@ -38,8 +38,8 @@ public class CarModelCatalogue {
 	 * included in the catalogue. This method is used by the
 	 * carModelCatalogueFiller.
 	 */
-	public void initializeCatalogue(Set<CarModelTemplate> models) {
-		for (CarModelTemplate model : models) {
+	public void initializeCatalogue(Set<CarModelSpecification> models) {
+		for (CarModelSpecification model : models) {
 			addModel(model);
 		}
 	}
@@ -52,7 +52,7 @@ public class CarModelCatalogue {
 	 * @throws IllegalArgumentException
 	 *             if model==null or not is valid
 	 */
-	public void addModel(CarModelTemplate model) {
+	public void addModel(CarModelSpecification model) {
 		if (model == null)
 			throw new IllegalArgumentException();
 		data.put(model.getDescription(), model);
