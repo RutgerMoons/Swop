@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.Action;
+import domain.job.Action;
 
 
 public class ActionTest {

@@ -6,6 +6,8 @@ import java.util.Set;
 import com.google.common.base.Optional;
 
 import domain.exception.ImmutableException;
+import domain.job.IJob;
+import domain.job.ITask;
 
 
 public interface IWorkBench {

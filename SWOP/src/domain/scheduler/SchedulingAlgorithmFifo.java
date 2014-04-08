@@ -3,7 +3,7 @@ package domain.scheduler;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import domain.assembly.Job;
+import domain.job.Job;
 
 public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	
