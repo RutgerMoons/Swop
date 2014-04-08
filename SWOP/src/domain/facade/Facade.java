@@ -12,6 +12,7 @@ import domain.car.CarModelCatalogueFiller;
 import domain.car.CarPartCatalogue;
 import domain.car.CarPartCatalogueFiller;
 import domain.clock.Clock;
+import domain.exception.ImmutableException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.job.Action;
 import domain.job.IAction;
@@ -165,7 +166,7 @@ public class Facade {
 		userBook.logout();
 	}
 
-	public String processOrder(String carModelName, int quantity) {
+	public String processOrder(String carModelName, int quantity) throws ImmutableException {
 		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
 		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity);
 		this.orderBook.addOrder(order);

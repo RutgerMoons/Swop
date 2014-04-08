@@ -76,5 +76,10 @@ public class CustomOrder implements IOrder {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public int getProductionTime() {
+		return 60;
+	}
 
 }
