@@ -3,8 +3,11 @@ package domain.users;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+<<<<<<< HEAD:SWOP/src/users/UserBook.java
+=======
 
 import domain.exception.RoleNotYetAssignedException;
+>>>>>>> origin/rutger:SWOP/src/domain/users/UserBook.java
 
 
 

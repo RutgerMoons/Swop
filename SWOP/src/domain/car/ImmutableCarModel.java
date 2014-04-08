@@ -30,11 +30,6 @@ public class ImmutableCarModel implements ICarModel {
 	}
 
 	@Override
-	public String getDescription() {
-		return model.getDescription();
-	}
-	
-	@Override
 	public int hashCode(){
 		return model.hashCode();
 	}

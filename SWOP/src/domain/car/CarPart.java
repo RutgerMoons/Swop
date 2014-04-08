@@ -6,12 +6,10 @@ package domain.car;
 public class CarPart {
 
 	private String description;
-	private boolean isOptional;
 	private CarPartType type;
 
-	public CarPart(String description, boolean isOptional, CarPartType type) {
+	public CarPart(String description, CarPartType type) {
 		setDescription(description);
-		setOptional(isOptional);
 		setType(type);
 	}
 
@@ -40,14 +38,6 @@ public class CarPart {
 	@Override
 	public String toString() {
 		return getType().toString() + ": " + getDescription();
-	}
-
-	public boolean isOptional() {
-		return isOptional;
-	}
-
-	public void setOptional(boolean isOptional) {
-		this.isOptional = isOptional;
 	}
 
 	public CarPartType getType() {
@@ -92,7 +82,6 @@ public class CarPart {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + description.hashCode();
-		result = prime * result + (isOptional ? 1231 : 1237);
 		result = prime * result + type.hashCode();
 		return result;
 	}
@@ -107,8 +96,6 @@ public class CarPart {
 			return false;
 		CarPart other = (CarPart) obj;
 		if (!description.equals(other.description))
-			return false;
-		if (isOptional != other.isOptional)
 			return false;
 		if (type != other.type)
 			return false;

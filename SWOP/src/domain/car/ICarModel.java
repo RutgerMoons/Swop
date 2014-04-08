@@ -10,8 +10,4 @@ public interface ICarModel {
 	 */
 	public Map<CarPartType, CarPart> getCarParts();
 	
-	/**
-	 * Returns the description/name of the model.
-	 */
-	public String getDescription();
 }

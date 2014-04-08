@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableMap;
 public class CarModelCatalogue {
 
 	// private HashMap<String, HashMap<Class<?>, CarPart>> data;
-	private Map<String, CarModel> data;
+	private Map<String, CarModelTemplate> data;
 	private CarPartCatalogue cat;
 
 	/**
@@ -24,14 +24,14 @@ public class CarModelCatalogue {
 	 */
 	public CarModelCatalogue(CarPartCatalogue cat) {
 		this.cat = cat;
-		data = new HashMap<String, CarModel>();
+		data = new HashMap<String, CarModelTemplate>();
 	}
 
 	/**
 	 * Returns an immutable Map of carmodels with their names.
 	 */
-	public Map<String, CarModel> getCatalogue() {
-		return new ImmutableMap.Builder<String, CarModel>()
+	public Map<String, CarModelTemplate> getCatalogue() {
+		return new ImmutableMap.Builder<String, CarModelTemplate>()
 				.putAll(data).build();
 	}
 
@@ -40,8 +40,8 @@ public class CarModelCatalogue {
 	 * included in the catalogue. This method is used by the
 	 * carModelCatalogueFiller.
 	 */
-	public void initializeCatalogue(Set<CarModel> models) {
-		for (CarModel model : models) {
+	public void initializeCatalogue(Set<CarModelTemplate> models) {
+		for (CarModelTemplate model : models) {
 			addModel(model);
 		}
 	}
@@ -54,7 +54,7 @@ public class CarModelCatalogue {
 	 * @throws IllegalArgumentException
 	 *             if model==null or not is valid
 	 */
-	public void addModel(CarModel model) {
+	public void addModel(CarModelTemplate model) {
 		if (model == null || !isValidCarModel(model))
 			throw new IllegalArgumentException();
 		data.put(model.getDescription(), model);
@@ -65,7 +65,7 @@ public class CarModelCatalogue {
 	 * Method for checking if the carModel is a valid model. It checks if every
 	 * carpart of the model is valid or not. If not, it return false.
 	 */
-	private boolean isValidCarModel(CarModel model) {
+	private boolean isValidCarModel(CarModelTemplate model) {
 		for (CarPart part : model.getCarParts().values()) {
 			if (!cat.isValidCarPart(part)) {
 				return false;
