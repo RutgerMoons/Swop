@@ -1,7 +1,9 @@
 package domain.car;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import domain.exception.AlreadyInMapException;
 
@@ -13,12 +15,13 @@ import domain.exception.AlreadyInMapException;
  */
 public class CarModel implements ICarModel {
 
-	private String description;
 	private HashMap<CarPartType, CarPart> carParts;
-
-	public CarModel(String description) {
+	private CarModelTemplate template;
+	private Map<CarPartType, Boolean> forcedOptionalTypes;
+	public CarModel(CarModelTemplate template) {
 		carParts = new HashMap<CarPartType, CarPart>();
-		this.setDescription(description);
+		this.setTemplate(template);
+		forcedOptionalTypes = new HashMap<>();
 	}
 
 	public Map<CarPartType, CarPart> getCarParts() {
@@ -34,31 +37,26 @@ public class CarModel implements ICarModel {
 		carParts.put(part.getType(), part);
 	}
 
-	/**
-	 * Method for giving naming this model. The method checks if the name is
-	 * different from null and if it is different from the empty string.
-	 */
-	private void setDescription(String description) {
-		if (description == null || description.isEmpty())
-			throw new IllegalArgumentException();
-		this.description = description;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
 
 	@Override
 	public String toString() {
-		return getDescription();
+		return template.getDescription();
 	}
+
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + carParts.hashCode();
-		result = prime * result + description.hashCode();
+		result = prime * result
+				+ ((carParts == null) ? 0 : carParts.hashCode());
+		result = prime
+				* result
+				+ ((forcedOptionalTypes == null) ? 0 : forcedOptionalTypes
+						.hashCode());
+		result = prime * result
+				+ ((template == null) ? 0 : template.hashCode());
 		return result;
 	}
 
@@ -71,11 +69,37 @@ public class CarModel implements ICarModel {
 		if (getClass() != obj.getClass())
 			return false;
 		CarModel other = (CarModel) obj;
-		if (!description.equals(other.description))
+		if (carParts == null) {
+			if (other.carParts != null)
+				return false;
+		} else if (!carParts.equals(other.carParts))
 			return false;
-		if (!carParts.equals(other.carParts))
+		if (forcedOptionalTypes == null) {
+			if (other.forcedOptionalTypes != null)
+				return false;
+		} else if (!forcedOptionalTypes.equals(other.forcedOptionalTypes))
+			return false;
+		if (template == null) {
+			if (other.template != null)
+				return false;
+		} else if (!template.equals(other.template))
 			return false;
 		return true;
 	}
 
+	public Map<CarPartType, Boolean> getForcedOptionalTypes() {
+		return forcedOptionalTypes;
+	}
+
+	public void addForcedOptionalType(CarPartType type, boolean bool){
+		forcedOptionalTypes.put(type, bool);
+	}
+
+	public CarModelTemplate getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(CarModelTemplate template) {
+		this.template = template;
+	}
 }

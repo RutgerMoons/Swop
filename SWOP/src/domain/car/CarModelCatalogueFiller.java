@@ -3,8 +3,6 @@ package domain.car;
 import java.util.HashSet;
 import java.util.Set;
 
-import domain.exception.AlreadyInMapException;
-
 
 /**
  * This class is used to initialize the CarModelCatalogue. The class checks if
@@ -19,42 +17,101 @@ public class CarModelCatalogueFiller {
 	 * if the car model is valid. If not, the car model isn't added to the list.
 	 * When every car model is checked, the ArrayList is returned as result.
 	 */
-	public Set<CarModel> getInitialModels() {
-		Set<CarModel> result = new HashSet<CarModel>();
-		Set<CarModel> models = this.getModels();
-		for (CarModel model : models) {
-			result.add(model);
-		}
-		return result;
+	public Set<CarModelTemplate> getInitialModels() {
+		Set<CarModelTemplate> models = new HashSet<CarModelTemplate>();
+		models.add(getModelA());
+		models.add(getModelB());
+		models.add(getModelC());
+		return models;
 	}
 
-	/**
-	 * Method with certain basic implementations of a carModel.
-	 */
-	private Set<CarModel> getModels() {
-		Set<CarModel> initialModels = new HashSet<CarModel>();
-		CarModel polo = new CarModel("Polo");
-		try {
-			polo.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-			polo.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-			polo.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-			polo.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
-			polo.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
-			polo.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-			polo.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
-			initialModels.add(polo);
-			
-			CarModel lada = new CarModel("Lada");
-			lada.addCarPart(new CarPart("automatic climate control", true, CarPartType.AIRCO));
-			lada.addCarPart(new CarPart("break", false, CarPartType.BODY));
-			lada.addCarPart(new CarPart("blue", false, CarPartType.COLOR));
-			lada.addCarPart(new CarPart("performance 2.5l 6 cilinders", false, CarPartType.ENGINE));
-			lada.addCarPart(new CarPart("5 speed automatic", false, CarPartType.GEARBOX));
-			lada.addCarPart(new CarPart("leather white", false, CarPartType.SEATS));
-			lada.addCarPart(new CarPart("sports (low profile)", false, CarPartType.WHEEL));
-			initialModels.add(lada);
-		} catch (AlreadyInMapException e) {
-		}
-		return initialModels;
+	private CarModelTemplate getModelC() {
+		Set<CarPart> parts = new HashSet<>();
+		parts.add(new CarPart("sport", CarPartType.BODY));
+		
+		parts.add(new CarPart("black", CarPartType.COLOR));
+		parts.add(new CarPart("white", CarPartType.COLOR));
+		
+		parts.add(new CarPart("performance 2.5l V6", CarPartType.ENGINE));
+		parts.add(new CarPart("ultra 3l V8", CarPartType.ENGINE));
+	
+		parts.add(new CarPart("6 Speed Manual", CarPartType.GEARBOX));
+		
+		parts.add(new CarPart("Leather White", CarPartType.SEATS));
+		parts.add(new CarPart("Leather Black", CarPartType.SEATS));
+		
+		parts.add(new CarPart("Manual", CarPartType.AIRCO));
+		parts.add(new CarPart("Automatic", CarPartType.AIRCO));
+		
+		parts.add(new CarPart("Winter", CarPartType.WHEEL));
+		parts.add(new CarPart("Sports", CarPartType.WHEEL));
+		
+		parts.add(new CarPart("high", CarPartType.SPOILER));
+		parts.add(new CarPart("low", CarPartType.SPOILER));
+		return new CarModelTemplate("model C", parts, 60);
 	}
+
+	private CarModelTemplate getModelB() {
+		Set<CarPart> parts = new HashSet<>();
+		parts.add(new CarPart("sedan", CarPartType.BODY));
+		parts.add(new CarPart("break", CarPartType.BODY));
+		parts.add(new CarPart("sport", CarPartType.BODY));
+		
+		parts.add(new CarPart("red", CarPartType.COLOR));
+		parts.add(new CarPart("blue", CarPartType.COLOR));
+		parts.add(new CarPart("green", CarPartType.COLOR));
+		parts.add(new CarPart("yellow", CarPartType.COLOR));
+		
+		parts.add(new CarPart("standard 2l V4", CarPartType.ENGINE));
+		parts.add(new CarPart("performance 2.5l V6", CarPartType.ENGINE));
+		parts.add(new CarPart("ultra 3l V8", CarPartType.ENGINE));
+	
+		parts.add(new CarPart("6 Speed Manual", CarPartType.GEARBOX));
+		parts.add(new CarPart("5 Speed Automatic", CarPartType.GEARBOX));
+		
+		parts.add(new CarPart("Leather White", CarPartType.SEATS));
+		parts.add(new CarPart("Leather Black", CarPartType.SEATS));
+		parts.add(new CarPart("Vinyl Grey", CarPartType.SEATS));
+		
+		parts.add(new CarPart("Manual", CarPartType.AIRCO));
+		parts.add(new CarPart("Automatic", CarPartType.AIRCO));
+		
+		parts.add(new CarPart("Winter", CarPartType.WHEEL));
+		parts.add(new CarPart("Comfort", CarPartType.WHEEL));
+		parts.add(new CarPart("Sports", CarPartType.WHEEL));
+		
+		parts.add(new CarPart("low", CarPartType.SPOILER));
+		return new CarModelTemplate("model B", parts, 70);
+	}
+
+	private CarModelTemplate getModelA() {
+		Set<CarPart> parts = new HashSet<>();
+		parts.add(new CarPart("sedan", CarPartType.BODY));
+		parts.add(new CarPart("break", CarPartType.BODY));
+		
+		parts.add(new CarPart("red", CarPartType.COLOR));
+		parts.add(new CarPart("blue", CarPartType.COLOR));
+		parts.add(new CarPart("black", CarPartType.COLOR));
+		parts.add(new CarPart("white", CarPartType.COLOR));
+		
+		parts.add(new CarPart("standard 2l V4", CarPartType.ENGINE));
+		parts.add(new CarPart("performance 2.5l V6", CarPartType.ENGINE));
+		
+		parts.add(new CarPart("6 Speed Manual", CarPartType.GEARBOX));
+		parts.add(new CarPart("5 Speed Manual", CarPartType.GEARBOX));
+		parts.add(new CarPart("5 Speed Automatic", CarPartType.GEARBOX));
+		
+		parts.add(new CarPart("Leather White", CarPartType.SEATS));
+		parts.add(new CarPart("Leather Black", CarPartType.SEATS));
+		parts.add(new CarPart("Vinyl Grey", CarPartType.SEATS));
+		
+		parts.add(new CarPart("Manual", CarPartType.AIRCO));
+		
+		parts.add(new CarPart("Winter", CarPartType.WHEEL));
+		parts.add(new CarPart("Comfort", CarPartType.WHEEL));
+		parts.add(new CarPart("Sports", CarPartType.WHEEL));
+		
+		return new CarModelTemplate("model A", parts, 50);
+	}
+
 }

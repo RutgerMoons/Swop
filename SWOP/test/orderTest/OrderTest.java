@@ -1,22 +1,19 @@
-package domain.orderTest;
+package orderTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import order.Order;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModel;
-import domain.car.CarPart;
-import domain.car.CarPartType;
-import domain.exception.AlreadyInMapException;
-<<<<<<< HEAD
-import domain.job.Action;
-=======
->>>>>>> origin/stef
-import domain.order.StandardOrder;
+import assembly.Action;
+import car.CarModel;
+import car.CarPart;
+import car.CarPartType;
+import exception.AlreadyInMapException;
 
 public class OrderTest {
 
@@ -38,7 +35,7 @@ public class OrderTest {
 
 	@Test
 	public void test1Constructor() {
-		StandardOrder order = new StandardOrder("Mario", model, 3);
+		Order order = new Order("Mario", model, 3);
 		assertNotNull(order);
 		assertEquals(order.getDescription(), model);
 		assertEquals("Mario", order.getGarageHolder());
@@ -53,29 +50,29 @@ public class OrderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void test2Constructor() {
-		new StandardOrder(null, null, -1);
+		new Order(null, null, -1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetGarageHolder1() {
-		new StandardOrder(" ", model, 3);
+		new Order(" ", model, 3);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetGarageHolder2() {
-		StandardOrder order3 = new StandardOrder("Mario", model, 3);
+		Order order3 = new Order("Mario", model, 3);
 		assertNotNull(order3.getGarageHolder());
-		new StandardOrder(null, model, 3);
+		new Order(null, model, 3);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testPendingCars1() {
-		new StandardOrder("Mario", model, -1);
+		new Order("Mario", model, -1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testPendingCars2() {
-		StandardOrder order = new StandardOrder("Mario", model, 1);
+		Order order = new Order("Mario", model, 1);
 		order.completeCar();
 		assertEquals(0, order.getPendingCars());
 		order.completeCar();
@@ -84,12 +81,12 @@ public class OrderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testQuantity() {
-		new StandardOrder("Mario", model, 0);
+		new Order("Mario", model, 0);
 	}
 
 	@Test
 	public void testEstimatedTime1() {
-		StandardOrder order = new StandardOrder("Mario", model, 3);
+		Order order = new Order("Mario", model, 3);
 		int[] array = { 0, 5 };
 		order.setEstimatedTime(array);
 		assertEquals(0, order.getEstimatedTime()[0]);
@@ -98,21 +95,21 @@ public class OrderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testEstimatedTime2() {
-		StandardOrder order = new StandardOrder("Mario", model, 3);
+		Order order = new Order("Mario", model, 3);
 		int[] array = { -1, 5 };
 		order.setEstimatedTime(array);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testEstimatedTime3() {
-		StandardOrder order = new StandardOrder("Mario", model, 3);
+		Order order = new Order("Mario", model, 3);
 		int[] array = { 0, -3 };
 		order.setEstimatedTime(array);
 	}
 
 	@Test
 	public void testCarCompleted() {
-		StandardOrder order = new StandardOrder("Mario", model, 3);
+		Order order = new Order("Mario", model, 3);
 		assertEquals(3, order.getPendingCars());
 		order.completeCar();
 		assertEquals(2, order.getPendingCars());
@@ -132,16 +129,16 @@ public class OrderTest {
 		model2.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
 		model2.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
 
-		StandardOrder order1 = new StandardOrder("Jan", model, 2);
+		Order order1 = new Order("Jan", model, 2);
 		assertFalse(order1.equals(null));
 		assertFalse(order1.equals(new Action("Paint")));
-		StandardOrder order2 = new StandardOrder("Jan", model2, 2);
+		Order order2 = new Order("Jan", model2, 2);
 		assertFalse(order1.equals(order2));
-		order2 = new StandardOrder("Jos", model, 2);
+		order2 = new Order("Jos", model, 2);
 		assertFalse(order1.equals(order2));
-		order2 = new StandardOrder("Jan", model, 1);
+		order2 = new Order("Jan", model, 1);
 		assertFalse(order1.equals(order2));
-		order2 = new StandardOrder("Jan", model, 2);
+		order2 = new Order("Jan", model, 2);
 		assertTrue(order1.equals(order2));
 		assertTrue(order1.equals(order1));
 		assertEquals(order1.hashCode(), order2.hashCode());
@@ -149,7 +146,7 @@ public class OrderTest {
 
 	@Test
 	public void testToString() {
-		StandardOrder order1 = new StandardOrder("Jan", model, 2);
+		Order order1 = new Order("Jan", model, 2);
 		int[] array = { 1, 100 };
 		order1.setEstimatedTime(array);
 		assertEquals(

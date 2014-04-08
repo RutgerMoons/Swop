@@ -24,12 +24,15 @@ import domain.car.CarPartType;
 import domain.clock.Clock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+<<<<<<< HEAD
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.IJob;
 import domain.job.ITask;
 import domain.job.Job;
 import domain.job.Task;
+=======
+>>>>>>> origin/stef
 import domain.order.StandardOrder;
 
 

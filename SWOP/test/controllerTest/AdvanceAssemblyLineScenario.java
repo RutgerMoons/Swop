@@ -30,10 +30,13 @@ import domain.car.Gearbox;
 import domain.car.Seat;
 import domain.car.Wheel;
 import domain.clock.Clock;
+<<<<<<< HEAD
 import domain.job.Action;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
+=======
+>>>>>>> origin/stef
 import domain.order.StandardOrder;
 import domain.users.Manager;
 import domain.users.Worker;

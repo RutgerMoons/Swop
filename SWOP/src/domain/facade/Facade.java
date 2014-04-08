@@ -14,10 +14,13 @@ import domain.car.CarPartCatalogueFiller;
 import domain.clock.Clock;
 import domain.exception.ImmutableException;
 import domain.exception.RoleNotYetAssignedException;
+<<<<<<< HEAD
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.ITask;
 import domain.job.Task;
+=======
+>>>>>>> origin/stef
 import domain.order.StandardOrder;
 import domain.order.OrderBook;
 import domain.users.AccessRight;
