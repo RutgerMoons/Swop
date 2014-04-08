@@ -1,6 +1,6 @@
 package domain.clock;
 
-public class UnmodifiableClock {
+public class UnmodifiableClock implements Comparable<UnmodifiableClock> {
 
 	private final int days;
 	private final int minutes;
@@ -47,6 +47,14 @@ public class UnmodifiableClock {
 				"day " + getDays() + ", " +
 				(getMinutes() / 60) + " hours, " + 
 				(getMinutes() % 60) + " minutes.";	
+	}
+
+	@Override
+	public int compareTo(UnmodifiableClock clock) {
+		if (isEarlierThan(clock)) {
+			return -1;
+		}
+		return 1;
 	}
 	
 }
