@@ -33,9 +33,10 @@ public class AssemblyLine {
 
 	private Clock clock;
 	private List<IJob> currentJobs;
-	private int overtime;
+	private int overtime; //TODO -> verplaats naar shiften
 	private List<IWorkBench> workbenches;
 	private ArrayList<AssemblyLineObserver> observers;
+	
 
 	/**
 	 * Construct a new AssemblyLine.
