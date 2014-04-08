@@ -1,7 +1,6 @@
 package domain.observer;
 
 import domain.clock.UnmodifiableClock;
-import domain.log.LogsClock;
 
 public class ClockObserver {
 	
