@@ -1,4 +1,4 @@
-package domain.log;
+package domain.observer;
 
 import domain.clock.UnmodifiableClock;
 

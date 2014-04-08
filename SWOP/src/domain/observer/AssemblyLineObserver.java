@@ -1,7 +1,6 @@
 package domain.observer;
 
 import domain.clock.UnmodifiableClock;
-import domain.log.LogsAssemblyLine;
 
 public class AssemblyLineObserver {
 

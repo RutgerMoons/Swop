@@ -3,6 +3,8 @@ package domain.log;
 import java.util.List;
 
 import domain.clock.UnmodifiableClock;
+import domain.observer.LogsAssemblyLine;
+import domain.observer.LogsClock;
 import domain.order.Delay;
 
 public class Logger implements LogsClock, LogsAssemblyLine {
