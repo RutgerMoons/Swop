@@ -11,7 +11,6 @@ import domain.clock.ImmutableClock;
 public class LoggerTest {
 
 	private Logger logger;
-	private ImmutableClock currentTime;
 	
 	@Before
 	public void testConstructor() {
@@ -23,7 +22,7 @@ public class LoggerTest {
 		int days = 4;
 		int minutes = 850;
 		ImmutableClock newCurrentTime = new ImmutableClock(days, minutes);
-		logger.advanceClock(newCurrentTime);
+		logger.advanceTime(newCurrentTime);
 		assertEquals(newCurrentTime,logger.getCurrentTime());
 	}
 	
@@ -32,13 +31,13 @@ public class LoggerTest {
 		int days = 4;
 		int minutes = 500;
 		ImmutableClock newCurrentTime = new ImmutableClock(days, minutes);
-		logger.advanceClock(newCurrentTime);
+		logger.advanceTime(newCurrentTime);
 		assertEquals(newCurrentTime,logger.getCurrentTime());
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testAdvanceClockThrows(){
-		logger.advanceClock(null);
+		logger.advanceTime(null);
 	}
 	
 	@Test
@@ -50,7 +49,7 @@ public class LoggerTest {
 	public void testUpdateCompletedOrder(){
 		ImmutableClock estimatedTimeOfCompletion = new ImmutableClock(4,500);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion);
-		logger.advanceClock(new ImmutableClock(4,450));
+		logger.advanceTime(new ImmutableClock(4,450));
 		
 	}
 	
@@ -67,13 +66,13 @@ public class LoggerTest {
 		logger.updateCompletedOrder(estimatedTimeOfCompletion1);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion2);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion3);
-		logger.advanceClock(new ImmutableClock(5,600));
+		logger.advanceTime(new ImmutableClock(5,600));
 		logger.startNewDay();
 		ImmutableClock estimatedTimeOfCompletion4 = new ImmutableClock(5,250);
 		ImmutableClock estimatedTimeOfCompletion5 = new ImmutableClock(5,350);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion4);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion5);
-		logger.advanceClock(new ImmutableClock(6,300));
+		logger.advanceTime(new ImmutableClock(6,300));
 		logger.startNewDay();
 		ImmutableClock estimatedTimeOfCompletion6 = new ImmutableClock(6,150);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion6);
@@ -90,13 +89,13 @@ public class LoggerTest {
 		logger.updateCompletedOrder(estimatedTimeOfCompletion1);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion2);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion3);
-		logger.advanceClock(new ImmutableClock(5,600));
+		logger.advanceTime(new ImmutableClock(5,600));
 		logger.startNewDay();
 		ImmutableClock estimatedTimeOfCompletion4 = new ImmutableClock(5,250);
 		ImmutableClock estimatedTimeOfCompletion5 = new ImmutableClock(5,350);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion4);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion5);
-		logger.advanceClock(new ImmutableClock(6,300));
+		logger.advanceTime(new ImmutableClock(6,300));
 		logger.startNewDay();
 		ImmutableClock estimatedTimeOfCompletion6 = new ImmutableClock(6,250);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion6);
