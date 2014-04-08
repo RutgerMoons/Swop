@@ -250,7 +250,7 @@ public class ClientCommunication implements IClientCommunication{
 	 * @param message
 	 * 			The message that has to be shown to the users.
 	 */
-	private void show(ArrayList<String> message){
+	private void show(List<String> message){
 		for (int i = 0; i < message.size(); i++) {
 			System.out.println(message.get(i));
 		}
@@ -326,13 +326,15 @@ public class ClientCommunication implements IClientCommunication{
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
 	@Override
-	public void showOrder(int quantity, String model, String estimatedTime) {
+	public void showOrder(int quantity, String model, List<String> chosenParts, String estimatedTime) {
 		if (model == null || estimatedTime == null) {
 			throw new IllegalArgumentException();
 		}
 		show(new ArrayList<String>(Arrays.asList("Your order:",	quantity + " " + 
 																model + " Estimated completion time: " + 
 																estimatedTime)));
+		show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
+		show(chosenParts);
 	}
 
 	/**
@@ -357,6 +359,27 @@ public class ClientCommunication implements IClientCommunication{
 	@Override
 	public void showWorkBenchCompleted(){
 		show(new ArrayList<String>(Arrays.asList("All the tasks at this workbench are completed")));
+	}
+
+	@Override
+	public String choosePart(Set<String> parts) {
+		ArrayList<String> partsString = new ArrayList<String>();
+		partsString.add(0,"Possible parts:");
+		int i = 1;
+		for(String part : parts){
+			partsString.add(i+"."+part);
+			i++;
+		}
+		show(partsString);
+		
+		int partNumber = askNumber("Which Part Number do you choose?");
+		if (partNumber >= 1  && partNumber <= parts.size()) {
+			return partsString.get(partNumber).substring(partsString.get(partNumber).indexOf(".") + 1);
+		} else {
+			invalidAnswerPrompt();
+			return choosePart(parts);
+		}	
+		
 	}
 }
 

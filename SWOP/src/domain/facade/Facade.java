@@ -1,27 +1,28 @@
 package domain.facade;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
-import domain.car.CarModel;
 import domain.car.CarModelCatalogue;
 import domain.car.CarModelCatalogueFiller;
-import domain.car.CarPartCatalogue;
-import domain.car.CarPartCatalogueFiller;
+import domain.car.CarModelTemplate;
+import domain.car.CarPart;
+import domain.car.CarPartType;
 import domain.clock.Clock;
+import domain.exception.AlreadyInMapException;
 import domain.exception.RoleNotYetAssignedException;
-<<<<<<< HEAD
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.ITask;
 import domain.job.Task;
-=======
->>>>>>> origin/stef
-import domain.order.StandardOrder;
 import domain.order.OrderBook;
+import domain.order.StandardOrder;
+import domain.restriction.PartPicker;
 import domain.users.AccessRight;
 import domain.users.User;
 import domain.users.UserBook;
@@ -31,27 +32,24 @@ public class Facade {
 
 	private AssemblyLine assemblyLine;
 	private CarModelCatalogue carModelCatalogue;
-	private CarPartCatalogue carPartCatalogue;
 	private Clock clock;
 	private OrderBook orderBook;
 	private UserBook userBook;
 	private UserFactory userFactory;
-
+	private PartPicker picker;
+	
 	public Facade() {
 		this.clock = new Clock();
 		this.assemblyLine = new AssemblyLine(clock);
-		this.carPartCatalogue = new CarPartCatalogue();
-		this.carModelCatalogue = new CarModelCatalogue(carPartCatalogue);
+		this.carModelCatalogue = new CarModelCatalogue();
 		this.orderBook = new OrderBook(assemblyLine);
 		this.userBook = new UserBook();
 		this.userFactory = new UserFactory();
-
-		CarPartCatalogueFiller carPartFiller = new CarPartCatalogueFiller(carPartCatalogue);
-		carPartFiller.initializeCarParts();
-
+		picker = new PartPicker();
+		
 		CarModelCatalogueFiller carModelFiller = new CarModelCatalogueFiller();
-		for (CarModel carmodel : carModelFiller.getInitialModels()) {
-			carModelCatalogue.addModel(carmodel);
+		for (CarModelTemplate model : carModelFiller.getInitialModels()) {
+			carModelCatalogue.addModel(model);
 		}
 	}
 
@@ -70,40 +68,43 @@ public class Facade {
 
 	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex,
 			int taskIndex) {
-		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
+		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(
+				workBenchIndex);
 		Task task = (Task) workbench.getCurrentTasks().get(taskIndex);
-		for(IAction action: task.getActions()){
-			Action act = (Action) action; 
+		for (IAction action : task.getActions()) {
+			Action act = (Action) action;
 			act.setCompleted(true);
 		}
 	}
 
-	public void createAndAddUser(String userName, String role) throws IllegalArgumentException {
+	public void createAndAddUser(String userName, String role)
+			throws IllegalArgumentException {
 		User currentUser = userFactory.createUser(userName, role);
 		this.userBook.addUser(currentUser);
 		try {
 			this.userBook.login(userName);
 		} catch (RoleNotYetAssignedException r) {
-			System.err.println("Something went wrong at login, this shouldn't happen.");
+			System.err
+					.println("Something went wrong at login, this shouldn't happen.");
 		}
 	}
 
 	public List<AccessRight> getAccessRights() {
 		return this.userBook.getCurrentUser().getAccessRights();
 	}
-	
+
 	public String getAssemblyLineAsString() {
 		return assemblyLine.toString();
 	}
-
 
 	public ArrayList<Integer> getBlockingWorkBenches() {
 		return assemblyLine.getBlockingWorkBenches();
 	}
 
-	public String getCarModelFromCatalogue(String carModelName) throws IllegalArgumentException{
-		for(String model : this.carModelCatalogue.getCatalogue().keySet()){
-			if(model.equalsIgnoreCase(carModelName)){
+	public String getCarModelFromCatalogue(String carModelName)
+			throws IllegalArgumentException {
+		for (String model : this.carModelCatalogue.getCatalogue().keySet()) {
+			if (model.equalsIgnoreCase(carModelName)) {
 				return model;
 			}
 		}
@@ -116,24 +117,29 @@ public class Facade {
 
 	public ArrayList<String> getCompletedOrders() {
 		ArrayList<String> completedOrders = new ArrayList<String>();
-		if(this.orderBook.getCompletedOrders().containsKey(userBook.getCurrentUser().getName())) {
-			for(StandardOrder order: orderBook.getCompletedOrders().get(userBook.getCurrentUser().getName())){
+		if (this.orderBook.getCompletedOrders().containsKey(
+				userBook.getCurrentUser().getName())) {
+			for (StandardOrder order : orderBook.getCompletedOrders().get(
+					userBook.getCurrentUser().getName())) {
 				completedOrders.add(order.toString());
 			}
-		}	
+		}
 		return completedOrders;
 	}
 
 	public String getFutureAssemblyLineAsString() {
 		return assemblyLine.getFutureAssemblyLine().toString();
 	}
-	
+
 	public ArrayList<String> getPendingOrders() {
 		ArrayList<String> pendingOrders = new ArrayList<String>();
-		List<StandardOrder> orders = (List<StandardOrder>) orderBook.getPendingOrders().get(userBook.getCurrentUser().getName());
-		if(this.orderBook.getPendingOrders().containsKey(userBook.getCurrentUser().getName()) 
-				&& !this.orderBook.getPendingOrders().get(userBook.getCurrentUser().getName()).isEmpty()){
-			for (StandardOrder order : orders){
+		List<StandardOrder> orders = (List<StandardOrder>) orderBook
+				.getPendingOrders().get(userBook.getCurrentUser().getName());
+		if (this.orderBook.getPendingOrders().containsKey(
+				userBook.getCurrentUser().getName())
+				&& !this.orderBook.getPendingOrders()
+						.get(userBook.getCurrentUser().getName()).isEmpty()) {
+			for (StandardOrder order : orders) {
 				pendingOrders.add(order.toString());
 			}
 		}
@@ -142,10 +148,11 @@ public class Facade {
 	}
 
 	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex) {
-		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
+		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(
+				workBenchIndex);
 		ArrayList<String> tasks = new ArrayList<String>();
-		for(ITask task : workbench.getCurrentTasks()){
-			if(!task.isCompleted()){
+		for (ITask task : workbench.getCurrentTasks()) {
+			if (!task.isCompleted()) {
 				tasks.add(task.toString());
 			}
 		}
@@ -154,13 +161,14 @@ public class Facade {
 
 	public ArrayList<String> getWorkBenchNames() {
 		ArrayList<String> workbenches = new ArrayList<String>();
-		for(IWorkBench w : this.assemblyLine.getWorkbenches()){
+		for (IWorkBench w : this.assemblyLine.getWorkbenches()) {
 			workbenches.add(w.getWorkbenchName());
 		}
 		return workbenches;
 	}
 
-	public void login(String userName) throws RoleNotYetAssignedException, IllegalArgumentException {
+	public void login(String userName) throws RoleNotYetAssignedException,
+			IllegalArgumentException {
 		userBook.login(userName);
 	}
 
@@ -168,9 +176,12 @@ public class Facade {
 		userBook.logout();
 	}
 
+	
+	
 	public String processOrder(String carModelName, int quantity) {
-		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
-		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity);
+
+		StandardOrder order = new StandardOrder(userBook.getCurrentUser()
+				.getName(),picker.getModel(), quantity);
 		this.orderBook.addOrder(order);
 		return order.getEstimatedTime().toString();
 	}
@@ -178,6 +189,37 @@ public class Facade {
 	public void startNewDay() {
 		clock.startNewDay();
 
+	}
+
+	public void createNewModel(String realModel) {
+		picker.setNewModel(carModelCatalogue.getCatalogue().get(realModel));
+	}
+
+	public Set<String> getCarPartTypes() {
+		Set<String> types = new HashSet<>();
+		for(CarPartType type: CarPartType.values()){
+			types.add(type.toString());
+		}
+		return types;
+	}
+
+	public Set<String> getParts(String type) {
+		Set<String> parts = new HashSet<>();
+		for(CarPart part: picker.getStillAvailableCarParts(CarPartType.valueOf(type))){
+			parts.add(part.toString());
+		}
+		return parts;
+	}
+
+	public void addPartToModel(String type, String part) {
+		CarPartType carPartType = CarPartType.valueOf(type);
+		for(CarPart actualPart: picker.getModel().getTemplate().getCarParts().get(carPartType)){
+			if(actualPart.toString().equals(part))
+				try {
+					picker.getModel().addCarPart(actualPart);
+				} catch (AlreadyInMapException e) { //ga nooit gebeuren omdat je 1x alle types overloopt
+				}
+		}
 	}
 
 }

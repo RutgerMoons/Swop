@@ -18,13 +18,7 @@ import domain.job.IAction;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
-
 import domain.observer.AssemblyLineObserver;
-<<<<<<< HEAD
-import domain.observer.ClockObserver;
-=======
-import domain.observer.ClockObserver;
->>>>>>> origin/stef
 import domain.order.StandardOrder;
 
 /**
@@ -170,11 +164,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-<<<<<<< HEAD
 	public void calculateEstimatedTime(StandardOrder order) throws ImmutableException {
-=======
-	public void calculateEstimatedTime(StandardOrder order) {
->>>>>>> origin/stef
 		if (getWorkbenches().size() == 0)
 			throw new IllegalStateException("There are no workbenches!");
 		int indexLastJob = getIndexOf(order);

@@ -13,4 +13,9 @@ public class CarPartTypeTest {
 		assertEquals(CarPartType.AIRCO, CarPartType.valueOf("AIRCO"));
 	}
 
+	@Test
+	public void test2(){
+		for(CarPartType type: CarPartType.values())
+			System.out.println(type);
+	}
 }

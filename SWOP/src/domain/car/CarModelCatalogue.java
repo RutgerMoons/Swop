@@ -14,7 +14,6 @@ public class CarModelCatalogue {
 
 	// private HashMap<String, HashMap<Class<?>, CarPart>> data;
 	private Map<String, CarModelTemplate> data;
-	private CarPartCatalogue cat;
 
 	/**
 	 * Default constructor. When a carModelCatalogue is constructed, a
@@ -22,8 +21,7 @@ public class CarModelCatalogue {
 	 * carModelCatalogue is filled with the basic carModels thanks to the
 	 * carModelCatalogueFiller.
 	 */
-	public CarModelCatalogue(CarPartCatalogue cat) {
-		this.cat = cat;
+	public CarModelCatalogue() {
 		data = new HashMap<String, CarModelTemplate>();
 	}
 
@@ -55,23 +53,9 @@ public class CarModelCatalogue {
 	 *             if model==null or not is valid
 	 */
 	public void addModel(CarModelTemplate model) {
-		if (model == null || !isValidCarModel(model))
+		if (model == null)
 			throw new IllegalArgumentException();
 		data.put(model.getDescription(), model);
 
 	}
-
-	/**
-	 * Method for checking if the carModel is a valid model. It checks if every
-	 * carpart of the model is valid or not. If not, it return false.
-	 */
-	private boolean isValidCarModel(CarModelTemplate model) {
-		for (CarPart part : model.getCarParts().values()) {
-			if (!cat.isValidCarPart(part)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 }

@@ -15,9 +15,12 @@ public class PartPicker {
 	private Set<OptionalRestriction> optionalRestrictions;
 	private CarModel model;
 
-	public PartPicker(CarModelTemplate template) {
+	public PartPicker() {
 		bindingRestrictions = new HashSet<BindingRestriction>();
 		optionalRestrictions = new HashSet<OptionalRestriction>();
+	}
+	
+	public void setNewModel(CarModelTemplate template){
 		model = new CarModel(template);
 	}
 

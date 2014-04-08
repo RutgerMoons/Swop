@@ -2,7 +2,7 @@ package domain.car;
 
 public enum CarPartType {
 
-	AIRCO(true), BODY(false), COLOR(false), ENGINE(false), GEARBOX(false), SEATS(false), SPOILER(true), WHEEL(false);
+	 BODY(false), COLOR(false), ENGINE(false), GEARBOX(false), SEATS(false), AIRCO(true), WHEEL(false), SPOILER(true);
 	
 	private boolean optional;
 	private CarPartType(boolean optional){
