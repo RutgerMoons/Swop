@@ -11,12 +11,16 @@ import com.google.common.collect.ImmutableList;
 import domain.car.CarPart;
 import domain.car.ICarModel;
 import domain.clock.Clock;
+import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
+
+import domain.observer.AssemblyLineObserver;
+import domain.observer.ClockObserver;
 import domain.order.StandardOrder;
 
 /**
@@ -31,6 +35,7 @@ public class AssemblyLine {
 	private List<IJob> currentJobs;
 	private int overtime;
 	private List<IWorkBench> workbenches;
+	private ArrayList<AssemblyLineObserver> observers;
 
 	/**
 	 * Construct a new AssemblyLine.
@@ -137,6 +142,7 @@ public class AssemblyLine {
 				lastJob.get().getOrder().completeCar();
 				// TODO:
 				// 		add line for observer
+				notifyObserverCompleteOrder(lastJob.get().getOrder().getEstimatedTime());
 			} catch (ImmutableException e) {
 			}
 		}
@@ -153,13 +159,14 @@ public class AssemblyLine {
 	 * 
 	 * @param order
 	 *            The order to set the estimated time to.
+	 * @throws ImmutableException 
 	 * @throws IllegalStateException
 	 *             -if there are no workbenches are available -if the jobs of
 	 *             the order aren't in the currentJobList
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	public void calculateEstimatedTime(StandardOrder order) {
+	public void calculateEstimatedTime(StandardOrder order) throws ImmutableException {
 		if (getWorkbenches().size() == 0)
 			throw new IllegalStateException("There are no workbenches!");
 		int indexLastJob = getIndexOf(order);
@@ -207,9 +214,7 @@ public class AssemblyLine {
 					+ beginTime;
 		}
 
-		array[0] = days;
-		array[1] = time;
-		order.setEstimatedTime(array);
+		order.setEstimatedTime(new UnmodifiableClock(days, time)); //TODO
 	}
 
 	public boolean canAdvance() {
@@ -430,4 +435,25 @@ public class AssemblyLine {
 		}
 		return assemblyLineString.replaceFirst(",", "");
 	}
+	
+	public void attachObserver(AssemblyLineObserver observer) {
+		if (observer == null) {
+			throw new IllegalArgumentException();
+		}
+		observers.add(observer);
+	}
+	
+	public void detachObserver(AssemblyLineObserver observer) {
+		if (observer == null) {
+			throw new IllegalArgumentException();
+		}
+		observers.remove(observer);
+	}
+	
+	public void notifyObserverCompleteOrder(UnmodifiableClock aClock) {
+		for (AssemblyLineObserver observer : observers) {
+			observer.updateCompletedOrder(aClock);
+		}
+	}
+	
 }

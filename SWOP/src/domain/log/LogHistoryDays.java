@@ -38,6 +38,7 @@ public class LogHistoryDays extends LogHistory {
 		for (Integer i : completeHistory) {
 			complete.add(i);
 		}
+		Collections.sort(complete);
 		return Collections.unmodifiableList(complete);
 	}
 	

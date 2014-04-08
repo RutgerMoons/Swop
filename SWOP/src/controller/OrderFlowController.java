@@ -57,14 +57,13 @@ public class OrderFlowController extends UseCaseFlowController {
 			// Om ��n of andere reden vind ie het niet nodig om de IllegalArgument te catchen?
 			String realModel = facade.getCarModelFromCatalogue(model);
 			int quantity = clientCommunication.getQuantity();
-			int[] estimatedTime = new int[1];
-			estimatedTime[0] = -1;
+			String estimatedTime = "";
 			clientCommunication.showOrder(quantity, realModel, estimatedTime);
 			if(!this.clientCommunication.askContinue()){
 				this.executeUseCase();
 			}
 			else{
-				int[] time = facade.processOrder(realModel, quantity);
+				String time = facade.processOrder(realModel, quantity);
 				clientCommunication.showOrder(quantity, realModel, time);
 			}
 		}

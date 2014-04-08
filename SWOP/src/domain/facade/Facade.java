@@ -165,11 +165,11 @@ public class Facade {
 		userBook.logout();
 	}
 
-	public int[] processOrder(String carModelName, int quantity) {
+	public String processOrder(String carModelName, int quantity) {
 		CarModel carModel = this.carModelCatalogue.getCatalogue().get(carModelName);
 		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity);
 		this.orderBook.addOrder(order);
-		return order.getEstimatedTime();
+		return order.getEstimatedTime().toString();
 	}
 
 	public void startNewDay() {

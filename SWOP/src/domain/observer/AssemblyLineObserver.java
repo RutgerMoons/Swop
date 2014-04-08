@@ -1,15 +1,19 @@
 package domain.observer;
 
-import domain.clock.ImmutableClock;
-import domain.log.Logger;
+import domain.clock.UnmodifiableClock;
 
-public class AssemblyLineObserver extends Observer {
+public class AssemblyLineObserver {
 
-	public AssemblyLineObserver(Logger logger) {
-		super(logger);
+	private LogsAssemblyLine logger;
+	
+	public AssemblyLineObserver(LogsAssemblyLine logger) {
+		if (logger == null) {
+			throw new IllegalArgumentException();
+		}
+		this.logger = logger;
 	}
 	
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder) {
+	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfOrder) {
 		logger.updateCompletedOrder(estimatedTimeOfOrder);
 	}
 	

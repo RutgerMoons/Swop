@@ -2,7 +2,9 @@ package domain.order;
 
 import domain.car.ICarModel;
 import domain.car.ImmutableCarModel;
+import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 
 /**
  * Create an Immutable Order, only the getters are accessible.
@@ -45,7 +47,7 @@ public class ImmutableOrder implements IOrder {
 	}
 
 	@Override
-	public int[] getEstimatedTime() {
+	public UnmodifiableClock getEstimatedTime() {
 		return order.getEstimatedTime();
 	}
 	
@@ -65,12 +67,37 @@ public class ImmutableOrder implements IOrder {
 	}
 
 	@Override
-	public void setEstimatedTime(int[] array) throws ImmutableException {
+	public void setEstimatedTime(UnmodifiableClock clock) throws ImmutableException {
 		throw new ImmutableException();
 	}
 
 	@Override
 	public void completeCar() throws ImmutableException {
 		throw new ImmutableException();
+	}
+
+	@Override
+	public UnmodifiableClock getDeadline() throws NotImplementedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setDeadline(UnmodifiableClock clock)
+			throws NotImplementedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public UnmodifiableClock getOrderTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setOrderTime(UnmodifiableClock clock) {
+		// TODO Auto-generated method stub
+		
 	}
 }

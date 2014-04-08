@@ -1,34 +1,42 @@
 package domain.log;
 
-import java.util.Collections;
 import java.util.List;
 
-import domain.clock.ImmutableClock;
+import domain.clock.UnmodifiableClock;
+import domain.observer.LogsAssemblyLine;
+import domain.observer.LogsClock;
 import domain.order.Delay;
 
-public class Logger {
+public class Logger implements LogsClock, LogsAssemblyLine {
 
 	private LogHistoryDays logHistoryDays;
 	private LogHistoryDelays logHistoryDelays;
-	private ImmutableClock currentTime;
+	private UnmodifiableClock currentTime;
 
 	public Logger(int numberOfDaysOfDetailedHistory) {
 		this.logHistoryDays = new LogHistoryDays(numberOfDaysOfDetailedHistory);
 		this.logHistoryDelays = new LogHistoryDelays(numberOfDaysOfDetailedHistory);
 	}
 
-	public void advanceClock(ImmutableClock currentTime) {
+	@Override
+	public void advanceTime(UnmodifiableClock currentTime) {
 		if (currentTime == null) {
 			throw new IllegalArgumentException();
 		}
 		this.currentTime = currentTime;
 	}
 
+	public UnmodifiableClock getCurrentTime(){
+		return this.currentTime;
+	}
+	
+	@Override
 	public void startNewDay() {
 		this.logHistoryDays.shift();
 	}
 
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfCompletion) {
+	@Override
+	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfCompletion) {
 		if (estimatedTimeOfCompletion == null) {
 			throw new IllegalArgumentException();
 		}
@@ -48,7 +56,6 @@ public class Logger {
 	}
 	
 	private int median(List<Integer> list) {
-		Collections.sort(list);
 		if (list.size() % 2 == 1) {
 			return list.get(list.size() / 2);
 		} else {
