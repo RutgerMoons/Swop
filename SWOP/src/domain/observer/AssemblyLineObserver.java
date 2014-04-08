@@ -1,7 +1,6 @@
 package domain.observer;
 
 import domain.clock.UnmodifiableClock;
-import domain.log.LogsAssemblyLine;
 
 public class AssemblyLineObserver {
 
@@ -17,6 +16,8 @@ public class AssemblyLineObserver {
 	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfOrder) {
 		logger.updateCompletedOrder(estimatedTimeOfOrder);
 	}
+	
+	//TODO: list van loggers en hun methodes
 	
 	
 }

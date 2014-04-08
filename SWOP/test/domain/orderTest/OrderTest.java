@@ -8,11 +8,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.Action;
 import domain.car.CarModel;
 import domain.car.CarPart;
 import domain.car.CarPartType;
 import domain.exception.AlreadyInMapException;
+<<<<<<< HEAD
+import domain.job.Action;
+=======
+>>>>>>> origin/stef
 import domain.order.StandardOrder;
 
 public class OrderTest {

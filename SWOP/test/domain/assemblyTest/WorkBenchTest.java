@@ -11,22 +11,27 @@ import java.util.List;
 import java.util.Set;
 
 
+
 import org.junit.Before;
 import org.junit.Test;
 
 
+
 import com.google.common.base.Optional;
 
-import domain.assembly.Action;
-import domain.assembly.IJob;
-import domain.assembly.ITask;
-import domain.assembly.Job;
-import domain.assembly.Task;
 import domain.assembly.WorkBench;
 import domain.car.CarModel;
 import domain.car.CarPart;
 import domain.car.CarPartType;
 import domain.exception.AlreadyInMapException;
+<<<<<<< HEAD
+import domain.job.Action;
+import domain.job.IJob;
+import domain.job.ITask;
+import domain.job.Job;
+import domain.job.Task;
+=======
+>>>>>>> origin/stef
 import domain.order.StandardOrder;
 
 

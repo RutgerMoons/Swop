@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.car.CarModel;
-import domain.car.CarPart;
-import domain.car.CarPartType;
+import domain.car.CarOption;
+import domain.car.CarOptionCategogry;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.order.IOrder;
@@ -22,13 +22,13 @@ public class ImmutableOrderTest {
 	@Before
 	public void initialize() throws AlreadyInMapException{
 		model = new CarModel("Volkswagen");
-		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
-		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
-		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		model.addCarPart(new CarOption("manual", true, CarOptionCategogry.AIRCO));
+		model.addCarPart(new CarOption("sedan", false, CarOptionCategogry.BODY));
+		model.addCarPart(new CarOption("red", false, CarOptionCategogry.COLOR));
+		model.addCarPart(new CarOption("standard 2l 4 cilinders", false, CarOptionCategogry.ENGINE));
+		model.addCarPart(new CarOption("6 speed manual", false, CarOptionCategogry.GEARBOX));
+		model.addCarPart(new CarOption("leather black", false, CarOptionCategogry.SEATS));
+		model.addCarPart(new CarOption("comfort", false, CarOptionCategogry.WHEEL));
 		order = new StandardOrder("Mario",model,3);
 		immutable = new ImmutableOrder(order);
 	}

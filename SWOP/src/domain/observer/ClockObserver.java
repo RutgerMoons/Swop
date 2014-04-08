@@ -1,17 +1,29 @@
 package domain.observer;
 
+import java.util.ArrayList;
+
 import domain.clock.UnmodifiableClock;
-import domain.log.LogsClock;
 
 public class ClockObserver {
 	
-	private LogsClock logger;
+	private ArrayList<LogsClock> loggers;
 	
-	public ClockObserver(LogsClock logger) {
+	public ClockObserver() {
+		this.loggers = new ArrayList<LogsClock>();
+	}
+	
+	public void attachLogger(LogsClock logger) {
 		if (logger == null) {
 			throw new IllegalArgumentException();
 		}
-		this.logger = logger;
+		loggers.add(logger);
+	}
+	
+	public void detachLogger(LogsClock logger) {
+		if (logger == null) {
+			throw new IllegalArgumentException();
+		}
+		loggers.remove(logger);
 	}
 	
 	/*
@@ -20,11 +32,15 @@ public class ClockObserver {
 	 * ClockObserver update logger
 	 */
 	public void advanceTime(UnmodifiableClock currentTime) {
-		logger.advanceTime(currentTime);
+		for (LogsClock logger : loggers) {
+			logger.advanceTime(currentTime);
+		}
 	}
 
 	public void startNewDay() {
-		logger.startNewDay();
+		for (LogsClock logger : loggers) {
+			logger.startNewDay();
+		}
 	}
 	
 	

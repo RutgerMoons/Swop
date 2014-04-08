@@ -17,101 +17,101 @@ public class CarModelCatalogueFiller {
 	 * if the car model is valid. If not, the car model isn't added to the list.
 	 * When every car model is checked, the ArrayList is returned as result.
 	 */
-	public Set<CarModelTemplate> getInitialModels() {
-		Set<CarModelTemplate> models = new HashSet<CarModelTemplate>();
+	public Set<CarModelSpecification> getInitialModels() {
+		Set<CarModelSpecification> models = new HashSet<CarModelSpecification>();
 		models.add(getModelA());
 		models.add(getModelB());
 		models.add(getModelC());
 		return models;
 	}
 
-	private CarModelTemplate getModelC() {
-		Set<CarPart> parts = new HashSet<>();
-		parts.add(new CarPart("sport", CarPartType.BODY));
+	private CarModelSpecification getModelC() {
+		Set<CarOption> parts = new HashSet<>();
+		parts.add(new CarOption("sport", CarOptionCategogry.BODY));
 		
-		parts.add(new CarPart("black", CarPartType.COLOR));
-		parts.add(new CarPart("white", CarPartType.COLOR));
+		parts.add(new CarOption("black", CarOptionCategogry.COLOR));
+		parts.add(new CarOption("white", CarOptionCategogry.COLOR));
 		
-		parts.add(new CarPart("performance 2.5l V6", CarPartType.ENGINE));
-		parts.add(new CarPart("ultra 3l V8", CarPartType.ENGINE));
+		parts.add(new CarOption("performance 2.5l V6", CarOptionCategogry.ENGINE));
+		parts.add(new CarOption("ultra 3l V8", CarOptionCategogry.ENGINE));
 	
-		parts.add(new CarPart("6 Speed Manual", CarPartType.GEARBOX));
+		parts.add(new CarOption("6 Speed Manual", CarOptionCategogry.GEARBOX));
 		
-		parts.add(new CarPart("Leather White", CarPartType.SEATS));
-		parts.add(new CarPart("Leather Black", CarPartType.SEATS));
+		parts.add(new CarOption("Leather White", CarOptionCategogry.SEATS));
+		parts.add(new CarOption("Leather Black", CarOptionCategogry.SEATS));
 		
-		parts.add(new CarPart("Manual", CarPartType.AIRCO));
-		parts.add(new CarPart("Automatic", CarPartType.AIRCO));
+		parts.add(new CarOption("Manual", CarOptionCategogry.AIRCO));
+		parts.add(new CarOption("Automatic", CarOptionCategogry.AIRCO));
 		
-		parts.add(new CarPart("Winter", CarPartType.WHEEL));
-		parts.add(new CarPart("Sports", CarPartType.WHEEL));
+		parts.add(new CarOption("Winter", CarOptionCategogry.WHEEL));
+		parts.add(new CarOption("Sports", CarOptionCategogry.WHEEL));
 		
-		parts.add(new CarPart("high", CarPartType.SPOILER));
-		parts.add(new CarPart("low", CarPartType.SPOILER));
-		return new CarModelTemplate("model C", parts, 60);
+		parts.add(new CarOption("high", CarOptionCategogry.SPOILER));
+		parts.add(new CarOption("low", CarOptionCategogry.SPOILER));
+		return new CarModelSpecification("model C", parts, 60);
 	}
 
-	private CarModelTemplate getModelB() {
-		Set<CarPart> parts = new HashSet<>();
-		parts.add(new CarPart("sedan", CarPartType.BODY));
-		parts.add(new CarPart("break", CarPartType.BODY));
-		parts.add(new CarPart("sport", CarPartType.BODY));
+	private CarModelSpecification getModelB() {
+		Set<CarOption> parts = new HashSet<>();
+		parts.add(new CarOption("sedan", CarOptionCategogry.BODY));
+		parts.add(new CarOption("break", CarOptionCategogry.BODY));
+		parts.add(new CarOption("sport", CarOptionCategogry.BODY));
 		
-		parts.add(new CarPart("red", CarPartType.COLOR));
-		parts.add(new CarPart("blue", CarPartType.COLOR));
-		parts.add(new CarPart("green", CarPartType.COLOR));
-		parts.add(new CarPart("yellow", CarPartType.COLOR));
+		parts.add(new CarOption("red", CarOptionCategogry.COLOR));
+		parts.add(new CarOption("blue", CarOptionCategogry.COLOR));
+		parts.add(new CarOption("green", CarOptionCategogry.COLOR));
+		parts.add(new CarOption("yellow", CarOptionCategogry.COLOR));
 		
-		parts.add(new CarPart("standard 2l V4", CarPartType.ENGINE));
-		parts.add(new CarPart("performance 2.5l V6", CarPartType.ENGINE));
-		parts.add(new CarPart("ultra 3l V8", CarPartType.ENGINE));
+		parts.add(new CarOption("standard 2l V4", CarOptionCategogry.ENGINE));
+		parts.add(new CarOption("performance 2.5l V6", CarOptionCategogry.ENGINE));
+		parts.add(new CarOption("ultra 3l V8", CarOptionCategogry.ENGINE));
 	
-		parts.add(new CarPart("6 Speed Manual", CarPartType.GEARBOX));
-		parts.add(new CarPart("5 Speed Automatic", CarPartType.GEARBOX));
+		parts.add(new CarOption("6 Speed Manual", CarOptionCategogry.GEARBOX));
+		parts.add(new CarOption("5 Speed Automatic", CarOptionCategogry.GEARBOX));
 		
-		parts.add(new CarPart("Leather White", CarPartType.SEATS));
-		parts.add(new CarPart("Leather Black", CarPartType.SEATS));
-		parts.add(new CarPart("Vinyl Grey", CarPartType.SEATS));
+		parts.add(new CarOption("Leather White", CarOptionCategogry.SEATS));
+		parts.add(new CarOption("Leather Black", CarOptionCategogry.SEATS));
+		parts.add(new CarOption("Vinyl Grey", CarOptionCategogry.SEATS));
 		
-		parts.add(new CarPart("Manual", CarPartType.AIRCO));
-		parts.add(new CarPart("Automatic", CarPartType.AIRCO));
+		parts.add(new CarOption("Manual", CarOptionCategogry.AIRCO));
+		parts.add(new CarOption("Automatic", CarOptionCategogry.AIRCO));
 		
-		parts.add(new CarPart("Winter", CarPartType.WHEEL));
-		parts.add(new CarPart("Comfort", CarPartType.WHEEL));
-		parts.add(new CarPart("Sports", CarPartType.WHEEL));
+		parts.add(new CarOption("Winter", CarOptionCategogry.WHEEL));
+		parts.add(new CarOption("Comfort", CarOptionCategogry.WHEEL));
+		parts.add(new CarOption("Sports", CarOptionCategogry.WHEEL));
 		
-		parts.add(new CarPart("low", CarPartType.SPOILER));
-		return new CarModelTemplate("model B", parts, 70);
+		parts.add(new CarOption("low", CarOptionCategogry.SPOILER));
+		return new CarModelSpecification("model B", parts, 70);
 	}
 
-	private CarModelTemplate getModelA() {
-		Set<CarPart> parts = new HashSet<>();
-		parts.add(new CarPart("sedan", CarPartType.BODY));
-		parts.add(new CarPart("break", CarPartType.BODY));
+	private CarModelSpecification getModelA() {
+		Set<CarOption> parts = new HashSet<>();
+		parts.add(new CarOption("sedan", CarOptionCategogry.BODY));
+		parts.add(new CarOption("break", CarOptionCategogry.BODY));
 		
-		parts.add(new CarPart("red", CarPartType.COLOR));
-		parts.add(new CarPart("blue", CarPartType.COLOR));
-		parts.add(new CarPart("black", CarPartType.COLOR));
-		parts.add(new CarPart("white", CarPartType.COLOR));
+		parts.add(new CarOption("red", CarOptionCategogry.COLOR));
+		parts.add(new CarOption("blue", CarOptionCategogry.COLOR));
+		parts.add(new CarOption("black", CarOptionCategogry.COLOR));
+		parts.add(new CarOption("white", CarOptionCategogry.COLOR));
 		
-		parts.add(new CarPart("standard 2l V4", CarPartType.ENGINE));
-		parts.add(new CarPart("performance 2.5l V6", CarPartType.ENGINE));
+		parts.add(new CarOption("standard 2l V4", CarOptionCategogry.ENGINE));
+		parts.add(new CarOption("performance 2.5l V6", CarOptionCategogry.ENGINE));
 		
-		parts.add(new CarPart("6 Speed Manual", CarPartType.GEARBOX));
-		parts.add(new CarPart("5 Speed Manual", CarPartType.GEARBOX));
-		parts.add(new CarPart("5 Speed Automatic", CarPartType.GEARBOX));
+		parts.add(new CarOption("6 Speed Manual", CarOptionCategogry.GEARBOX));
+		parts.add(new CarOption("5 Speed Manual", CarOptionCategogry.GEARBOX));
+		parts.add(new CarOption("5 Speed Automatic", CarOptionCategogry.GEARBOX));
 		
-		parts.add(new CarPart("Leather White", CarPartType.SEATS));
-		parts.add(new CarPart("Leather Black", CarPartType.SEATS));
-		parts.add(new CarPart("Vinyl Grey", CarPartType.SEATS));
+		parts.add(new CarOption("Leather White", CarOptionCategogry.SEATS));
+		parts.add(new CarOption("Leather Black", CarOptionCategogry.SEATS));
+		parts.add(new CarOption("Vinyl Grey", CarOptionCategogry.SEATS));
 		
-		parts.add(new CarPart("Manual", CarPartType.AIRCO));
+		parts.add(new CarOption("Manual", CarOptionCategogry.AIRCO));
 		
-		parts.add(new CarPart("Winter", CarPartType.WHEEL));
-		parts.add(new CarPart("Comfort", CarPartType.WHEEL));
-		parts.add(new CarPart("Sports", CarPartType.WHEEL));
+		parts.add(new CarOption("Winter", CarOptionCategogry.WHEEL));
+		parts.add(new CarOption("Comfort", CarOptionCategogry.WHEEL));
+		parts.add(new CarOption("Sports", CarOptionCategogry.WHEEL));
 		
-		return new CarModelTemplate("model A", parts, 50);
+		return new CarModelSpecification("model A", parts, 50);
 	}
 
 }

@@ -1,8 +1,11 @@
 package domain.order;
 
+
+import java.util.Arrays;
+
 import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
-import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes
@@ -18,6 +21,9 @@ public class StandardOrder implements IOrder {
 	private String garageholder;
 	private int quantity, pendingCars;
 	private UnmodifiableClock estimatedTime;
+	private UnmodifiableClock orderTime;
+
+	
 
 	/**
 	 * Constructor of an Order, given the name of the orderer, the type of
@@ -99,6 +105,16 @@ public class StandardOrder implements IOrder {
 		return description;
 	}
 
+	public UnmodifiableClock getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(UnmodifiableClock orderTime) {
+		if(orderTime == null){
+			throw new IllegalArgumentException();
+		}
+		this.orderTime = orderTime;
+	}
 
 	public UnmodifiableClock getEstimatedTime() {
 		return this.estimatedTime;
@@ -156,4 +172,18 @@ public class StandardOrder implements IOrder {
 		return orderInString;
 	}
 
+	@Override
+	public UnmodifiableClock getDeadline() throws NotImplementedException {
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException {
+		throw new NotImplementedException();
+	}
+	
+	@Override
+	public int getProductionTime() {
+		return this.getDescription().getSpecification().getshizzle();
+	}
 }

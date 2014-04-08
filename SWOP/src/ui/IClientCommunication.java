@@ -39,6 +39,8 @@ public interface IClientCommunication {
 	 */
 	public String chooseModel(Set<String> catalogue);
 	
+	public String choosePart(Set<String> parts);
+	
 	/**
 	 * Let the user indicate which role he fulfills.
 	 * @return
@@ -149,13 +151,14 @@ public interface IClientCommunication {
 	 * Show the user the order he is about to place.
 	 * @param quantity
 	 * 			An integer representing the quantity of cars the user is about to order.
-	 * @param carModel
+	 * @param realModel 
+	 * @param chosenParts
 	 * 			A String representing the name of the carmodel the user is about to order.
 	 * @param estimatedTime
 	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
-	public void showOrder(int quantity, String carModel, String estimatedTime);
+	public void showOrder(int quantity, String realModel, List<String> chosenParts, String estimatedTime);
 	
 	/**
 	 * Show the user's pending orders.

@@ -1,4 +1,4 @@
-package domain.assembly;
+package domain.job;
 
 import domain.exception.ImmutableException;
 

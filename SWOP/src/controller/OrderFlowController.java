@@ -1,9 +1,9 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ui.IClientCommunication;
-
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -56,16 +56,33 @@ public class OrderFlowController extends UseCaseFlowController {
 			String model = clientCommunication.chooseModel(facade.getCarModels());
 			// Om ��n of andere reden vind ie het niet nodig om de IllegalArgument te catchen?
 			String realModel = facade.getCarModelFromCatalogue(model);
+			facade.createNewModel(realModel);
+			
+			List<String>chosenParts = createModel();
+			
+			
+			
 			int quantity = clientCommunication.getQuantity();
 			String estimatedTime = "";
-			clientCommunication.showOrder(quantity, realModel, estimatedTime);
+			clientCommunication.showOrder(quantity, realModel, chosenParts, estimatedTime);
 			if(!this.clientCommunication.askContinue()){
 				this.executeUseCase();
 			}
 			else{
 				String time = facade.processOrder(realModel, quantity);
-				clientCommunication.showOrder(quantity, realModel, time);
+				clientCommunication.showOrder(quantity, realModel, chosenParts, time);
 			}
 		}
+	}
+
+	private List<String> createModel() {
+		List<String> chosenParts = new ArrayList<>();
+		for(String type: facade.getCarPartTypes()){
+			String part = clientCommunication.choosePart(facade.getParts(type));
+			facade.addPartToModel(type, part);
+			chosenParts.add(part);
+		}
+		return chosenParts;
+		
 	}
 }

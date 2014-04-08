@@ -13,8 +13,7 @@ import com.google.common.collect.ImmutableMap;
 public class CarModelCatalogue {
 
 	// private HashMap<String, HashMap<Class<?>, CarPart>> data;
-	private Map<String, CarModelTemplate> data;
-	private CarPartCatalogue cat;
+	private Map<String, CarModelSpecification> data;
 
 	/**
 	 * Default constructor. When a carModelCatalogue is constructed, a
@@ -22,16 +21,15 @@ public class CarModelCatalogue {
 	 * carModelCatalogue is filled with the basic carModels thanks to the
 	 * carModelCatalogueFiller.
 	 */
-	public CarModelCatalogue(CarPartCatalogue cat) {
-		this.cat = cat;
-		data = new HashMap<String, CarModelTemplate>();
+	public CarModelCatalogue() {
+		data = new HashMap<String, CarModelSpecification>();
 	}
 
 	/**
 	 * Returns an immutable Map of carmodels with their names.
 	 */
-	public Map<String, CarModelTemplate> getCatalogue() {
-		return new ImmutableMap.Builder<String, CarModelTemplate>()
+	public Map<String, CarModelSpecification> getCatalogue() {
+		return new ImmutableMap.Builder<String, CarModelSpecification>()
 				.putAll(data).build();
 	}
 
@@ -40,8 +38,8 @@ public class CarModelCatalogue {
 	 * included in the catalogue. This method is used by the
 	 * carModelCatalogueFiller.
 	 */
-	public void initializeCatalogue(Set<CarModelTemplate> models) {
-		for (CarModelTemplate model : models) {
+	public void initializeCatalogue(Set<CarModelSpecification> models) {
+		for (CarModelSpecification model : models) {
 			addModel(model);
 		}
 	}
@@ -54,24 +52,10 @@ public class CarModelCatalogue {
 	 * @throws IllegalArgumentException
 	 *             if model==null or not is valid
 	 */
-	public void addModel(CarModelTemplate model) {
-		if (model == null || !isValidCarModel(model))
+	public void addModel(CarModelSpecification model) {
+		if (model == null)
 			throw new IllegalArgumentException();
 		data.put(model.getDescription(), model);
 
 	}
-
-	/**
-	 * Method for checking if the carModel is a valid model. It checks if every
-	 * carpart of the model is valid or not. If not, it return false.
-	 */
-	private boolean isValidCarModel(CarModelTemplate model) {
-		for (CarPart part : model.getCarParts().values()) {
-			if (!cat.isValidCarPart(part)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 }

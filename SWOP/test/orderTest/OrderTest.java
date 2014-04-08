@@ -22,15 +22,15 @@ public class OrderTest {
 	@Before
 	public void initializeModel() throws AlreadyInMapException {
 		model = new CarModel("Volkswagen");
-		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model.addCarPart(new CarPart("standard 2l 4 cilinders", false,
-				CarPartType.ENGINE));
-		model.addCarPart(new CarPart("6 speed manual", false,
-				CarPartType.GEARBOX));
-		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		model.addCarPart(new CarOption("manual", true, CarOptionCategogry.AIRCO));
+		model.addCarPart(new CarOption("sedan", false, CarOptionCategogry.BODY));
+		model.addCarPart(new CarOption("red", false, CarOptionCategogry.COLOR));
+		model.addCarPart(new CarOption("standard 2l 4 cilinders", false,
+				CarOptionCategogry.ENGINE));
+		model.addCarPart(new CarOption("6 speed manual", false,
+				CarOptionCategogry.GEARBOX));
+		model.addCarPart(new CarOption("leather black", false, CarOptionCategogry.SEATS));
+		model.addCarPart(new CarOption("comfort", false, CarOptionCategogry.WHEEL));
 	}
 
 	@Test
@@ -119,15 +119,15 @@ public class OrderTest {
 	@Test
 	public void TestEqualsAndHashcode() throws AlreadyInMapException {
 		CarModel model2 = new CarModel("BMW");
-		model2.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model2.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model2.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model2.addCarPart(new CarPart("standard 2l 4 cilinders", false,
-				CarPartType.ENGINE));
-		model2.addCarPart(new CarPart("6 speed manual", false,
-				CarPartType.GEARBOX));
-		model2.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model2.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		model2.addCarPart(new CarOption("manual", true, CarOptionCategogry.AIRCO));
+		model2.addCarPart(new CarOption("sedan", false, CarOptionCategogry.BODY));
+		model2.addCarPart(new CarOption("red", false, CarOptionCategogry.COLOR));
+		model2.addCarPart(new CarOption("standard 2l 4 cilinders", false,
+				CarOptionCategogry.ENGINE));
+		model2.addCarPart(new CarOption("6 speed manual", false,
+				CarOptionCategogry.GEARBOX));
+		model2.addCarPart(new CarOption("leather black", false, CarOptionCategogry.SEATS));
+		model2.addCarPart(new CarOption("comfort", false, CarOptionCategogry.WHEEL));
 
 		Order order1 = new Order("Jan", model, 2);
 		assertFalse(order1.equals(null));

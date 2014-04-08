@@ -1,9 +1,7 @@
 package domain.car;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import domain.exception.AlreadyInMapException;
 
@@ -15,32 +13,34 @@ import domain.exception.AlreadyInMapException;
  */
 public class CarModel implements ICarModel {
 
-	private HashMap<CarPartType, CarPart> carParts;
-	private CarModelTemplate template;
-	private Map<CarPartType, Boolean> forcedOptionalTypes;
-	public CarModel(CarModelTemplate template) {
-		carParts = new HashMap<CarPartType, CarPart>();
-		this.setTemplate(template);
+	private HashMap<CarOptionCategogry, CarOption> carOptions;
+	private CarModelSpecification specification;
+	private Map<CarOptionCategogry, Boolean> forcedOptionalTypes;
+	public CarModel(CarModelSpecification template) {
+		if(template==null)
+			throw new IllegalArgumentException();
+		carOptions = new HashMap<CarOptionCategogry, CarOption>();
+		this.setSpecification(template);
 		forcedOptionalTypes = new HashMap<>();
 	}
 
-	public Map<CarPartType, CarPart> getCarParts() {
-		return carParts;
+	public Map<CarOptionCategogry, CarOption> getCarParts() {
+		return carOptions;
 	}
 
-	public void addCarPart(CarPart part) throws AlreadyInMapException {
+	public void addCarPart(CarOption part) throws AlreadyInMapException {
 		if (part == null)
 			throw new IllegalArgumentException();
-		if (carParts.containsKey(part.getType())
-				&& !carParts.get(part.getType()).equals(part))
+		if (carOptions.containsKey(part.getType())
+				&& !carOptions.get(part.getType()).equals(part))
 			throw new AlreadyInMapException();
-		carParts.put(part.getType(), part);
+		carOptions.put(part.getType(), part);
 	}
 
 
 	@Override
 	public String toString() {
-		return template.getDescription();
+		return specification.getDescription();
 	}
 
 
@@ -50,13 +50,13 @@ public class CarModel implements ICarModel {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((carParts == null) ? 0 : carParts.hashCode());
+				+ ((carOptions == null) ? 0 : carOptions.hashCode());
 		result = prime
 				* result
 				+ ((forcedOptionalTypes == null) ? 0 : forcedOptionalTypes
 						.hashCode());
 		result = prime * result
-				+ ((template == null) ? 0 : template.hashCode());
+				+ ((specification == null) ? 0 : specification.hashCode());
 		return result;
 	}
 
@@ -69,37 +69,37 @@ public class CarModel implements ICarModel {
 		if (getClass() != obj.getClass())
 			return false;
 		CarModel other = (CarModel) obj;
-		if (carParts == null) {
-			if (other.carParts != null)
+		if (carOptions == null) {
+			if (other.carOptions != null)
 				return false;
-		} else if (!carParts.equals(other.carParts))
+		} else if (!carOptions.equals(other.carOptions))
 			return false;
 		if (forcedOptionalTypes == null) {
 			if (other.forcedOptionalTypes != null)
 				return false;
 		} else if (!forcedOptionalTypes.equals(other.forcedOptionalTypes))
 			return false;
-		if (template == null) {
-			if (other.template != null)
+		if (specification == null) {
+			if (other.specification != null)
 				return false;
-		} else if (!template.equals(other.template))
+		} else if (!specification.equals(other.specification))
 			return false;
 		return true;
 	}
 
-	public Map<CarPartType, Boolean> getForcedOptionalTypes() {
+	public Map<CarOptionCategogry, Boolean> getForcedOptionalTypes() {
 		return forcedOptionalTypes;
 	}
 
-	public void addForcedOptionalType(CarPartType type, boolean bool){
+	public void addForcedOptionalType(CarOptionCategogry type, boolean bool){
 		forcedOptionalTypes.put(type, bool);
 	}
 
-	public CarModelTemplate getTemplate() {
-		return template;
+	public CarModelSpecification getSpecification() {
+		return specification;
 	}
 
-	public void setTemplate(CarModelTemplate template) {
-		this.template = template;
+	public void setSpecification(CarModelSpecification template) {
+		this.specification = template;
 	}
 }

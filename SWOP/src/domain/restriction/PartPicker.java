@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import domain.car.CarModel;
-import domain.car.CarModelTemplate;
-import domain.car.CarPart;
-import domain.car.CarPartType;
+import domain.car.CarModelSpecification;
+import domain.car.CarOption;
+import domain.car.CarOptionCategogry;
 import domain.exception.AlreadyInMapException;
 
 public class PartPicker {
@@ -15,18 +15,21 @@ public class PartPicker {
 	private Set<OptionalRestriction> optionalRestrictions;
 	private CarModel model;
 
-	public PartPicker(CarModelTemplate template) {
+	public PartPicker() {
 		bindingRestrictions = new HashSet<BindingRestriction>();
 		optionalRestrictions = new HashSet<OptionalRestriction>();
+	}
+	
+	public void setNewModel(CarModelSpecification template){
 		model = new CarModel(template);
 	}
 
-	public void addCarPartToModel(CarPart part) throws AlreadyInMapException {
+	public void addCarPartToModel(CarOption part) throws AlreadyInMapException {
 		model.addCarPart(part);
 	}
 
-	public Collection<CarPart> getStillAvailableCarParts(CarPartType type) {
-		Collection<CarPart> availableParts = new HashSet<>();
+	public Collection<CarOption> getStillAvailableCarParts(CarOptionCategogry type) {
+		Collection<CarOption> availableParts = new HashSet<>();
 
 		availableParts = checkBindingRestrictions(type);
 		checkOptionalRestrictions();
@@ -45,19 +48,19 @@ public class PartPicker {
 
 	}
 
-	private Collection<CarPart> checkBindingRestrictions(CarPartType type) {
-		Set<CarPart> availableParts = new HashSet<>();
+	private Collection<CarOption> checkBindingRestrictions(CarOptionCategogry type) {
+		Set<CarOption> availableParts = new HashSet<>();
 		for (BindingRestriction restriction : bindingRestrictions) {
 			if (model.getCarParts().values()
 					.contains(restriction.getChosenCarPart())
 					&& restriction.getChosenCarPart().getType().equals(type)
-					&& model.getTemplate().getCarParts().values()
+					&& model.getSpecification().getCarParts().values()
 							.contains(restriction.getRestrictedCarPart())) {
 				availableParts.add(restriction.getRestrictedCarPart());
 			}
 		}
 		if (availableParts.isEmpty())
-			return model.getTemplate().getCarParts().get(type);
+			return model.getSpecification().getCarParts().get(type);
 		return availableParts;
 	}
 	

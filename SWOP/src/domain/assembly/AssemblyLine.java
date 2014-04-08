@@ -8,13 +8,17 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
-import domain.car.CarPart;
+import domain.car.CarOption;
 import domain.car.ICarModel;
 import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
+import domain.job.Action;
+import domain.job.IAction;
+import domain.job.IJob;
+import domain.job.Job;
+import domain.job.Task;
 import domain.observer.AssemblyLineObserver;
-import domain.observer.ClockObserver;
 import domain.order.StandardOrder;
 
 /**
@@ -153,13 +157,14 @@ public class AssemblyLine {
 	 * 
 	 * @param order
 	 *            The order to set the estimated time to.
+	 * @throws ImmutableException 
 	 * @throws IllegalStateException
 	 *             -if there are no workbenches are available -if the jobs of
 	 *             the order aren't in the currentJobList
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	public void calculateEstimatedTime(StandardOrder order) {
+	public void calculateEstimatedTime(StandardOrder order) throws ImmutableException {
 		if (getWorkbenches().size() == 0)
 			throw new IllegalStateException("There are no workbenches!");
 		int indexLastJob = getIndexOf(order);
@@ -236,7 +241,7 @@ public class AssemblyLine {
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
 			Job job = new Job(order);
-			for (CarPart part : model.getCarParts().values()) {
+			for (CarOption part : model.getCarParts().values()) {
 				Task task = new Task(part.getTaskDescription());
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);
