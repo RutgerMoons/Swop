@@ -17,9 +17,8 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	private PriorityQueue<Job> batchJobs;
 	private List<CarPart> carParts;
 	private final int amountOfWorkBenches;
-	private final int workingMinutes;
 	
-	public SchedulingAlgorithmBatch(List<CarPart> carParts, int amountOfWorkBenches, int workingMinutes) {
+	public SchedulingAlgorithmBatch(List<CarPart> carParts, int amountOfWorkBenches) {
 		if (carParts == null) {
 			throw new IllegalArgumentException();
 		}
@@ -28,7 +27,6 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		customJobs = new PriorityQueue<>(0, new JobComparatorDeadLine());
 		standardJobs = new PriorityQueue<Job>(0, new JobComparatorOrderTime());
 		batchJobs = new PriorityQueue<Job>(0, new JobComparatorOrderTime());
-		this.workingMinutes = workingMinutes;
 	}
 	
 	@Override
@@ -68,6 +66,27 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		list.addAll(this.standardJobs);
 		list.addAll(this.batchJobs);
 		return list;
+	}
+
+	@Override
+	public void AddCustomJob(Job customJob) {
+		if (customJob == null) {
+			throw new IllegalArgumentException();
+		}
+		this.customJobs.add(customJob);
+	}
+
+	@Override
+	public void AddStandardJob(Job standardJob) {
+		if (standardJob == null) {
+			throw new IllegalArgumentException();
+		}
+		if(standardJob.getOrder().getDescription().getCarParts().values().containsAll(this.carParts)){
+			this.batchJobs.add(standardJob);
+		}
+		else{
+			this.standardJobs.add(standardJob);
+		}
 	}
 
 }

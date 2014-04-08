@@ -16,13 +16,11 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	private PriorityQueue<Job> customJobs;
 	private PriorityQueue<Job> standardJobs;
 	private final int amountOfWorkBenches;
-	private final int workingMinutes;
 	
-	public SchedulingAlgorithmFifo(int amountOfWorkBenches, int workingMinutes) {
+	public SchedulingAlgorithmFifo(int amountOfWorkBenches) {
 		customJobs = new PriorityQueue<>(0, new JobComparatorDeadLine());
 		standardJobs = new PriorityQueue<Job>(0, new JobComparatorOrderTime());
 		this.amountOfWorkBenches = amountOfWorkBenches;
-		this.workingMinutes = workingMinutes;
 	}
 
 	@Override
@@ -68,7 +66,6 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	 * return null if no job has to be forced.
 	 */
 	private Job hasToForceCustomJob(UnmodifiableClock currentTime) {
-		// daarna verdergaan met workingMinutes
 		int idx = 0;
 		for (Job job : customJobs) {
 			try {
@@ -90,7 +87,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	private Job getJobWithHighestWorkBenchIndex() {
 		int index = this.amountOfWorkBenches - 1;
 		while (index >= 0) {
-			for (Iterator iterator = customJobs.iterator(); iterator.hasNext();) {
+			for (Iterator<Job> iterator = customJobs.iterator(); iterator.hasNext();) {
 				Job job = (Job) iterator.next();
 				if (job.getFirstWorkbenchIndex() == index) {
 					return job;
@@ -114,6 +111,22 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		ArrayList<Job> list = new ArrayList<>();
 		list.addAll(this.standardJobs);
 		return list;
+	}
+
+	@Override
+	public void AddCustomJob(Job customJob) {
+		if (customJob == null) {
+			throw new IllegalArgumentException();
+		}
+		this.customJobs.add(customJob);
+	}
+
+	@Override
+	public void AddStandardJob(Job standardJob) {
+		if (standardJob == null) {
+			throw new IllegalArgumentException();
+		}
+		this.standardJobs.add(standardJob);
 	}
 
 }
