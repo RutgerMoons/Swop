@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import domain.clock.UnmodifiableClock;
 
-public class ImmutableClockTest {
+public class UnmodifiableClockTest {
 
 	UnmodifiableClock clock;
 	
