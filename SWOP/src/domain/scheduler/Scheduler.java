@@ -6,9 +6,10 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
-import domain.car.CarPart;
+import domain.car.CarOption;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
+import domain.job.IJob;
 import domain.job.Job;
 import domain.observer.ClockObserver;
 import domain.observer.LogsClock;
@@ -48,33 +49,33 @@ public class Scheduler implements LogsClock {
 			this.schedulingAlgorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches); 
 		}
 		else {
-			PriorityQueue<Job> customJobs = this.schedulingAlgorithm.getCustomJobs();
-			ArrayList<Job> standardJobs = this.schedulingAlgorithm.getStandardJobs();
-			ArrayList<Optional<Job>> history = this.schedulingAlgorithm.getHistory();
+			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
+			ArrayList<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
+			ArrayList<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
 			this.schedulingAlgorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches);
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
 	
-	public void switchToBatch(List<CarPart> carParts) {
+	public void switchToBatch(List<CarOption> carOptions) {
 		if (this.schedulingAlgorithm == null) {
-			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carParts, amountOfWorkBenches); 
+			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carOptions, amountOfWorkBenches); 
 		}
 		else {
-			PriorityQueue<Job> customJobs = this.schedulingAlgorithm.getCustomJobs();
-			ArrayList<Job> standardJobs = this.schedulingAlgorithm.getStandardJobs();
-			ArrayList<Optional<Job>> history = this.schedulingAlgorithm.getHistory();
-			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carParts, amountOfWorkBenches);
+			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
+			ArrayList<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
+			ArrayList<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
+			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carOptions, amountOfWorkBenches);
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
 	
-	public Optional<Job> retrieveNextJob(int currentTotalProductionTime) throws NoSuitableJobFoundException {
+	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException {
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
 		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
 									- shifts.get(0).getStartOfShift()
 									- this.clock.getMinutes();
-		return this.schedulingAlgorithm.retrieveNext(currentTotalProductionTime, minutesTillEndOfDay, clock);
+		return this.schedulingAlgorithm.retrieveNext(minutesTillEndOfDay, clock);
 	}
 
 	@Override
@@ -87,11 +88,13 @@ public class Scheduler implements LogsClock {
 		if (newDay == null) {
 			throw new IllegalArgumentException();
 		}
+		int newOvertime = Math.max(this.clock.getMinutes() - this.shifts.get(this.shifts.size() - 1).getEndOfShift(), 0);
+		this.shifts.get(this.shifts.size() - 1).setNewOvertime(newOvertime);
 		this.clock = newDay;
 		this.schedulingAlgorithm.startNewDay();
 	}
 	
-	public int getEstimatedTimeInMinutes(Job job) {
+	public int getEstimatedTimeInMinutes(IJob job) {
 		return this.schedulingAlgorithm.getEstimatedTimeInMinutes(job, this.clock);
 	}
 	

@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
-import domain.car.CarPart;
+import domain.car.CarOption;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
@@ -20,16 +20,16 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	private PriorityQueue<Job> customJobs;
 	private PriorityQueue<Job> standardJobs;
 	private PriorityQueue<Job> batchJobs;
-	private List<CarPart> carParts;
+	private List<CarOption> carOption;
 	private final int amountOfWorkBenches;
 	private ArrayList<Optional<Job>> jobsStartOfDay;
 	private ArrayList<Optional<Job>> history;
 	
-	public SchedulingAlgorithmBatch(List<CarPart> carParts, int amountOfWorkBenches) {
+	public SchedulingAlgorithmBatch(List<CarOption> carParts, int amountOfWorkBenches) {
 		if (carParts == null) {
 			throw new IllegalArgumentException();
 		}
-		this.carParts = carParts;
+		this.carOption = carParts;
 		this.amountOfWorkBenches = amountOfWorkBenches;
 		customJobs = new PriorityQueue<>(0, new JobComparatorDeadLine());
 		standardJobs = new PriorityQueue<Job>(0, new JobComparatorOrderTime());
@@ -47,7 +47,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		this.history = history;
 		//split jobs into the two remaining queues based on carParts
 		for(Job job : jobs){
-			if(job.getOrder().getDescription().getCarParts().values().containsAll(this.carParts)){
+			if(job.getOrder().getDescription().getCarParts().values().containsAll(this.carOption)){
 				this.batchJobs.add(job);
 			}
 			else{
@@ -162,7 +162,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		if (standardJob == null) {
 			throw new IllegalArgumentException();
 		}
-		if(standardJob.getOrder().getDescription().getCarParts().values().containsAll(this.carParts)){
+		if(standardJob.getOrder().getDescription().getCarParts().values().containsAll(this.carOption)){
 			this.batchJobs.add(standardJob);
 		}
 		else{
@@ -189,8 +189,65 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	@Override
 	public int getEstimatedTimeInMinutes(Job job, UnmodifiableClock currentTime) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (job == null || currentTime == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		if(customJobs.contains(job)) {
+			try {
+				return job.getOrder().getDeadline().minus(currentTime);
+			} 
+			catch (NotImplementedException e) {	}
+		}
+		ArrayList<Optional<Job>> previousJobs = this.getHistory();
+		int totalProductionTime = 0;
+		for (Iterator<Job> iterator = batchJobs.iterator(); iterator.hasNext();) {
+			Job j = (Job) iterator.next();
+			if (!j.equals(job)) {
+			    addToList(Optional.fromNullable(j), previousJobs);
+				totalProductionTime += this.getMaximum(previousJobs);			
+			}
+			else{
+				addToList(Optional.fromNullable(j), previousJobs);
+				totalProductionTime += this.getMaximum(previousJobs);
+				for(int i = 0; i< this.amountOfWorkBenches-1;i++){
+					Optional<Job> absentJob = Optional.absent();
+					addToList(absentJob, previousJobs);
+					totalProductionTime += this.getMaximum(previousJobs);
+				}
+				return totalProductionTime;
+			}
+		}
+		
+		for (Iterator<Job> iterator = standardJobs.iterator(); iterator.hasNext();) {
+			Job j = (Job) iterator.next();
+			if (!j.equals(job)) {
+			    addToList(Optional.fromNullable(j), previousJobs);
+				totalProductionTime += this.getMaximum(previousJobs);			
+			}
+			else{
+				addToList(Optional.fromNullable(j), previousJobs);
+				totalProductionTime += this.getMaximum(previousJobs);
+				for(int i = 0; i< this.amountOfWorkBenches-1;i++){
+					Optional<Job> absentJob = Optional.absent();
+					addToList(absentJob, previousJobs);
+					totalProductionTime += this.getMaximum(previousJobs);
+				}
+			}
+		}
+		return totalProductionTime;
+	}
+
+	
+	private int getMaximum(ArrayList<Optional<Job>> list){
+		int biggest = 0;
+		for(Optional<Job> job : list){
+			int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getSpecification().getTimeAtWorkBench();
+			if(job.isPresent() && currentTimeAtWorkbenchForThisJob >= biggest){
+				biggest = currentTimeAtWorkbenchForThisJob;
+			}
+		}
+		return biggest;
 	}
 	
 	@Override
