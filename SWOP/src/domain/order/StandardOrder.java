@@ -3,6 +3,7 @@ package domain.order;
 
 import java.util.Arrays;
 
+import domain.car.CarModel;
 import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NotImplementedException;
@@ -29,7 +30,7 @@ public class StandardOrder implements IOrder {
 	 * Constructor of an Order, given the name of the orderer, the type of
 	 * carModel and the amount of cars to be ordered.
 	 */
-	public StandardOrder(String holder, ICarModel description, int quantity) {
+	public StandardOrder(String holder, CarModel description, int quantity) {
 		this.setDescription(description);
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
@@ -183,7 +184,7 @@ public class StandardOrder implements IOrder {
 	}
 	
 	@Override
-	public int getProductionTime() {
+	public int getProductionTime() throws NotImplementedException {
 		return this.getDescription().getSpecification().getTimeAtWorkBench();
 	}
 }

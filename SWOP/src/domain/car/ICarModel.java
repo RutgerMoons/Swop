@@ -4,6 +4,7 @@ import java.util.Map;
 
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 
 public interface ICarModel {
 
@@ -16,11 +17,11 @@ public interface ICarModel {
 	
 	public void addCarPart(CarOption part) throws AlreadyInMapException, ImmutableException;
 	
-	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes();
+	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() throws NotImplementedException;
 	
-	public void addForcedOptionalType(CarOptionCategory type, boolean bool) throws ImmutableException;
+	public void addForcedOptionalType(CarOptionCategory type, boolean bool) throws ImmutableException, NotImplementedException;
 	
-	public CarModelSpecification getSpecification();
+	public CarModelSpecification getSpecification() throws NotImplementedException;
 	
-	public void setSpecification(CarModelSpecification template) throws ImmutableException;
+	public void setSpecification(CarModelSpecification template) throws ImmutableException, NotImplementedException;
 }
