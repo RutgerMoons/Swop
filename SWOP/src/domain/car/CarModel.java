@@ -7,15 +7,22 @@ import domain.exception.AlreadyInMapException;
 
 
 /**
- * Class representing a certain carmodel. Each carmodel has all the essential
- * carparts.
- * 
+ * Class representing a certain CarModel. 
+ * Each CarModel has specifically chosen CarOptions, 
+ * which are chosen from the Options offered by the Specification according to which this Model will be built.
+ * A CarModel also keeps track of which 'optional-properties' of the CarPartTypes need to be overwritten for this specific CarModel.
  */
 public class CarModel implements ICarModel {
 
 	private HashMap<CarOptionCategory, CarOption> carOptions;
 	private CarModelSpecification specification;
 	private Map<CarOptionCategory, Boolean> forcedOptionalTypes;
+	
+	/**
+	 * Creates a new CarModel, which consists of zero CarOptions at this point.
+	 * @param template
+	 * 			The Specification according to which this CarModel will be built.
+	 */
 	public CarModel(CarModelSpecification template) {
 		if(template==null)
 			throw new IllegalArgumentException();
@@ -24,10 +31,18 @@ public class CarModel implements ICarModel {
 		forcedOptionalTypes = new HashMap<>();
 	}
 
+	/**
+	 * Returns all the CarOptions of which this model currently consists.
+	 */
 	public Map<CarOptionCategory, CarOption> getCarParts() {
 		return carOptions;
 	}
 
+	/**
+	 * Adds a CarOption to this CarModel. 
+	 * @throws AlreadyInMapException
+	 * 			If the model already has a CarOption of this Type.
+	 */
 	public void addCarPart(CarOption part) throws AlreadyInMapException {
 		if (part == null)
 			throw new IllegalArgumentException();
@@ -36,7 +51,6 @@ public class CarModel implements ICarModel {
 			throw new AlreadyInMapException();
 		carOptions.put(part.getType(), part);
 	}
-
 
 	@Override
 	public String toString() {
