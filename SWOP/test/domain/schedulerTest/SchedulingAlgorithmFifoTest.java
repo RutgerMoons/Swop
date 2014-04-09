@@ -1,6 +1,8 @@
-package domain.scheduler;
+package domain.schedulerTest;
 
 import org.junit.Test;
+
+import domain.scheduler.SchedulingAlgorithmFifo;
 
 public class SchedulingAlgorithmFifoTest {
 
