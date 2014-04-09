@@ -10,18 +10,18 @@ import com.google.common.collect.ImmutableList;
 
 import domain.car.CarOption;
 import domain.car.ICarModel;
-import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.IJob;
+import domain.job.ITask;
 import domain.job.Job;
 import domain.job.Task;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
-import domain.order.StandardOrder;
+import domain.order.IOrder;
 import domain.scheduler.Scheduler;
 
 /**
@@ -33,7 +33,6 @@ import domain.scheduler.Scheduler;
 public class AssemblyLine {
 
 	private List<IJob> currentJobs;
-	private int overtime; //TODO -> verplaats naar shiften
 	private List<IWorkBench> workbenches;
 	private ArrayList<AssemblyLineObserver> observers;
 	private Scheduler scheduler;
@@ -47,39 +46,13 @@ public class AssemblyLine {
 	 *             If clock==null
 	 */
 	public AssemblyLine(ClockObserver clockObserver) {
+		if (clockObserver == null) {
+			throw new IllegalArgumentException();
+		}
 		workbenches = new ArrayList<IWorkBench>();
 		currentJobs = new ArrayList<IJob>();
 		initializeWorkbenches();
 		this.scheduler = new Scheduler(workbenches.size(), clockObserver);
-	}
-
-	/**
-	 * Add a Job to the assemblyline.
-	 * 
-	 * @param job
-	 *            The job you want to add.
-	 * @throws IllegalArgumentException
-	 *             If job==null
-	 * 
-	 */
-	public void addJob(IJob job) {
-		if (job == null)
-			throw new IllegalArgumentException();
-		currentJobs.add(job);
-	}
-
-	/**
-	 * Add multiple Jobs to the assemblyline
-	 * 
-	 * @param jobs
-	 *            A list of jobs.
-	 * @throws IllegalArgumentException
-	 *             if jobs==null
-	 */
-	public void addMultipleJobs(List<IJob> jobs) {
-		if (jobs == null)
-			throw new IllegalArgumentException();
-		currentJobs.addAll(jobs);
 	}
 
 	/**
@@ -99,29 +72,25 @@ public class AssemblyLine {
 	/**
 	 * This method advances the workbenches if all the workbenches are
 	 * completed. It shifts the jobs to it's next workstation.
+	 * @throws NoSuitableJobFoundException 
+	 * @throws ImmutableException 
 	 * 
 	 * @throws IllegalStateException
 	 *             If there are no currentJobs
 	 */
-	public void advance() {
-		if (getCurrentJobs().size() == 0) // als er geen volgende jobs zijn.
-			throw new IllegalStateException(
-					"You can't advance if there is no next Job!");
-
+	public void advance() throws ImmutableException, NoSuitableJobFoundException {
+		if (!canAdvance()) {
+			throw new IllegalStateException();
+		}
+		
+		Optional<IJob> newJob = this.scheduler.retrieveNextJob();
+		
 		Optional<IJob> lastJob = Optional.absent();
 		for (int i = 0; i < getWorkbenches().size(); i++) {
-			WorkBench bench = (WorkBench) getWorkbenches().get(i);
+			IWorkBench bench = getWorkbenches().get(i);
 			if (i == 0) {
 				lastJob = bench.getCurrentJob();
-
-				if ((22 * 60 - clock.getMinutes() - (overtime * 60)) < (getWorkbenches()
-						.size() * 60)) {
-					Optional<IJob> optional = Optional.absent();
-					bench.setCurrentJob(optional);
-				} else {
-					bench.setCurrentJob(Optional.fromNullable(getCurrentJobs()
-							.get(0)));
-				}
+				bench.setCurrentJob(this.scheduler.retrieveNextJob());
 			} else { // Als het niet de eerste is, moet je de job van de vorige
 				// workbench nemen.
 				Optional<IJob> prev = bench.getCurrentJob();
@@ -131,90 +100,14 @@ public class AssemblyLine {
 			bench.chooseTasksOutOfJob(); // dan de taken laten selecteren door
 			// de workbench
 		}
-		if (lastJob != null && lastJob.isPresent()
-				&& lastJob.get().isCompleted()) {
+		if (lastJob.isPresent()	&& lastJob.get().isCompleted()) {
 			currentJobs.remove(lastJob.get()); // als de job completed is,
 												// dus de auto('s), dan moet
 												// je de job natuurlijk
 												// removen.
-			try {
-				lastJob.get().getOrder().completeCar();
-				// TODO:
-				// 		add line for observer
-				notifyObserverCompleteOrder(lastJob.get().getOrder().getEstimatedTime());
-			} catch (ImmutableException e) {
-			}
+			lastJob.get().getOrder().completeCar();
+			notifyObserverCompleteOrder(lastJob.get().getOrder().getEstimatedTime());
 		}
-
-		if ((22 * 60 - getClock().getUnmodifiableClock().getMinutes()) < 0) {// overtime zetten
-			overtime = Math.abs(22 * 60 - getClock().getUnmodifiableClock().getMinutes());
-		}
-	}
-
-	/**
-	 * Set the estimated time when all the jobs are completed.
-	 * 
-	 * The Jobs from the order have to be added to the list of currentJobs.
-	 * 
-	 * @param order
-	 *            The order to set the estimated time to.
-	 * @throws ImmutableException 
-	 * @throws IllegalStateException
-	 *             -if there are no workbenches are available -if the jobs of
-	 *             the order aren't in the currentJobList
-	 * @throws IllegalArgumentException
-	 *             if order==null
-	 */
-	//TODO: gewoon forwarden naarscheduler en die forward dan naar zijn algoritme?
-	public void calculateEstimatedTime(StandardOrder order) throws ImmutableException {
-		if (getWorkbenches().size() == 0)
-			throw new IllegalStateException("There are no workbenches!");
-		int indexLastJob = getIndexOf(order);
-		if (indexLastJob < 0)
-			throw new IllegalStateException(
-					"The jobs of the order aren't added to the currentJobs");
-		int[] array = new int[2];
-		int days = 0;
-		int time = 0;
-		int timeOnIWorkBench = getWorkbenches().size() * 60; // 1 uur per
-		// workbench
-		int timeTillFirstWorkbench = 0;
-		if (getWorkbenches().get(0).getCurrentJob() != null
-				&& getWorkbenches().get(0).getCurrentJob().isPresent()) {
-			// Hoeveel jobs er nog voorstaan in de wachtrij.
-
-			int indexJobOnFirstWorkbench = (getCurrentJobs()
-					.indexOf(getWorkbenches().get(0).getCurrentJob().get()));
-			timeTillFirstWorkbench = (indexLastJob - indexJobOnFirstWorkbench) * 60;
-		} else {
-			timeTillFirstWorkbench = indexLastJob * 60;
-		}
-
-		time = timeOnIWorkBench + timeTillFirstWorkbench;
-
-		int tenOClockInMinutes = 22 * 60;
-		int lastCarOnFirstBench = tenOClockInMinutes - getWorkbenches().size()
-				* 60;
-
-		int beginTime = 6 * 60;
-		int nbOfCarsPerDay = (lastCarOnFirstBench - beginTime) / 60;
-		int nbOfCarsToday = (lastCarOnFirstBench - clock.getMinutes()) / 60;
-		if (nbOfCarsToday > nbOfCarsPerDay)
-			nbOfCarsToday = nbOfCarsPerDay;
-
-		if (timeTillFirstWorkbench / 60 <= nbOfCarsToday) {
-			days = clock.getDays();
-			time += clock.getMinutes();
-		} else {
-			days = 1; // je weet al dat vandaag het niet gaat lukken
-			timeTillFirstWorkbench -= nbOfCarsToday * 60;
-			days += (timeTillFirstWorkbench / 60) / nbOfCarsPerDay
-					+ clock.getDays();
-			time = (timeTillFirstWorkbench / 60) % nbOfCarsPerDay * 60
-					+ beginTime;
-		}
-
-		order.setEstimatedTime(new UnmodifiableClock(days, time)); //TODO
 	}
 
 	public boolean canAdvance() {
@@ -231,28 +124,39 @@ public class AssemblyLine {
 	 * @param order
 	 *            The order that needs to be converted to a list of jobs.
 	 * @return A list of jobs.
+	 * @throws ImmutableException 
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
 	//TODO: lowest index..
-	public List<IJob> convertOrderToJob(StandardOrder order) {
-		if (order == null)
+	public List<IJob> convertOrderToJob(IOrder order) throws ImmutableException {
+		if (order == null) {
 			throw new IllegalArgumentException();
-
+		}
+		
 		ICarModel model = order.getDescription();
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
-			Job job = new Job(order);
+			IJob job = new Job(order);
 			for (CarOption part : model.getCarParts().values()) {
-				Task task = new Task(part.getTaskDescription());
+				ITask task = new Task(part.getTaskDescription());
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);
 				job.addTask(task);
+				//TODO: getminimalworkbench
 			}
 			jobs.add(job);
 		}
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
+	}
+	
+	public void convertCustomOrderToJob() {
+		//TODO
+	}
+	
+	public void convertStandardOrderToJob() {
+		//TODO
 	}
 
 	public ArrayList<Integer> getBlockingWorkBenches() {
@@ -271,60 +175,6 @@ public class AssemblyLine {
 	 */
 	public List<IJob> getCurrentJobs() {
 		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
-	}
-
-	/**
-	 * Get a clone of this AssemblyLine, advanced 1 hour forward.
-	 * 
-	 * @return An AssemblyLine representing the next state of the assemblyline.
-	 */
-	public AssemblyLine getFutureAssemblyLine() {
-		AssemblyLine line = new AssemblyLine(clockObserver);
-		ArrayList<IWorkBench> clones = new ArrayList<>();
-		line.setCurrentJobs(getCurrentJobs());
-		for (IWorkBench bench : getWorkbenches()) {
-			WorkBench copy = new WorkBench(bench.getResponsibilities(),
-					bench.getWorkbenchName());
-			copy.setCurrentJob(bench.getCurrentJob());
-			copy.setCurrentTasks(bench.getCurrentTasks());
-			clones.add(copy);
-		}
-		line.setWorkbenches(clones);
-		try {
-			line.advance();
-
-		} catch (IllegalStateException e) {
-		}
-		return line;
-	}
-
-	/**
-	 * Get the index of the last job that belongs to the order from the
-	 * currentJobList.
-	 * 
-	 * @param order
-	 *            The order you want the index from.
-	 * @return The index.
-	 * @throws IllegalArgumentException
-	 *             if order==null
-	 */
-	private int getIndexOf(StandardOrder order) {
-		if (order == null)
-			throw new IllegalArgumentException();
-		int index = -1;
-		for (IJob job : getCurrentJobs())
-			if (job.getOrder().equals(order))
-				index = getCurrentJobs().indexOf(job) + order.getQuantity();
-		return index;
-	}
-
-	/**
-	 * Get the overtime of the previous day.
-	 * 
-	 * @return An integer representing the overtime.
-	 */
-	public int getOvertime() {
-		return overtime;
 	}
 
 	/**
@@ -360,48 +210,6 @@ public class AssemblyLine {
 		addWorkBench(new WorkBench(responsibilitiesAccesoiresPost,
 				"accessories"));
 
-	}
-
-	/**
-	 * Assign a list of jobs you want to the AssemblyLine.
-	 * 
-	 * @param currentJobs
-	 *            A list of Jobs.
-	 * @throws IllegalArgumentException
-	 *             If currentJobs==null
-	 */
-	public void setCurrentJobs(List<IJob> currentJobs) {
-		if (currentJobs == null)
-			throw new IllegalArgumentException();
-		this.currentJobs = currentJobs;
-	}
-
-	/**
-	 * Set the overtime in hours.
-	 * 
-	 * @param overtime
-	 *            An integer representing the overtime in hours.
-	 * @throws IllegalArgumentException
-	 *             If overtime<0
-	 */
-	public void setOvertime(int overtime) {
-		if (overtime < 0)
-			throw new IllegalArgumentException();
-		this.overtime = overtime;
-	}
-
-	/**
-	 * Assign a list of workbenches to this AssemblyLine.
-	 * 
-	 * @param workbenches
-	 *            A list of IWorkBenches.
-	 * @throws IllegalArgumentException
-	 *             If workbenches==null
-	 */
-	public void setWorkbenches(List<IWorkBench> workbenches) {
-		if (workbenches == null)
-			throw new IllegalArgumentException();
-		this.workbenches = workbenches;
 	}
 
 	@Override
@@ -448,16 +256,11 @@ public class AssemblyLine {
 		}
 	}
 	
-	private Optional<Job> retrieveNextJob() throws NoSuitableJobFoundException {
-		return this.scheduler.retrieveNextJob(getCurrentTotalProductionTime());
-	}
-
-	private int getCurrentTotalProductionTime() {
-		// TODO Auto-generated method stub
-		return 0;
+	private Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException {
+		return this.scheduler.retrieveNextJob();
 	}
 	
-	public int getEstimatedTimeInMinutes(Job job, UnmodifiableClock currentTime) {
+	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) {
 		return this.scheduler.getEstimatedTimeInMinutes(job);
 	}
 	

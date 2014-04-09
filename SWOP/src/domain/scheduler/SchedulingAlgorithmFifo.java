@@ -9,28 +9,29 @@ import com.google.common.base.Optional;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
+import domain.job.IJob;
 import domain.job.Job;
 import domain.job.JobComparatorDeadLine;
 import domain.job.JobComparatorOrderTime;
 
 public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	
-	private PriorityQueue<Job> customJobs;
-	private PriorityQueue<Job> standardJobs;
+	private PriorityQueue<IJob> customJobs;
+	private PriorityQueue<IJob> standardJobs;
 	private final int amountOfWorkBenches;
-	private ArrayList<Optional<Job>> jobsStartOfDay;
-	private ArrayList<Optional<Job>> history;
+	private ArrayList<Optional<IJob>> jobsStartOfDay;
+	private ArrayList<Optional<IJob>> history;
 	
 	public SchedulingAlgorithmFifo(int amountOfWorkBenches) {
-		customJobs = new PriorityQueue<>(0, new JobComparatorDeadLine());
-		standardJobs = new PriorityQueue<Job>(0, new JobComparatorOrderTime());
+		customJobs = new PriorityQueue<IJob>(0, new JobComparatorDeadLine());
+		standardJobs = new PriorityQueue<IJob>(0, new JobComparatorOrderTime());
 		this.amountOfWorkBenches = amountOfWorkBenches;
 		this.jobsStartOfDay = new ArrayList<>();
-		history = new ArrayList<Optional<Job>>();
+		history = new ArrayList<Optional<IJob>>();
 	}
 
 	@Override
-	public void transform(PriorityQueue<Job> customJobs, ArrayList<Job> standardJobs, ArrayList<Optional<Job>> history) {
+	public void transform(PriorityQueue<IJob> customJobs, ArrayList<IJob> standardJobs, ArrayList<Optional<IJob>> history) {
 		if(customJobs == null || standardJobs == null || history == null) {
 			throw new IllegalArgumentException();
 		}
@@ -40,7 +41,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public Optional<Job> retrieveNext(int currentTotalProductionTime, int minutesTillEndOfDay, UnmodifiableClock currentTime) 
+	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
 			throws NoSuitableJobFoundException {
 		/* 
 		 * step 0: check if jobsStartOfDay contains any jobs..
@@ -50,40 +51,55 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		 */
 		//Step 0:
 		if (jobsStartOfDay.size() > 0) {
-			Optional<Job> toReturn = jobsStartOfDay.remove(0);
+			Optional<IJob> toReturn = jobsStartOfDay.remove(0);
 			addToHistory(toReturn);
 			return toReturn;
 		}
 		
-		Job toSchedule = hasToForceCustomJob(currentTime);
+		IJob toSchedule = hasToForceCustomJob(currentTime);
+		int currentTotalProductionTime = getCurrentTotalProductionTime();
 		//Step 1:
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(toSchedule);
-			Optional<Job> toReturn = Optional.fromNullable(toSchedule);
+			Optional<IJob> toReturn = Optional.fromNullable(toSchedule);
 			addToHistory(toReturn);
 			return toReturn;
 		}
 		
 		//Step 2:
 		if (canAssembleJobInTime(standardJobs.peek(), currentTotalProductionTime, minutesTillEndOfDay)) {
-			Optional<Job> toReturn = Optional.fromNullable(standardJobs.poll());
+			Optional<IJob> toReturn = Optional.fromNullable(standardJobs.poll());
 			addToHistory(toReturn);
 			return toReturn;
 		}
 		
 		//Step 3:
-		Job jobWithHighestWorkBenchIndex = getJobWithHighestWorkBenchIndex();
+		IJob jobWithHighestWorkBenchIndex = getJobWithHighestWorkBenchIndex();
 		if (canAssembleJobInTime(jobWithHighestWorkBenchIndex, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(jobWithHighestWorkBenchIndex);
-			Optional<Job> toReturn = Optional.fromNullable(jobWithHighestWorkBenchIndex);
+			Optional<IJob> toReturn = Optional.fromNullable(jobWithHighestWorkBenchIndex);
 			addToHistory(toReturn);
 			return toReturn;
 		}
 		throw new NoSuitableJobFoundException();
 	}
 	
+	private int getCurrentTotalProductionTime() {
+		int time = 0;
+		ArrayList<Optional<IJob>> historyCopy = getHistory();
+		if (historyCopy.size() == 0) {
+			return 0;
+		}
+		historyCopy.remove(0);
+		while (historyCopy.size() > 0) {
+			time += getMaximum(historyCopy);
+			historyCopy.remove(0);
+		}
+		return time;
+	}
+
 	@Override
-	protected void addToHistory(Optional<Job> job) {
+	protected void addToHistory(Optional<IJob> job) {
 		this.addToList(job, this.history);
 		}
 
@@ -91,9 +107,9 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	 * If a custom job has to be forced, return the most urgent
 	 * return null if no job has to be forced.
 	 */
-	private Job hasToForceCustomJob(UnmodifiableClock currentTime) {
+	private IJob hasToForceCustomJob(UnmodifiableClock currentTime) {
 		int idx = 0;
-		for (Job job : customJobs) {
+		for (IJob job : customJobs) {
 			try {
 				if (job.getOrder().getDeadline().minus(currentTime) - (idx * job.getOrder().getProductionTime()) <= 0) {
 					return job;
@@ -106,15 +122,15 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		return null;
 	}
 	
-	private boolean canAssembleJobInTime(Job job, int currentTotalProductionTime, int minutesTillEndOfDay) {
+	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) {
 		return job.getOrder().getProductionTime() >= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 	
-	private Job getJobWithHighestWorkBenchIndex() {
+	private IJob getJobWithHighestWorkBenchIndex() {
 		int index = this.amountOfWorkBenches - 1;
 		while (index >= 0) {
-			for (Iterator<Job> iterator = customJobs.iterator(); iterator.hasNext();) {
-				Job job = (Job) iterator.next();
+			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
+				IJob job = iterator.next();
 				if (job.getFirstWorkbenchIndex() == index) {
 					return job;
 				}
@@ -126,21 +142,21 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public PriorityQueue<Job> getCustomJobs() {
-		PriorityQueue<Job> pq = new PriorityQueue<>(customJobs.size(), new JobComparatorDeadLine());
+	public PriorityQueue<IJob> getCustomJobs() {
+		PriorityQueue<IJob> pq = new PriorityQueue<>(customJobs.size(), new JobComparatorDeadLine());
 		pq.addAll(this.customJobs);
 		return pq;
 	}
 
 	@Override
-	public ArrayList<Job> getStandardJobs() {
-		ArrayList<Job> list = new ArrayList<>();
+	public ArrayList<IJob> getStandardJobs() {
+		ArrayList<IJob> list = new ArrayList<>();
 		list.addAll(this.standardJobs);
 		return list;
 	}
 
 	@Override
-	public void AddCustomJob(Job customJob) {
+	public void AddCustomJob(IJob customJob) {
 		if (customJob == null) {
 			throw new IllegalArgumentException();
 		}
@@ -148,7 +164,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public void AddStandardJob(Job standardJob) {
+	public void AddStandardJob(IJob standardJob) {
 		if (standardJob == null) {
 			throw new IllegalArgumentException();
 		}
@@ -159,9 +175,9 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	public void startNewDay() {
 		this.jobsStartOfDay = new ArrayList<>();
 		for (int i = amountOfWorkBenches - 1; i > 0; i--) {
-			Optional<Job> toAdd = Optional.absent();
-			for (Iterator<Job> iterator = customJobs.iterator(); iterator.hasNext();) {
-				Job job = (Job) iterator.next();
+			Optional<IJob> toAdd = Optional.absent();
+			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
+				IJob job = iterator.next();
 				if (job.getFirstWorkbenchIndex() == i) {
 					toAdd = Optional.fromNullable(job);
 					break;
@@ -173,7 +189,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(Job job, UnmodifiableClock currentTime) {
+	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) {
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -184,38 +200,50 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			} 
 			catch (NotImplementedException e) {	}
 		}
-		ArrayList<Optional<Job>> previousJobs = this.getHistory();
+		ArrayList<Optional<IJob>> previousJobs = this.getHistory();
 		int totalProductionTime = 0;
-		ArrayList<Job> simulatedAssemblyLine = new ArrayList<>();
-		for (Iterator<Job> iterator = customJobs.iterator(); iterator.hasNext();) {
-			Job j = (Job) iterator.next();
+		for (Iterator<IJob> iterator = standardJobs.iterator(); iterator.hasNext();) {
+			IJob j = iterator.next();
 			if (!j.equals(job)) {
-				
-				
+			    addToList(Optional.fromNullable(j), previousJobs);
+				totalProductionTime += this.getMaximum(previousJobs);			
+			}
+			else{
+				addToList(Optional.fromNullable(j), previousJobs);
+				totalProductionTime += this.getMaximum(previousJobs);
+				for(int i = 0; i< this.amountOfWorkBenches-1;i++){
+					Optional<IJob> absentJob = Optional.absent();
+					addToList(absentJob, previousJobs);
+					totalProductionTime += this.getMaximum(previousJobs);
+				}
 			}
 		}
-		return 0;
+		return totalProductionTime;
 	}
 
 	
-	private int getMaximum(ArrayList<Optional<Job>> list){
+	private int getMaximum(ArrayList<Optional<IJob>> list){
 		int biggest = 0;
-		for(Optional<Job> job : list){
-			if(job.isPresent())
+		for(Optional<IJob> job : list){
+			int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getSpecification().getTimeAtWorkBench();
+			if(job.isPresent() && currentTimeAtWorkbenchForThisJob >= biggest){
+				biggest = currentTimeAtWorkbenchForThisJob;
+			}
 		}
+		return biggest;
 	}
 	
 	
 	
 	@Override
-	public ArrayList<Optional<Job>> getHistory() {
-		ArrayList<Optional<Job>> historyCopy = new ArrayList<>();
+	public ArrayList<Optional<IJob>> getHistory() {
+		ArrayList<Optional<IJob>> historyCopy = new ArrayList<>();
 		historyCopy.addAll(this.history);
 		return historyCopy;
 	}
 
 	@Override
-	protected void addToList(Optional<Job> job, ArrayList<Optional<Job>> list) {
+	protected void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list) {
 		if (job == null || list == null) {
 			throw new IllegalArgumentException();
 		}

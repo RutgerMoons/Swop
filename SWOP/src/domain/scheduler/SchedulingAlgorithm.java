@@ -7,31 +7,31 @@ import com.google.common.base.Optional;
 
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
-import domain.job.Job;
+import domain.job.IJob;
 
 public abstract class SchedulingAlgorithm {
 	
-	public abstract void transform(PriorityQueue<Job> customJobs, ArrayList<Job> standardJobs, ArrayList<Optional<Job>> history);
+	public abstract void transform(PriorityQueue<IJob> customjobs, ArrayList<IJob> standardjobs, ArrayList<Optional<IJob>> history);
 	
-	public abstract Optional<Job> retrieveNext(int currentTotalProductionTime, int minutesTillEndOfDay, UnmodifiableClock currentTime) 
+	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
 			throws NoSuitableJobFoundException;
 	
-	public abstract PriorityQueue<Job> getCustomJobs();
+	public abstract PriorityQueue<IJob> getCustomJobs();
 	
-	public abstract ArrayList<Job> getStandardJobs();
+	public abstract ArrayList<IJob> getStandardJobs();
 	
-	public abstract ArrayList<Optional<Job>> getHistory();
+	public abstract ArrayList<Optional<IJob>> getHistory();
 	
-	public abstract void AddCustomJob(Job customJob);
+	public abstract void AddCustomJob(IJob customjob);
 	
-	public abstract void AddStandardJob(Job standardJob);
+	public abstract void AddStandardJob(IJob standardjob);
 	
 	public abstract void startNewDay();
 
-	public abstract int getEstimatedTimeInMinutes(Job job, UnmodifiableClock currentTime);
+	public abstract int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime);
 	
-	protected abstract void addToHistory(Optional<Job> job);
+	protected abstract void addToHistory(Optional<IJob> job);
 	
-	protected abstract void addToList(Optional<Job> job, ArrayList<Optional<Job>> list);
+	protected abstract void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list);
 	
 }
