@@ -1,5 +1,6 @@
 package domain.order;
 
+import domain.car.CustomCarModel;
 import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
@@ -13,7 +14,7 @@ public class CustomOrder implements IOrder {
 	private UnmodifiableClock orderTime;
 	private UnmodifiableClock deadline;
 
-	public CustomOrder(String garageholder, ICarModel description,
+	public CustomOrder(String garageholder, CustomCarModel description,
 			int quantity, UnmodifiableClock orderTime,
 			UnmodifiableClock deadline) {
 		setGarageholder(garageholder);

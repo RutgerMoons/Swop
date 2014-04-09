@@ -111,7 +111,7 @@ public class ImmutableOrderTest {
 	}
 
 	@Test
-	public void testGetProductionTime(){
+	public void testGetProductionTime() throws NotImplementedException{
 		assertEquals(order.getProductionTime(), immutable.getProductionTime());
 	}
 }

@@ -25,8 +25,8 @@ public class SchedulingAlgorithmFifoTest {
 		int amountOfWorkBenches = 3;
 		algorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches);	
 	}
-	
-	
+
+
 	@Test
 	public void testAddToHistory(){
 		Set<CarOption> parts = new HashSet<>();
@@ -35,5 +35,4 @@ public class SchedulingAlgorithmFifoTest {
 		IOrder order = new StandardOrder("mario",model,3);
 		IJob job = new Job(order);
 	}
-
 }
