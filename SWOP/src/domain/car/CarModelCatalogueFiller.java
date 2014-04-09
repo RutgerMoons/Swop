@@ -35,16 +35,16 @@ public class CarModelCatalogueFiller {
 		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
 		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
 	
-		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
+		parts.add(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
 		
-		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
+		parts.add(new CarOption("leather white", CarOptionCategory.SEATS));
+		parts.add(new CarOption("leather black", CarOptionCategory.SEATS));
 		
-		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("Automatic", CarOptionCategory.AIRCO));
+		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
+		parts.add(new CarOption("automatic", CarOptionCategory.AIRCO));
 		
-		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("winter", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("sports", CarOptionCategory.WHEEL));
 		
 		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
 		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
@@ -66,19 +66,19 @@ public class CarModelCatalogueFiller {
 		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
 		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
 	
-		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
-		parts.add(new CarOption("5 Speed Automatic", CarOptionCategory.GEARBOX));
+		parts.add(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
+		parts.add(new CarOption("5 speed automatic", CarOptionCategory.GEARBOX));
 		
-		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Vinyl Grey", CarOptionCategory.SEATS));
+		parts.add(new CarOption("leather white", CarOptionCategory.SEATS));
+		parts.add(new CarOption("leather black", CarOptionCategory.SEATS));
+		parts.add(new CarOption("vinyl grey", CarOptionCategory.SEATS));
 		
-		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("Automatic", CarOptionCategory.AIRCO));
+		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
+		parts.add(new CarOption("automatic", CarOptionCategory.AIRCO));
 		
-		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Comfort", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("winter", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("comfort", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("sports", CarOptionCategory.WHEEL));
 		
 		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
 		return new CarModelSpecification("model B", parts, 70);
@@ -97,19 +97,19 @@ public class CarModelCatalogueFiller {
 		parts.add(new CarOption("standard 2l V4", CarOptionCategory.ENGINE));
 		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
 		
-		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
-		parts.add(new CarOption("5 Speed Manual", CarOptionCategory.GEARBOX));
-		parts.add(new CarOption("5 Speed Automatic", CarOptionCategory.GEARBOX));
+		parts.add(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
+		parts.add(new CarOption("5 speed manual", CarOptionCategory.GEARBOX));
+		parts.add(new CarOption("5 speed automatic", CarOptionCategory.GEARBOX));
 		
-		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Vinyl Grey", CarOptionCategory.SEATS));
+		parts.add(new CarOption("leather white", CarOptionCategory.SEATS));
+		parts.add(new CarOption("leather black", CarOptionCategory.SEATS));
+		parts.add(new CarOption("vinyl grey", CarOptionCategory.SEATS));
 		
-		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
+		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
 		
-		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Comfort", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("winter", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("comfort", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("sports", CarOptionCategory.WHEEL));
 		
 		return new CarModelSpecification("model A", parts, 50);
 	}

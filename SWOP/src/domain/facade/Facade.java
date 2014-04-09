@@ -23,6 +23,8 @@ import domain.job.ITask;
 import domain.job.Task;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
+import domain.restriction.BindingRestriction;
+import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.users.AccessRight;
 import domain.users.User;
@@ -39,14 +41,14 @@ public class Facade {
 	private UserFactory userFactory;
 	private PartPicker picker;
 	
-	public Facade() {
+	public Facade(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions) {
 		this.clock = new Clock();
 		this.assemblyLine = new AssemblyLine(clock);
 		this.carModelCatalogue = new CarModelCatalogue();
 		this.orderBook = new OrderBook(assemblyLine);
 		this.userBook = new UserBook();
 		this.userFactory = new UserFactory();
-		picker = new PartPicker();
+		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
 		
 		CarModelCatalogueFiller carModelFiller = new CarModelCatalogueFiller();
 		for (CarModelSpecification model : carModelFiller.getInitialModels()) {

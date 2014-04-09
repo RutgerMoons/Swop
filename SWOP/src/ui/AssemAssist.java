@@ -1,12 +1,18 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
+import domain.car.CarOption;
+import domain.car.CarOptionCategory;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
+import domain.restriction.BindingRestriction;
+import domain.restriction.OptionalRestriction;
 
 
 /**
@@ -25,9 +31,17 @@ public class AssemAssist {
 	 * Initializes all datastructures that the program needs from the start.
 	 */ 
 	public static void initializeData() {
-
+		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
+		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
+		optionalRestrictions.add(new OptionalRestriction(new CarOption("sport", CarOptionCategory.BODY), CarOptionCategory.SPOILER, false));
+		
+		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
+		
+		bindingRestrictions.add(new BindingRestriction(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE), new CarOption("manual", CarOptionCategory.AIRCO)));
+		
 		clientCommunication = new ClientCommunication();
-		facade = new Facade();
+		facade = new Facade(bindingRestrictions, optionalRestrictions);
 		FlowControllerFactory flowControllerFactory = new FlowControllerFactory(clientCommunication, facade);
 		flowControllers = flowControllerFactory.createFlowControllers();
 		userFlowController = new UserFlowController(clientCommunication, facade, flowControllers);
