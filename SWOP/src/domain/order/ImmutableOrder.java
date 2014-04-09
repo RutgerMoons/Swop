@@ -12,8 +12,7 @@ import domain.exception.NotImplementedException;
  */
 public class ImmutableOrder implements IOrder {
 
-	private IOrder order;
-
+	IOrder order;
 	/**
 	 * Create an Immutable Order.
 	 * 
@@ -78,26 +77,27 @@ public class ImmutableOrder implements IOrder {
 
 	@Override
 	public UnmodifiableClock getDeadline() throws NotImplementedException {
-		// TODO Auto-generated method stub
-		return null;
+		return order.getDeadline();
 	}
 
 	@Override
 	public void setDeadline(UnmodifiableClock clock)
-			throws NotImplementedException {
-		// TODO Auto-generated method stub
-		
+			throws NotImplementedException, ImmutableException {
+		throw new ImmutableException();
 	}
 
 	@Override
 	public UnmodifiableClock getOrderTime() {
-		// TODO Auto-generated method stub
-		return null;
+		return order.getOrderTime();
 	}
 
 	@Override
-	public void setOrderTime(UnmodifiableClock clock) {
-		// TODO Auto-generated method stub
-		
+	public void setOrderTime(UnmodifiableClock clock) throws ImmutableException {
+		throw new ImmutableException();
+	}
+
+	@Override
+	public int getProductionTime() {
+		return order.getProductionTime();
 	}
 }

@@ -163,7 +163,7 @@ public class StandardOrder implements IOrder {
 	@Override
 	public String toString() {
 		String orderInString = this.getQuantity() + " " + this.getDescription();
-		if (this.getPendingCars() > 0) {
+		if (this.getPendingCars() > 0 && getEstimatedTime()!=null) {
 			orderInString += " Estimated completion time: "
 					+ this.getEstimatedTime().getDays() + " days and "
 					+ this.getEstimatedTime().getMinutes() / 60 + " hours and "
@@ -184,6 +184,6 @@ public class StandardOrder implements IOrder {
 	
 	@Override
 	public int getProductionTime() {
-		return this.getDescription().getSpecification().getshizzle();
+		return this.getDescription().getSpecification().getTimeAtWorkBench();
 	}
 }
