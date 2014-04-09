@@ -85,8 +85,6 @@ public class AssemblyLine {
 			throw new IllegalStateException();
 		}
 		
-		Optional<IJob> newJob = this.scheduler.retrieveNextJob();
-		
 		Optional<IJob> lastJob = Optional.absent();
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			IWorkBench bench = getWorkbenches().get(i);
@@ -131,7 +129,6 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	//TODO: lowest index..
 	public List<IJob> convertOrderToJob(IOrder order) throws ImmutableException {
 		if (order == null) {
 			throw new IllegalArgumentException();
@@ -282,10 +279,6 @@ public class AssemblyLine {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}
-	}
-	
-	private Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException {
-		return this.scheduler.retrieveNextJob();
 	}
 	
 	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) {
