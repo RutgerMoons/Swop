@@ -1,14 +1,17 @@
 package domain.scheduler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
-import org.junit.Test;
+import org.junit.Before;
 
 public class SchedulingAlgorithmFifoTest {
 
-	@Test
+	SchedulingAlgorithmFifo algorithm;
+	@Before
 	public void test() {
-		fail("Not yet implemented");
+		int amountOfWorkBenches = 3;
+		algorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches);
+		
 	}
 
 }

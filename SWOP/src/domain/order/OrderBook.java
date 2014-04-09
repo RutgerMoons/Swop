@@ -64,7 +64,7 @@ public class OrderBook {
 			throw new IllegalArgumentException();
 		}
 
-		List<StandardOrder> pending = (List<IOrder>) this.pendingOrders.get(order.getGarageHolder());
+		List<IOrder> pending = (List<IOrder>) this.pendingOrders.get(order.getGarageHolder());
 		if (pending.contains(order)) {
 			pending.remove(order);
 			this.completedOrders.put(order.getGarageHolder(), order);
@@ -92,13 +92,12 @@ public class OrderBook {
 	 */
 	public void addStandardOrder(StandardOrder order) throws ImmutableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		assemblyLine.convertStandardOrderToJob(order);
-		assemblyLine.calculateEstimatedTime(order);
+		order.setEstimatedTime(assemblyLine.convertStandardOrderToJob(order));
 	}
 	
 	public void addCustomOrder(CustomOrder order) throws ImmutableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		assemblyLine.convertCustomOrderToJob(order);
-		assemblyLine.calculateEstimatedTime(order);
+		order.setEstimatedTime(assemblyLine.convertCustomOrderToJob(order));
+		
 	}
 }

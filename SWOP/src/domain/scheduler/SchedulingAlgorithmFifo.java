@@ -10,7 +10,6 @@ import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.IJob;
-import domain.job.Job;
 import domain.job.JobComparatorDeadLine;
 import domain.job.JobComparatorOrderTime;
 
