@@ -1,8 +1,10 @@
 package domain.car;
 
+import java.util.Collections;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
+import domain.exception.AlreadyInMapException;
+import domain.exception.ImmutableException;
 
 /**
  * Create an Immutable CarModel, only the getters are accessible.
@@ -24,9 +26,8 @@ public class ImmutableCarModel implements ICarModel {
 		this.model = model;
 	}
 	@Override
-	public Map<CarPartType, CarPart> getCarParts() {
-		return new ImmutableMap.Builder<CarPartType, CarPart>()
-				.putAll(model.getCarParts()).build();
+	public Map<CarOptionCategory, CarOption> getCarParts() {
+		return Collections.unmodifiableMap(model.getCarParts());
 	}
 
 	@Override
@@ -42,5 +43,29 @@ public class ImmutableCarModel implements ICarModel {
 	@Override
 	public String toString(){
 		return model.toString();
+	}
+	@Override
+	public void addCarPart(CarOption part) throws AlreadyInMapException,
+			ImmutableException {
+		throw new ImmutableException();
+		
+	}
+	@Override
+	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() {
+		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
+	}
+	@Override
+	public void addForcedOptionalType(CarOptionCategory type, boolean bool)
+			throws ImmutableException {
+		throw new ImmutableException();
+	}
+	@Override
+	public CarModelSpecification getSpecification() {
+		return model.getSpecification();
+	}
+	@Override
+	public void setSpecification(CarModelSpecification template)
+			throws ImmutableException {
+		throw new ImmutableException();
 	}
 }

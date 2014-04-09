@@ -8,7 +8,7 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
-import domain.car.CarPart;
+import domain.car.CarOption;
 import domain.car.ICarModel;
 import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
@@ -166,7 +166,7 @@ public class AssemblyLine {
 	 *             if order==null
 	 */
 	//TODO: gewoon forwarden naarscheduler en die forward dan naar zijn algoritme?
-	public void calculateEstimatedTime(StandardOrder order) throws ImmutableException { 
+	public void calculateEstimatedTime(StandardOrder order) throws ImmutableException {
 		if (getWorkbenches().size() == 0)
 			throw new IllegalStateException("There are no workbenches!");
 		int indexLastJob = getIndexOf(order);
@@ -244,7 +244,7 @@ public class AssemblyLine {
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
 			Job job = new Job(order);
-			for (CarPart part : model.getCarParts().values()) {
+			for (CarOption part : model.getCarParts().values()) {
 				Task task = new Task(part.getTaskDescription());
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);

@@ -31,7 +31,7 @@ public interface IOrder {
 	
 	public UnmodifiableClock getDeadline() throws NotImplementedException;
 	
-	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException;
+	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException, ImmutableException;
 	
 	/**
 	 * Get the estimated time until completion.
@@ -57,7 +57,7 @@ public interface IOrder {
 	public UnmodifiableClock getOrderTime();
 	
 	// TODO
-	public void setOrderTime(UnmodifiableClock clock);
+	public void setOrderTime(UnmodifiableClock clock) throws ImmutableException;
 	
 	/**
 	 * Method for decreasing the amount of pendingCars each time an car of the

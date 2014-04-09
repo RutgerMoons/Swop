@@ -7,6 +7,7 @@ import java.util.List;
 import ui.IClientCommunication;
 
 
+import domain.exception.ImmutableException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -72,10 +73,12 @@ public class UserFlowController {
 	
 	/**
 	 * Have the user execute the use case he has the authorization to execute. 
+	 * @throws ImmutableException 
+	 * @throws IllegalArgumentException 
 	 * @throws InvalidObjectException
 	 * 			If the user doesn't have authorization to execute any of the use cases.
 	 */
-	public void performDuties(){
+	public void performDuties() throws IllegalArgumentException, ImmutableException{
 		List<AccessRight> accessRights = facade.getAccessRights();
 		UseCaseFlowController useCaseHandler = selectUseCaseFlowController(accessRights, useCaseFlowControllers);
 		

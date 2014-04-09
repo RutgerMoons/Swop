@@ -1,21 +1,21 @@
 package domain.restriction;
 
-import domain.car.CarPart;
+import domain.car.CarOption;
 
 public class BindingRestriction{
 
-	private CarPart chosenPart;
-	private CarPart restrictedPart;
-	public BindingRestriction(CarPart chosenPart, CarPart restrictedPart){
+	private CarOption chosenPart;
+	private CarOption restrictedPart;
+	public BindingRestriction(CarOption chosenPart, CarOption restrictedPart){
 		this.chosenPart = chosenPart;
 		this.restrictedPart = restrictedPart;
 	}
 
-	public CarPart getRestrictedCarPart() {
+	public CarOption getRestrictedCarPart() {
 		return restrictedPart;
 	}
 
-	public CarPart getChosenCarPart(){
+	public CarOption getChosenCarPart(){
 		return chosenPart;
 	}
 }

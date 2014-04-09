@@ -7,46 +7,42 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import domain.car.CarPart;
-import domain.car.CarPartType;
+import domain.car.CarOption;
+import domain.car.CarOptionCategory;
 import domain.job.Action;
 
 public class CarPartTest {
 
 	@Test
 	public void testConstructor(){
-		CarPart part = new CarPart("manual", false, CarPartType.AIRCO);
+		CarOption part = new CarOption("manual", CarOptionCategory.AIRCO);
 		assertNotNull(part.getType());
 		assertNotNull(part.getDescription());
 		assertEquals("manual", part.getDescription());
-		assertFalse(part.isOptional());
-		assertEquals(CarPartType.AIRCO, part.getType());
+		assertEquals(CarOptionCategory.AIRCO, part.getType());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidArgument() {
-		new CarPart("manual", false, null);
+		new CarOption("manual", null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidArgument2() {
-		new CarPart("", false, CarPartType.AIRCO);
+		new CarOption("", CarOptionCategory.AIRCO);
 	}
 	
 	@Test
 	public void testEqualsAndHashCode(){
-		CarPart part1 = new CarPart("manual", false, CarPartType.AIRCO);
-		CarPart part2 = new CarPart("automatic", false, CarPartType.AIRCO);
-		CarPart part3 = new CarPart("manual", true, CarPartType.AIRCO);
-		CarPart part4 = new CarPart("manual", false, CarPartType.COLOR);
-		CarPart part5 = new CarPart("manual", false, CarPartType.AIRCO);
+		CarOption part1 = new CarOption("manual", CarOptionCategory.AIRCO);
+		CarOption part2 = new CarOption("automatic", CarOptionCategory.AIRCO);
+		CarOption part4 = new CarOption("manual", CarOptionCategory.COLOR);
+		CarOption part5 = new CarOption("manual", CarOptionCategory.AIRCO);
 		
 		assertNotEquals(part1, part2);
-		assertNotEquals(part1, part3);
 		assertNotEquals(part1, part4);
 		
 		assertNotEquals(part1.hashCode(), part2.hashCode());
-		assertNotEquals(part1.hashCode(), part3.hashCode());
 		assertNotEquals(part1.hashCode(), part4.hashCode());
 		
 		assertEquals(part1, part5);
@@ -60,25 +56,25 @@ public class CarPartTest {
 	
 	@Test
 	public void testToString(){
-		CarPart part = new CarPart("manual", false, CarPartType.AIRCO);
+		CarOption part = new CarOption("manual", CarOptionCategory.AIRCO);
 		assertEquals("AIRCO: manual", part.toString());
 	}
 	
 	@Test
 	public void testTaskDescription(){
-		assertEquals("Airco", new CarPart("manual", true, CarPartType.AIRCO).getTaskDescription());
-		assertEquals("Assembly", new CarPart("manual", true, CarPartType.BODY).getTaskDescription());
-		assertEquals("Paint", new CarPart("manual", true, CarPartType.COLOR).getTaskDescription());
-		assertEquals("Engine", new CarPart("manual", true, CarPartType.ENGINE).getTaskDescription());
-		assertEquals("Gearbox", new CarPart("manual", true, CarPartType.GEARBOX).getTaskDescription());
-		assertEquals("Seats", new CarPart("manual", true, CarPartType.SEATS).getTaskDescription());
-		assertEquals("Spoiler", new CarPart("manual", true, CarPartType.SPOILER).getTaskDescription());
-		assertEquals("Wheels", new CarPart("manual", true, CarPartType.WHEEL).getTaskDescription());
+		assertEquals("Airco", new CarOption("manual", CarOptionCategory.AIRCO).getTaskDescription());
+		assertEquals("Assembly", new CarOption("manual", CarOptionCategory.BODY).getTaskDescription());
+		assertEquals("Paint", new CarOption("manual", CarOptionCategory.COLOR).getTaskDescription());
+		assertEquals("Engine", new CarOption("manual", CarOptionCategory.ENGINE).getTaskDescription());
+		assertEquals("Gearbox", new CarOption("manual", CarOptionCategory.GEARBOX).getTaskDescription());
+		assertEquals("Seats", new CarOption("manual", CarOptionCategory.SEATS).getTaskDescription());
+		assertEquals("Spoiler", new CarOption("manual", CarOptionCategory.SPOILER).getTaskDescription());
+		assertEquals("Wheels", new CarOption("manual", CarOptionCategory.WHEEL).getTaskDescription());
 	}
 	
 	@Test
 	public void testActionDescription(){
-		assertEquals("Put on manual airco", new CarPart("manual", true, CarPartType.AIRCO).getActionDescription());
+		assertEquals("Put on manual airco", new CarOption("manual", CarOptionCategory.AIRCO).getActionDescription());
 	}
 	
 }

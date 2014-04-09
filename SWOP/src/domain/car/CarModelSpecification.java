@@ -2,23 +2,25 @@ package domain.car;
 
 import java.util.Set;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class CarModelTemplate {
+public class CarModelSpecification {
 
 	private String description;
 	private int timeAtWorkBench;
-	private Multimap<CarPartType, CarPart> parts;
+	private Multimap<CarOptionCategory, CarOption> parts;
 
-	public CarModelTemplate(String description, Set<CarPart> parts,
+	public CarModelSpecification(String description, Set<CarOption> parts,
 			int timeAtWorkBench) {
 		this.setDescription(description);
 		this.setTimeAtWorkBench(timeAtWorkBench);
+		this.parts = HashMultimap.create();
 		addAll(parts);
 	}
 
-	private void addAll(Set<CarPart> parts) {
-		for (CarPart part : parts) {
+	private void addAll(Set<CarOption> parts) {
+		for (CarOption part : parts) {
 			this.parts.put(part.getType(), part);
 		}
 	}
@@ -39,9 +41,13 @@ public class CarModelTemplate {
 		this.timeAtWorkBench = timeAtWorkBench;
 	}
 
-	public Multimap<CarPartType, CarPart> getCarParts() {
+	public Multimap<CarOptionCategory, CarOption> getCarParts() {
 		return parts;
 	}
 
+	@Override
+	public String toString(){
+		return description;
+	}
 
 }

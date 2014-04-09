@@ -3,14 +3,16 @@ package domain.carTest;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import domain.car.CarPartType;
+import domain.car.CarOptionCategory;
 
 public class CarPartTypeTest {
 
 	@Test
 	public void test() {
-		assertNotEquals(CarPartType.AIRCO, CarPartType.BODY);
-		assertEquals(CarPartType.AIRCO, CarPartType.valueOf("AIRCO"));
+		assertNotEquals(CarOptionCategory.AIRCO, CarOptionCategory.BODY);
+		assertEquals(CarOptionCategory.AIRCO, CarOptionCategory.valueOf("AIRCO"));
+		assertFalse(CarOptionCategory.BODY.isOptional());
+		assertTrue(CarOptionCategory.AIRCO.isOptional());
 	}
 
 }
