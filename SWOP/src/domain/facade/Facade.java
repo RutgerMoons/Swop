@@ -24,7 +24,6 @@ import domain.job.Task;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
-
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
 import domain.restriction.BindingRestriction;
@@ -202,9 +201,11 @@ public class Facade {
 		userBook.logout();
 	}
 
-	public String processOrder(String carModelName, int quantity) throws ImmutableException {
+	public String processOrder(String carModelName, int quantity) throws ImmutableException, IllegalStateException {
 		CarModel carModel = picker.getModel();
 		
+		if(!carModel.isValid())
+			throw new IllegalStateException();
 		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity);
 		this.orderBook.addOrder(order);
 		return order.getEstimatedTime().toString();
@@ -223,13 +224,18 @@ public class Facade {
 		Set<String> types = new HashSet<>();
 		for(CarOptionCategory type: CarOptionCategory.values()){
 			types.add(type.toString());
+			
 		}
 		return types;
 	}
 
 	public Set<String> getParts(String type) {
 		Set<String> parts = new HashSet<>();
-		for(CarOption part: picker.getStillAvailableCarParts(CarOptionCategory.valueOf(type))){
+		CarOptionCategory category = CarOptionCategory.valueOf(type);
+		for(CarOption part: picker.getStillAvailableCarParts(category)){
+			if(category.isOptional() || (picker.getModel().getForcedOptionalTypes().get(category)!=null && picker.getModel().getForcedOptionalTypes().get(category))){
+				parts.add("Select nothing");
+			}
 			parts.add(part.toString());
 		}
 		return parts;

@@ -18,13 +18,16 @@ public class CustomOrder implements IOrder {
 			int quantity, UnmodifiableClock orderTime,
 			UnmodifiableClock deadline) {
 		setGarageholder(garageholder);
-		this.description = description;
-		this.quantity = quantity;
-		this.orderTime = orderTime;
-		this.deadline = deadline;
+		setDescription(description);
+		setQuantity(quantity);
+		setOrderTime(orderTime);
+		setDeadline(deadline);
+		setPendingCars(quantity);
 	}
 
 	private void setGarageholder(String garageholder){
+		if(garageholder == null || garageholder.isEmpty())
+			throw new IllegalArgumentException();
 		this.garageholder = garageholder;
 	}
 	@Override
@@ -36,17 +39,48 @@ public class CustomOrder implements IOrder {
 	public int getPendingCars() {
 		return pendingCars;
 	}
+	
+	/** Changing the amount of pendingCars to the given amount. That's how other
+	 * classes may check if the order is completed or not. The method checks if
+	 * the given amount is lower than zero. If so an IllegalArgumentException is
+	 * thrown.
+	 */
+	private void setPendingCars(int quantity) {
+		if (quantity < 0) {
+			throw new IllegalArgumentException();
+		}
+		this.pendingCars = quantity;
+	}
 
 	@Override
 	public int getQuantity() {
 		return quantity;
 	}
 
+	private void setQuantity(int quantity) {
+		if (quantity <= 0) {
+			throw new IllegalArgumentException();
+		}
+		this.quantity = quantity;
+	}
+	
 	@Override
 	public ICarModel getDescription() {
 		return description;
 	}
 
+	/**
+	 * Assigning the type/name of the ordered carModel to the given description.
+	 * The method throws an IllegalArgumentException is the given name equals
+	 * null.s
+	 */
+	private void setDescription(ICarModel description) {
+		if (description == null) {
+			throw new IllegalArgumentException();
+		}
+		this.description = description;
+	}
+	
 	@Override
 	public UnmodifiableClock getDeadline() {
 		return deadline;
@@ -54,6 +88,8 @@ public class CustomOrder implements IOrder {
 
 	@Override
 	public void setDeadline(UnmodifiableClock clock) {
+		if(clock == null)
+			throw new IllegalArgumentException();
 		this.deadline = clock;
 
 	}
@@ -65,6 +101,8 @@ public class CustomOrder implements IOrder {
 
 	@Override
 	public void setEstimatedTime(UnmodifiableClock clock) {
+		if(clock == null)
+			throw new IllegalArgumentException();
 		estimatedTime = clock;
 
 	}
@@ -76,12 +114,14 @@ public class CustomOrder implements IOrder {
 
 	@Override
 	public void setOrderTime(UnmodifiableClock clock) {
+		if(clock == null)
+			throw new IllegalArgumentException();
 		orderTime = clock;
 	}
 
 	@Override
 	public void completeCar() throws ImmutableException {
-		pendingCars--;
+		setPendingCars(--pendingCars);
 	}
 
 	@Override
