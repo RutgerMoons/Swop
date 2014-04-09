@@ -11,14 +11,14 @@ public interface ICarModel {
 	 * This method returns an Immutable Map including all the car
 	 * parts.
 	 */
-	public Map<CarOptionCategogry, CarOption> getCarParts();
+	public Map<CarOptionCategory, CarOption> getCarParts();
 	
 	
 	public void addCarPart(CarOption part) throws AlreadyInMapException, ImmutableException;
 	
-	public Map<CarOptionCategogry, Boolean> getForcedOptionalTypes();
+	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes();
 	
-	public void addForcedOptionalType(CarOptionCategogry type, boolean bool) throws ImmutableException;
+	public void addForcedOptionalType(CarOptionCategory type, boolean bool) throws ImmutableException;
 	
 	public CarModelSpecification getSpecification();
 	

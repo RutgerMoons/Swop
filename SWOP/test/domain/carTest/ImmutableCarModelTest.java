@@ -11,7 +11,7 @@ import org.junit.Test;
 import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
-import domain.car.CarOptionCategogry;
+import domain.car.CarOptionCategory;
 import domain.car.ICarModel;
 import domain.car.ImmutableCarModel;
 import domain.exception.AlreadyInMapException;
@@ -24,7 +24,7 @@ public class ImmutableCarModelTest {
 	@Before
 	public void initialize(){
 		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategogry.BODY));
+		parts.add(new CarOption("sport", CarOptionCategory.BODY));
 		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
 		car = new CarModel(template);
 		immutable = new ImmutableCarModel(car);
@@ -33,10 +33,10 @@ public class ImmutableCarModelTest {
 	
 	@Test
 	public void testGetters() throws AlreadyInMapException, ImmutableException {
-		car.addCarPart(new CarOption("manual", CarOptionCategogry.AIRCO));
-		car.addCarPart(new CarOption("break", CarOptionCategogry.BODY));
+		car.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
+		car.addCarPart(new CarOption("break", CarOptionCategory.BODY));
 		
-		car.addForcedOptionalType(CarOptionCategogry.AIRCO, false);
+		car.addForcedOptionalType(CarOptionCategory.AIRCO, false);
 		
 		assertEquals(car.getCarParts(), immutable.getCarParts());
 		assertEquals(car.toString(), immutable.toString());
@@ -45,7 +45,7 @@ public class ImmutableCarModelTest {
 		
 		assertEquals(car.getSpecification(), immutable.getSpecification());
 		
-		assertFalse(immutable.getForcedOptionalTypes().get(CarOptionCategogry.AIRCO));
+		assertFalse(immutable.getForcedOptionalTypes().get(CarOptionCategory.AIRCO));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

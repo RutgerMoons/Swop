@@ -6,9 +6,9 @@ package domain.car;
 public class CarOption {
 
 	private String description;
-	private CarOptionCategogry type;
+	private CarOptionCategory type;
 
-	public CarOption(String description, CarOptionCategogry type) {
+	public CarOption(String description, CarOptionCategory type) {
 		setDescription(description);
 		setType(type);
 	}
@@ -40,11 +40,11 @@ public class CarOption {
 		return getType().toString() + ": " + getDescription();
 	}
 
-	public CarOptionCategogry getType() {
+	public CarOptionCategory getType() {
 		return type;
 	}
 
-	public void setType(CarOptionCategogry type) {
+	public void setType(CarOptionCategory type) {
 		if (type == null)
 			throw new IllegalArgumentException();
 		this.type = type;

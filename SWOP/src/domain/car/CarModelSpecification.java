@@ -9,7 +9,7 @@ public class CarModelSpecification {
 
 	private String description;
 	private int timeAtWorkBench;
-	private Multimap<CarOptionCategogry, CarOption> parts;
+	private Multimap<CarOptionCategory, CarOption> parts;
 
 	public CarModelSpecification(String description, Set<CarOption> parts,
 			int timeAtWorkBench) {
@@ -41,7 +41,7 @@ public class CarModelSpecification {
 		this.timeAtWorkBench = timeAtWorkBench;
 	}
 
-	public Multimap<CarOptionCategogry, CarOption> getCarParts() {
+	public Multimap<CarOptionCategory, CarOption> getCarParts() {
 		return parts;
 	}
 

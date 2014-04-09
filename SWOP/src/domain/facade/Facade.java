@@ -12,7 +12,7 @@ import domain.car.CarModelCatalogue;
 import domain.car.CarModelCatalogueFiller;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
-import domain.car.CarOptionCategogry;
+import domain.car.CarOptionCategory;
 import domain.clock.Clock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
@@ -196,7 +196,7 @@ public class Facade {
 
 	public Set<String> getCarPartTypes() {
 		Set<String> types = new HashSet<>();
-		for(CarOptionCategogry type: CarOptionCategogry.values()){
+		for(CarOptionCategory type: CarOptionCategory.values()){
 			types.add(type.toString());
 		}
 		return types;
@@ -204,15 +204,15 @@ public class Facade {
 
 	public Set<String> getParts(String type) {
 		Set<String> parts = new HashSet<>();
-		for(CarOption part: picker.getStillAvailableCarParts(CarOptionCategogry.valueOf(type))){
+		for(CarOption part: picker.getStillAvailableCarParts(CarOptionCategory.valueOf(type))){
 			parts.add(part.toString());
 		}
 		return parts;
 	}
 
 	public void addPartToModel(String type, String part) {
-		CarOptionCategogry carOptionCategogry = CarOptionCategogry.valueOf(type);
-		for(CarOption actualPart: picker.getModel().getSpecification().getCarParts().get(carOptionCategogry)){
+		CarOptionCategory carOptionCategory = CarOptionCategory.valueOf(type);
+		for(CarOption actualPart: picker.getModel().getSpecification().getCarParts().get(carOptionCategory)){
 			if(actualPart.toString().equals(part))
 				try {
 					picker.getModel().addCarPart(actualPart);

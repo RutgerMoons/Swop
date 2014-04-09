@@ -13,7 +13,7 @@ import domain.car.CarModelCatalogue;
 import domain.car.CarModelCatalogueFiller;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
-import domain.car.CarOptionCategogry;
+import domain.car.CarOptionCategory;
 import domain.exception.AlreadyInMapException;
 
 public class CatalogueTest {

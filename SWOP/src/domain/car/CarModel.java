@@ -13,18 +13,18 @@ import domain.exception.AlreadyInMapException;
  */
 public class CarModel implements ICarModel {
 
-	private HashMap<CarOptionCategogry, CarOption> carOptions;
+	private HashMap<CarOptionCategory, CarOption> carOptions;
 	private CarModelSpecification specification;
-	private Map<CarOptionCategogry, Boolean> forcedOptionalTypes;
+	private Map<CarOptionCategory, Boolean> forcedOptionalTypes;
 	public CarModel(CarModelSpecification template) {
 		if(template==null)
 			throw new IllegalArgumentException();
-		carOptions = new HashMap<CarOptionCategogry, CarOption>();
+		carOptions = new HashMap<CarOptionCategory, CarOption>();
 		this.setSpecification(template);
 		forcedOptionalTypes = new HashMap<>();
 	}
 
-	public Map<CarOptionCategogry, CarOption> getCarParts() {
+	public Map<CarOptionCategory, CarOption> getCarParts() {
 		return carOptions;
 	}
 
@@ -87,11 +87,11 @@ public class CarModel implements ICarModel {
 		return true;
 	}
 
-	public Map<CarOptionCategogry, Boolean> getForcedOptionalTypes() {
+	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() {
 		return forcedOptionalTypes;
 	}
 
-	public void addForcedOptionalType(CarOptionCategogry type, boolean bool){
+	public void addForcedOptionalType(CarOptionCategory type, boolean bool){
 		forcedOptionalTypes.put(type, bool);
 	}
 

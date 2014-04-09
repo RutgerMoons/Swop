@@ -2,12 +2,13 @@ package domain.restriction;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
-import domain.car.CarOptionCategogry;
+import domain.car.CarOptionCategory;
 import domain.exception.AlreadyInMapException;
 
 public class PartPicker {
@@ -19,8 +20,11 @@ public class PartPicker {
 		bindingRestrictions = new HashSet<BindingRestriction>();
 		optionalRestrictions = new HashSet<OptionalRestriction>();
 	}
-	
-	public void setNewModel(CarModelSpecification template){
+
+	public void setNewModel(CarModelSpecification template) {
+		for(OptionalRestriction restriction: optionalRestrictions){
+			restriction.setRestrictedPartAlreadyChosen(false);
+		}
 		model = new CarModel(template);
 	}
 
@@ -28,27 +32,36 @@ public class PartPicker {
 		model.addCarPart(part);
 	}
 
-	public Collection<CarOption> getStillAvailableCarParts(CarOptionCategogry type) {
+	public Collection<CarOption> getStillAvailableCarParts(
+			CarOptionCategory type) {
 		Collection<CarOption> availableParts = new HashSet<>();
 
 		availableParts = checkBindingRestrictions(type);
-		checkOptionalRestrictions();
+		checkOptionalRestrictions(type);
 
 		return availableParts;
 	}
 
-	private void checkOptionalRestrictions() {
+	private void checkOptionalRestrictions(CarOptionCategory type) {
+
 		for (OptionalRestriction restriction : optionalRestrictions) {
-			if (model.getCarParts().get(restriction.getCarPartType())
-					.equals(restriction.getCarPart())) {
-				model.addForcedOptionalType(restriction.getCarPartType(),
-						restriction.isOptional());
+			Map<CarOptionCategory, CarOption> parts = model.getCarParts();
+			if (parts.get(restriction.getCarPartType()).equals(
+					restriction.getCarPart())) {
+				if (restriction.getRestrictedPartAlreadyChosen()
+						&& !parts.containsKey(restriction.getCarPartType())) {
+					model.addForcedOptionalType(restriction.getCarPartType(),
+							restriction.isOptional());
+				}
+			} else if (restriction.getCarPartType().equals(type)
+					&& !restriction.isOptional()) {
+				restriction.setRestrictedPartAlreadyChosen(true);
 			}
 		}
-
 	}
 
-	private Collection<CarOption> checkBindingRestrictions(CarOptionCategogry type) {
+	private Collection<CarOption> checkBindingRestrictions(
+			CarOptionCategory type) {
 		Set<CarOption> availableParts = new HashSet<>();
 		for (BindingRestriction restriction : bindingRestrictions) {
 			if (model.getCarParts().values()
@@ -59,30 +72,48 @@ public class PartPicker {
 				availableParts.add(restriction.getRestrictedCarPart());
 			}
 		}
+
+		availableParts = removeConflictingBindingParts(type, availableParts);
+
 		if (availableParts.isEmpty())
 			return model.getSpecification().getCarParts().get(type);
 		return availableParts;
 	}
-	
+
+	private Set<CarOption> removeConflictingBindingParts(
+			CarOptionCategory type, Set<CarOption> availableParts) {
+
+		for (BindingRestriction restriction : bindingRestrictions) {
+			CarOption part = model.getCarParts().get(
+					restriction.getRestrictedCarPart().getType());
+
+			if (part != null
+					&& !part.equals(restriction.getRestrictedCarPart()))
+				availableParts.remove(part);
+		}
+
+		return availableParts;
+	}
 
 	public CarModel getModel() {
 		return model;
 	}
-	
-	public void addBindingRestriction(BindingRestriction restriction){
+
+	public void addBindingRestriction(BindingRestriction restriction) {
 		bindingRestrictions.add(restriction);
-		
+
 	}
-	
-	public void addOptionalRestriction(OptionalRestriction restriction){
+
+	public void addOptionalRestriction(OptionalRestriction restriction) {
 		optionalRestrictions.add(restriction);
 	}
-	
+
 	public Set<BindingRestriction> getBindingRestrictions() {
 		return bindingRestrictions;
 	}
 
-	public void setBindingRestrictions(Set<BindingRestriction> bindingRestrictions) {
+	public void setBindingRestrictions(
+			Set<BindingRestriction> bindingRestrictions) {
 		this.bindingRestrictions = bindingRestrictions;
 	}
 
