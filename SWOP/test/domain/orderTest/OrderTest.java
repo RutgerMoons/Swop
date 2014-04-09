@@ -191,7 +191,7 @@ public class OrderTest {
 	}
 	
 	@Test
-	public void testGetProductionTime(){
+	public void testGetProductionTime() throws NotImplementedException{
 		StandardOrder order1 = new StandardOrder("Jan", model, 2);
 		assertEquals(order1.getProductionTime(), model.getSpecification().getTimeAtWorkBench());
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 
 /**
  * Create an Immutable CarModel, only the getters are accessible.
@@ -51,7 +52,7 @@ public class ImmutableCarModel implements ICarModel {
 		
 	}
 	@Override
-	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() {
+	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() throws NotImplementedException {
 		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
 	}
 	@Override
@@ -60,7 +61,7 @@ public class ImmutableCarModel implements ICarModel {
 		throw new ImmutableException();
 	}
 	@Override
-	public CarModelSpecification getSpecification() {
+	public CarModelSpecification getSpecification() throws NotImplementedException {
 		return model.getSpecification();
 	}
 	@Override
