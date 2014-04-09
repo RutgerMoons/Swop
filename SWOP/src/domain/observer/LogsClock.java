@@ -9,6 +9,6 @@ public interface LogsClock {
 
 	public void advanceTime(UnmodifiableClock currentTime);
 	
-	public void startNewDay();
+	public void startNewDay(UnmodifiableClock newDay);
 	
 }

@@ -37,9 +37,9 @@ public class ClockObserver {
 		}
 	}
 
-	public void startNewDay() {
+	public void startNewDay(UnmodifiableClock newDay) {
 		for (LogsClock logger : loggers) {
-			logger.startNewDay();
+			logger.startNewDay(newDay);
 		}
 	}
 	

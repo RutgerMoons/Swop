@@ -13,13 +13,16 @@ import domain.car.ICarModel;
 import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
 import domain.observer.AssemblyLineObserver;
+import domain.observer.ClockObserver;
 import domain.order.StandardOrder;
+import domain.scheduler.Scheduler;
 
 /**
  * 
@@ -29,11 +32,11 @@ import domain.order.StandardOrder;
  */
 public class AssemblyLine {
 
-	private Clock clock;
 	private List<IJob> currentJobs;
-	private int overtime;
+	private int overtime; //TODO -> verplaats naar shiften
 	private List<IWorkBench> workbenches;
 	private ArrayList<AssemblyLineObserver> observers;
+	private Scheduler scheduler;
 
 	/**
 	 * Construct a new AssemblyLine.
@@ -43,13 +46,11 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             If clock==null
 	 */
-	public AssemblyLine(Clock clock) {
-		if (clock == null)
-			throw new IllegalArgumentException();
-		this.clock = clock;
+	public AssemblyLine(ClockObserver clockObserver) {
 		workbenches = new ArrayList<IWorkBench>();
 		currentJobs = new ArrayList<IJob>();
 		initializeWorkbenches();
+		this.scheduler = new Scheduler(workbenches.size(), clockObserver);
 	}
 
 	/**
@@ -145,8 +146,8 @@ public class AssemblyLine {
 			}
 		}
 
-		if ((22 * 60 - getClock().getMinutes()) < 0) {// overtime zetten
-			overtime = Math.abs(22 * 60 - getClock().getMinutes());
+		if ((22 * 60 - getClock().getUnmodifiableClock().getMinutes()) < 0) {// overtime zetten
+			overtime = Math.abs(22 * 60 - getClock().getUnmodifiableClock().getMinutes());
 		}
 	}
 
@@ -164,6 +165,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
+	//TODO: gewoon forwarden naarscheduler en die forward dan naar zijn algoritme?
 	public void calculateEstimatedTime(StandardOrder order) throws ImmutableException {
 		if (getWorkbenches().size() == 0)
 			throw new IllegalStateException("There are no workbenches!");
@@ -233,6 +235,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
+	//TODO: lowest index..
 	public List<IJob> convertOrderToJob(StandardOrder order) {
 		if (order == null)
 			throw new IllegalArgumentException();
@@ -262,15 +265,6 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * Get the clock.
-	 * 
-	 * @return The Clock that's available.
-	 */
-	public Clock getClock() {
-		return clock;
-	}
-
-	/**
 	 * Get all the pending jobs for this AssemblyLine.
 	 * 
 	 * @return A list representing the current jobs.
@@ -285,7 +279,7 @@ public class AssemblyLine {
 	 * @return An AssemblyLine representing the next state of the assemblyline.
 	 */
 	public AssemblyLine getFutureAssemblyLine() {
-		AssemblyLine line = new AssemblyLine(getClock());
+		AssemblyLine line = new AssemblyLine(clockObserver);
 		ArrayList<IWorkBench> clones = new ArrayList<>();
 		line.setCurrentJobs(getCurrentJobs());
 		for (IWorkBench bench : getWorkbenches()) {
@@ -452,6 +446,19 @@ public class AssemblyLine {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}
+	}
+	
+	private Optional<Job> retrieveNextJob() throws NoSuitableJobFoundException {
+		return this.scheduler.retrieveNextJob(getCurrentTotalProductionTime());
+	}
+
+	private int getCurrentTotalProductionTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public int getEstimatedTimeInMinutes(Job job, UnmodifiableClock currentTime) {
+		return this.scheduler.getEstimatedTimeInMinutes(job);
 	}
 	
 }
