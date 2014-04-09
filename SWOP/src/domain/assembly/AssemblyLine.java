@@ -150,7 +150,7 @@ public class AssemblyLine {
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
 	
-	public void convertCustomOrderToJob(CustomOrder order) throws ImmutableException {
+	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException {
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
@@ -158,16 +158,20 @@ public class AssemblyLine {
 		for (IJob job : jobs) {
 			this.scheduler.addCustomJob(job);
 		}
+		
+		return scheduler.getEstimatedTimeInMinutes(jobs.get(0));
 	}
 	
-	public void convertStandardOrderToJob(StandardOrder order) throws ImmutableException {
+	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException {
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
 		List<IJob> jobs = convertOrderToJob(order);
 		for (IJob job : jobs) {
-			this.scheduler.addCustomJob(job);
+			this.scheduler.addStandardJob(job);
 		}
+		
+		return scheduler.getEstimatedTimeInMinutes(jobs.get(0));
 	}
 	
 	public int getMinimalIndexOfWorkbench(IJob job) {
