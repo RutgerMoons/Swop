@@ -29,10 +29,12 @@ public class Job implements IJob {
 		setTasks(new ArrayList<ITask>());
 	}
 
+	@Override
 	public IOrder getOrder() {
 		return order;
 	}
 
+	@Override
 	public void setOrder(IOrder order) {
 		if (order == null)
 			throw new IllegalArgumentException();
@@ -41,10 +43,12 @@ public class Job implements IJob {
 	}
 
 	
+	@Override
 	public List<ITask> getTasks() {
 		return taskList;
 	}
 
+	@Override
 	public void setTasks(List<ITask> tasks) {
 		if (tasks == null)
 			throw new IllegalArgumentException();
@@ -52,6 +56,7 @@ public class Job implements IJob {
 			this.taskList = tasks;
 	}
 
+	@Override
 	public void addTask(ITask task) {
 		if (task == null)
 			throw new IllegalArgumentException();
@@ -60,6 +65,7 @@ public class Job implements IJob {
 	}
 
 	
+	@Override
 	public boolean isCompleted() {
 		for (ITask task : taskList)
 			if (!task.isCompleted())

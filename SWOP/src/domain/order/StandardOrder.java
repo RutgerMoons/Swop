@@ -1,8 +1,5 @@
 package domain.order;
 
-
-import java.util.Arrays;
-
 import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NotImplementedException;
@@ -34,8 +31,6 @@ public class StandardOrder implements IOrder {
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
 		this.setPendingCars(quantity);
-		UnmodifiableClock estimated = null; //TODO
-		//this.setEstimatedTime(estimated);
 	}
 
 	/**
@@ -48,7 +43,7 @@ public class StandardOrder implements IOrder {
 		this.garageholder = holder;
 	}
 
-	
+	@Override
 	public String getGarageHolder() {
 		return this.garageholder;
 	}
@@ -67,6 +62,7 @@ public class StandardOrder implements IOrder {
 	}
 
 	
+	@Override
 	public int getPendingCars() {
 		return this.pendingCars;
 	}
@@ -84,6 +80,7 @@ public class StandardOrder implements IOrder {
 	}
 
 	
+	@Override
 	public int getQuantity() {
 		return this.quantity;
 	}
@@ -101,14 +98,17 @@ public class StandardOrder implements IOrder {
 	}
 
 	
+	@Override
 	public ICarModel getDescription() {
 		return description;
 	}
 
+	@Override
 	public UnmodifiableClock getOrderTime() {
 		return orderTime;
 	}
 
+	@Override
 	public void setOrderTime(UnmodifiableClock orderTime) {
 		if(orderTime == null){
 			throw new IllegalArgumentException();
@@ -116,10 +116,12 @@ public class StandardOrder implements IOrder {
 		this.orderTime = orderTime;
 	}
 
+	@Override
 	public UnmodifiableClock getEstimatedTime() {
 		return this.estimatedTime;
 	}
 
+	@Override
 	public void setEstimatedTime(UnmodifiableClock clock) {
 		if (clock == null) {
 			throw new IllegalArgumentException();
@@ -127,6 +129,7 @@ public class StandardOrder implements IOrder {
 		this.estimatedTime = clock;
 	}
 
+	@Override
 	public void completeCar() {
 		this.setPendingCars(--pendingCars);
 	}

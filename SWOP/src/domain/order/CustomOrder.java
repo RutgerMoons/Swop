@@ -3,7 +3,6 @@ package domain.order;
 import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
-import domain.exception.NotImplementedException;
 
 public class CustomOrder implements IOrder {
 
