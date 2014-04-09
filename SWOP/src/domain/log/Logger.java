@@ -3,6 +3,8 @@ package domain.log;
 import java.util.List;
 
 import domain.clock.UnmodifiableClock;
+import domain.observer.AssemblyLineObserver;
+import domain.observer.ClockObserver;
 import domain.observer.LogsAssemblyLine;
 import domain.observer.LogsClock;
 import domain.order.Delay;
@@ -13,9 +15,11 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	private LogHistoryDelays logHistoryDelays;
 	private UnmodifiableClock currentTime;
 
-	public Logger(int numberOfDaysOfDetailedHistory) {
+	public Logger(int numberOfDaysOfDetailedHistory, ClockObserver clockObserver, AssemblyLineObserver assemblyLineObserver) {
 		this.logHistoryDays = new LogHistoryDays(numberOfDaysOfDetailedHistory);
 		this.logHistoryDelays = new LogHistoryDelays(numberOfDaysOfDetailedHistory);
+		assemblyLineObserver.attachLogger(this);
+		clockObserver.attachLogger(this);
 	}
 
 	@Override
@@ -31,7 +35,7 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	}
 	
 	@Override
-	public void startNewDay() {
+	public void startNewDay(UnmodifiableClock newDay) {
 		this.logHistoryDays.shift();
 	}
 

@@ -21,6 +21,10 @@ import domain.job.Action;
 import domain.job.IAction;
 import domain.job.ITask;
 import domain.job.Task;
+import domain.log.Logger;
+import domain.observer.AssemblyLineObserver;
+import domain.observer.ClockObserver;
+
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
 import domain.restriction.BindingRestriction;
@@ -36,15 +40,31 @@ public class Facade {
 	private AssemblyLine assemblyLine;
 	private CarModelCatalogue carModelCatalogue;
 	private Clock clock;
+	private ClockObserver clockObserver;
 	private OrderBook orderBook;
 	private UserBook userBook;
 	private UserFactory userFactory;
+
+	private AssemblyLineObserver assemblyLineObserver;
+	private Logger logger;
+
+
 	private PartPicker picker;
 	
 	public Facade(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions) {
 		this.clock = new Clock();
-		this.assemblyLine = new AssemblyLine(clock);
+
+		this.clockObserver = new ClockObserver();
+		this.clock.attachObserver(clockObserver);
+		
+		this.assemblyLine = new AssemblyLine(clockObserver);
+		this.assemblyLineObserver = new AssemblyLineObserver();
+		this.assemblyLine.attachObserver(assemblyLineObserver);
+		
+		this.logger = new Logger(2, clockObserver, assemblyLineObserver);
+		
 		this.carModelCatalogue = new CarModelCatalogue();
+
 		this.orderBook = new OrderBook(assemblyLine);
 		this.userBook = new UserBook();
 		this.userFactory = new UserFactory();
@@ -69,14 +89,17 @@ public class Facade {
 		return assemblyLine.canAdvance();
 	}
 
-	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex,
-			int taskIndex) {
-		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(
-				workBenchIndex);
+
+	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex) {
+		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
+
 		Task task = (Task) workbench.getCurrentTasks().get(taskIndex);
 		for (IAction action : task.getActions()) {
 			Action act = (Action) action;
 			act.setCompleted(true);
+		}
+		if (this.canAssemblyLineAdvance()) {
+			this.advanceAssemblyLine();
 		}
 	}
 

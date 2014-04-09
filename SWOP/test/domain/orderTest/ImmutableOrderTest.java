@@ -16,6 +16,7 @@ import domain.car.CarOptionCategory;
 import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 import domain.order.IOrder;
 import domain.order.ImmutableOrder;
 import domain.order.StandardOrder;
@@ -88,5 +89,29 @@ public class ImmutableOrderTest {
 	@Test(expected = ImmutableException.class)
 	public void testImmutable2() throws ImmutableException{
 		immutable.completeCar();
+	}
+	
+	@Test(expected = NotImplementedException.class)
+	public void testGetDeadline() throws NotImplementedException{
+		immutable.getDeadline();
+	}
+	
+	@Test(expected = ImmutableException.class)
+	public void testSetDeadline() throws NotImplementedException, ImmutableException{
+		immutable.setDeadline(new UnmodifiableClock(5, 5));
+	}
+	
+	@Test(expected=ImmutableException.class)
+	public void testGetAndSetOrderTime() throws ImmutableException{
+		order.setOrderTime(new UnmodifiableClock(0, 0));
+		assertEquals(order.getOrderTime(), immutable.getOrderTime());
+		
+		
+		immutable.setOrderTime(new UnmodifiableClock(3, 3));
+	}
+
+	@Test
+	public void testGetProductionTime(){
+		assertEquals(order.getProductionTime(), immutable.getProductionTime());
 	}
 }
