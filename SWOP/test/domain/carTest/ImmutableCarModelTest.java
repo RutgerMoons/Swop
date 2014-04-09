@@ -16,6 +16,7 @@ import domain.car.ICarModel;
 import domain.car.ImmutableCarModel;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 
 public class ImmutableCarModelTest {
 
@@ -32,7 +33,7 @@ public class ImmutableCarModelTest {
 	
 	
 	@Test
-	public void testGetters() throws AlreadyInMapException, ImmutableException {
+	public void testGetters() throws AlreadyInMapException, ImmutableException, NotImplementedException {
 		car.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
 		car.addCarPart(new CarOption("break", CarOptionCategory.BODY));
 		
@@ -60,12 +61,12 @@ public class ImmutableCarModelTest {
 	}
 	
 	@Test(expected=ImmutableException.class)
-	public void testImmutable2() throws ImmutableException{
+	public void testImmutable2() throws ImmutableException, NotImplementedException{
 		immutable.addForcedOptionalType(null, true);
 	}
 	
 	@Test(expected=ImmutableException.class)
-	public void testImmutable3() throws ImmutableException{
+	public void testImmutable3() throws ImmutableException, NotImplementedException{
 		immutable.setSpecification(null);
 	}
 	

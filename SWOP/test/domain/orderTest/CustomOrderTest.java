@@ -13,6 +13,7 @@ import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
+import domain.car.CustomCarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
@@ -24,47 +25,17 @@ import domain.order.ImmutableOrder;
 import domain.order.CustomOrder;
 
 public class CustomOrderTest {
-	private CarModel model;
-	private CarModelSpecification template;
+	private CustomCarModel model;
 	private UnmodifiableClock orderTime;
 	private UnmodifiableClock deadline;
 	@Before
-	public void initializeModel() throws AlreadyInMapException {
+	public void initializeModel() throws AlreadyInMapException, ImmutableException {
 		orderTime = new UnmodifiableClock(1, 10);
 		deadline = new UnmodifiableClock(5, 20);
 		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts.add(new CarOption("white", CarOptionCategory.COLOR));
-		
-		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
-	
-		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
-		
-		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
-		
-		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("Automatic", CarOptionCategory.AIRCO));
-		
-		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
-		
-		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
-		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
-		template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
-		model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		model.addCarPart(new CarOption("sedan", CarOptionCategory.BODY));
-		model.addCarPart(new CarOption("red", CarOptionCategory.COLOR));
-		model.addCarPart(new CarOption("standard 2l 4 cilinders",
-				CarOptionCategory.ENGINE));
-		model.addCarPart(new CarOption("6 speed manual",
-				CarOptionCategory.GEARBOX));
-		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+
+		model = new CustomCarModel();
+		model.addCarPart(new CarOption("low", CarOptionCategory.SPOILER));
 	}
 
 	@Test
@@ -144,18 +115,9 @@ public class CustomOrderTest {
 	}
 
 	@Test
-	public void TestEqualsAndHashcode() throws AlreadyInMapException {
-		CarModelSpecification template2 = new CarModelSpecification("abc", new HashSet<CarOption>(), 50);
-		CarModel model2 = new CarModel(template2);
-		model2.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		model2.addCarPart(new CarOption("sedan", CarOptionCategory.BODY));
-		model2.addCarPart(new CarOption("red", CarOptionCategory.COLOR));
-		model2.addCarPart(new CarOption("standard 2l 4 cilinders",
-				CarOptionCategory.ENGINE));
-		model2.addCarPart(new CarOption("6 speed manual",
-				CarOptionCategory.GEARBOX));
-		model2.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-		model2.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+	public void TestEqualsAndHashcode() throws AlreadyInMapException, ImmutableException {
+		CustomCarModel model2 = new CustomCarModel();
+		model2.addCarPart(new CarOption("high", CarOptionCategory.SPOILER));
 
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		assertFalse(order1.equals(null));
@@ -179,7 +141,7 @@ public class CustomOrderTest {
 		
 		order1.setEstimatedTime(new UnmodifiableClock(1, 100));
 		assertEquals(
-				"2 model" + line+ "Deadline: 5 days and 0 hours and 20 minutes" + line+" Estimated completion time: 1 days and 1 hours and 40 minutes",
+				"2 Custom order: " + line+ "SPOILER: low"+line+ "Deadline: 5 days and 0 hours and 20 minutes" + line+" Estimated completion time: 1 days and 1 hours and 40 minutes",
 				order1.toString());
 	}
 	
@@ -197,8 +159,8 @@ public class CustomOrderTest {
 		assertEquals(0, order1.getDeadline().getMinutes());
 	}
 	
-	@Test
-	public void testGetProductionTime(){
+	@Test(expected = NotImplementedException.class)
+	public void testGetProductionTime() throws NotImplementedException{
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		assertEquals(order1.getProductionTime(), model.getSpecification().getTimeAtWorkBench());
 	}
