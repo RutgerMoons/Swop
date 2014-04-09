@@ -131,7 +131,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		while (index >= 0) {
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();
-				if (job.getFirstWorkbenchIndex() == index) {
+				if (job.getMinimalIndex() == index) {
 					return job;
 				}
 			}
@@ -178,7 +178,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			Optional<IJob> toAdd = Optional.absent();
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();
-				if (job.getFirstWorkbenchIndex() == i) {
+				if (job.getMinimalIndex() == i) {
 					toAdd = Optional.fromNullable(job);
 					break;
 				}

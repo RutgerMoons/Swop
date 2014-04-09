@@ -15,6 +15,7 @@ public class Job implements IJob {
 
 	private IOrder order;
 	private List<ITask> taskList;
+	private int minimalIndex;
 
 	/**
 	 * Construct a new Job.
@@ -94,6 +95,16 @@ public class Job implements IJob {
 			return false;
 
 		return true;
+	}
+
+	@Override
+	public void setMinimalIndex(int index) {
+		this.minimalIndex = index;
+	}
+
+	@Override
+	public int getMinimalIndex() {
+		return this.minimalIndex;
 	}
 
 }

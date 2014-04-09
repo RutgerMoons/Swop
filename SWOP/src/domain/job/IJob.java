@@ -67,5 +67,9 @@ public interface IJob {
 	 */
 	public boolean isCompleted();
 	
+	public void setMinimalIndex(int index);
+	
+	public int getMinimalIndex();
+	
 	
 }
