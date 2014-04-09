@@ -17,5 +17,9 @@ public abstract class SchedulingAlgorithm {
 	public abstract PriorityQueue<Job> getCustomJobs();
 	
 	public abstract ArrayList<Job> getStandardJobs();
+	
+	public abstract void AddCustomJob(Job customJob);
+	
+	public abstract void AddStandardJob(Job standardJob);
 
 }

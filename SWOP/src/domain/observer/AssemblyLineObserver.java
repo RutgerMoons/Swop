@@ -1,23 +1,34 @@
 package domain.observer;
 
+import java.util.ArrayList;
+
 import domain.clock.UnmodifiableClock;
 
 public class AssemblyLineObserver {
 
-	private LogsAssemblyLine logger;
+	private ArrayList<LogsAssemblyLine> loggers;
 	
-	public AssemblyLineObserver(LogsAssemblyLine logger) {
+	public AssemblyLineObserver() {
+		this.loggers = new ArrayList<LogsAssemblyLine>();
+	}
+	
+	public void attachLogger(LogsAssemblyLine logger) {
 		if (logger == null) {
 			throw new IllegalArgumentException();
 		}
-		this.logger = logger;
+		loggers.add(logger);
+	}
+	
+	public void detachLogger(LogsAssemblyLine logger) {
+		if (logger == null) {
+			throw new IllegalArgumentException();
+		}
+		loggers.remove(logger);
 	}
 	
 	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfOrder) {
-		logger.updateCompletedOrder(estimatedTimeOfOrder);
+		for (LogsAssemblyLine logger : this.loggers) {
+			logger.updateCompletedOrder(estimatedTimeOfOrder);
+		}
 	}
-	
-	//TODO: list van loggers en hun methodes
-	
-	
 }

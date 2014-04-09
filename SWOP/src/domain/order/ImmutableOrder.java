@@ -100,4 +100,10 @@ public class ImmutableOrder implements IOrder {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public int getProductionTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
