@@ -173,6 +173,8 @@ public interface IClientCommunication {
 	 * Notify the user that all the tasks at the workbench he's working on are completed.
 	 */
 	public void showWorkBenchCompleted();
+
+	public void showInvalidModel();
 	
 	
 	

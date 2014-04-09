@@ -381,6 +381,11 @@ public class ClientCommunication implements IClientCommunication{
 		}	
 		
 	}
+
+	@Override
+	public void showInvalidModel() {
+		show(new ArrayList<String>(Arrays.asList("You created an invalid model, try again!")));
+	}
 }
 
  

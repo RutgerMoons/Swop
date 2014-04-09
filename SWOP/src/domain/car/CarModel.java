@@ -116,4 +116,12 @@ public class CarModel implements ICarModel {
 	public void setSpecification(CarModelSpecification template) {
 		this.specification = template;
 	}
+
+	public boolean isValid() {
+		for(CarOptionCategory type: CarOptionCategory.values()){
+			if((!type.isOptional() || forcedOptionalTypes.get(type)==false) && carOptions.get(type)==null )
+				return false;
+		}
+		return true;
+	}
 }
