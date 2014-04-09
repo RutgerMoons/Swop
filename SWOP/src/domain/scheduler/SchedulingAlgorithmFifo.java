@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
+import com.google.common.base.Optional;
+
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
@@ -16,51 +18,75 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	private PriorityQueue<Job> customJobs;
 	private PriorityQueue<Job> standardJobs;
 	private final int amountOfWorkBenches;
+	private ArrayList<Optional<Job>> jobsStartOfDay;
+	private ArrayList<Optional<Job>> history;
 	
 	public SchedulingAlgorithmFifo(int amountOfWorkBenches) {
 		customJobs = new PriorityQueue<>(0, new JobComparatorDeadLine());
 		standardJobs = new PriorityQueue<Job>(0, new JobComparatorOrderTime());
 		this.amountOfWorkBenches = amountOfWorkBenches;
+		this.jobsStartOfDay = new ArrayList<>();
+		history = new ArrayList<Optional<Job>>();
 	}
 
 	@Override
-	public void transform(PriorityQueue<Job> customJobs, ArrayList<Job> standardJobs) {
-		if(customJobs == null || standardJobs == null) {
+	public void transform(PriorityQueue<Job> customJobs, ArrayList<Job> standardJobs, ArrayList<Optional<Job>> history) {
+		if(customJobs == null || standardJobs == null || history == null) {
 			throw new IllegalArgumentException();
 		}
 		this.customJobs = customJobs;
+		this.history = history;
 		this.standardJobs.addAll(standardJobs);
 	}
 
 	@Override
-	public Job retrieveNext(int currentTotalProductionTime, int minutesTillEndOfDay, UnmodifiableClock currentTime) 
+	public Optional<Job> retrieveNext(int currentTotalProductionTime, int minutesTillEndOfDay, UnmodifiableClock currentTime) 
 			throws NoSuitableJobFoundException {
-		/*
+		/* 
+		 * step 0: check if jobsStartOfDay contains any jobs..
 		 * step 1: check if you have to force some custom jobs
 		 * step 2: check if you can put the first car on the assemblyLine
 		 * step 3: check if custom job can be put on the assemblyLine
 		 */
+		//Step 0:
+		if (jobsStartOfDay.size() > 0) {
+			Optional<Job> toReturn = jobsStartOfDay.remove(0);
+			addToHistory(toReturn);
+			return toReturn;
+		}
+		
 		Job toSchedule = hasToForceCustomJob(currentTime);
 		//Step 1:
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(toSchedule);
-			return toSchedule;
+			Optional<Job> toReturn = Optional.fromNullable(toSchedule);
+			addToHistory(toReturn);
+			return toReturn;
 		}
 		
 		//Step 2:
 		if (canAssembleJobInTime(standardJobs.peek(), currentTotalProductionTime, minutesTillEndOfDay)) {
-			return standardJobs.poll();
+			Optional<Job> toReturn = Optional.fromNullable(standardJobs.poll());
+			addToHistory(toReturn);
+			return toReturn;
 		}
 		
 		//Step 3:
 		Job jobWithHighestWorkBenchIndex = getJobWithHighestWorkBenchIndex();
 		if (canAssembleJobInTime(jobWithHighestWorkBenchIndex, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(jobWithHighestWorkBenchIndex);
-			return jobWithHighestWorkBenchIndex;
+			Optional<Job> toReturn = Optional.fromNullable(jobWithHighestWorkBenchIndex);
+			addToHistory(toReturn);
+			return toReturn;
 		}
 		throw new NoSuitableJobFoundException();
 	}
 	
+	@Override
+	protected void addToHistory(Optional<Job> job) {
+		this.addToList(job, this.history);
+		}
+
 	/**
 	 * If a custom job has to be forced, return the most urgent
 	 * return null if no job has to be forced.
@@ -127,6 +153,77 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			throw new IllegalArgumentException();
 		}
 		this.standardJobs.add(standardJob);
+	}
+
+	@Override
+	public void startNewDay() {
+		this.jobsStartOfDay = new ArrayList<>();
+		for (int i = amountOfWorkBenches - 1; i > 0; i--) {
+			Optional<Job> toAdd = Optional.absent();
+			for (Iterator<Job> iterator = customJobs.iterator(); iterator.hasNext();) {
+				Job job = (Job) iterator.next();
+				if (job.getFirstWorkbenchIndex() == i) {
+					toAdd = Optional.fromNullable(job);
+					break;
+				}
+			}
+			jobsStartOfDay.add(toAdd);
+		}
+		
+	}
+
+	@Override
+	public int getEstimatedTimeInMinutes(Job job, UnmodifiableClock currentTime) {
+		if (job == null || currentTime == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		if(customJobs.contains(job)) {
+			try {
+				return job.getOrder().getDeadline().minus(currentTime);
+			} 
+			catch (NotImplementedException e) {	}
+		}
+		ArrayList<Optional<Job>> previousJobs = this.getHistory();
+		int totalProductionTime = 0;
+		ArrayList<Job> simulatedAssemblyLine = new ArrayList<>();
+		for (Iterator<Job> iterator = customJobs.iterator(); iterator.hasNext();) {
+			Job j = (Job) iterator.next();
+			if (!j.equals(job)) {
+				
+				
+			}
+		}
+		return 0;
+	}
+
+	
+	private int getMaximum(ArrayList<Optional<Job>> list){
+		int biggest = 0;
+		for(Optional<Job> job : list){
+			if(job.isPresent())
+		}
+	}
+	
+	
+	
+	@Override
+	public ArrayList<Optional<Job>> getHistory() {
+		ArrayList<Optional<Job>> historyCopy = new ArrayList<>();
+		historyCopy.addAll(this.history);
+		return historyCopy;
+	}
+
+	@Override
+	protected void addToList(Optional<Job> job, ArrayList<Optional<Job>> list) {
+		if (job == null || list == null) {
+			throw new IllegalArgumentException();
+		}
+		history.add(job);
+		if (list.size() > this.amountOfWorkBenches) {
+			list.remove(0);
+		}
+		
 	}
 
 }

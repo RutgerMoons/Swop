@@ -14,15 +14,15 @@ import domain.car.CarPartCatalogueFiller;
 import domain.clock.Clock;
 import domain.exception.ImmutableException;
 import domain.exception.RoleNotYetAssignedException;
-<<<<<<< HEAD
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.ITask;
 import domain.job.Task;
-=======
->>>>>>> origin/stef
-import domain.order.StandardOrder;
+import domain.log.Logger;
+import domain.observer.AssemblyLineObserver;
+import domain.observer.ClockObserver;
 import domain.order.OrderBook;
+import domain.order.StandardOrder;
 import domain.users.AccessRight;
 import domain.users.User;
 import domain.users.UserBook;
@@ -34,13 +34,24 @@ public class Facade {
 	private CarModelCatalogue carModelCatalogue;
 	private CarPartCatalogue carPartCatalogue;
 	private Clock clock;
+	private ClockObserver clockObserver;
 	private OrderBook orderBook;
 	private UserBook userBook;
 	private UserFactory userFactory;
+	private AssemblyLineObserver assemblyLineObserver;
+	private Logger logger;
 
 	public Facade() {
 		this.clock = new Clock();
-		this.assemblyLine = new AssemblyLine(clock);
+		this.clockObserver = new ClockObserver();
+		this.clock.attachObserver(clockObserver);
+		
+		this.assemblyLine = new AssemblyLine(clockObserver);
+		this.assemblyLineObserver = new AssemblyLineObserver();
+		this.assemblyLine.attachObserver(assemblyLineObserver);
+		
+		this.logger = new Logger(2, clockObserver, assemblyLineObserver);
+		
 		this.carPartCatalogue = new CarPartCatalogue();
 		this.carModelCatalogue = new CarModelCatalogue(carPartCatalogue);
 		this.orderBook = new OrderBook(assemblyLine);
@@ -69,13 +80,15 @@ public class Facade {
 		return assemblyLine.canAdvance();
 	}
 
-	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex,
-			int taskIndex) {
+	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex) {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
 		Task task = (Task) workbench.getCurrentTasks().get(taskIndex);
 		for(IAction action: task.getActions()){
 			Action act = (Action) action; 
 			act.setCompleted(true);
+		}
+		if (this.canAssemblyLineAdvance()) {
+			this.advanceAssemblyLine();
 		}
 	}
 

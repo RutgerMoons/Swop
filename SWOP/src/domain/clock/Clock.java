@@ -112,7 +112,7 @@ public class Clock {
 	
 	public void notifyObserversStartNewDay() {
 		for (ClockObserver observer : observers) {
-			observer.startNewDay();
+			observer.startNewDay(getUnmodifiableClock());
 		}
 	}
 

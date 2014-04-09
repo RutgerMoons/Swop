@@ -32,13 +32,11 @@ import domain.scheduler.Scheduler;
  */
 public class AssemblyLine {
 
-	private Clock clock;
 	private List<IJob> currentJobs;
 	private int overtime; //TODO -> verplaats naar shiften
 	private List<IWorkBench> workbenches;
 	private ArrayList<AssemblyLineObserver> observers;
 	private Scheduler scheduler;
-	private ClockObserver clockObserver;
 
 	/**
 	 * Construct a new AssemblyLine.
@@ -48,16 +46,11 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             If clock==null
 	 */
-	public AssemblyLine(Clock clock, ClockObserver clockObserver) {
-		if (clock == null || clockObserver == null)
-			throw new IllegalArgumentException();
-		this.clock = clock;
+	public AssemblyLine(ClockObserver clockObserver) {
 		workbenches = new ArrayList<IWorkBench>();
 		currentJobs = new ArrayList<IJob>();
 		initializeWorkbenches();
-		this.scheduler = new Scheduler(workbenches.size());
-		this.clockObserver = clockObserver;
-		clockObserver.attachLogger(this.scheduler);
+		this.scheduler = new Scheduler(workbenches.size(), clockObserver);
 	}
 
 	/**
@@ -272,15 +265,6 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * Get the clock.
-	 * 
-	 * @return The Clock that's available.
-	 */
-	public Clock getClock() {
-		return clock;
-	}
-
-	/**
 	 * Get all the pending jobs for this AssemblyLine.
 	 * 
 	 * @return A list representing the current jobs.
@@ -295,7 +279,7 @@ public class AssemblyLine {
 	 * @return An AssemblyLine representing the next state of the assemblyline.
 	 */
 	public AssemblyLine getFutureAssemblyLine() {
-		AssemblyLine line = new AssemblyLine(getClock(), clockObserver);
+		AssemblyLine line = new AssemblyLine(clockObserver);
 		ArrayList<IWorkBench> clones = new ArrayList<>();
 		line.setCurrentJobs(getCurrentJobs());
 		for (IWorkBench bench : getWorkbenches()) {
@@ -464,13 +448,17 @@ public class AssemblyLine {
 		}
 	}
 	
-	private Job retrieveNextJob() throws NoSuitableJobFoundException {
+	private Optional<Job> retrieveNextJob() throws NoSuitableJobFoundException {
 		return this.scheduler.retrieveNextJob(getCurrentTotalProductionTime());
 	}
 
 	private int getCurrentTotalProductionTime() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public int getEstimatedTimeInMinutes(Job job, UnmodifiableClock currentTime) {
+		return this.scheduler.getEstimatedTimeInMinutes(job);
 	}
 	
 }

@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import com.google.common.base.Optional;
+
 import domain.car.CarPart;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.Job;
+import domain.observer.ClockObserver;
 import domain.observer.LogsClock;
 
 public class Scheduler implements LogsClock {
@@ -17,7 +20,12 @@ public class Scheduler implements LogsClock {
 	private ArrayList<Shift> shifts;
 	private UnmodifiableClock clock;
 	
-	public Scheduler(int amountOfWorkBenches) {
+	public Scheduler(int amountOfWorkBenches, ClockObserver clockObserver) {
+		if (clockObserver == null) {
+			throw new IllegalArgumentException();
+		}
+		// this observer should stay referenced in the facade to avoid garbage collection
+		clockObserver.attachLogger(this);
 		this.amountOfWorkBenches = amountOfWorkBenches;
 		switchToFifo();
 		shifts = new ArrayList<>();
@@ -42,8 +50,9 @@ public class Scheduler implements LogsClock {
 		else {
 			PriorityQueue<Job> customJobs = this.schedulingAlgorithm.getCustomJobs();
 			ArrayList<Job> standardJobs = this.schedulingAlgorithm.getStandardJobs();
+			ArrayList<Optional<Job>> history = this.schedulingAlgorithm.getHistory();
 			this.schedulingAlgorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches);
-			this.schedulingAlgorithm.transform(customJobs, standardJobs);
+			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
 	
@@ -54,14 +63,17 @@ public class Scheduler implements LogsClock {
 		else {
 			PriorityQueue<Job> customJobs = this.schedulingAlgorithm.getCustomJobs();
 			ArrayList<Job> standardJobs = this.schedulingAlgorithm.getStandardJobs();
+			ArrayList<Optional<Job>> history = this.schedulingAlgorithm.getHistory();
 			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carParts, amountOfWorkBenches);
-			this.schedulingAlgorithm.transform(customJobs, standardJobs);
+			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
 	
-	public Job retrieveNextJob(int currentTotalProductionTime) throws NoSuitableJobFoundException {
-		// einduur laatste shift - beginuur eerste shift
-		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift() - shifts.get(0).getStartOfShift();
+	public Optional<Job> retrieveNextJob(int currentTotalProductionTime) throws NoSuitableJobFoundException {
+		// (einduur laatste shift - beginuur eerste shift) - currentTime
+		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
+									- shifts.get(0).getStartOfShift()
+									- this.clock.getMinutes();
 		return this.schedulingAlgorithm.retrieveNext(currentTotalProductionTime, minutesTillEndOfDay, clock);
 	}
 
@@ -71,9 +83,16 @@ public class Scheduler implements LogsClock {
 	}
 
 	@Override
-	public void startNewDay() {
-		// TODO: moet hier iets staan?
-		// eigenlijk moeten we hier een nieuwe klok maken/krijgen die geïntialiseerd wordt op het startuur van shift 1
+	public void startNewDay(UnmodifiableClock newDay) {
+		if (newDay == null) {
+			throw new IllegalArgumentException();
+		}
+		this.clock = newDay;
+		this.schedulingAlgorithm.startNewDay();
+	}
+	
+	public int getEstimatedTimeInMinutes(Job job) {
+		return this.schedulingAlgorithm.getEstimatedTimeInMinutes(job, this.clock);
 	}
 	
 }
