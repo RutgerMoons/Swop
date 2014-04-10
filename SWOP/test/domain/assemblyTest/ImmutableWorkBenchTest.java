@@ -16,17 +16,15 @@ import domain.assembly.IWorkBench;
 import domain.assembly.ImmutableWorkBench;
 import domain.assembly.WorkBench;
 import domain.car.CarModel;
-import domain.car.CarPart;
-import domain.car.CarPartType;
+import domain.car.CarModelSpecification;
+import domain.car.CarOption;
+import domain.car.CarOptionCategory;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
-<<<<<<< HEAD
 import domain.job.Action;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
-=======
->>>>>>> origin/stef
 import domain.order.StandardOrder;
 
 
@@ -44,15 +42,17 @@ public class ImmutableWorkBenchTest {
 	}
 	@Test
 	public void test() throws AlreadyInMapException, ImmutableException {
-		CarModel model = new CarModel("Volkswagen");
-		
-		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
-		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
-		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		Set<CarOption> parts = new HashSet<>();
+		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
+		CarModel model = new CarModel(template);
+		model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
+		model.addCarPart(new CarOption("sedan",  CarOptionCategory.BODY));
+		model.addCarPart(new CarOption("red",  CarOptionCategory.COLOR));
+		model.addCarPart(new CarOption("standard 2l 4 cilinders",  CarOptionCategory.ENGINE));
+		model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
+		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
+		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
 		
 		assertEquals("paintbooth", immutable.getWorkbenchName());
 		assertTrue(immutable.getResponsibilities().contains("paint"));
@@ -99,5 +99,12 @@ public class ImmutableWorkBenchTest {
 	@Test(expected=ImmutableException.class)
 	public void testImmutable5() throws ImmutableException{
 		immutable.chooseTasksOutOfJob();
+	}
+	
+	@Test
+	public void testNoOptional() throws ImmutableException{
+		Optional<IJob> optional = Optional.absent();
+		bench.setCurrentJob(optional);
+		assertFalse(immutable.getCurrentJob().isPresent());
 	}
 }

@@ -2,6 +2,7 @@ package domain.log;
 
 import java.util.List;
 
+import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
@@ -37,6 +38,7 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	@Override
 	public void startNewDay(UnmodifiableClock newDay) {
 		this.logHistoryDays.shift();
+		currentTime = newDay;
 	}
 
 	@Override

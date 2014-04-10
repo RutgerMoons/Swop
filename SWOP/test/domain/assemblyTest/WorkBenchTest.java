@@ -10,28 +10,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
-
 import org.junit.Before;
 import org.junit.Test;
-
-
 
 import com.google.common.base.Optional;
 
 import domain.assembly.WorkBench;
 import domain.car.CarModel;
-import domain.car.CarPart;
-import domain.car.CarPartType;
+import domain.car.CarModelSpecification;
+import domain.car.CarOption;
+import domain.car.CarOptionCategory;
 import domain.exception.AlreadyInMapException;
-<<<<<<< HEAD
 import domain.job.Action;
 import domain.job.IJob;
 import domain.job.ITask;
 import domain.job.Job;
 import domain.job.Task;
-=======
->>>>>>> origin/stef
 import domain.order.StandardOrder;
 
 
@@ -42,14 +36,17 @@ public class WorkBenchTest {
 	@Before
 	public void initialize() throws AlreadyInMapException{
 		workBench = new WorkBench(new HashSet<String>(), "name");
-		model = new CarModel("Volkswagen");
-		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
-		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
-		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
+		Set<CarOption> parts = new HashSet<>();
+		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
+		model = new CarModel(template);
+		model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
+		model.addCarPart(new CarOption("sedan",  CarOptionCategory.BODY));
+		model.addCarPart(new CarOption("red",  CarOptionCategory.COLOR));
+		model.addCarPart(new CarOption("standard 2l 4 cilinders",  CarOptionCategory.ENGINE));
+		model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
+		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
+		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
 	}
 	
 	@Test
