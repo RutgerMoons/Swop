@@ -36,11 +36,11 @@ public class Scheduler implements LogsClock {
 		shifts.add(shift2);
 	}
 	
-	public void addCustomJob(Job customJob) {
+	public void addCustomJob(IJob customJob) {
 		this.schedulingAlgorithm.AddCustomJob(customJob);
 	}
 	
-	public void addStandardJob(Job standardJob) {
+	public void addStandardJob(IJob standardJob) {
 		this.schedulingAlgorithm.AddStandardJob(standardJob);
 	}
 	

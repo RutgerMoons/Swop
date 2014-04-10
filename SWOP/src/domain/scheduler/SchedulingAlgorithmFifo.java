@@ -10,7 +10,6 @@ import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.IJob;
-import domain.job.Job;
 import domain.job.JobComparatorDeadLine;
 import domain.job.JobComparatorOrderTime;
 
@@ -131,7 +130,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		while (index >= 0) {
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();
-				if (job.getFirstWorkbenchIndex() == index) {
+				if (job.getMinimalIndex() == index) {
 					return job;
 				}
 			}
@@ -178,7 +177,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			Optional<IJob> toAdd = Optional.absent();
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();
-				if (job.getFirstWorkbenchIndex() == i) {
+				if (job.getMinimalIndex() == i) {
 					toAdd = Optional.fromNullable(job);
 					break;
 				}

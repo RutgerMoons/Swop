@@ -21,20 +21,23 @@ public class Action implements IAction {
 		this.setDescription(description);
 	}
 
-	
+	@Override
 	public boolean isCompleted() {
 		return isCompleted;
 	}
 
+	@Override
 	public void setCompleted(boolean isCompleted) {
 		this.isCompleted = isCompleted;
 	}
 
 	
+	@Override
 	public String getDescription() {
 		return description;
 	}
 
+	@Override
 	public void setDescription(String description) {
 		if (description == null || description.isEmpty())
 			throw new IllegalArgumentException();

@@ -26,8 +26,8 @@ public class OrderBook {
 	 */
 	// private HashMap<String, ArrayList<Order>> pendingOrders;
 	// private HashMap<String, ArrayList<Order>> completedOrders;
-	private Multimap<String, StandardOrder> pendingOrders;
-	private Multimap<String, StandardOrder> completedOrders;
+	private Multimap<String, IOrder> pendingOrders;
+	private Multimap<String, IOrder> completedOrders;
 	private AssemblyLine assemblyLine;
 
 	public OrderBook(AssemblyLine assemblyLine) {
@@ -38,16 +38,16 @@ public class OrderBook {
 	/**
 	 * Method for retrieving all the pending orders. An Immutable MultiMap will be returned.
 	 */
-	public Multimap<String, StandardOrder> getPendingOrders() {
-		return new ImmutableListMultimap.Builder<String, StandardOrder>().putAll(pendingOrders).build();
+	public Multimap<String, IOrder> getPendingOrders() {
+		return new ImmutableListMultimap.Builder<String, IOrder>().putAll(pendingOrders).build();
 	}
 
 
 	/**
 	 * Method for retrieving all the completed orders. An Immutable MultiMap will be returned.
 	 */
-	public Multimap<String, StandardOrder> getCompletedOrders() {
-		return new ImmutableListMultimap.Builder<String, StandardOrder>().putAll(completedOrders).build();
+	public Multimap<String, IOrder> getCompletedOrders() {
+		return new ImmutableListMultimap.Builder<String, IOrder>().putAll(completedOrders).build();
 	}
 
 	/**
@@ -59,12 +59,12 @@ public class OrderBook {
 	 * 
 	 * @param order
 	 */
-	public void updateOrderBook(StandardOrder order) {
+	public void updateOrderBook(IOrder order) {
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
 
-		List<StandardOrder> pending = (List<StandardOrder>) this.pendingOrders.get(order.getGarageHolder());
+		List<IOrder> pending = (List<IOrder>) this.pendingOrders.get(order.getGarageHolder());
 		if (pending.contains(order)) {
 			pending.remove(order);
 			this.completedOrders.put(order.getGarageHolder(), order);
@@ -90,11 +90,14 @@ public class OrderBook {
 	 * @param order
 	 * @throws ImmutableException 
 	 */
-	public void addOrder(StandardOrder order) throws ImmutableException {
-
+	public void addStandardOrder(StandardOrder order) throws ImmutableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-
-		assemblyLine.addMultipleJobs(assemblyLine.convertOrderToJob(order));
-		assemblyLine.calculateEstimatedTime(order);
+		order.setEstimatedTime(assemblyLine.convertStandardOrderToJob(order));
+	}
+	
+	public void addCustomOrder(CustomOrder order) throws ImmutableException {
+		this.pendingOrders.put(order.getGarageHolder(), order);
+		order.setEstimatedTime(assemblyLine.convertCustomOrderToJob(order));
+		
 	}
 }

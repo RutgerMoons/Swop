@@ -52,11 +52,9 @@ public interface IOrder {
 	 * 			If the IOrder is an ImmutableOrder.
 	 */
 	public void setEstimatedTime(UnmodifiableClock clock) throws ImmutableException;
-	
-	// TODO 
+	 
 	public UnmodifiableClock getOrderTime();
 	
-	// TODO
 	public void setOrderTime(UnmodifiableClock clock) throws ImmutableException;
 	
 	/**

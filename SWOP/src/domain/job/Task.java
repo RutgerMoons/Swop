@@ -25,11 +25,12 @@ public class Task implements ITask {
 		this.setTaskDescription(taskDescription);
 	}
 
-	
+	@Override
 	public List<IAction> getActions() {
 		return actionList;
 	}
 
+	@Override
 	public void setActions(List<IAction> actions) {
 		if (actions == null)
 			throw new IllegalArgumentException();
@@ -37,6 +38,7 @@ public class Task implements ITask {
 			this.actionList = actions;
 	}
 
+	@Override
 	public void addAction(IAction action) {
 		if (action == null)
 			throw new IllegalArgumentException();
@@ -45,6 +47,7 @@ public class Task implements ITask {
 	}
 
 	
+	@Override
 	public boolean isCompleted() {
 		for (IAction action : getActions())
 			if (!action.isCompleted())
@@ -53,10 +56,12 @@ public class Task implements ITask {
 	}
 
 	
+	@Override
 	public String getTaskDescription() {
 		return taskDescription;
 	}
 
+	@Override
 	public void setTaskDescription(String taskDescription) {
 		if (taskDescription == null || taskDescription.isEmpty())
 			throw new IllegalArgumentException();

@@ -6,8 +6,6 @@ import java.util.Map;
 
 import domain.exception.RoleNotYetAssignedException;
 
-
-
 /**
  * Class that is responsible for keeping track of all the users in the system.
  */

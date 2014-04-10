@@ -21,7 +21,9 @@ import domain.job.Job;
 import domain.job.Task;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+import domain.order.CustomOrder;
 import domain.order.IOrder;
+import domain.order.StandardOrder;
 import domain.scheduler.Scheduler;
 
 /**
@@ -83,8 +85,6 @@ public class AssemblyLine {
 			throw new IllegalStateException();
 		}
 		
-		Optional<IJob> newJob = this.scheduler.retrieveNextJob();
-		
 		Optional<IJob> lastJob = Optional.absent();
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			IWorkBench bench = getWorkbenches().get(i);
@@ -129,7 +129,6 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	//TODO: lowest index..
 	public List<IJob> convertOrderToJob(IOrder order) throws ImmutableException {
 		if (order == null) {
 			throw new IllegalArgumentException();
@@ -144,19 +143,49 @@ public class AssemblyLine {
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);
 				job.addTask(task);
-				//TODO: getminimalworkbench
 			}
+			job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
 			jobs.add(job);
 		}
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
 	
-	public void convertCustomOrderToJob() {
-		//TODO
+	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException {
+		if (order == null) {
+			throw new IllegalArgumentException();
+		}
+		List<IJob> jobs = convertOrderToJob(order);
+		for (IJob job : jobs) {
+			this.scheduler.addCustomJob(job);
+		}
+		
+		return scheduler.getEstimatedTimeInMinutes(jobs.get(0));
 	}
 	
-	public void convertStandardOrderToJob() {
-		//TODO
+	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException {
+		if (order == null) {
+			throw new IllegalArgumentException();
+		}
+		List<IJob> jobs = convertOrderToJob(order);
+		for (IJob job : jobs) {
+			this.scheduler.addStandardJob(job);
+		}
+		
+		return scheduler.getEstimatedTimeInMinutes(jobs.get(0));
+	}
+	
+	public int getMinimalIndexOfWorkbench(IJob job) {
+		if (job == null) {
+			throw new IllegalArgumentException();
+		}
+		for (int i = 0; i < getWorkbenches().size(); i++) {
+			for (ITask task : job.getTasks()) {
+				if (getWorkbenches().get(i).getResponsibilities().contains(task.getTaskDescription())) {
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 
 	public ArrayList<Integer> getBlockingWorkBenches() {
@@ -254,10 +283,6 @@ public class AssemblyLine {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}
-	}
-	
-	private Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException {
-		return this.scheduler.retrieveNextJob();
 	}
 	
 	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) {

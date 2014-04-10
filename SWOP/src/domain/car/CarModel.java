@@ -34,6 +34,7 @@ public class CarModel implements ICarModel {
 	/**
 	 * Returns all the CarOptions of which this model currently consists.
 	 */
+	@Override
 	public Map<CarOptionCategory, CarOption> getCarParts() {
 		return carOptions;
 	}
@@ -43,6 +44,7 @@ public class CarModel implements ICarModel {
 	 * @throws AlreadyInMapException
 	 * 			If the model already has a CarOption of this Type.
 	 */
+	@Override
 	public void addCarPart(CarOption part) throws AlreadyInMapException {
 		if (part == null)
 			throw new IllegalArgumentException();
@@ -101,18 +103,22 @@ public class CarModel implements ICarModel {
 		return true;
 	}
 
+	@Override
 	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() {
 		return forcedOptionalTypes;
 	}
 
+	@Override
 	public void addForcedOptionalType(CarOptionCategory type, boolean bool){
 		forcedOptionalTypes.put(type, bool);
 	}
 
+	@Override
 	public CarModelSpecification getSpecification() {
 		return specification;
 	}
 
+	@Override
 	public void setSpecification(CarModelSpecification template) {
 		this.specification = template;
 	}

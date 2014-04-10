@@ -4,7 +4,6 @@ import domain.car.CustomCarModel;
 import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
-import domain.exception.NotImplementedException;
 
 public class CustomOrder implements IOrder {
 

@@ -6,8 +6,6 @@ import domain.exception.NotImplementedException;
 
 public class JobComparatorDeadLine implements Comparator<IJob> {
 
-	
-	//TODO: elegantere oplossing?
 	@Override
 	public int compare(IJob o1, IJob o2) {
 		try {
