@@ -67,7 +67,7 @@ public interface IJob {
 	 */
 	public boolean isCompleted();
 	
-	public void setMinimalIndex(int index);
+	public void setMinimalIndex(int index) throws ImmutableException;
 	
 	public int getMinimalIndex();
 	
