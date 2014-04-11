@@ -123,6 +123,11 @@ public class CarModel implements ICarModel {
 		this.specification = template;
 	}
 
+	/**
+	 * Checks if this model is valid.
+	 * @return
+	 * 		If the model contains a CarOption of each mandatory CarOptionCategory.
+	 */
 	public boolean isValid() {
 		for(CarOptionCategory type: CarOptionCategory.values()){
 			if((!type.isOptional() || forcedOptionalTypes.get(type)==false) && carOptions.get(type)==null )
