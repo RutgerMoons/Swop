@@ -41,7 +41,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	@Override
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
-			throws NoSuitableJobFoundException {
+			throws NoSuitableJobFoundException, NotImplementedException {
 		/* 
 		 * step 0: check if jobsStartOfDay contains any jobs..
 		 * step 1: check if you have to force some custom jobs
@@ -83,7 +83,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		throw new NoSuitableJobFoundException();
 	}
 	
-	private int getCurrentTotalProductionTime() {
+	private int getCurrentTotalProductionTime() throws NotImplementedException {
 		int time = 0;
 		ArrayList<Optional<IJob>> historyCopy = getHistory();
 		if (historyCopy.size() == 0) {
@@ -121,7 +121,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		return null;
 	}
 	
-	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) {
+	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) throws NotImplementedException {
 		return job.getOrder().getProductionTime() >= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 	
@@ -188,7 +188,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) {
+	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) throws NotImplementedException {
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -221,7 +221,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	
-	private int getMaximum(ArrayList<Optional<IJob>> list){
+	private int getMaximum(ArrayList<Optional<IJob>> list) throws NotImplementedException{
 		int biggest = 0;
 		for(Optional<IJob> job : list){
 			int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getSpecification().getTimeAtWorkBench();

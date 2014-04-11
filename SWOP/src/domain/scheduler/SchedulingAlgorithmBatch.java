@@ -11,19 +11,20 @@ import domain.car.CarOption;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
+import domain.job.IJob;
 import domain.job.Job;
 import domain.job.JobComparatorDeadLine;
 import domain.job.JobComparatorOrderTime;
 
 public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
-	private PriorityQueue<Job> customJobs;
-	private PriorityQueue<Job> standardJobs;
-	private PriorityQueue<Job> batchJobs;
+	private PriorityQueue<IJob> customJobs;
+	private PriorityQueue<IJob> standardJobs;
+	private PriorityQueue<IJob> batchJobs;
 	private List<CarOption> carOption;
 	private final int amountOfWorkBenches;
-	private ArrayList<Optional<Job>> jobsStartOfDay;
-	private ArrayList<Optional<Job>> history;
+	private ArrayList<Optional<IJob>> jobsStartOfDay;
+	private ArrayList<Optional<IJob>> history;
 	
 	public SchedulingAlgorithmBatch(List<CarOption> carParts, int amountOfWorkBenches) {
 		if (carParts == null) {
@@ -32,21 +33,21 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		this.carOption = carParts;
 		this.amountOfWorkBenches = amountOfWorkBenches;
 		customJobs = new PriorityQueue<>(0, new JobComparatorDeadLine());
-		standardJobs = new PriorityQueue<Job>(0, new JobComparatorOrderTime());
-		batchJobs = new PriorityQueue<Job>(0, new JobComparatorOrderTime());
+		standardJobs = new PriorityQueue<IJob>(0, new JobComparatorOrderTime());
+		batchJobs = new PriorityQueue<IJob>(0, new JobComparatorOrderTime());
 		jobsStartOfDay = new ArrayList<>();
-		history = new ArrayList<Optional<Job>>();
+		history = new ArrayList<Optional<IJob>>();
 	}
 	
 	@Override
-	public void transform(PriorityQueue<Job> customJobs, ArrayList<Job> jobs, ArrayList<Optional<Job>> history) {
-		if(customJobs == null || jobs == null || history == null){
+	public void transform(PriorityQueue<IJob> customJobs, ArrayList<IJob> standardJobs, ArrayList<Optional<IJob>> history) {
+		if(customJobs == null || standardJobs == null || history == null){
 			throw new IllegalArgumentException();
 		}
 		this.customJobs = customJobs;
 		this.history = history;
 		//split jobs into the two remaining queues based on carParts
-		for(Job job : jobs){
+		for(IJob job : standardJobs){
 			if(job.getOrder().getDescription().getCarParts().values().containsAll(this.carOption)){
 				this.batchJobs.add(job);
 			}
@@ -57,39 +58,40 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public Optional<Job> retrieveNext(int currentTotalProductionTime, int minutesTillEndOfDay, UnmodifiableClock currentTime) 
-			throws NoSuitableJobFoundException {
+	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
+			throws NoSuitableJobFoundException, NotImplementedException {
 		/*
 		 * step 1: check if you have to force some custom jobs
 		 * step 2: check if you can put the first car on the assemblyLine
 		 * step 3: check if custom job can be put on the assemblyLine
 		 */
-		Job toSchedule = hasToForceCustomJob(currentTime);
+		IJob toSchedule = hasToForceCustomJob(currentTime);
 		//Step 1:
+		//TODO currentTotalProductionTime implementeren op de 1 of andere manier
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(toSchedule);
-			Optional<Job> toReturn = Optional.fromNullable(toSchedule);
+			Optional<IJob> toReturn = Optional.fromNullable(toSchedule);
 			addToHistory(toReturn);
 			return toReturn;
 		}
 		
 		//Step 2:
 		if (canAssembleJobInTime(batchJobs.peek(), currentTotalProductionTime, minutesTillEndOfDay)) {
-			Optional<Job> toReturn = Optional.fromNullable(batchJobs.poll());
+			Optional<IJob> toReturn = Optional.fromNullable(batchJobs.poll());
 			addToHistory(toReturn);
 			return toReturn;
 		}
 		if (canAssembleJobInTime(standardJobs.peek(), currentTotalProductionTime, minutesTillEndOfDay)) {
-			Optional<Job> toReturn = Optional.fromNullable(standardJobs.poll());
+			Optional<IJob> toReturn = Optional.fromNullable(standardJobs.poll());
 			addToHistory(toReturn);
 			return toReturn;
 		}
 		
 		//Step 3:
-		Job jobWithHighestWorkBenchIndex = getJobWithHighestWorkBenchIndex();
+		IJob jobWithHighestWorkBenchIndex = getJobWithHighestWorkBenchIndex();
 		if (canAssembleJobInTime(jobWithHighestWorkBenchIndex, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(jobWithHighestWorkBenchIndex);
-			Optional<Job> toReturn = Optional.fromNullable(jobWithHighestWorkBenchIndex);
+			Optional<IJob> toReturn = Optional.fromNullable(jobWithHighestWorkBenchIndex);
 			addToHistory(toReturn);
 			return toReturn;
 		}
@@ -100,9 +102,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	 * If a custom job has to be forced, return the most urgent
 	 * return null if no job has to be forced.
 	 */
-	private Job hasToForceCustomJob(UnmodifiableClock currentTime) {
+	private IJob hasToForceCustomJob(UnmodifiableClock currentTime) {
 		int idx = 0;
-		for (Job job : customJobs) {
+		for (IJob job : customJobs) {
 			try {
 				if (job.getOrder().getDeadline().minus(currentTime) - (idx * job.getOrder().getProductionTime()) <= 0) {
 					return job;
@@ -115,16 +117,16 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		return null;
 	}
 	
-	private boolean canAssembleJobInTime(Job job, int currentTotalProductionTime, int minutesTillEndOfDay) {
+	private boolean canAssembleJobInTime(Job job, int currentTotalProductionTime, int minutesTillEndOfDay) throws NotImplementedException {
 		return job.getOrder().getProductionTime() >= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 	
-	private Job getJobWithHighestWorkBenchIndex() {
+	private IJob getJobWithHighestWorkBenchIndex() {
 		int index = this.amountOfWorkBenches - 1;
 		while (index >= 0) {
-			for (Iterator<Job> iterator = customJobs.iterator(); iterator.hasNext();) {
-				Job job = (Job) iterator.next();
-				if (job.getFirstWorkbenchIndex() == index) {
+			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
+				IJob job = iterator.next();
+				if (job.getMinimalIndex() == index) {
 					return job;
 				}
 			}
@@ -135,22 +137,22 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public PriorityQueue<Job> getCustomJobs() {
-		PriorityQueue<Job> pq = new PriorityQueue<>(customJobs.size(), new JobComparatorDeadLine());
+	public PriorityQueue<IJob> getCustomJobs() {
+		PriorityQueue<IJob> pq = new PriorityQueue<>(customJobs.size(), new JobComparatorDeadLine());
 		pq.addAll(this.customJobs);
 		return pq;
 	}
 
 	@Override
-	public ArrayList<Job> getStandardJobs() {
-		ArrayList<Job> list = new ArrayList<>();
+	public ArrayList<IJob> getStandardJobs() {
+		ArrayList<IJob> list = new ArrayList<>();
 		list.addAll(this.standardJobs);
 		list.addAll(this.batchJobs);
 		return list;
 	}
 
 	@Override
-	public void AddCustomJob(Job customJob) {
+	public void AddCustomJob(IJob customJob) {
 		if (customJob == null) {
 			throw new IllegalArgumentException();
 		}
@@ -158,7 +160,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public void AddStandardJob(Job standardJob) {
+	public void AddStandardJob(IJob standardJob) {
 		if (standardJob == null) {
 			throw new IllegalArgumentException();
 		}
@@ -174,10 +176,10 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	public void startNewDay() {
 		this.jobsStartOfDay = new ArrayList<>();
 		for (int i = amountOfWorkBenches - 1; i > 0; i--) {
-			Optional<Job> toAdd = Optional.absent();
-			for (Iterator<Job> iterator = customJobs.iterator(); iterator.hasNext();) {
-				Job job = (Job) iterator.next();
-				if (job.getFirstWorkbenchIndex() == i) {
+			Optional<IJob> toAdd = Optional.absent();
+			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
+				IJob job = iterator.next();
+				if (job.getMinimalIndex() == i) {
 					toAdd = Optional.fromNullable(job);
 					break;
 				}
@@ -188,7 +190,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(Job job, UnmodifiableClock currentTime) {
+	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) throws NotImplementedException {
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -199,10 +201,10 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			} 
 			catch (NotImplementedException e) {	}
 		}
-		ArrayList<Optional<Job>> previousJobs = this.getHistory();
+		ArrayList<Optional<IJob>> previousJobs = this.getHistory();
 		int totalProductionTime = 0;
-		for (Iterator<Job> iterator = batchJobs.iterator(); iterator.hasNext();) {
-			Job j = (Job) iterator.next();
+		for (Iterator<IJob> iterator = batchJobs.iterator(); iterator.hasNext();) {
+			IJob j = iterator.next();
 			if (!j.equals(job)) {
 			    addToList(Optional.fromNullable(j), previousJobs);
 				totalProductionTime += this.getMaximum(previousJobs);			
@@ -211,7 +213,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 				addToList(Optional.fromNullable(j), previousJobs);
 				totalProductionTime += this.getMaximum(previousJobs);
 				for(int i = 0; i< this.amountOfWorkBenches-1;i++){
-					Optional<Job> absentJob = Optional.absent();
+					Optional<IJob> absentJob = Optional.absent();
 					addToList(absentJob, previousJobs);
 					totalProductionTime += this.getMaximum(previousJobs);
 				}
@@ -219,8 +221,8 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			}
 		}
 		
-		for (Iterator<Job> iterator = standardJobs.iterator(); iterator.hasNext();) {
-			Job j = (Job) iterator.next();
+		for (Iterator<IJob> iterator = standardJobs.iterator(); iterator.hasNext();) {
+			IJob j = iterator.next();
 			if (!j.equals(job)) {
 			    addToList(Optional.fromNullable(j), previousJobs);
 				totalProductionTime += this.getMaximum(previousJobs);			
@@ -229,7 +231,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 				addToList(Optional.fromNullable(j), previousJobs);
 				totalProductionTime += this.getMaximum(previousJobs);
 				for(int i = 0; i< this.amountOfWorkBenches-1;i++){
-					Optional<Job> absentJob = Optional.absent();
+					Optional<IJob> absentJob = Optional.absent();
 					addToList(absentJob, previousJobs);
 					totalProductionTime += this.getMaximum(previousJobs);
 				}
@@ -239,9 +241,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	
-	private int getMaximum(ArrayList<Optional<Job>> list){
+	private int getMaximum(ArrayList<Optional<IJob>> list) throws NotImplementedException{
 		int biggest = 0;
-		for(Optional<Job> job : list){
+		for(Optional<IJob> job : list){
 			int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getSpecification().getTimeAtWorkBench();
 			if(job.isPresent() && currentTimeAtWorkbenchForThisJob >= biggest){
 				biggest = currentTimeAtWorkbenchForThisJob;
@@ -251,19 +253,19 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 	
 	@Override
-	public ArrayList<Optional<Job>> getHistory() {
-		ArrayList<Optional<Job>> historyCopy = new ArrayList<>();
+	public ArrayList<Optional<IJob>> getHistory() {
+		ArrayList<Optional<IJob>> historyCopy = new ArrayList<>();
 		historyCopy.addAll(this.history);
 		return historyCopy;
 	}
 
 	@Override
-	protected void addToHistory(Optional<Job> job) {
+	protected void addToHistory(Optional<IJob> job) {
 		this.addToList(job, history);
 	}
 	
 	@Override
-	protected void addToList(Optional<Job> job, ArrayList<Optional<Job>> list) {
+	protected void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list) {
 		if (job == null || list == null) {
 			throw new IllegalArgumentException();
 		}
