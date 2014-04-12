@@ -71,5 +71,7 @@ public interface IJob {
 	
 	public int getMinimalIndex();
 	
+	public int getFirstWorkbenchIndex();
+	
 	
 }

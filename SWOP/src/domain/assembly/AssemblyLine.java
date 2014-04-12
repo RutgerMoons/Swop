@@ -13,6 +13,7 @@ import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
+import domain.exception.NotImplementedException;
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.IJob;
@@ -76,11 +77,12 @@ public class AssemblyLine {
 	 * completed. It shifts the jobs to it's next workstation.
 	 * @throws NoSuitableJobFoundException 
 	 * @throws ImmutableException 
+	 * @throws NotImplementedException 
 	 * 
 	 * @throws IllegalStateException
 	 *             If there are no currentJobs
 	 */
-	public void advance() throws ImmutableException, NoSuitableJobFoundException {
+	public void advance() throws ImmutableException, NoSuitableJobFoundException, NotImplementedException {
 		if (!canAdvance()) {
 			throw new IllegalStateException();
 		}
@@ -150,7 +152,7 @@ public class AssemblyLine {
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
 	
-	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException {
+	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException, NotImplementedException {
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
@@ -162,7 +164,7 @@ public class AssemblyLine {
 		return scheduler.getEstimatedTimeInMinutes(jobs.get(0));
 	}
 	
-	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException {
+	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException, NotImplementedException {
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
@@ -285,7 +287,7 @@ public class AssemblyLine {
 		}
 	}
 	
-	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) {
+	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) throws NotImplementedException {
 		return this.scheduler.getEstimatedTimeInMinutes(job);
 	}
 	

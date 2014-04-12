@@ -9,6 +9,7 @@ import com.google.common.base.Optional;
 import domain.car.CarOption;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
+import domain.exception.NotImplementedException;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.observer.ClockObserver;
@@ -70,7 +71,7 @@ public class Scheduler implements LogsClock {
 		}
 	}
 	
-	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException {
+	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException, NotImplementedException {
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
 		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
 									- shifts.get(0).getStartOfShift()
@@ -94,7 +95,7 @@ public class Scheduler implements LogsClock {
 		this.schedulingAlgorithm.startNewDay();
 	}
 	
-	public int getEstimatedTimeInMinutes(IJob job) {
+	public int getEstimatedTimeInMinutes(IJob job) throws NotImplementedException {
 		return this.schedulingAlgorithm.getEstimatedTimeInMinutes(job, this.clock);
 	}
 	

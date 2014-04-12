@@ -7,6 +7,7 @@ import com.google.common.base.Optional;
 
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
+import domain.exception.NotImplementedException;
 import domain.job.IJob;
 
 public abstract class SchedulingAlgorithm {
@@ -14,7 +15,7 @@ public abstract class SchedulingAlgorithm {
 	public abstract void transform(PriorityQueue<IJob> customjobs, ArrayList<IJob> standardjobs, ArrayList<Optional<IJob>> history);
 	
 	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
-			throws NoSuitableJobFoundException;
+			throws NoSuitableJobFoundException, NotImplementedException;
 	
 	public abstract PriorityQueue<IJob> getCustomJobs();
 	
@@ -28,7 +29,7 @@ public abstract class SchedulingAlgorithm {
 	
 	public abstract void startNewDay();
 
-	public abstract int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime);
+	public abstract int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) throws NotImplementedException;
 	
 	protected abstract void addToHistory(Optional<IJob> job);
 	
