@@ -17,9 +17,9 @@ public interface ICarModel {
 	
 	public void addCarPart(CarOption part) throws AlreadyInMapException, ImmutableException;
 	
-	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() throws NotImplementedException;
+	public Map<CarOption, Boolean> getForcedOptionalTypes() throws NotImplementedException;
 	
-	public void addForcedOptionalType(CarOptionCategory type, boolean bool) throws ImmutableException, NotImplementedException;
+	public void addForcedOptionalType(CarOption type, boolean bool) throws ImmutableException, NotImplementedException;
 	
 	public CarModelSpecification getSpecification() throws NotImplementedException;
 	

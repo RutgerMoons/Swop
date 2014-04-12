@@ -89,7 +89,7 @@ public class PartPicker {
 			Map<CarOptionCategory, CarOption> parts = model.getCarParts();
 			if (restriction.getCarPart().getType().equals(type)) {				//de availableparts die teruggegeven worden zijn om een CarPart te kiezen van hetzelfde type als het CarPart dat in het eerste deel van de restrictie staat
 				if (!restriction.getRestrictedPartAlreadyChosen()) {
-					model.addForcedOptionalType(restriction.getCarPartType(),
+					model.addForcedOptionalType(restriction.getCarPart(),
 							restriction.isOptional());
 				} else if (restriction.getRestrictedPartAlreadyChosen()			//als het 2e part uit de restriction al gekozen is, maar het zit niet in het model
 						&& !parts.containsKey(restriction.getCarPartType())) {  // ==> user heeft 'optional' gekozen

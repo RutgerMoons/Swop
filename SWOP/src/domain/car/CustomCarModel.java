@@ -30,12 +30,12 @@ public class CustomCarModel implements ICarModel {
 	}
 
 	@Override
-	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() throws NotImplementedException {
+	public Map<CarOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void addForcedOptionalType(CarOptionCategory type, boolean bool)
+	public void addForcedOptionalType(CarOption type, boolean bool)
 			throws ImmutableException, NotImplementedException {
 		throw new NotImplementedException();
 	}

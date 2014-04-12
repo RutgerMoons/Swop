@@ -16,7 +16,7 @@ public class CarModel implements ICarModel {
 
 	private HashMap<CarOptionCategory, CarOption> carOptions;
 	private CarModelSpecification specification;
-	private Map<CarOptionCategory, Boolean> forcedOptionalTypes;
+	private Map<CarOption, Boolean> forcedOptionalTypes;
 	
 	/**
 	 * Creates a new CarModel, which consists of zero CarOptions at this point.
@@ -104,12 +104,12 @@ public class CarModel implements ICarModel {
 	}
 
 	@Override
-	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() {
+	public Map<CarOption, Boolean> getForcedOptionalTypes() {
 		return forcedOptionalTypes;
 	}
 
 	@Override
-	public void addForcedOptionalType(CarOptionCategory type, boolean bool){
+	public void addForcedOptionalType(CarOption type, boolean bool){
 		forcedOptionalTypes.put(type, bool);
 	}
 
