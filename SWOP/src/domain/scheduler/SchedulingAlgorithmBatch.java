@@ -31,9 +31,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		}
 		this.carOption = carParts;
 		this.amountOfWorkBenches = amountOfWorkBenches;
-		customJobs = new PriorityQueue<>(0, new JobComparatorDeadLine());
-		standardJobs = new PriorityQueue<IJob>(0, new JobComparatorOrderTime());
-		batchJobs = new PriorityQueue<IJob>(0, new JobComparatorOrderTime());
+		customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
+		standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
+		batchJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
 		jobsStartOfDay = new ArrayList<>();
 		history = new ArrayList<Optional<IJob>>();
 	}
