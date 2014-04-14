@@ -176,6 +176,9 @@ public interface IClientCommunication {
 
 	public void showInvalidModel();
 	
+	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders);
+
+	public void showOrderDetails(List<String> orderDetails);
 	
 	
 }

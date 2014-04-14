@@ -82,7 +82,7 @@ public class OrderFlowController extends UseCaseFlowController {
 				String time = "";
 
 				try {
-					time = facade.processOrder(realModel, quantity);
+					time = facade.processOrder(quantity);
 				} catch (IllegalStateException | NotImplementedException e) {
 					clientCommunication.showInvalidModel();
 					placeNewOrder();

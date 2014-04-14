@@ -201,7 +201,7 @@ public class Facade {
 		userBook.logout();
 	}
 
-	public String processOrder(String carModelName, int quantity) throws ImmutableException, IllegalStateException, NotImplementedException {
+	public String processOrder(int quantity) throws ImmutableException, IllegalStateException, NotImplementedException {
 		CarModel carModel = picker.getModel();
 		
 		if(!carModel.isValid())
@@ -250,6 +250,31 @@ public class Facade {
 				} catch (AlreadyInMapException e) { //ga nooit gebeuren omdat je 1x alle types overloopt
 				}
 		}
+	}
+
+	public List<String> getOrderDetails(String orderString) {
+		IOrder chosenOrder=null;
+		for(IOrder order: orderBook.getPendingOrders().values()){
+			if (order.toString().equals(chosenOrder)) {
+				chosenOrder = order;
+			}
+		}
+		for(IOrder order: orderBook.getCompletedOrders().values()){
+			if (order.toString().equals(chosenOrder)) {
+				chosenOrder = order;
+			}
+		}
+		
+		List<String> orderDetails = new ArrayList<>();
+		if(chosenOrder!=null){
+			orderDetails.add(chosenOrder.getOrderTime().toString());
+			try {
+				orderDetails.add(chosenOrder.getDeadline().toString());
+			} catch (NotImplementedException e) {
+				orderDetails.add(chosenOrder.getEstimatedTime().toString());
+			}
+		}
+		return orderDetails;
 	}
 
 }
