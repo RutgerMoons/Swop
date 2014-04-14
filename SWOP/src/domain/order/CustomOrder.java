@@ -30,6 +30,7 @@ public class CustomOrder implements IOrder {
 			throw new IllegalArgumentException();
 		this.garageholder = garageholder;
 	}
+	
 	@Override
 	public String getGarageHolder() {
 		return garageholder;
