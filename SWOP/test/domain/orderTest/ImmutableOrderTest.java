@@ -59,7 +59,7 @@ public class ImmutableOrderTest {
 		model.addCarPart(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
 		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
 		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
-		order = new StandardOrder("Mario",model,3);
+		order = new StandardOrder("Mario",model,3, new UnmodifiableClock(1, 1));
 		immutable = new ImmutableOrder(order);
 	}
 

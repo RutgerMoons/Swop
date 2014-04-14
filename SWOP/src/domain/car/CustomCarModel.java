@@ -23,6 +23,9 @@ public class CustomCarModel implements ICarModel {
 	@Override
 	public void addCarPart(CarOption part) throws AlreadyInMapException,
 			ImmutableException {
+		if(part==null){
+			throw new IllegalArgumentException();
+		}
 		if(carOptions.containsKey(part.getType())){
 			throw new AlreadyInMapException();
 		}
@@ -54,7 +57,7 @@ public class CustomCarModel implements ICarModel {
 	@Override
 	public String toString(){
 		String line = System.lineSeparator();
-		String result = "Custom order: ";
+		String result = "Custom order:";
 		for(CarOptionCategory type: carOptions.keySet()){
 			CarOption option = carOptions.get(type);
 			result+= line + type.toString() + ": " +option.getDescription();

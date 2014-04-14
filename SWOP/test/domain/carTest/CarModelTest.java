@@ -1,6 +1,10 @@
 package domain.carTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,33 +21,34 @@ import domain.job.Action;
 
 public class CarModelTest {
 	CarModelSpecification template;
+
 	@Before
-	public void initialize(){
+	public void initialize() {
 		Set<CarOption> parts = new HashSet<>();
 		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		
+
 		parts.add(new CarOption("black", CarOptionCategory.COLOR));
 		parts.add(new CarOption("white", CarOptionCategory.COLOR));
-		
+
 		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
 		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
-	
+
 		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
-		
+
 		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
 		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
-		
+
 		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
 		parts.add(new CarOption("Automatic", CarOptionCategory.AIRCO));
-		
+
 		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
 		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
-		
+
 		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
 		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
 		template = new CarModelSpecification("model", parts, 60);
 	}
-	
+
 	@Test
 	public void testConstructor() {
 		CarModel model = new CarModel(template);
@@ -83,9 +88,9 @@ public class CarModelTest {
 		car.addCarPart(part2);
 
 	}
-	
+
 	@Test
-	public void testToString(){
+	public void testToString() {
 		CarModel car1 = new CarModel(template);
 		assertEquals("model", car1.toString());
 	}
@@ -97,45 +102,68 @@ public class CarModelTest {
 		CarOption part2 = new CarOption("break", CarOptionCategory.BODY);
 		car1.addCarPart(part1);
 		car1.addCarPart(part2);
-		
+
 		CarModel car2 = new CarModel(template);
 		assertNotEquals(car1, car2);
-		
+
 		CarModel car3 = new CarModel(template);
 		assertNotEquals(car1, car3);
 		assertNotEquals(car1.hashCode(), car3.hashCode());
-		
+
 		car3.addCarPart(part1);
 		assertNotEquals(car1, car3);
 		assertNotEquals(car1.hashCode(), car3.hashCode());
-		
+
 		car3.addCarPart(part2);
 		assertEquals(car1, car3);
 		assertEquals(car1.hashCode(), car3.hashCode());
-		
+
 		Set<CarOption> parts = new HashSet<>();
 		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		CarModelSpecification template2 = new CarModelSpecification("modelb", parts, 50);
-		template2.getCarParts().put(CarOptionCategory.AIRCO, new CarOption("abl", CarOptionCategory.AIRCO));
+		CarModelSpecification template2 = new CarModelSpecification("modelb",
+				parts, 50);
+		template2.getCarParts().put(CarOptionCategory.AIRCO,
+				new CarOption("abl", CarOptionCategory.AIRCO));
 		CarModel car4 = new CarModel(template2);
 		car4.addCarPart(part1);
 		car4.addCarPart(part2);
 		assertNotEquals(car1, car4);
 		assertNotEquals(part1.hashCode(), part2.hashCode());
-		
-		
+
 		assertEquals(car1, car1);
 		assertNotEquals(car1, null);
 		assertNotEquals(car1, new Action("Paint"));
 	}
-	
+
 	@Test
-	public void testForcedOptions(){
+	public void testForcedOptions() {
 		CarModel model = new CarModel(template);
-		model.addForcedOptionalType(CarOptionCategory.AIRCO, false);
+		model.addForcedOptionalType(new CarOption("sport",
+				CarOptionCategory.BODY), false);
+
+		assertFalse(model.getForcedOptionalTypes().get(
+				new CarOption("sport", CarOptionCategory.BODY)));
+
+	}
+
+	@Test
+	public void testValidCar() throws AlreadyInMapException {
+		CarModel model = new CarModel(template);
+		assertFalse(model.isValid());
+
+		model.addCarPart(new CarOption("sport", CarOptionCategory.BODY));
+
+		model.addCarPart(new CarOption("white", CarOptionCategory.COLOR));
+
+		model.addCarPart(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+
+		model.addCarPart(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
 		
-		assertFalse(model.getForcedOptionalTypes().get(CarOptionCategory.AIRCO));
-		
-		
+		model.addCarPart(new CarOption("Leather Black", CarOptionCategory.SEATS));
+
+		model.addCarPart(new CarOption("Automatic", CarOptionCategory.AIRCO));
+
+		model.addCarPart(new CarOption("Sports", CarOptionCategory.WHEEL));
+		assertTrue(model.isValid());
 	}
 }

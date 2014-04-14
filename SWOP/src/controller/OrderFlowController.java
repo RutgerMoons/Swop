@@ -6,6 +6,7 @@ import java.util.Set;
 
 import ui.IClientCommunication;
 import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -81,8 +82,8 @@ public class OrderFlowController extends UseCaseFlowController {
 				String time = "";
 
 				try {
-					time = facade.processOrder(realModel, quantity);
-				} catch (IllegalStateException e) {
+					time = facade.processOrder(quantity);
+				} catch (IllegalStateException | NotImplementedException e) {
 					clientCommunication.showInvalidModel();
 					placeNewOrder();
 				}
