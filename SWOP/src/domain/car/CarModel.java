@@ -130,7 +130,7 @@ public class CarModel implements ICarModel {
 	 */
 	public boolean isValid() {
 		for(CarOptionCategory type: CarOptionCategory.values()){
-			if((!type.isOptional() || forcedOptionalTypes.get(type)==false) && carOptions.get(type)==null )
+			if((!type.isOptional() || (forcedOptionalTypes.get(type)!=null && forcedOptionalTypes.get(type)==false)) && carOptions.get(type)==null )
 				return false;
 		}
 		return true;

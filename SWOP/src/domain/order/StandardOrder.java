@@ -27,11 +27,12 @@ public class StandardOrder implements IOrder {
 	 * Constructor of an Order, given the name of the orderer, the type of
 	 * carModel and the amount of cars to be ordered.
 	 */
-	public StandardOrder(String holder, CarModel description, int quantity) {
+	public StandardOrder(String holder, CarModel description, int quantity, UnmodifiableClock orderTime) {
 		this.setDescription(description);
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
 		this.setPendingCars(quantity);
+		setOrderTime(orderTime);
 	}
 
 	/**
