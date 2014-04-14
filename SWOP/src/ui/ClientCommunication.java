@@ -439,6 +439,9 @@ public class ClientCommunication implements IClientCommunication {
 
 		if(!pendingOrders.isEmpty() || !completedOrders.isEmpty()){
 			show(orderString);
+			if(!askContinue()){
+				return "No Order";
+			}
 			int partNumber = askNumber("Which Order do you choose?");
 			if (partNumber >= 1 && partNumber <= (orderString.size() - 2)) { //de -2 zijn de lijnen Pending Orders: en Completed Orders:
 				int indexOfCompletedOrders = orderString.indexOf("Completed Orders:");

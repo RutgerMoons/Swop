@@ -267,11 +267,11 @@ public class Facade {
 		
 		List<String> orderDetails = new ArrayList<>();
 		if(chosenOrder!=null){
-			orderDetails.add(chosenOrder.getOrderTime().toString());
+			orderDetails.add("Order Time: " + chosenOrder.getOrderTime().toString());
 			try {
-				orderDetails.add(chosenOrder.getDeadline().toString());
+				orderDetails.add("(Expected) Completion Time: " + chosenOrder.getDeadline().toString());
 			} catch (NotImplementedException e) {
-				orderDetails.add(chosenOrder.getEstimatedTime().toString());
+				orderDetails.add("(Expected) Completion Time: " + chosenOrder.getEstimatedTime().toString());
 			}
 		}
 		return orderDetails;
