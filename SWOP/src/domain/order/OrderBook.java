@@ -2,14 +2,14 @@ package domain.order;
 
 import java.util.List;
 
-
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.assembly.AssemblyLine;
+import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
 
 /**
  * this class will be used to keep record of two kinds of orders. these two
@@ -89,15 +89,16 @@ public class OrderBook {
 	 * 
 	 * @param order
 	 * @throws ImmutableException 
+	 * @throws NotImplementedException 
 	 */
-	public void addStandardOrder(StandardOrder order) throws ImmutableException {
+	public void addStandardOrder(StandardOrder order) throws ImmutableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		order.setEstimatedTime(assemblyLine.convertStandardOrderToJob(order));
+		order.setEstimatedTime(new UnmodifiableClock(assemblyLine.convertStandardOrderToJob(order)));
 	}
 	
-	public void addCustomOrder(CustomOrder order) throws ImmutableException {
+	public void addCustomOrder(CustomOrder order) throws ImmutableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		order.setEstimatedTime(assemblyLine.convertCustomOrderToJob(order));
+		order.setEstimatedTime(new UnmodifiableClock(assemblyLine.convertCustomOrderToJob(order)));
 		
 	}
 }
