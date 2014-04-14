@@ -37,7 +37,7 @@ public class ImmutableCarModelTest {
 		car.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
 		car.addCarPart(new CarOption("break", CarOptionCategory.BODY));
 		
-		car.addForcedOptionalType(CarOptionCategory.AIRCO, false);
+		car.addForcedOptionalType(new CarOption("sport", CarOptionCategory.BODY), false);
 		
 		assertEquals(car.getCarParts(), immutable.getCarParts());
 		assertEquals(car.toString(), immutable.toString());
@@ -46,7 +46,7 @@ public class ImmutableCarModelTest {
 		
 		assertEquals(car.getSpecification(), immutable.getSpecification());
 		
-		assertFalse(immutable.getForcedOptionalTypes().get(CarOptionCategory.AIRCO));
+		assertFalse(immutable.getForcedOptionalTypes().get(new CarOption("sport", CarOptionCategory.BODY)));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
