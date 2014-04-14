@@ -123,9 +123,9 @@ public class ClientCommunication implements IClientCommunication {
 	@Override
 	public String chooseRole() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("manager",
-				"garageholder", "worker"));
+				"garageholder", "worker", "custom car shop manager"));
 		return askQuestionLoop(
-				"What's your role: manager, garageholder or worker?", expected);
+				"What's your role: manager, garageholder, worker or custom car shop manager?", expected);
 	}
 
 	/**
@@ -464,5 +464,58 @@ public class ClientCommunication implements IClientCommunication {
 	@Override
 	public void showOrderDetails(List<String> orderDetails) {
 		show(orderDetails);
+	}
+
+	@Override
+	public String showCustomTasks(List<String> tasks) {
+		ArrayList<String> customString = new ArrayList<String>();
+		customString.add(0, "Possible tasks:");
+		int i = 1;
+		for (String customTask : tasks) {
+			customString.add(i + "." + customTask);
+			i++;
+		}
+		show(customString);
+
+		int customNumber = askNumber("Which Task do you choose?");
+		if (customNumber >= 1 && customNumber <= tasks.size()) {
+			return customString.get(customNumber).substring(
+					customString.get(customNumber).indexOf(".") + 1);
+		} else {
+			invalidAnswerPrompt();
+			return showCustomTasks(tasks);
+		}
+	}
+
+	@Override
+	public String askDeadline() {
+		while (true) {
+			show(new ArrayList<String>(Arrays.asList("What is the deadline? (Days,Hours,Minutes   untill completion)")));
+			String answer = inputReader.nextLine();
+			if (answer != null && isValidDeadline(answer)) {
+				return answer;
+			}
+			invalidAnswerPrompt();
+		}
+	}
+	private boolean isValidDeadline(String answer) {
+		String[] split = answer.split(",");
+		if(split.length!=3){
+			return false;
+		}
+		try{
+			Integer.parseInt(split[0]);
+			Integer.parseInt(split[1]);
+			Integer.parseInt(split[2]);
+		}catch(NumberFormatException e){
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public void showCustomOrder(String time) {
+		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
 	}
 }

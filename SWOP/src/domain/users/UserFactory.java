@@ -27,9 +27,17 @@ public class UserFactory {
 			return createManager(userName);
 		case "worker":
 			return createWorker(userName);
+		case "custom car shop manager":
+			return createCustomManager(userName);
 		default:
 			throw new IllegalArgumentException();
 		}
+	}
+
+	private User createCustomManager(String userName) {
+		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(
+				Arrays.asList(new AccessRight[] { AccessRight.CUSTOMORDER}));
+		return new User(userName, accessRights);
 	}
 
 	private User createGarageHolder(String userName) {

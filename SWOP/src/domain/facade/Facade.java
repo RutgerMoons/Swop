@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Multimap;
+
 import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
 import domain.car.CarModel;
@@ -14,7 +16,11 @@ import domain.car.CarModelCatalogueFiller;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
+import domain.car.CustomCarModel;
+import domain.car.CustomCarModelCatalogue;
+import domain.car.CustomCarModelCatalogueFiller;
 import domain.clock.Clock;
+import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
@@ -27,6 +33,7 @@ import domain.job.Task;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
@@ -53,29 +60,38 @@ public class Facade {
 
 
 	private PartPicker picker;
-	
+	private CustomCarModelCatalogue customCarModelCatalogue;
+
 	public Facade(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions) {
 		this.clock = new Clock();
 
 		this.clockObserver = new ClockObserver();
 		this.clock.attachObserver(clockObserver);
-		
+
 		this.assemblyLine = new AssemblyLine(clockObserver, clock.getUnmodifiableClock());
 		this.assemblyLineObserver = new AssemblyLineObserver();
 		this.assemblyLine.attachObserver(assemblyLineObserver);
-		
-		this.logger = new Logger(2, clockObserver, assemblyLineObserver);
-		
-		this.carModelCatalogue = new CarModelCatalogue();
 
+		this.logger = new Logger(2, clockObserver, assemblyLineObserver);
+
+		this.carModelCatalogue = new CarModelCatalogue();
+		this.customCarModelCatalogue = new CustomCarModelCatalogue();
 		this.orderBook = new OrderBook(assemblyLine);
 		this.userBook = new UserBook();
 		this.userFactory = new UserFactory();
 		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
-		
+
 		CarModelCatalogueFiller carModelFiller = new CarModelCatalogueFiller();
 		for (CarModelSpecification model : carModelFiller.getInitialModels()) {
 			carModelCatalogue.addModel(model);
+		}
+
+		CustomCarModelCatalogueFiller customCarModelFiller = new CustomCarModelCatalogueFiller();
+		Multimap<String, CustomCarModel> customModels = customCarModelFiller.getInitialModels();
+		for(String model: customModels.keySet()){
+			for(CustomCarModel customModel: customModels.get(model)){
+				customCarModelCatalogue.addModel(model, customModel);
+			}
 		}
 	}
 
@@ -114,7 +130,7 @@ public class Facade {
 			this.userBook.login(userName);
 		} catch (RoleNotYetAssignedException r) {
 			System.err
-					.println("Something went wrong at login, this shouldn't happen.");
+			.println("Something went wrong at login, this shouldn't happen.");
 		}
 	}
 
@@ -163,7 +179,7 @@ public class Facade {
 		if (this.orderBook.getPendingOrders().containsKey(
 				userBook.getCurrentUser().getName())
 				&& !this.orderBook.getPendingOrders()
-						.get(userBook.getCurrentUser().getName()).isEmpty()) {
+				.get(userBook.getCurrentUser().getName()).isEmpty()) {
 			for (IOrder order : orders) {
 				pendingOrders.add(order.toString());
 			}
@@ -193,7 +209,7 @@ public class Facade {
 	}
 
 	public void login(String userName) throws RoleNotYetAssignedException,
-			IllegalArgumentException {
+	IllegalArgumentException {
 		userBook.login(userName);
 	}
 
@@ -203,7 +219,7 @@ public class Facade {
 
 	public String processOrder(int quantity) throws ImmutableException, IllegalStateException, NotImplementedException {
 		CarModel carModel = picker.getModel();
-		
+
 		if(!carModel.isValid())
 			throw new IllegalStateException();
 		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity, clock.getUnmodifiableClock());
@@ -224,7 +240,7 @@ public class Facade {
 		Set<String> types = new HashSet<>();
 		for(CarOptionCategory type: CarOptionCategory.values()){
 			types.add(type.toString());
-			
+
 		}
 		return types;
 	}
@@ -264,7 +280,7 @@ public class Facade {
 				chosenOrder = order;
 			}
 		}
-		
+
 		List<String> orderDetails = new ArrayList<>();
 		if(chosenOrder!=null){
 			orderDetails.add("Order Time: " + chosenOrder.getOrderTime().toString());
@@ -277,4 +293,41 @@ public class Facade {
 		return orderDetails;
 	}
 
+
+	public List<String> getCustomTasks() {
+		List<String> tasks = new ArrayList<>();
+		for(String model: customCarModelCatalogue.getCatalogue().keySet()){
+			tasks.add(model);
+		}
+		return tasks;
+	}
+
+	public List<String> getSpecificCustomTasks(String taskDescription){
+		List<String> tasks = new ArrayList<>();
+		for(CustomCarModel model: customCarModelCatalogue.getCatalogue().get(taskDescription)){
+			tasks.add(model.toString());
+		}
+		return tasks;
+	}
+
+	public String processCustomOrder(String model, String deadline) {
+		CustomCarModel customModel = null;
+		for(CustomCarModel custom: customCarModelCatalogue.getCatalogue().values()){
+			if(custom.toString().equals(model)){
+				customModel = custom;
+			}
+		}
+		String[] split = deadline.split(",");
+		int days = Integer.parseInt(split[0]);
+		int hours = Integer.parseInt(split[1]);
+		int minutes = Integer.parseInt(split[2]);
+		minutes += hours*60;
+		UnmodifiableClock deadlineClock = new UnmodifiableClock(days, minutes);
+		CustomOrder order = new CustomOrder(userBook.getCurrentUser().getName(), customModel, 1, clock.getUnmodifiableClock(), deadlineClock);
+		try {
+			orderBook.addOrder(order);
+		} catch (ImmutableException | NotImplementedException e) {
+		}
+		return order.getEstimatedTime().toString();
+	}
 }
