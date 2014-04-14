@@ -35,7 +35,7 @@ public class UserFactory {
 	private User createGarageHolder(String userName) {
 
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(
-				Arrays.asList(new AccessRight[] { AccessRight.ORDER }));
+				Arrays.asList(new AccessRight[] { AccessRight.ORDER, AccessRight.SHOWDETAILS }));
 		return new User(userName, accessRights);
 	}
 

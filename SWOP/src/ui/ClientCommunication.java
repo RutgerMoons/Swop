@@ -436,19 +436,25 @@ public class ClientCommunication implements IClientCommunication {
 			i++;
 		}
 
-		show(orderString);
 
-		int partNumber = askNumber("Which Part Number do you choose?");
-		if (partNumber >= 1 && partNumber <= orderString.size()) {
-			int indexOfCompletedOrders = orderString.indexOf("Completed Orders:");
-			if (partNumber == indexOfCompletedOrders) {
-				partNumber++;
+		if(!pendingOrders.isEmpty() || !completedOrders.isEmpty()){
+			show(orderString);
+			int partNumber = askNumber("Which Order do you choose?");
+			if (partNumber >= 1 && partNumber <= (orderString.size() - 2)) { //de -2 zijn de lijnen Pending Orders: en Completed Orders:
+				int indexOfCompletedOrders = orderString.indexOf("Completed Orders:");
+				if (partNumber == indexOfCompletedOrders) {
+					partNumber++;
+				}
+
+				return orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1);
+			} else {
+				invalidAnswerPrompt();
+				return chooseOrder(pendingOrders, completedOrders);
 			}
-
-			return orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1);
-		} else {
-			invalidAnswerPrompt();
-			return chooseOrder(pendingOrders, completedOrders);
+		}else{
+			orderString.add("There are no pending or completed orders, so you can't choose an order");
+			show(orderString);
+			return "No Order";
 		}
 	}
 

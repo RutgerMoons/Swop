@@ -60,7 +60,7 @@ public class Facade {
 		this.clockObserver = new ClockObserver();
 		this.clock.attachObserver(clockObserver);
 		
-		this.assemblyLine = new AssemblyLine(clockObserver);
+		this.assemblyLine = new AssemblyLine(clockObserver, clock.getUnmodifiableClock());
 		this.assemblyLineObserver = new AssemblyLineObserver();
 		this.assemblyLine.attachObserver(assemblyLineObserver);
 		
@@ -255,12 +255,12 @@ public class Facade {
 	public List<String> getOrderDetails(String orderString) {
 		IOrder chosenOrder=null;
 		for(IOrder order: orderBook.getPendingOrders().values()){
-			if (order.toString().equals(chosenOrder)) {
+			if (order.toString().equals(orderString)) {
 				chosenOrder = order;
 			}
 		}
 		for(IOrder order: orderBook.getCompletedOrders().values()){
-			if (order.toString().equals(chosenOrder)) {
+			if (order.toString().equals(orderString)) {
 				chosenOrder = order;
 			}
 		}
