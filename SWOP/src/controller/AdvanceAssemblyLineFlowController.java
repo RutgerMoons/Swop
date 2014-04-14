@@ -1,6 +1,9 @@
 package controller;
 
 import ui.IClientCommunication;
+import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
+import domain.exception.NotImplementedException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -32,8 +35,6 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 	@Override
 	public void executeUseCase(){
 		if(this.clientCommunication.askAdvance()) {
-			showCurrentAssemblyLine();
-			showFutureAssemblyLine();
 			if(this.clientCommunication.askContinue())
 				advanceAssemblyLine();
 		} 
@@ -49,12 +50,6 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 		this.clientCommunication.showAssemblyLine(facade.getAssemblyLineAsString(), "current");
 	}
 
-	/**
-	 * Show the user what the assemblyline would look like if he succesfully advances the assemblyline.
-	 */
-	public void showFutureAssemblyLine(){
-		this.clientCommunication.showAssemblyLine(facade.getFutureAssemblyLineAsString(), "future");
-	}
 
 	/**
 	 * Advance the assemblyline if it can be advanced.
@@ -71,7 +66,7 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 			}
 			try{
 				facade.advanceAssemblyLine();
-			} catch(IllegalStateException e){
+			} catch(IllegalStateException | ImmutableException | NoSuitableJobFoundException | NotImplementedException e){
 				System.out.println("You can't advance the assemblyline, because there are no orders.");
 			}
 		}

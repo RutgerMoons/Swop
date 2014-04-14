@@ -37,7 +37,7 @@ public class AssemblyLine {
 
 	private List<IJob> currentJobs;
 	private List<IWorkBench> workbenches;
-	private ArrayList<AssemblyLineObserver> observers;
+	private List<AssemblyLineObserver> observers;
 	private Scheduler scheduler;
 
 	/**
@@ -55,6 +55,7 @@ public class AssemblyLine {
 		workbenches = new ArrayList<IWorkBench>();
 		currentJobs = new ArrayList<IJob>();
 		initializeWorkbenches();
+		observers = new ArrayList<>();
 		this.scheduler = new Scheduler(workbenches.size(), clockObserver);
 	}
 

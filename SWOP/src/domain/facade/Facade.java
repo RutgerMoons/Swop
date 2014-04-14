@@ -1,6 +1,7 @@
 package domain.facade;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,8 @@ import domain.car.CarOptionCategory;
 import domain.clock.Clock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
+import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.job.Action;
 import domain.job.IAction;
@@ -24,6 +27,7 @@ import domain.job.Task;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
 import domain.restriction.BindingRestriction;
@@ -75,7 +79,7 @@ public class Facade {
 		}
 	}
 
-	public void advanceAssemblyLine() throws IllegalStateException {
+	public void advanceAssemblyLine() throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
 		assemblyLine.advance();
 	}
 
@@ -89,7 +93,7 @@ public class Facade {
 	}
 
 
-	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex) {
+	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex) throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
 
 		Task task = (Task) workbench.getCurrentTasks().get(taskIndex);
@@ -144,7 +148,7 @@ public class Facade {
 		ArrayList<String> completedOrders = new ArrayList<String>();
 		if (this.orderBook.getCompletedOrders().containsKey(
 				userBook.getCurrentUser().getName())) {
-			for (StandardOrder order : orderBook.getCompletedOrders().get(
+			for (IOrder order : orderBook.getCompletedOrders().get(
 					userBook.getCurrentUser().getName())) {
 				completedOrders.add(order.toString());
 			}
@@ -152,19 +156,15 @@ public class Facade {
 		return completedOrders;
 	}
 
-	public String getFutureAssemblyLineAsString() {
-		return assemblyLine.getFutureAssemblyLine().toString();
-	}
-
 	public ArrayList<String> getPendingOrders() {
 		ArrayList<String> pendingOrders = new ArrayList<String>();
-		List<StandardOrder> orders = (List<StandardOrder>) orderBook
+		Collection<IOrder> orders = orderBook
 				.getPendingOrders().get(userBook.getCurrentUser().getName());
 		if (this.orderBook.getPendingOrders().containsKey(
 				userBook.getCurrentUser().getName())
 				&& !this.orderBook.getPendingOrders()
 						.get(userBook.getCurrentUser().getName()).isEmpty()) {
-			for (StandardOrder order : orders) {
+			for (IOrder order : orders) {
 				pendingOrders.add(order.toString());
 			}
 		}
@@ -201,12 +201,12 @@ public class Facade {
 		userBook.logout();
 	}
 
-	public String processOrder(String carModelName, int quantity) throws ImmutableException, IllegalStateException {
+	public String processOrder(String carModelName, int quantity) throws ImmutableException, IllegalStateException, NotImplementedException {
 		CarModel carModel = picker.getModel();
 		
 		if(!carModel.isValid())
 			throw new IllegalStateException();
-		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity);
+		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity, clock.getUnmodifiableClock());
 		this.orderBook.addOrder(order);
 		return order.getEstimatedTime().toString();
 	}

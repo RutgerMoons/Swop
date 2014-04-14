@@ -3,7 +3,9 @@ package controller;
 import java.util.ArrayList;
 
 import ui.IClientCommunication;
-
+import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
+import domain.exception.NotImplementedException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -59,7 +61,12 @@ public class AssembleFlowController extends UseCaseFlowController {
 			int chosenTaskNumber = this.clientCommunication.chooseTask(tasksAtWorkbench)-1;
 			this.clientCommunication.showChosenTask(tasksAtWorkbench.get(chosenTaskNumber).toString());
 			this.clientCommunication.askFinished();
-			facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber);
+			try {
+				facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber);
+			} catch (IllegalStateException | ImmutableException
+					| NoSuitableJobFoundException | NotImplementedException e) {
+				executeUseCase();
+			}
 			chooseTask(workbenchIndex);
 		}
 	}
