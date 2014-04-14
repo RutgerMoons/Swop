@@ -14,7 +14,7 @@ public interface IJob {
 	 * @return The Order on which the Job is based.
 	 */
 	public IOrder getOrder();
-	
+
 	/**
 	 * Allocate a new Order to this Job.
 	 * 
@@ -26,14 +26,14 @@ public interface IJob {
 	 *             If order==null
 	 */
 	public void setOrder(IOrder order) throws ImmutableException;
-	
+
 	/**
 	 * Get the tasks that have to be completed before the Job(Car) is finished.
 	 * 
 	 * @return An Immutable list of tasks.
 	 */
 	public List<ITask> getTasks();
-	
+
 	/**
 	 * Set a new list of tasks that have to be completed before the Job(Car) is
 	 * finished.
@@ -46,7 +46,7 @@ public interface IJob {
 	 *             If tasks==null
 	 */
 	public void setTasks(List<ITask> tasks) throws ImmutableException;
-	
+
 	/**
 	 * Add a new task to the Job.
 	 * 
@@ -58,7 +58,7 @@ public interface IJob {
 	 *             If task==null
 	 */
 	public void addTask(ITask task) throws ImmutableException;
-	
+
 	/**
 	 * Check if the Job(Car) is completed.
 	 * 
@@ -66,12 +66,9 @@ public interface IJob {
 	 *         are not fully completed.
 	 */
 	public boolean isCompleted();
-	
-	public void setMinimalIndex(int index);
-	
+
+	public void setMinimalIndex(int index) throws ImmutableException;
+
 	public int getMinimalIndex();
-	
-	public int getFirstWorkbenchIndex();
-	
-	
+
 }

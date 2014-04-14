@@ -62,12 +62,13 @@ public class RestrictionTest {
 
 	@Test
 	public void testBodyToSpoiler() throws AlreadyInMapException {
-		picker.addCarPartToModel(new CarOption("sport", CarOptionCategory.BODY));
+		CarOption sport = new CarOption("sport", CarOptionCategory.BODY);
+		picker.addCarPartToModel(sport);
 		picker.getStillAvailableCarParts(CarOptionCategory.BODY);
 		
 		picker.getStillAvailableCarParts(CarOptionCategory.SPOILER);
 		
-		assertFalse(picker.getModel().getForcedOptionalTypes().get(CarOptionCategory.SPOILER));
+		assertFalse(picker.getModel().getForcedOptionalTypes().get(sport));
 		
 	}
 	
@@ -144,6 +145,16 @@ public class RestrictionTest {
 		Collection<CarOption> available = picker.getStillAvailableCarParts(CarOptionCategory.ENGINE);
 		
 		assertFalse(available.contains(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
+		
+	}
+	
+	@Test
+	public void testBodyBreakNoSpoiler() throws AlreadyInMapException{
+		CarOption breakBody = new CarOption("break", CarOptionCategory.BODY);
+		picker.addCarPartToModel(breakBody);
+		picker.getStillAvailableCarParts(CarOptionCategory.BODY);
+
+		assertNull(picker.getModel().getForcedOptionalTypes().get(breakBody));
 		
 	}
 	

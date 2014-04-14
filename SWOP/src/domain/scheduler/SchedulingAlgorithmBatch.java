@@ -12,7 +12,6 @@ import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.IJob;
-import domain.job.Job;
 import domain.job.JobComparatorDeadLine;
 import domain.job.JobComparatorOrderTime;
 
@@ -40,14 +39,15 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 	
 	@Override
-	public void transform(PriorityQueue<IJob> customJobs, ArrayList<IJob> jobs, ArrayList<Optional<IJob>> history) {
-		if(customJobs == null || jobs == null || history == null){
+	public void transform(PriorityQueue<IJob> customJobs, ArrayList<IJob> standardJobs, ArrayList<Optional<IJob>> history) {
+		if(customJobs == null || standardJobs == null || history == null){
 			throw new IllegalArgumentException();
 		}
 		this.customJobs = customJobs;
 		this.history = history;
 		//split jobs into the two remaining queues based on carParts
-		for(IJob job : jobs){
+
+		for(IJob job : standardJobs){
 			if(job.getOrder().getDescription().getCarParts().values().containsAll(this.carOption)){
 				this.batchJobs.add(job);
 			}
@@ -66,8 +66,10 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		 * step 3: check if custom job can be put on the assemblyLine
 		 */
 		IJob toSchedule = hasToForceCustomJob(currentTime);
+
 		int currentTotalProductionTime = getCurrentTotalProductionTime();
 		//Step 1:
+		//TODO currentTotalProductionTime implementeren op de 1 of andere manier
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(toSchedule);
 			Optional<IJob> toReturn = Optional.fromNullable(toSchedule);
@@ -131,7 +133,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		while (index >= 0) {
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = (IJob) iterator.next();
-				if (job.getFirstWorkbenchIndex() == index) {
+				if (job.getMinimalIndex() == index) {
 					return job;
 				}
 			}
@@ -184,7 +186,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			Optional<IJob> toAdd = Optional.absent();
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();
-				if (job.getFirstWorkbenchIndex() == i) {
+				if (job.getMinimalIndex() == i) {
 					toAdd = Optional.fromNullable(job);
 					break;
 				}

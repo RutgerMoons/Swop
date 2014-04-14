@@ -52,11 +52,11 @@ public class ImmutableCarModel implements ICarModel {
 		
 	}
 	@Override
-	public Map<CarOptionCategory, Boolean> getForcedOptionalTypes() throws NotImplementedException {
+	public Map<CarOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
 		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
 	}
 	@Override
-	public void addForcedOptionalType(CarOptionCategory type, boolean bool)
+	public void addForcedOptionalType(CarOption type, boolean bool)
 			throws ImmutableException {
 		throw new ImmutableException();
 	}

@@ -107,10 +107,4 @@ public class Job implements IJob {
 		return this.minimalIndex;
 	}
 
-	@Override
-	public int getFirstWorkbenchIndex() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

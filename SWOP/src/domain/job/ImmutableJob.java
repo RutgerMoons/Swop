@@ -78,21 +78,14 @@ public class ImmutableJob implements IJob {
 	}
 
 	@Override
-	public void setMinimalIndex(int index) {
-		// TODO Auto-generated method stub
+	public void setMinimalIndex(int index) throws ImmutableException {
+		throw new ImmutableException();
 		
 	}
 
 	@Override
 	public int getMinimalIndex() {
 		// TODO Auto-generated method stub
-		return 0;
+		return job.getMinimalIndex();
 	}
-
-	@Override
-	public int getFirstWorkbenchIndex() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

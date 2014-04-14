@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.clock.UnmodifiableClock;
+import domain.observer.AssemblyLineObserver;
+import domain.observer.ClockObserver;
 
 public class LoggerTest {
 
@@ -15,7 +17,7 @@ public class LoggerTest {
 	@Before
 	public void testConstructor() {
 		int amount = 5;
-		logger = new Logger(amount);
+		logger = new Logger(amount, new ClockObserver(), new AssemblyLineObserver());
 		assertNotNull(logger);
 		assertEquals(0,logger.getDetailedDays().size());
 		assertEquals(0,logger.getDetailedDelays().size());
@@ -42,7 +44,9 @@ public class LoggerTest {
 	
 	@Test
 	public void testStartNewDay(){
-		logger.startNewDay();
+		logger.startNewDay(new UnmodifiableClock(1, 0));
+		assertEquals(1, logger.getCurrentTime().getDays());
+		assertEquals(0, logger.getCurrentTime().getMinutes());
 	}
 	
 	@Test
@@ -67,16 +71,16 @@ public class LoggerTest {
 		logger.updateCompletedOrder(estimatedTimeOfCompletion2);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion3);
 		logger.advanceTime(new UnmodifiableClock(5,600));
-		logger.startNewDay();
+		logger.startNewDay(new UnmodifiableClock(1, 0));
 		UnmodifiableClock estimatedTimeOfCompletion4 = new UnmodifiableClock(5,250);
 		UnmodifiableClock estimatedTimeOfCompletion5 = new UnmodifiableClock(5,350);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion4);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion5);
 		logger.advanceTime(new UnmodifiableClock(6,300));
-		logger.startNewDay();
+		logger.startNewDay(new UnmodifiableClock(1, 0));
 		UnmodifiableClock estimatedTimeOfCompletion6 = new UnmodifiableClock(6,150);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion6);
-		logger.startNewDay();
+		logger.startNewDay(new UnmodifiableClock(1, 0));
 		assertEquals(2,logger.medianDays());
 		assertEquals(225,logger.medianDelays());
 	}
@@ -90,16 +94,16 @@ public class LoggerTest {
 		logger.updateCompletedOrder(estimatedTimeOfCompletion2);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion3);
 		logger.advanceTime(new UnmodifiableClock(5,600));
-		logger.startNewDay();
+		logger.startNewDay(new UnmodifiableClock(1, 0));
 		UnmodifiableClock estimatedTimeOfCompletion4 = new UnmodifiableClock(5,250);
 		UnmodifiableClock estimatedTimeOfCompletion5 = new UnmodifiableClock(5,350);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion4);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion5);
 		logger.advanceTime(new UnmodifiableClock(6,300));
-		logger.startNewDay();
+		logger.startNewDay(new UnmodifiableClock(1, 0));
 		UnmodifiableClock estimatedTimeOfCompletion6 = new UnmodifiableClock(6,250);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion6);
-		logger.startNewDay();
+		logger.startNewDay(new UnmodifiableClock(1, 0));
 		assertEquals(2,logger.averageDays());
 		assertEquals(208,logger.averageDelays());
 	}
