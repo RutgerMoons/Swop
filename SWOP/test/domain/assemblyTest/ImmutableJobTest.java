@@ -15,6 +15,7 @@ import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
+import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.job.IJob;
@@ -42,7 +43,7 @@ public class ImmutableJobTest {
 		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
 		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
 		
-		job = new Job(new StandardOrder("Stef", model, 1));
+		job = new Job(new StandardOrder("Stef", model, 1, new UnmodifiableClock(0)));
 		immutable = new ImmutableJob(job);
 	}
 	
