@@ -43,15 +43,18 @@ public class WorkBench implements IWorkBench {
 	}
 
 	
+	@Override
 	public String getWorkbenchName() {
 		return workbenchName;
 	}
 
 
+	@Override
 	public Optional<IJob> getCurrentJob() {
 		return currentJob;
 	}
 
+	@Override
 	public void setCurrentJob(Optional<IJob> optional) {
 		if (optional == null)
 			throw new IllegalArgumentException();
@@ -59,16 +62,19 @@ public class WorkBench implements IWorkBench {
 	}
 
 	
+	@Override
 	public Set<String> getResponsibilities() {
 		return responsibilities;
 	}
 
+	@Override
 	public void setResponsibilities(Set<String> responsibilities) {
 		if (responsibilities == null)
 			throw new IllegalArgumentException();
 		this.responsibilities = responsibilities;
 	}
 
+	@Override
 	public void addResponsibility(String responibility) {
 		if (responibility == null || responibility.isEmpty())
 			throw new IllegalArgumentException();
@@ -76,16 +82,19 @@ public class WorkBench implements IWorkBench {
 	}
 
 
+	@Override
 	public List<ITask> getCurrentTasks() {
 		return currentTasks;
 	}
 
+	@Override
 	public void setCurrentTasks(List<ITask> list) {
 		if (list == null)
 			throw new IllegalArgumentException();
 		this.currentTasks = list;
 	}
 
+	@Override
 	public void chooseTasksOutOfJob() {
 		if (getCurrentJob() == null || !getCurrentJob().isPresent()) {
 			setCurrentTasks(new ArrayList<ITask>());
@@ -101,6 +110,7 @@ public class WorkBench implements IWorkBench {
 	}
 
 	
+	@Override
 	public boolean isCompleted() {
 		for (ITask task : getCurrentTasks())
 			if (!task.isCompleted())

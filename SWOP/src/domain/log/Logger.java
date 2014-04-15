@@ -2,7 +2,6 @@ package domain.log;
 
 import java.util.List;
 
-import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
