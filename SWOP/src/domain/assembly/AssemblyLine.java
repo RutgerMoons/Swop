@@ -223,8 +223,7 @@ public class AssemblyLine {
 	 * Initializes the workbenches at the start of the program.
 	 * 
 	 */
-	private void initializeWorkbenches() {// gemakkelijk om een nieuwe workbench
-		// toe te voegen om te initializeren
+	private void initializeWorkbenches() {
 		Set<String> responsibilitiesCarBodyPost = new HashSet<>();
 		responsibilitiesCarBodyPost.add("Paint");
 		responsibilitiesCarBodyPost.add("Assembly");
