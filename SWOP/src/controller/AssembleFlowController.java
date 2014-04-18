@@ -60,14 +60,16 @@ public class AssembleFlowController extends UseCaseFlowController {
 		else{	
 			int chosenTaskNumber = this.clientCommunication.chooseTask(tasksAtWorkbench)-1;
 			this.clientCommunication.showChosenTask(tasksAtWorkbench.get(chosenTaskNumber).toString());
-			this.clientCommunication.askFinished();
-			try {
-				facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber);
-			} catch (IllegalStateException | ImmutableException
-					| NoSuitableJobFoundException | NotImplementedException e) {
-				executeUseCase();
+			if(this.clientCommunication.askFinished().equals("Y")){
+				try {
+					int time = clientCommunication.getElapsedTime();
+					facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber, time);
+				} catch (IllegalStateException | ImmutableException
+						| NoSuitableJobFoundException | NotImplementedException e) {
+					executeUseCase();
+				}
+				chooseTask(workbenchIndex);
 			}
-			chooseTask(workbenchIndex);
 		}
 	}
 }

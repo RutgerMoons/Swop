@@ -109,7 +109,7 @@ public class Facade {
 	}
 
 
-	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex) throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
+	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex, int time) throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
 
 		Task task = (Task) workbench.getCurrentTasks().get(taskIndex);
@@ -120,6 +120,7 @@ public class Facade {
 		if (this.canAssemblyLineAdvance()) {
 			this.advanceAssemblyLine();
 		}
+		clock.advanceTime(time);
 	}
 
 	public void createAndAddUser(String userName, String role)
