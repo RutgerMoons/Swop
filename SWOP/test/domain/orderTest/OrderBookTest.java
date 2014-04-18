@@ -15,13 +15,15 @@ import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
+import domain.car.CustomCarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 import domain.observer.ClockObserver;
-import domain.order.StandardOrder;
+import domain.order.CustomOrder;
 import domain.order.OrderBook;
+import domain.order.StandardOrder;
 
 
 /*
@@ -33,7 +35,7 @@ public class OrderBookTest {
 	CarModel model2;
 	@Before
 	public void setUp() throws AlreadyInMapException{
-		orderBook = new OrderBook(new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0)));
+		orderBook = new OrderBook(new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0,0)));
 		Set<CarOption> parts = new HashSet<>();
 		parts.add(new CarOption("sport", CarOptionCategory.BODY));
 		parts.add(new CarOption("black", CarOptionCategory.COLOR));
@@ -53,11 +55,11 @@ public class OrderBookTest {
 	public void test1() throws ImmutableException, NotImplementedException {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
-		StandardOrder order = new StandardOrder("Mario", model1,3, new UnmodifiableClock(20));
-		orderBook.addOrder(order);
+		StandardOrder order = new StandardOrder("Mario", model1,3, new UnmodifiableClock(0,0));
+		orderBook.addOrder(order, new UnmodifiableClock(0, 0));
 		assertFalse(orderBook.getPendingOrders().isEmpty());
-		StandardOrder order2 = new StandardOrder("Mario",model2,2, new UnmodifiableClock(20));
-		orderBook.addOrder(order2);
+		StandardOrder order2 = new StandardOrder("Mario",model2,2, new UnmodifiableClock(0,0));
+		orderBook.addOrder(order2, new UnmodifiableClock(0, 0));
 		assertEquals(1,orderBook.getPendingOrders().keySet().size());
 		assertEquals(2,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		orderBook.updateOrderBook(order2);
@@ -66,6 +68,30 @@ public class OrderBookTest {
 		orderBook.updateOrderBook(order);
 		assertEquals(0,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		assertEquals(2,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
+		
+		assertEquals(0, order.getEstimatedTime().getDays());
+		assertEquals(300, order.getEstimatedTime().getMinutes());
+	}
+	
+	@Test
+	public void testAddCustomOrder() throws ImmutableException, NotImplementedException {
+		assertNotNull(orderBook.getCompletedOrders());
+		assertNotNull(orderBook.getPendingOrders());
+		CustomCarModel customModel = new CustomCarModel();
+		CustomOrder order = new CustomOrder("Mario", customModel,3, new UnmodifiableClock(0,20), new UnmodifiableClock(1, 420));
+		orderBook.addOrder(order, new UnmodifiableClock(0, 0));
+		
+		assertFalse(orderBook.getPendingOrders().isEmpty());
+		assertEquals(1,orderBook.getPendingOrders().keySet().size());
+		assertEquals(1,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
+		orderBook.updateOrderBook(order);
+		assertEquals(0,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
+		assertEquals(1,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
+		
+		assertEquals(1, order.getDeadline().getDays());
+		assertEquals(420, order.getDeadline().getMinutes());
+		assertEquals(1, order.getEstimatedTime().getDays());
+		assertEquals(420, order.getEstimatedTime().getMinutes());
 	}
 
 	@Test
@@ -79,7 +105,7 @@ public class OrderBookTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void test3(){
 		orderBook.initializeBook();
-		StandardOrder order = new StandardOrder(null,null,0, new UnmodifiableClock(20));
+		StandardOrder order = new StandardOrder(null,null,0, new UnmodifiableClock(0,20));
 		orderBook.updateOrderBook(order);
 		
 	}

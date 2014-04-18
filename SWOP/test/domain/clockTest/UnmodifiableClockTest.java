@@ -68,5 +68,12 @@ public class UnmodifiableClockTest {
 	public void toStringTest(){
 		assertEquals("day 1, 8 hours, 20 minutes.", clock.toString());
 	}
+	
+	@Test
+	public void plusTest1(){
+		UnmodifiableClock result = clock.getUnmodifiableClockPlusExtraMinutes(300);
+		assertEquals(1, result.getDays());
+		assertEquals(800, result.getMinutes());
+	}
 
 }

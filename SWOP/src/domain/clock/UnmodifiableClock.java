@@ -51,6 +51,9 @@ public class UnmodifiableClock implements Comparable<UnmodifiableClock> {
 
 	@Override
 	public int compareTo(UnmodifiableClock clock) {
+		if (clock == null) {
+			throw new IllegalArgumentException();
+		}
 		if (isEarlierThan(clock)) {
 			return -1;
 		}

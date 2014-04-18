@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.clock.Clock;
+import domain.observer.ClockObserver;
 
 public class ClockTest {
 
@@ -44,4 +45,40 @@ public class ClockTest {
 		assertEquals(1, clock.getDays());
 	}
 	
+	@Test
+	public void TestAttachObserver() {
+		ClockObserver obs = new ClockObserver();
+		assertNotNull(obs);
+		clock.attachObserver(obs);
+		assertNotNull(clock);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestAttachObserverNull() {
+		clock.attachObserver(null);
+	}
+	
+	@Test
+	public void TestDetachObserver() {
+		ClockObserver obs = new ClockObserver();
+		assertNotNull(obs);
+		clock.attachObserver(obs);
+		assertNotNull(clock);
+		clock.detachObserver(obs);
+		assertNotNull(clock);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestDetachObserverNull() {
+		clock.detachObserver(null);
+	}
+	
+	@Test
+	public void TestDetachObserverNull2() {
+		ClockObserver obs = new ClockObserver();
+		assertNotNull(obs);
+		assertNotNull(clock);
+		clock.detachObserver(obs);
+		assertNotNull(clock);
+	}
 }
