@@ -48,19 +48,19 @@ import domain.users.UserFactory;
 public class Facade {
 
 	private AssemblyLine assemblyLine;
+	private AssemblyLineObserver assemblyLineObserver;
 	private CarModelCatalogue carModelCatalogue;
 	private Clock clock;
 	private ClockObserver clockObserver;
-	private OrderBook orderBook;
-	private UserBook userBook;
-	private UserFactory userFactory;
-
-	private AssemblyLineObserver assemblyLineObserver;
+	private CustomCarModelCatalogue customCarModelCatalogue;
 	private Logger logger;
 
-
+	private OrderBook orderBook;
 	private PartPicker picker;
-	private CustomCarModelCatalogue customCarModelCatalogue;
+
+
+	private UserBook userBook;
+	private UserFactory userFactory;
 
 	public Facade(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions) {
 		this.clock = new Clock();
@@ -95,6 +95,17 @@ public class Facade {
 		}
 	}
 
+	public void addPartToModel(String type, String part) {
+		CarOptionCategory carOptionCategory = CarOptionCategory.valueOf(type);
+		for(CarOption actualPart: picker.getModel().getSpecification().getCarParts().get(carOptionCategory)){
+			if(actualPart.toString().equals(part))
+				try {
+					picker.getModel().addCarPart(actualPart);
+				} catch (AlreadyInMapException e) { //ga nooit gebeuren omdat je 1x alle types overloopt
+				}
+		}
+	}
+
 	public void advanceAssemblyLine() throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
 		assemblyLine.advance();
 	}
@@ -104,10 +115,10 @@ public class Facade {
 
 	}
 
+
 	public boolean canAssemblyLineAdvance() {
 		return assemblyLine.canAdvance();
 	}
-
 
 	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex, int time) throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
@@ -133,6 +144,10 @@ public class Facade {
 			System.err
 			.println("Something went wrong at login, this shouldn't happen.");
 		}
+	}
+
+	public void createNewModel(String realModel) {
+		picker.setNewModel(carModelCatalogue.getCatalogue().get(realModel));
 	}
 
 	public List<AccessRight> getAccessRights() {
@@ -161,6 +176,15 @@ public class Facade {
 		return this.carModelCatalogue.getCatalogue().keySet();
 	}
 
+	public Set<String> getCarPartTypes() {
+		Set<String> types = new HashSet<>();
+		for(CarOptionCategory type: CarOptionCategory.values()){
+			types.add(type.toString());
+
+		}
+		return types;
+	}
+
 	public ArrayList<String> getCompletedOrders() {
 		ArrayList<String> completedOrders = new ArrayList<String>();
 		if (this.orderBook.getCompletedOrders().containsKey(
@@ -171,6 +195,51 @@ public class Facade {
 			}
 		}
 		return completedOrders;
+	}
+
+	public List<String> getCustomTasks() {
+		List<String> tasks = new ArrayList<>();
+		for(String model: customCarModelCatalogue.getCatalogue().keySet()){
+			tasks.add(model);
+		}
+		return tasks;
+	}
+
+	public List<String> getOrderDetails(String orderString) {
+		IOrder chosenOrder=null;
+		for(IOrder order: orderBook.getPendingOrders().values()){
+			if (order.toString().equals(orderString)) {
+				chosenOrder = order;
+			}
+		}
+		for(IOrder order: orderBook.getCompletedOrders().values()){
+			if (order.toString().equals(orderString)) {
+				chosenOrder = order;
+			}
+		}
+
+		List<String> orderDetails = new ArrayList<>();
+		if(chosenOrder!=null){
+			orderDetails.add("Order Time: " + chosenOrder.getOrderTime().toString());
+			try {
+				orderDetails.add("(Expected) Completion Time: " + chosenOrder.getDeadline().toString());
+			} catch (NotImplementedException e) {
+				orderDetails.add("(Expected) Completion Time: " + chosenOrder.getEstimatedTime().toString());
+			}
+		}
+		return orderDetails;
+	}
+
+	public Set<String> getParts(String type) {
+		Set<String> parts = new HashSet<>();
+		CarOptionCategory category = CarOptionCategory.valueOf(type);
+		for(CarOption part: picker.getStillAvailableCarParts(category)){
+			if(category.isOptional() || (picker.getModel().getForcedOptionalTypes().get(category)!=null && picker.getModel().getForcedOptionalTypes().get(category))){
+				parts.add("Select nothing");
+			}
+			parts.add(part.toString());
+		}
+		return parts;
 	}
 
 	public ArrayList<String> getPendingOrders() {
@@ -187,6 +256,14 @@ public class Facade {
 		}
 		return pendingOrders;
 
+	}
+
+	public List<String> getSpecificCustomTasks(String taskDescription){
+		List<String> tasks = new ArrayList<>();
+		for(CustomCarModel model: customCarModelCatalogue.getCatalogue().get(taskDescription)){
+			tasks.add(model.toString());
+		}
+		return tasks;
 	}
 
 	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex) {
@@ -218,98 +295,6 @@ public class Facade {
 		userBook.logout();
 	}
 
-	public String processOrder(int quantity) throws ImmutableException, IllegalStateException, NotImplementedException {
-		CarModel carModel = picker.getModel();
-
-		if(!carModel.isValid())
-			throw new IllegalStateException();
-		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity, clock.getUnmodifiableClock());
-		this.orderBook.addOrder(order);
-		return order.getEstimatedTime().toString();
-	}
-
-	public void startNewDay() {
-		clock.startNewDay();
-
-	}
-
-	public void createNewModel(String realModel) {
-		picker.setNewModel(carModelCatalogue.getCatalogue().get(realModel));
-	}
-
-	public Set<String> getCarPartTypes() {
-		Set<String> types = new HashSet<>();
-		for(CarOptionCategory type: CarOptionCategory.values()){
-			types.add(type.toString());
-
-		}
-		return types;
-	}
-
-	public Set<String> getParts(String type) {
-		Set<String> parts = new HashSet<>();
-		CarOptionCategory category = CarOptionCategory.valueOf(type);
-		for(CarOption part: picker.getStillAvailableCarParts(category)){
-			if(category.isOptional() || (picker.getModel().getForcedOptionalTypes().get(category)!=null && picker.getModel().getForcedOptionalTypes().get(category))){
-				parts.add("Select nothing");
-			}
-			parts.add(part.toString());
-		}
-		return parts;
-	}
-
-	public void addPartToModel(String type, String part) {
-		CarOptionCategory carOptionCategory = CarOptionCategory.valueOf(type);
-		for(CarOption actualPart: picker.getModel().getSpecification().getCarParts().get(carOptionCategory)){
-			if(actualPart.toString().equals(part))
-				try {
-					picker.getModel().addCarPart(actualPart);
-				} catch (AlreadyInMapException e) { //ga nooit gebeuren omdat je 1x alle types overloopt
-				}
-		}
-	}
-
-	public List<String> getOrderDetails(String orderString) {
-		IOrder chosenOrder=null;
-		for(IOrder order: orderBook.getPendingOrders().values()){
-			if (order.toString().equals(orderString)) {
-				chosenOrder = order;
-			}
-		}
-		for(IOrder order: orderBook.getCompletedOrders().values()){
-			if (order.toString().equals(orderString)) {
-				chosenOrder = order;
-			}
-		}
-
-		List<String> orderDetails = new ArrayList<>();
-		if(chosenOrder!=null){
-			orderDetails.add("Order Time: " + chosenOrder.getOrderTime().toString());
-			try {
-				orderDetails.add("(Expected) Completion Time: " + chosenOrder.getDeadline().toString());
-			} catch (NotImplementedException e) {
-				orderDetails.add("(Expected) Completion Time: " + chosenOrder.getEstimatedTime().toString());
-			}
-		}
-		return orderDetails;
-	}
-
-
-	public List<String> getCustomTasks() {
-		List<String> tasks = new ArrayList<>();
-		for(String model: customCarModelCatalogue.getCatalogue().keySet()){
-			tasks.add(model);
-		}
-		return tasks;
-	}
-
-	public List<String> getSpecificCustomTasks(String taskDescription){
-		List<String> tasks = new ArrayList<>();
-		for(CustomCarModel model: customCarModelCatalogue.getCatalogue().get(taskDescription)){
-			tasks.add(model.toString());
-		}
-		return tasks;
-	}
 
 	public String processCustomOrder(String model, String deadline) {
 		CustomCarModel customModel = null;
@@ -326,9 +311,24 @@ public class Facade {
 		UnmodifiableClock deadlineClock = new UnmodifiableClock(days, minutes);
 		CustomOrder order = new CustomOrder(userBook.getCurrentUser().getName(), customModel, 1, clock.getUnmodifiableClock(), deadlineClock);
 		try {
-			orderBook.addOrder(order);
+			orderBook.addOrder(order, clock.getUnmodifiableClock());
 		} catch (ImmutableException | NotImplementedException e) {
 		}
 		return order.getEstimatedTime().toString();
+	}
+
+	public String processOrder(int quantity) throws ImmutableException, IllegalStateException, NotImplementedException {
+		CarModel carModel = picker.getModel();
+
+		if(!carModel.isValid())
+			throw new IllegalStateException();
+		StandardOrder order = new StandardOrder(userBook.getCurrentUser().getName(), carModel, quantity, clock.getUnmodifiableClock());
+		this.orderBook.addOrder(order, clock.getUnmodifiableClock());
+		return order.getEstimatedTime().toString();
+	}
+
+	public void startNewDay() {
+		clock.startNewDay();
+
 	}
 }

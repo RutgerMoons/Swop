@@ -110,7 +110,7 @@ public class SchedulingAlgorithmFifoTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testGetEstimatedTimeInMinutes2(){
-		UnmodifiableClock clock = new UnmodifiableClock(500);
+		UnmodifiableClock clock = new UnmodifiableClock(0,500);
 		try {
 			algorithm.getEstimatedTimeInMinutes(null, clock);
 		} catch (NotImplementedException e) {

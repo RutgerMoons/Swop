@@ -91,14 +91,14 @@ public class OrderBook {
 	 * @throws ImmutableException 
 	 * @throws NotImplementedException 
 	 */
-	public void addOrder(StandardOrder order) throws ImmutableException, NotImplementedException {
+	public void addOrder(StandardOrder order, UnmodifiableClock currentTime) throws ImmutableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		order.setEstimatedTime(new UnmodifiableClock(assemblyLine.convertStandardOrderToJob(order)));
+		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertStandardOrderToJob(order)));
 	}
 	
-	public void addOrder(CustomOrder order) throws ImmutableException, NotImplementedException {
+	public void addOrder(CustomOrder order, UnmodifiableClock currentTime) throws ImmutableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		order.setEstimatedTime(new UnmodifiableClock(assemblyLine.convertCustomOrderToJob(order)));
+		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
 		
 	}
 }
