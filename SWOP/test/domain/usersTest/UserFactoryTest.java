@@ -24,6 +24,7 @@ public class UserFactoryTest {
 		User garageholder = factory.createUser("Stef", "garageholder");
 		assertEquals("Stef", garageholder.getName());
 		assertEquals(AccessRight.ORDER, garageholder.getAccessRights().get(0));
+		assertEquals(AccessRight.SHOWDETAILS, garageholder.getAccessRights().get(1));
 		
 		User manager = factory.createUser("Karen", "manager");
 		assertEquals("Karen", manager.getName());
@@ -39,12 +40,12 @@ public class UserFactoryTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidRole1(){
+	public void testInvalidRole1() {
 		factory.createUser("bla", null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidRole2(){
+	public void testInvalidRole2() {
 		factory.createUser("bla", "bla");
 	}
 

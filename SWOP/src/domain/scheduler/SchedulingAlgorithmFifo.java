@@ -152,9 +152,11 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	private int getMaximum(ArrayList<Optional<IJob>> list) throws NotImplementedException{
 		int biggest = 0;
 		for(Optional<IJob> job : list){
-			int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getSpecification().getTimeAtWorkBench();
-			if(job.isPresent() && currentTimeAtWorkbenchForThisJob >= biggest){
-				biggest = currentTimeAtWorkbenchForThisJob;
+			if(job.isPresent()) {
+				int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getSpecification().getTimeAtWorkBench();
+				if(currentTimeAtWorkbenchForThisJob >= biggest){
+					biggest = currentTimeAtWorkbenchForThisJob;
+				}
 			}
 		}
 		return biggest;
