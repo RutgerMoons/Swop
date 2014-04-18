@@ -80,10 +80,21 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		return job.getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 	
-	private int getCurrentTotalProductionTime() {
-		// TODO Auto-generated method stub
-		return 0;
+	private int getCurrentTotalProductionTime() throws NotImplementedException {
+		int time = 0;
+		ArrayList<Optional<IJob>> historyCopy = getHistory();
+		if (historyCopy.size() == 0) {
+			return 0;
+		}
+		historyCopy.remove(0);
+		while (historyCopy.size() > 0) {
+			time += getMaximum(historyCopy);
+			historyCopy.remove(0);
+		}
+		return time;
 	}
+	
+	
 
 	@Override
 	public PriorityQueue<IJob> getCustomJobs() {
@@ -216,7 +227,6 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 		int currentTotalProductionTime = getCurrentTotalProductionTime();
 		//Step 1:
-		//TODO currentTotalProductionTime implementeren op de 1 of andere manier
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(toSchedule);
 			Optional<IJob> toReturn = Optional.fromNullable(toSchedule);
