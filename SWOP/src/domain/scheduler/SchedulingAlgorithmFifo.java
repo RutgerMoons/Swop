@@ -106,6 +106,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			} 
 			catch (NotImplementedException e) {	}
 		}
+		
 		ArrayList<Optional<IJob>> previousJobs = this.getHistory();
 		int totalProductionTime = 0;
 		for (Iterator<IJob> iterator = standardJobs.iterator(); iterator.hasNext();) {
