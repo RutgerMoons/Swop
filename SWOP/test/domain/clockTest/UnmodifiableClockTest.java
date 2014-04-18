@@ -21,14 +21,6 @@ public class UnmodifiableClockTest {
 		assertEquals(500, clock.getMinutes());
 	}
 	
-	
-	@Test
-	public void test2eConstructor(){
-		int minutes = 1441;
-		UnmodifiableClock newClock = new UnmodifiableClock(minutes);
-		assertEquals(1, newClock.getDays());
-		assertEquals(1, newClock.getMinutes());
-	}
 	@Test
 	public void isEarlierThanTest1(){
 		UnmodifiableClock otherClock = new UnmodifiableClock(5,200);
