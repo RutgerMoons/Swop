@@ -1,9 +1,9 @@
 package domain.assemblyTest;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +20,10 @@ import domain.car.CarOptionCategory;
 import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.job.Action;
 import domain.job.IAction;
 import domain.job.ITask;
+import domain.job.Task;
 import domain.observer.ClockObserver;
 
 
@@ -32,7 +34,7 @@ public class AssemblyLineTest{
 
 	@Before
 	public void initialize() {
-		line = new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0));
+		line = new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0,240));
 
 		Set<CarOption> parts = new HashSet<>();
 		parts.add(new CarOption("sport", CarOptionCategory.BODY));
@@ -59,7 +61,7 @@ public class AssemblyLineTest{
 
 	@Test(expected = IllegalArgumentException.class)
 	public void TestInvalidConstructor(){
-		new AssemblyLine(null, new UnmodifiableClock(0));
+		new AssemblyLine(null, new UnmodifiableClock(0, 240));
 	}
 
 	@Test
@@ -79,7 +81,17 @@ public class AssemblyLineTest{
 
 	@Test
 	public void canAdvanceTestTrue(){
+		//		UnmodifiableClock clock = new UnmodifiableClock(2,300);
+		//		StandardOrder order = new StandardOrder("Luigi", this.model, 5, clock);
+		Action action1 = new Action("paint");
+		action1.setCompleted(true);
+		Task task1 = new Task("task pait");
+		task1.addAction(action1);
+		ArrayList<ITask> list = new ArrayList<ITask>();
+		list.add(task1);
 		try {
+			//			line.convertStandardOrderToJob(order);
+			line.getWorkbenches().get(0).setCurrentTasks(list);
 			for(IWorkBench bench : line.getWorkbenches()){
 				for(ITask task : bench.getCurrentTasks()){
 					for(IAction action: task.getActions()){
@@ -93,19 +105,16 @@ public class AssemblyLineTest{
 
 	@Test
 	public void canAdvanceTestFalse(){
-		assertEquals(0,line.getWorkbenches().get(0).getCurrentTasks().size());
+		Action action1 = new Action("paint");
+		action1.setCompleted(false);
+		Task task1 = new Task("task pait");
+		task1.addAction(action1);
+		ArrayList<ITask> list = new ArrayList<ITask>();
+		list.add(task1);
 		try {
-			
-			for(IWorkBench bench : line.getWorkbenches()){
-				for(ITask task : bench.getCurrentTasks()){
-					for(IAction action: task.getActions()){
-						action.setCompleted(true);
-					}
-				}
-			}
-//			line.getWorkbenches().get(0).getCurrentTasks().get(0);
-			assertTrue(line.canAdvance());
-		} catch (ImmutableException e) {}
+			line.getWorkbenches().get(0).setCurrentTasks(list);
+		} catch (ImmutableException e) {		}
+		assertFalse(line.canAdvance());
 	}
 
 
