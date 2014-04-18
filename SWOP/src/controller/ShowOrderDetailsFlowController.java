@@ -14,19 +14,20 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 
 	@Override
 	public void executeUseCase() throws IllegalArgumentException,
-			ImmutableException {
+	ImmutableException {
 		checkOrderDetails();
 	}
-	
+
 	public void checkOrderDetails() throws IllegalArgumentException, ImmutableException {
 		String order = clientCommunication.chooseOrder(facade.getPendingOrders(), facade.getCompletedOrders());
-		
-		clientCommunication.showOrderDetails(facade.getOrderDetails(order));
-		 
-		if(clientCommunication.askContinue()){
-			executeUseCase();
+		if(!order.equals("No Order")){
+			clientCommunication.showOrderDetails(facade.getOrderDetails(order));
+
+			if(clientCommunication.askContinue()){
+				executeUseCase();
+			}
 		}
 	}
-	
+
 
 }

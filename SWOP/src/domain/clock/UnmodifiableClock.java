@@ -12,8 +12,8 @@ public class UnmodifiableClock implements Comparable<UnmodifiableClock> {
 	}
 	
 	public UnmodifiableClock(int minutes){
-		this.days = minutes % this.MINUTESINADAY;
-		this.minutes = minutes / this.MINUTESINADAY;
+		this.days = minutes / this.MINUTESINADAY;
+		this.minutes = minutes % this.MINUTESINADAY;
 	}
 	
 	public int getDays() {

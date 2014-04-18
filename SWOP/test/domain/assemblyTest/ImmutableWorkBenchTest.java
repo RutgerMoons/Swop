@@ -19,6 +19,7 @@ import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
+import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.job.Action;
@@ -57,7 +58,7 @@ public class ImmutableWorkBenchTest {
 		assertEquals("paintbooth", immutable.getWorkbenchName());
 		assertTrue(immutable.getResponsibilities().contains("paint"));
 		
-		IJob job = new Job(new StandardOrder("Stef", model, 1));
+		IJob job = new Job(new StandardOrder("Stef", model, 1, new UnmodifiableClock(0)));
 		Task task= new Task("paint");
 		task.addAction(new Action("paint blue"));
 		((Job) job).addTask(task);

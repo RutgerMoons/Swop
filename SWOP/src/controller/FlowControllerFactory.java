@@ -27,6 +27,8 @@ public class FlowControllerFactory {
 		flowControllers.add(new AdvanceAssemblyLineFlowController(AccessRight.ADVANCE, iClientCommunication, facade));
 		flowControllers.add(new AssembleFlowController(AccessRight.ASSEMBLE, iClientCommunication, facade));
 		flowControllers.add(new OrderFlowController(AccessRight.ORDER, iClientCommunication, facade));
+		flowControllers.add(new ShowOrderDetailsFlowController(AccessRight.SHOWDETAILS, iClientCommunication, facade));
+		flowControllers.add(new CustomOrderFlowController(AccessRight.CUSTOMORDER, iClientCommunication, facade));
 		return flowControllers;
 	}
 	

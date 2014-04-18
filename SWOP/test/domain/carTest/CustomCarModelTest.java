@@ -45,7 +45,7 @@ public class CustomCarModelTest {
 	public void testToString() throws AlreadyInMapException, ImmutableException{
 		model.addCarPart(new CarOption("sport", CarOptionCategory.BODY));
 		String s = System.lineSeparator();
-		assertEquals("Custom order:" + s + "BODY: sport", model.toString());
+		assertEquals("BODY: sport", model.toString());
 	}
 	
 	@Test(expected=NotImplementedException.class)

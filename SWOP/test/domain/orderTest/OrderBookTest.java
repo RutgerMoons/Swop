@@ -34,7 +34,7 @@ public class OrderBookTest {
 	CarModel model2;
 	@Before
 	public void setUp() throws AlreadyInMapException{
-		orderBook = new OrderBook(new AssemblyLine(new ClockObserver()));
+		orderBook = new OrderBook(new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0)));
 		Set<CarOption> parts = new HashSet<>();
 		parts.add(new CarOption("sport", CarOptionCategory.BODY));
 		parts.add(new CarOption("black", CarOptionCategory.COLOR));

@@ -141,7 +141,7 @@ public class CustomOrderTest {
 		
 		order1.setEstimatedTime(new UnmodifiableClock(1, 100));
 		assertEquals(
-				"2 Custom order: " + line+ "SPOILER: low"+line+ "Deadline: 5 days and 0 hours and 20 minutes" + line+" Estimated completion time: 1 days and 1 hours and 40 minutes",
+				"2 SPOILER: low"+line+ "Deadline: 5 days and 0 hours and 20 minutes" + line+" Estimated completion time: 1 days and 1 hours and 40 minutes",
 				order1.toString());
 	}
 	

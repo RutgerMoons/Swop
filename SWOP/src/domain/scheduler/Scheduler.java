@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 import com.google.common.base.Optional;
 
 import domain.car.CarOption;
+import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
@@ -21,12 +22,13 @@ public class Scheduler implements LogsClock {
 	private ArrayList<Shift> shifts;
 	private UnmodifiableClock clock;
 	
-	public Scheduler(int amountOfWorkBenches, ClockObserver clockObserver) {
-		if (clockObserver == null) {
+	public Scheduler(int amountOfWorkBenches, ClockObserver clockObserver, UnmodifiableClock clock) {
+		if (clockObserver == null || clock==null) {
 			throw new IllegalArgumentException();
 		}
 		// this observer should stay referenced in the facade to avoid garbage collection
 		clockObserver.attachLogger(this);
+		this.clock = clock;
 		this.amountOfWorkBenches = amountOfWorkBenches;
 		switchToFifo();
 		shifts = new ArrayList<>();

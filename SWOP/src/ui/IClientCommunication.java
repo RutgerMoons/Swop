@@ -179,6 +179,12 @@ public interface IClientCommunication {
 	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders);
 
 	public void showOrderDetails(List<String> orderDetails);
+
+	public String showCustomTasks(List<String> tasks);
+
+	public String askDeadline();
+
+	public void showCustomOrder(String time);
 	
 	
 }

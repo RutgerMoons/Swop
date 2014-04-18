@@ -1,16 +1,17 @@
 package domain.users;
 
 public enum AccessRight {
-	ORDER("Order a car"), ADVANCE("Advance the assemblyline"), ASSEMBLE("Perform assembly tasks");
-	
+	ORDER("Order a car"), ADVANCE("Advance the assemblyline"), ASSEMBLE("Perform assembly tasks"), 
+		SHOWDETAILS("Show order details"), CUSTOMORDER("Place a custom order");
+
 	private final String description;
+
 	private AccessRight(String description) {
 		this.description = description;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.description;
 	}
 }
-	

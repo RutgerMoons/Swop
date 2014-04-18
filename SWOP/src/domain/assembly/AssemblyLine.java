@@ -48,7 +48,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             If clock==null
 	 */
-	public AssemblyLine(ClockObserver clockObserver) {
+	public AssemblyLine(ClockObserver clockObserver, UnmodifiableClock clock) {
 		if (clockObserver == null) {
 			throw new IllegalArgumentException();
 		}
@@ -56,7 +56,7 @@ public class AssemblyLine {
 		currentJobs = new ArrayList<IJob>();
 		initializeWorkbenches();
 		observers = new ArrayList<>();
-		this.scheduler = new Scheduler(workbenches.size(), clockObserver);
+		this.scheduler = new Scheduler(workbenches.size(), clockObserver, clock);
 	}
 
 	/**
