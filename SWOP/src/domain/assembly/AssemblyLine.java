@@ -162,7 +162,7 @@ public class AssemblyLine {
 			this.scheduler.addCustomJob(job);
 		}
 		
-		return scheduler.getEstimatedTimeInMinutes(jobs.get(0));
+		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
 	}
 	
 	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException, NotImplementedException {
@@ -174,7 +174,7 @@ public class AssemblyLine {
 			this.scheduler.addStandardJob(job);
 		}
 		
-		return scheduler.getEstimatedTimeInMinutes(jobs.get(0));
+		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
 	}
 	
 	public int getMinimalIndexOfWorkbench(IJob job) {
@@ -290,6 +290,14 @@ public class AssemblyLine {
 	
 	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) throws NotImplementedException {
 		return this.scheduler.getEstimatedTimeInMinutes(job);
+	}
+	
+	public void switchToFifo() {
+		this.scheduler.switchToFifo();
+	}
+	
+	public void switchToBatch(List<CarOption> carOptions) {
+		this.scheduler.switchToBatch(carOptions);
 	}
 	
 }

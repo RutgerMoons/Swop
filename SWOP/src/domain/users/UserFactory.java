@@ -41,21 +41,18 @@ public class UserFactory {
 	}
 
 	private User createGarageHolder(String userName) {
-
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(
 				Arrays.asList(new AccessRight[] { AccessRight.ORDER, AccessRight.SHOWDETAILS }));
 		return new User(userName, accessRights);
 	}
 
 	private User createManager(String userName) {
-
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(
 				Arrays.asList(new AccessRight[] { AccessRight.ADVANCE }));
 		return new User(userName, accessRights);
 	}
 
 	private User createWorker(String userName) {
-
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(
 				Arrays.asList(new AccessRight[] { AccessRight.ASSEMBLE }));
 		return new User(userName, accessRights);

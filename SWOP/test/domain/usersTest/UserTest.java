@@ -60,4 +60,5 @@ public class UserTest {
 		assertNotEquals(user, new UserBook());
 		
 	}
+	
 }
