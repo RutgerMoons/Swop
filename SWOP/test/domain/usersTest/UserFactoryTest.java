@@ -32,6 +32,10 @@ public class UserFactoryTest {
 		User worker = factory.createUser("Rutger", "worker");
 		assertEquals("Rutger", worker.getName());
 		assertEquals(AccessRight.ASSEMBLE, worker.getAccessRights().get(0));
+		
+		User customManager = factory.createUser("Faeshaas", "custom car shop manager");
+		assertEquals("Faeshaas", customManager.getName());
+		assertEquals(AccessRight.CUSTOMORDER, customManager.getAccessRights().get(0));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

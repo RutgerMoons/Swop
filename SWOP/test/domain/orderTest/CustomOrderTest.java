@@ -6,11 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
 import domain.car.CustomCarModel;
@@ -19,9 +16,6 @@ import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 import domain.job.Action;
-import domain.order.CustomOrder;
-import domain.order.IOrder;
-import domain.order.ImmutableOrder;
 import domain.order.CustomOrder;
 
 public class CustomOrderTest {

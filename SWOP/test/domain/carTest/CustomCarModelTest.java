@@ -2,12 +2,9 @@ package domain.carTest;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
 import domain.car.CustomCarModel;
