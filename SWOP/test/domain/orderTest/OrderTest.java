@@ -25,9 +25,11 @@ public class OrderTest {
 
 	private CarModel model;
 	private CarModelSpecification template;
+	private UnmodifiableClock clock;
 
 	@Before
 	public void initializeModel() throws AlreadyInMapException {
+		clock = new UnmodifiableClock(0,20);
 		Set<CarOption> parts = new HashSet<>();
 		parts.add(new CarOption("sport", CarOptionCategory.BODY));
 		
@@ -65,7 +67,7 @@ public class OrderTest {
 
 	@Test
 	public void test1Constructor() {
-		StandardOrder order = new StandardOrder("Mario", model, 3, new UnmodifiableClock(20));
+		StandardOrder order = new StandardOrder("Mario", model, 3, clock);
 		assertNotNull(order);
 		assertEquals(order.getDescription(), model);
 		assertEquals("Mario", order.getGarageHolder());
@@ -81,29 +83,29 @@ public class OrderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void test2Constructor() {
-		new StandardOrder(null, null, -1, new UnmodifiableClock(20));
+		new StandardOrder(null, null, -1, clock);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetGarageHolder1() {
-		new StandardOrder(" ", model, 3, new UnmodifiableClock(20));
+		new StandardOrder(" ", model, 3, clock);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetGarageHolder2() {
-		StandardOrder order3 = new StandardOrder("Mario", model, 3, new UnmodifiableClock(20));
+		StandardOrder order3 = new StandardOrder("Mario", model, 3, clock);
 		assertNotNull(order3.getGarageHolder());
-		new StandardOrder(null, model, 3, new UnmodifiableClock(20));
+		new StandardOrder(null, model, 3, clock);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testPendingCars1() {
-		new StandardOrder("Mario", model, -1, new UnmodifiableClock(20));
+		new StandardOrder("Mario", model, -1, clock);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testPendingCars2() {
-		StandardOrder order = new StandardOrder("Mario", model, 1, new UnmodifiableClock(20));
+		StandardOrder order = new StandardOrder("Mario", model, 1, clock);
 		order.completeCar();
 		assertEquals(0, order.getPendingCars());
 		order.completeCar();
@@ -112,12 +114,12 @@ public class OrderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testQuantity() {
-		new StandardOrder("Mario", model, 0, new UnmodifiableClock(20));
+		new StandardOrder("Mario", model, 0, clock);
 	}
 
 	@Test
 	public void testEstimatedTime1() {
-		StandardOrder order = new StandardOrder("Mario", model, 3, new UnmodifiableClock(20));
+		StandardOrder order = new StandardOrder("Mario", model, 3, clock);
 		UnmodifiableClock clock = new UnmodifiableClock(0, 5);
 		order.setEstimatedTime(clock);
 		assertEquals(0, order.getEstimatedTime().getDays());
@@ -126,13 +128,13 @@ public class OrderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testEstimatedTime2() {
-		StandardOrder order = new StandardOrder("Mario", model, 3, new UnmodifiableClock(20));
+		StandardOrder order = new StandardOrder("Mario", model, 3, clock);
 		order.setEstimatedTime(null);
 	}
 
 	@Test
 	public void testCarCompleted() {
-		StandardOrder order = new StandardOrder("Mario", model, 3, new UnmodifiableClock(20));
+		StandardOrder order = new StandardOrder("Mario", model, 3, clock);
 		assertEquals(3, order.getPendingCars());
 		order.completeCar();
 		assertEquals(2, order.getPendingCars());
@@ -153,16 +155,16 @@ public class OrderTest {
 		model2.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
 		model2.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
 
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, new UnmodifiableClock(20));
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		assertFalse(order1.equals(null));
 		assertFalse(order1.equals(new Action("Paint")));
-		StandardOrder order2 = new StandardOrder("Jan", model2, 2, new UnmodifiableClock(20));
+		StandardOrder order2 = new StandardOrder("Jan", model2, 2, clock);
 		assertFalse(order1.equals(order2));
-		order2 = new StandardOrder("Jos", model, 2, new UnmodifiableClock(20));
+		order2 = new StandardOrder("Jos", model, 2, clock);
 		assertFalse(order1.equals(order2));
-		order2 = new StandardOrder("Jan", model, 1, new UnmodifiableClock(20));
+		order2 = new StandardOrder("Jan", model, 1, clock);
 		assertFalse(order1.equals(order2));
-		order2 = new StandardOrder("Jan", model, 2, new UnmodifiableClock(20));
+		order2 = new StandardOrder("Jan", model, 2, clock);
 		assertTrue(order1.equals(order2));
 		assertTrue(order1.equals(order1));
 		assertEquals(order1.hashCode(), order2.hashCode());
@@ -170,7 +172,7 @@ public class OrderTest {
 
 	@Test
 	public void testToString() {
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, new UnmodifiableClock(20));
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		
 		order1.setEstimatedTime(new UnmodifiableClock(1, 100));
 		assertEquals(
@@ -180,26 +182,26 @@ public class OrderTest {
 	
 	@Test(expected=NotImplementedException.class)
 	public void testGetDeadline() throws NotImplementedException{
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, new UnmodifiableClock(20));
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		order1.getDeadline();
 	}
 	
 	@Test(expected=NotImplementedException.class)
 	public void testSetDeadline() throws NotImplementedException{
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, new UnmodifiableClock(20));
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		order1.setDeadline(new UnmodifiableClock(0, 0));
 	}
 	
 	@Test
 	public void testGetProductionTime() throws NotImplementedException{
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, new UnmodifiableClock(20));
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		assertEquals(order1.getProductionTime(), model.getSpecification().getTimeAtWorkBench());
 	}
 	
 	@Test
 	public void testGetAndSetOrderTime(){
 		UnmodifiableClock clock = new UnmodifiableClock(4, 45);
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, new UnmodifiableClock(20));
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		order1.setOrderTime(clock);
 		assertEquals(clock, order1.getOrderTime());
 		
@@ -207,7 +209,7 @@ public class OrderTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testSetIllegalOrderTime(){
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, new UnmodifiableClock(20));
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		order1.setOrderTime(null);
 	}
 }

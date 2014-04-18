@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -137,14 +138,14 @@ public class AssemblyLineTest{
 		} catch (ImmutableException | NotImplementedException e) {}
 
 	}
-	
+
 	@Test (expected = IllegalArgumentException.class)
 	public void testConvertStandardOrderToJobError(){
 		try {
 			line.convertStandardOrderToJob(null);
 		} catch (ImmutableException | NotImplementedException e) {}
 	}
-	
+
 	@Test
 	public void testConvertCustoOrderToJob(){
 		UnmodifiableClock clock = new UnmodifiableClock(0,240);
@@ -157,14 +158,14 @@ public class AssemblyLineTest{
 		} catch (ImmutableException | NotImplementedException e) {}
 
 	}
-	
+
 	@Test (expected = IllegalArgumentException.class)
 	public void testConvertCustomOrderToJobError(){
 		try {
 			line.convertCustomOrderToJob(null);
 		} catch (ImmutableException | NotImplementedException e) {}
 	}
-	
+
 	@Test
 	public void TestAttachObserver() {
 		AssemblyLineObserver obs = new AssemblyLineObserver();
@@ -172,12 +173,12 @@ public class AssemblyLineTest{
 		line.attachObserver(obs);
 		assertNotNull(line);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void TestAttachObserverNull() {
 		line.attachObserver(null);
 	}
-	
+
 	@Test
 	public void TestDetachObserver() {
 		AssemblyLineObserver obs = new AssemblyLineObserver();
@@ -187,12 +188,12 @@ public class AssemblyLineTest{
 		line.detachObserver(obs);
 		assertNotNull(line);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void TestDetachObserverNull() {
 		line.detachObserver(null);
 	}
-	
+
 	@Test
 	public void TestDetachObserverNull2() {
 		AssemblyLineObserver obs = new AssemblyLineObserver();
@@ -216,7 +217,7 @@ public class AssemblyLineTest{
 		assertTrue(line.getBlockingWorkBenches().contains(1));
 		assertTrue(line.getBlockingWorkBenches().size()==1);
 	}
-	
+
 	@Test
 	public void advanceTest() throws ImmutableException, NoSuitableJobFoundException, NotImplementedException{
 		AssemblyLineObserver observer = new AssemblyLineObserver();
@@ -230,7 +231,7 @@ public class AssemblyLineTest{
 			order.setEstimatedTime(clock.getUnmodifiableClockPlusExtraMinutes(minutes));
 		} catch (ImmutableException | NotImplementedException e) {}
 		line.advance();
-		
+
 		for(IWorkBench bench : line.getWorkbenches()){
 			for(ITask task : bench.getCurrentTasks()){
 				for(IAction action: task.getActions()){
@@ -238,9 +239,9 @@ public class AssemblyLineTest{
 				}
 			}
 		}
-		
+
 		line.advance();
-		
+
 		for(IWorkBench bench : line.getWorkbenches()){
 			for(ITask task : bench.getCurrentTasks()){
 				for(IAction action: task.getActions()){
@@ -250,7 +251,7 @@ public class AssemblyLineTest{
 		}
 		clockObserver.advanceTime(clock);
 		line.advance();
-		
+
 		for(IWorkBench bench : line.getWorkbenches()){
 			for(ITask task : bench.getCurrentTasks()){
 				for(IAction action: task.getActions()){
@@ -258,13 +259,41 @@ public class AssemblyLineTest{
 				}
 			}
 		}
-		
+
 		line.advance();
-		
+
 		clockObserver.startNewDay(new UnmodifiableClock(2, 360));
 		assertEquals(1, logger.averageDays());
 	}
+
+
+	@Test (expected = IllegalStateException.class)
+	public void advanceTestFail(){
+		Action action1 = new Action("paint");
+		action1.setCompleted(false);
+		Task task1 = new Task("task paint");
+		task1.addAction(action1);
+		ArrayList<ITask> list = new ArrayList<ITask>();
+		list.add(task1);
+		try {
+			line.getWorkbenches().get(0).setCurrentTasks(list);
+			line.advance();
+		} catch (ImmutableException e) {}
+		catch (NoSuitableJobFoundException | NotImplementedException e) {}
+	}
 	
+	@Test
+	public void switchToFifoTest(){
+		line.switchToFifo();
+	}
+	
+	@Test
+	public void switchToBatchTest(){
+		List<CarOption> list = new ArrayList<CarOption>();
+		list.add(new CarOption("break", CarOptionCategory.BODY));
+		line.switchToBatch(list);
+	}
+
 	@Test
 	public void TestToString(){
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");

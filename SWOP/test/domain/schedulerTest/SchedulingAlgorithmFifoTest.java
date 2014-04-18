@@ -100,7 +100,9 @@ public class SchedulingAlgorithmFifoTest {
 		UnmodifiableClock ordertime = new UnmodifiableClock(0, 30);
 		UnmodifiableClock deadline = new UnmodifiableClock(10, 800);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
-		ass.convertOrderToJob(customOrder);
+		try {
+			ass.convertCustomOrderToJob(customOrder);
+		} catch (NotImplementedException e) {}
 		
 		UnmodifiableClock currentTime = new UnmodifiableClock(2, 480); // 8 uur op dag 2
 		//assertEquals(new UnmodifiableClock(2, 780), order1.getEstimatedTime());

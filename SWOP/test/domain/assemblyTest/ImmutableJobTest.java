@@ -43,7 +43,7 @@ public class ImmutableJobTest {
 		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
 		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
 		
-		job = new Job(new StandardOrder("Stef", model, 1, new UnmodifiableClock(0)));
+		job = new Job(new StandardOrder("Stef", model, 1, new UnmodifiableClock(0,240)));
 		immutable = new ImmutableJob(job);
 	}
 	

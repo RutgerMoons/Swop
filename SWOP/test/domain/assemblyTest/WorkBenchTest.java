@@ -34,6 +34,7 @@ public class WorkBenchTest {
 
 	private WorkBench workBench;
 	private CarModel model;
+	private UnmodifiableClock clock;
 	@Before
 	public void initialize() throws AlreadyInMapException{
 		workBench = new WorkBench(new HashSet<String>(), "name");
@@ -48,6 +49,7 @@ public class WorkBenchTest {
 		model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
 		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
 		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+		clock = new UnmodifiableClock(0,240);
 	}
 	
 	@Test
@@ -60,7 +62,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestSetCurrentJob(){
 		workBench.isCompleted();
-		IJob job = new Job(new StandardOrder("Jef", model, 1, new UnmodifiableClock(0)));
+		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		assertNotNull(workBench.getCurrentJob());
 		assertEquals(workBench.getCurrentJob().get(), job);
@@ -143,7 +145,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestChooseNextTasks(){
 		workBench.addResponsibility("Paint");
-		IJob job = new Job(new StandardOrder("Jef", model, 1, new UnmodifiableClock(0)));
+		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
 		Task task = new Task("Paint");
 		task.addAction(new Action("Spray Colour"));
 		((Job) job).addTask(task);
@@ -157,7 +159,7 @@ public class WorkBenchTest {
 	public void TestChooseNextTasksTwoCompatibleTasks(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		IJob job = new Job(new StandardOrder("Jef", model, 1, new UnmodifiableClock(0)));
+		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
 		ITask task1 = new Task("Paint");
 		
 		((Task) task1).addAction(new Action("Spray Colour"));
@@ -176,7 +178,7 @@ public class WorkBenchTest {
 	@Test
 	public void TestChooseNextTasksOneCompatibleOneInCompatibleTask(){
 		workBench.addResponsibility("Paint");
-		IJob job = new Job(new StandardOrder("Jef", model, 1, new UnmodifiableClock(0)));
+		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
 		Task task1 = new Task("Paint");
 		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
@@ -199,7 +201,7 @@ public class WorkBenchTest {
 	public void TestNotCompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		IJob job = new Job(new StandardOrder("Jef", model, 1, new UnmodifiableClock(0)));
+		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
 		Task task1 = new Task("Paint");
 		task1.addAction(new Action("Spray Colour"));
 		Task task2 = new Task("Body");
@@ -216,7 +218,7 @@ public class WorkBenchTest {
 	public void TestOneCompletedOneIncompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		IJob job = new Job(new StandardOrder("Jef", model, 1, new UnmodifiableClock(0)));
+		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
 		Task task1 = new Task("Paint");
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
@@ -235,7 +237,7 @@ public class WorkBenchTest {
 	public void TestTwoCompleted(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		IJob job = new Job(new StandardOrder("Jef", model, 1, new UnmodifiableClock(0)));
+		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
 		Task task1 = new Task("Paint");
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);

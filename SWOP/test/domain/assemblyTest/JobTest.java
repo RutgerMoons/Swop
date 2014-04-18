@@ -20,8 +20,6 @@ import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
 import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.job.Action;
@@ -50,7 +48,7 @@ public class JobTest {
 
 	@Test
 	public void TestConstructor(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		assertNotNull(job.getTasks());
 		assertEquals(order, job.getOrder());
@@ -58,10 +56,10 @@ public class JobTest {
 
 	@Test
 	public void TestSetOrder(){
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order1);
 		assertEquals(order1, job.getOrder());
-		StandardOrder order2 = new StandardOrder("Mark", model, 1, new UnmodifiableClock(0));
+		StandardOrder order2 = new StandardOrder("Mark", model, 1, new UnmodifiableClock(0,240));
 		job.setOrder(order2);
 		assertEquals(order2, job.getOrder());
 	}
@@ -75,7 +73,7 @@ public class JobTest {
 	@Test
 	public void setTasks(){
 		List<ITask> tasks = new ArrayList<>();
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		job.setTasks(tasks);
 		assertEquals(tasks, job.getTasks());
@@ -83,7 +81,7 @@ public class JobTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void setInvalidTasks(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		job.setTasks(null);
 		assertEquals(null, job.getTasks());
@@ -91,7 +89,7 @@ public class JobTest {
 	
 	@Test
 	public void TestAdd(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		Task task = new Task("Paint");
 		assertEquals(0, job.getTasks().size());
@@ -101,7 +99,7 @@ public class JobTest {
 	
 	@Test
 	public void TestTwoAdd(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		Task task = new Task("Paint");
 		assertEquals(0, job.getTasks().size());
@@ -114,7 +112,7 @@ public class JobTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void TestInvalidAdd(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		assertEquals(0, job.getTasks().size());
 		job.addTask(null);
@@ -123,7 +121,7 @@ public class JobTest {
 	
 	@Test
 	public void TestCompletedOneTask(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		Task task = new Task("Paint");
 		assertTrue(job.isCompleted());
@@ -137,7 +135,7 @@ public class JobTest {
 	
 	@Test
 	public void TestCompletedTwoTasks(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		Task task1 = new Task("Paint");
 		Task task2 = new Task("Paint");
@@ -160,11 +158,11 @@ public class JobTest {
 	
 	@Test
 	public void TestEqualsAndHashCode(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		assertFalse(job.equals(null));
 		assertFalse(job.equals(new Action("Test")));
-		Job job2 = new Job(new StandardOrder("Jan", model, 1, new UnmodifiableClock(0)));
+		Job job2 = new Job(new StandardOrder("Jan", model, 1, new UnmodifiableClock(0,240)));
 		assertFalse(job.equals(job2));
 		job2 = new Job(order);
 		
@@ -179,7 +177,7 @@ public class JobTest {
 	
 	@Test
 	public void testIndex(){
-		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
+		StandardOrder order = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0,240));
 		Job job = new Job(order);
 		job.setMinimalIndex(5);
 		assertEquals(5, job.getMinimalIndex());
