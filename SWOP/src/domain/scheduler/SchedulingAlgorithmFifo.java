@@ -55,7 +55,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		if (job == null || list == null) {
 			throw new IllegalArgumentException();
 		}
-		history.add(job);
+		list.add(job);
 		if (list.size() > this.amountOfWorkBenches) {
 			list.remove(0);
 		}
@@ -63,7 +63,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) throws NotImplementedException {
-		return job.getOrder().getProductionTime() >= minutesTillEndOfDay - currentTotalProductionTime;
+		return job.getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 
 	private int getCurrentTotalProductionTime() throws NotImplementedException {
@@ -110,7 +110,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		int totalProductionTime = 0;
 		for (Iterator<IJob> iterator = standardJobs.iterator(); iterator.hasNext();) {
 			IJob j = iterator.next();
-			if (!j.equals(job)) {
+			if (iterator.hasNext()) {
 				addToList(Optional.fromNullable(j), previousJobs);
 				totalProductionTime += this.getMaximum(previousJobs);			
 			}

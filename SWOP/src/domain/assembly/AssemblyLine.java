@@ -87,27 +87,22 @@ public class AssemblyLine {
 		if (!canAdvance()) {
 			throw new IllegalStateException();
 		}
-		
+
 		Optional<IJob> lastJob = Optional.absent();
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			IWorkBench bench = getWorkbenches().get(i);
 			if (i == 0) {
 				lastJob = bench.getCurrentJob();
 				bench.setCurrentJob(this.scheduler.retrieveNextJob());
-			} else { // Als het niet de eerste is, moet je de job van de vorige
-				// workbench nemen.
+			} else {
 				Optional<IJob> prev = bench.getCurrentJob();
 				bench.setCurrentJob(lastJob);
 				lastJob = prev;
 			}
-			bench.chooseTasksOutOfJob(); // dan de taken laten selecteren door
-			// de workbench
+			bench.chooseTasksOutOfJob(); 
 		}
 		if (lastJob.isPresent()	&& lastJob.get().isCompleted()) {
-			currentJobs.remove(lastJob.get()); // als de job completed is,
-												// dus de auto('s), dan moet
-												// je de job natuurlijk
-												// removen.
+			currentJobs.remove(lastJob.get());
 			lastJob.get().getOrder().completeCar();
 			notifyObserverCompleteOrder(lastJob.get().getOrder().getEstimatedTime());
 		}
@@ -132,11 +127,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
-	public List<IJob> convertOrderToJob(IOrder order) throws ImmutableException {
-		if (order == null) {
-			throw new IllegalArgumentException();
-		}
-		
+	private List<IJob> convertOrderToJob(IOrder order) throws ImmutableException {
 		ICarModel model = order.getDescription();
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
@@ -152,7 +143,7 @@ public class AssemblyLine {
 		}
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
-	
+
 	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException, NotImplementedException {
 		if (order == null) {
 			throw new IllegalArgumentException();
@@ -161,10 +152,10 @@ public class AssemblyLine {
 		for (IJob job : jobs) {
 			this.scheduler.addCustomJob(job);
 		}
-		
+
 		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
 	}
-	
+
 	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException, NotImplementedException {
 		if (order == null) {
 			throw new IllegalArgumentException();
@@ -173,14 +164,11 @@ public class AssemblyLine {
 		for (IJob job : jobs) {
 			this.scheduler.addStandardJob(job);
 		}
-		
+
 		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
 	}
-	
-	public int getMinimalIndexOfWorkbench(IJob job) {
-		if (job == null) {
-			throw new IllegalArgumentException();
-		}
+
+	private int getMinimalIndexOfWorkbench(IJob job) {
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			for (ITask task : job.getTasks()) {
 				if (getWorkbenches().get(i).getResponsibilities().contains(task.getTaskDescription())) {
@@ -261,42 +249,38 @@ public class AssemblyLine {
 				assemblyLineString += ","
 						+ "  *"
 						+ workbench.getCurrentTasks().get(j)
-								.getTaskDescription() + ": " + completed;
+						.getTaskDescription() + ": " + completed;
 			}
 		}
 		return assemblyLineString.replaceFirst(",", "");
 	}
-	
+
 	public void attachObserver(AssemblyLineObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
 		}
 		observers.add(observer);
 	}
-	
+
 	public void detachObserver(AssemblyLineObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
 		}
 		observers.remove(observer);
 	}
-	
+
 	public void notifyObserverCompleteOrder(UnmodifiableClock aClock) {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}
 	}
-	
-	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) throws NotImplementedException {
-		return this.scheduler.getEstimatedTimeInMinutes(job);
-	}
-	
+
 	public void switchToFifo() {
 		this.scheduler.switchToFifo();
 	}
-	
+
 	public void switchToBatch(List<CarOption> carOptions) {
 		this.scheduler.switchToBatch(carOptions);
 	}
-	
+
 }
