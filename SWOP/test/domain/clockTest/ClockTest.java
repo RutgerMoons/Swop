@@ -32,7 +32,7 @@ public class ClockTest {
 		clock.advanceTime(1450);
 		assertTrue(clock.getMinutes() == 370);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testAdvanceException() {
 		clock.advanceTime(-10);
@@ -79,6 +79,28 @@ public class ClockTest {
 		assertNotNull(obs);
 		assertNotNull(clock);
 		clock.detachObserver(obs);
+		assertNotNull(clock);
+	}
+	
+	@Test
+	public void TestNotifyAdvance() {
+		ClockObserver obs = new ClockObserver();
+		assertNotNull(obs);
+		clock.attachObserver(obs);
+		assertNotNull(clock);
+		clock.notifyObserversAdvanceTime();
+		assertNotNull(obs);
+		assertNotNull(clock);
+	}
+	
+	@Test
+	public void TestNotifyNewDay() {
+		ClockObserver obs = new ClockObserver();
+		assertNotNull(obs);
+		clock.attachObserver(obs);
+		assertNotNull(clock);
+		clock.notifyObserversStartNewDay();
+		assertNotNull(obs);
 		assertNotNull(clock);
 	}
 }

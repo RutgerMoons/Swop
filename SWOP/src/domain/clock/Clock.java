@@ -30,9 +30,7 @@ public class Clock {
 	}
 	
 	private void setMinutes(int min) {
-		if (min >= 0) {
-			this.minutes = min % MINUTESINADAY;
-		}
+		this.minutes = min % MINUTESINADAY;
 	}
 	
 	/**
@@ -47,7 +45,7 @@ public class Clock {
 			throw new IllegalArgumentException("argument can't be negative");
 		}
 		else if (this.minutes + elapsedTime > MINUTESINADAY){
-			setMinutes((this.minutes + elapsedTime) % MINUTESINADAY);
+			setMinutes(this.minutes + elapsedTime);
 			incrementDay();
 		}
 		else {
@@ -78,9 +76,7 @@ public class Clock {
 	 * set the minutes to MINUTESSTARTOFDAY
 	 */
 	public void startNewDay() {
-		if (getMinutes() < MINUTESINADAY) {
-			incrementDay();
-		}
+		incrementDay();
 		setMinutes(MINUTESSTARTOFDAY);
 		notifyObserversStartNewDay();
 	}

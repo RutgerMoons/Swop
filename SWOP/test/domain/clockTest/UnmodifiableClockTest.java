@@ -75,5 +75,27 @@ public class UnmodifiableClockTest {
 		assertEquals(1, result.getDays());
 		assertEquals(800, result.getMinutes());
 	}
+	
+	@Test
+	public void compareTest() {
+		UnmodifiableClock clock1 = new UnmodifiableClock(1, 1);
+		UnmodifiableClock clock2 = new UnmodifiableClock(10, 10);
+		assertEquals(-1, clock1.compareTo(clock2));
+		assertEquals(1, clock2.compareTo(clock1));
+		UnmodifiableClock clock3 = new UnmodifiableClock(1, 1);
+		assertEquals(0, clock1.compareTo(clock3));
+		
+		clock2 = new UnmodifiableClock(1, 10);
+		assertEquals(-1, clock1.compareTo(clock2));
+		
+		clock2 = new UnmodifiableClock(10, 1);
+		assertEquals(-1, clock1.compareTo(clock2));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void compareTestException() {
+		UnmodifiableClock clock1 = new UnmodifiableClock(1, 1);
+		clock1.compareTo(null);
+	}
 
 }

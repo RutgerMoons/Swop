@@ -54,6 +54,9 @@ public class UnmodifiableClock implements Comparable<UnmodifiableClock> {
 		if (clock == null) {
 			throw new IllegalArgumentException();
 		}
+		if (clock.getDays() == this.getDays() && clock.getMinutes() == this.getMinutes()) {
+			return 0;
+		}
 		if (isEarlierThan(clock)) {
 			return -1;
 		}
