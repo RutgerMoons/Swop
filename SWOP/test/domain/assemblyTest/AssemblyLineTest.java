@@ -22,234 +22,48 @@ import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
+import domain.car.CustomCarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
+import domain.exception.NotImplementedException;
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.IJob;
 import domain.job.ITask;
 import domain.job.Job;
 import domain.job.Task;
+import domain.log.Logger;
+import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+import domain.order.CustomOrder;
 import domain.order.StandardOrder;
 
 
 public class AssemblyLineTest{
 
-	private int beginTime = 6*60;
 	private AssemblyLine line;
 	private CarModel model;
+
 	@Before
-	public void initialize() throws AlreadyInMapException{
-		line = new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0));
+	public void initialize() {
+		line = new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0,240));
 
 		Set<CarOption> parts = new HashSet<>();
 		parts.add(new CarOption("sport", CarOptionCategory.BODY));
 		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
 		model = new CarModel(template);
-		model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		model.addCarPart(new CarOption("sedan",  CarOptionCategory.BODY));
-		model.addCarPart(new CarOption("red",  CarOptionCategory.COLOR));
-		model.addCarPart(new CarOption("standard 2l 4 cilinders",  CarOptionCategory.ENGINE));
-		model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
-		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
-	}
 
-	@Test
-	public void TestAddMultipleJobs(){
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		Job job1 = new Job(order1);
-		Job job2 = new Job(order1);
-		List<IJob> jobs = new ArrayList<>();
-		jobs.add(job1);
-		jobs.add(job2);
-		line.addMultipleJobs(jobs);
-		assertEquals(2, line.getCurrentJobs().size());
-		assertEquals(job1, line.getCurrentJobs().get(0));
-		assertEquals(job2, line.getCurrentJobs().get(1));
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void TestAddMultipleJobsNull(){
-		line.addMultipleJobs(null);
-	}
-	@Test (expected = IllegalArgumentException.class)
-	public void TestAddOneInvalidJob(){
-		line.addJob(null);
-		assertEquals(1, line.getCurrentJobs().size());
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void TestAddOneInvalidWorkBench(){
-		line.addWorkBench(null);
-		assertEquals(1, line.getCurrentJobs().size());
-	}
-
-	@Test
-	public void TestAddOneValidJob(){
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		Job job = new Job(order1);
-		line.addJob(job);
-		assertEquals(1, line.getCurrentJobs().size());
-		assertEquals(job, line.getCurrentJobs().get(0));
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void TestAddOneValidJobOneInvalidJob(){
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		Job job = new Job(order1);
-		line.addJob(job);
-		assertEquals(1, line.getCurrentJobs().size());
-		assertEquals(job, line.getCurrentJobs().get(0));
-		line.addJob(null);
-		assertEquals(2, line.getCurrentJobs().size());
-	}
-
-	@Test
-	public void TestAddOneValidWorkBench(){
-		WorkBench workBench = new WorkBench(new HashSet<String>(), "test");
-		line.addWorkBench(workBench);
-		assertEquals(1, line.getWorkbenches().size());
-		assertEquals(workBench, line.getWorkbenches().get(0));
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void TestAddOneValidWorkBenchOneInvalidWorkBench(){
-		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
-		line.addWorkBench(bench);
-		assertEquals(1, line.getWorkbenches().size());
-		assertEquals(bench, line.getWorkbenches().get(0));
-		line.addWorkBench(null);
-		assertEquals(2, line.getCurrentJobs().size());
-	}
-
-	@Test
-	public void TestAddTwoValidJobs(){
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		Job job1 = new Job(order1);
-		Job job2 = new Job(order1);
-		line.addJob(job1);
-		line.addJob(job2);
-		assertEquals(2, line.getCurrentJobs().size());
-		assertEquals(job1, line.getCurrentJobs().get(0));
-		assertEquals(job2, line.getCurrentJobs().get(1));
-	}
-
-	@Test
-	public void TestAddTwoValidWorkBenchs(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		assertEquals(2, line.getWorkbenches().size());
-		assertEquals(bench1, line.getWorkbenches().get(0));
-		assertEquals(bench2, line.getWorkbenches().get(1));
-	}
-
-	@Test
-	public void TestAdvanceAfterTenOClock(){
-		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		IJob job = new Job(order1);
-		line.addJob(job);
-		line.addWorkBench(bench);
-		bench.setCurrentJob(Optional.fromNullable(job));
-		line.getClock().advanceTime(21*60 + 5);
-
-
-		line.advance();
-		assertEquals(Optional.absent(), bench.getCurrentJob());
-	}
-	
-	@Test
-	public void TestAdvanceOneWorkbench(){
-		WorkBench bench = new WorkBench(new HashSet<String>(), "test");
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		Job job = new Job(order1);
-		line.addJob(job);
-		line.addWorkBench(bench);
-		line.advance();
-		assertEquals(bench.getCurrentJob().get(), job);
-	}
-	
-	@Test
-	public void TestAdvanceTwoWorkbenches(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		Job job = new Job(order1);
-		line.addJob(job);
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.advance();
-		assertEquals(bench1.getCurrentJob().get(), job);
-		line.advance();
-		assertEquals(bench2.getCurrentJob().get(), job);
-	}
-
-	@Test
-	public void TestAdvanceTwoWorkbenchesCompleteFullJob(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		bench2.addResponsibility("Body");
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		Job job = new Job(order1);
-		Task task = new Task("Body");
-		Action action = new Action("Spray Colour");
-		task.addAction(action);
-		job.addTask(task);
-		line.addJob(job);
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.advance();
-		assertEquals(bench1.getCurrentJob().get(), job);
-		line.advance();
-		assertEquals(bench2.getCurrentJob().get(), job);
-		action.setCompleted(true);
-		line.advance();
-		assertEquals(0, line.getCurrentJobs().size());
-	}
-
-	@Test
-	public void TestAdvanceTwoWorkbenchesTwoJobs(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		Job job1 = new Job(order1);
-		Job job2 = new Job(order1);
-		line.addJob(job1);
-		line.addJob(job2);
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.advance();
-		assertEquals(bench1.getCurrentJob().get(), job1);
-		line.advance();
-		assertEquals(bench1.getCurrentJob().get(), job2);
-		assertEquals(bench2.getCurrentJob().get(), job1);
-	}
-	
-	@Test
-	public void testCanAdvanceAndBlockingWorkBenches() throws ImmutableException{
-		assertTrue(line.canAdvance());
-		
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		bench1.addResponsibility("Paint");
-		line.addWorkBench(bench1);
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0));
-		IJob job = new Job(order);
-		ITask task = new Task("Paint");
-		IAction action = new Action("Paint car blue");
-		action.setCompleted(false);
-		task.addAction(action);
-		job.addTask(task);
-		line.addJob(job);
-		bench1.setCurrentJob(Optional.fromNullable(job));
-		bench1.chooseTasksOutOfJob();		
-		assertFalse(line.canAdvance());
-		
-		assertEquals(1, (int)line.getBlockingWorkBenches().get(0));
+		try {
+			model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
+			model.addCarPart(new CarOption("sedan",  CarOptionCategory.BODY));
+			model.addCarPart(new CarOption("red",  CarOptionCategory.COLOR));
+			model.addCarPart(new CarOption("standard 2l 4 cilinders",  CarOptionCategory.ENGINE));
+			model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
+			model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
+			model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+		} catch (AlreadyInMapException e) {}
 	}
 
 	@Test
@@ -260,260 +74,233 @@ public class AssemblyLineTest{
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void TestConvertIllegalOrderToJobOneCar(){
-		List<IJob> jobs = line.convertOrderToJob(null);
-		assertEquals(1, jobs.size());
-		assertEquals(7, jobs.get(0).getTasks().size());
-	}
-
-
-
-
-	@Test
-	public void TestConvertOrderToJobOneCar() throws AlreadyInMapException{
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0));
-		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
-		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
-		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
-		List<IJob> jobs = line.convertOrderToJob(order);
-		assertEquals(1, jobs.size());
-		assertEquals(7, jobs.get(0).getTasks().size());
+	public void TestInvalidConstructor(){
+		new AssemblyLine(null, new UnmodifiableClock(0, 240));
 	}
 
 	@Test
-	public void TestConvertOrderToJobTwoCars() throws AlreadyInMapException{
-		StandardOrder order = new StandardOrder("Stef", model, 2, new UnmodifiableClock(0));
-		
-		
-		model.addCarPart(new CarPart("manual", true, CarPartType.AIRCO));
-		model.addCarPart(new CarPart("sedan", false, CarPartType.BODY));
-		model.addCarPart(new CarPart("red", false, CarPartType.COLOR));
-		model.addCarPart(new CarPart("standard 2l 4 cilinders", false, CarPartType.ENGINE));
-		model.addCarPart(new CarPart("6 speed manual", false, CarPartType.GEARBOX));
-		model.addCarPart(new CarPart("leather black", false, CarPartType.SEATS));
-		model.addCarPart(new CarPart("comfort", false, CarPartType.WHEEL));
-		
-		List<IJob> jobs = line.convertOrderToJob(order);
-		assertEquals(2, jobs.size());
-		assertEquals(7, jobs.get(0).getTasks().size());
+	public void addWorkBenchTest(){
+		Set<String> resp1 = new HashSet<String>();
+		resp1.add("bla");
+		resp1.add("bleu");
+		IWorkBench workbench1 = new WorkBench(resp1, "workbench1");
+		line.addWorkBench(workbench1);
+		assertEquals(4, line.getWorkbenches().size());
 	}
 
-
-	@Test
-	public void TestEstimatedTime1(){
-		StandardOrder order = new StandardOrder("Stef", model, 2, new UnmodifiableClock(0));
-		line.addMultipleJobs(line.convertOrderToJob(order));
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.calculateEstimatedTime(order);
-		assertEquals(0, order.getEstimatedTime()[0]);
-		assertEquals(240, order.getEstimatedTime()[1]);
-	}
-
-	@Test
-	public void TestEstimatedTime2(){
-		StandardOrder order = new StandardOrder("Stef", model, 20, new UnmodifiableClock(0));
-		line.addMultipleJobs(line.convertOrderToJob(order));
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.calculateEstimatedTime(order);
-		assertEquals(1, order.getEstimatedTime()[0]);
-		assertEquals(360 + beginTime , order.getEstimatedTime()[1]); //+begintijd om 6u
-	}
-
-	@Test
-	public void TestEstimatedTime3(){
-		StandardOrder order = new StandardOrder("Stef", model, 40, new UnmodifiableClock(0));
-		line.addMultipleJobs(line.convertOrderToJob(order));
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.calculateEstimatedTime(order);
-		assertEquals(2, order.getEstimatedTime()[0]);
-		assertEquals(beginTime + 720, order.getEstimatedTime()[1]);
-	}
-
-	@Test(expected = IllegalStateException.class)
-	public void TestEstimatedTime4(){
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0));
-		line.addMultipleJobs(line.convertOrderToJob(order));
-		line.calculateEstimatedTime(order);
-	}
-
-	@Test
-	public void TestEstimatedTime5(){
-
-		StandardOrder order = new StandardOrder("Stef", model, 40, new UnmodifiableClock(0));
-		line.addJob(new Job(order));
-		line.addMultipleJobs(line.convertOrderToJob(order));
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.advance();
-		line.calculateEstimatedTime(order);
-		assertEquals(2, order.getEstimatedTime()[0]);
-		assertEquals(beginTime + 720, order.getEstimatedTime()[1]);
-	}
-
-	@Test(expected= IllegalStateException.class)
-	public void TestEstimatedTime6(){
-
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0));
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		line.calculateEstimatedTime(order);
-		assertEquals(2, order.getEstimatedTime()[0]);
-		assertEquals(720, order.getEstimatedTime()[1]);
-	}
-
-	@Test
-	public void TestEstimatedTime7() {
-		line.getClock().advanceTime(19*60);
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		WorkBench bench2 = new WorkBench(new HashSet<String>(), "test2");
-		line.addWorkBench(bench1);
-		line.addWorkBench(bench2);
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0));
-		line.addJob(new Job(order));
-		line.addMultipleJobs(line.convertOrderToJob(order));
-		line.calculateEstimatedTime(order);
-		assertEquals(0, order.getEstimatedTime()[0]);
-		assertEquals(line.getClock().getMinutes() + 180, order.getEstimatedTime()[1]);
-	}
-
-	
 	@Test (expected = IllegalArgumentException.class)
-	public void TestEstimatedTimeInvalidOrder(){
-		line.addWorkBench(new WorkBench(new HashSet<String>(), "test"));
-		line.calculateEstimatedTime(null);
-		}
-
-	@Test
-	public void TestFutureAssemblyLine(){
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0));
-		Job job = new Job(order);
-		line.addJob(job);
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		line.addWorkBench(bench1);
-		AssemblyLine lineClone = line.getFutureAssemblyLine();
-		assertFalse(lineClone.getWorkbenches().get(0).getCurrentJob().equals(line.getWorkbenches().get(0).getCurrentJob()));
-		assertEquals(Optional.absent(), line.getWorkbenches().get(0).getCurrentJob());
+	public void addWorkBenchTestInvalid(){
+		line.addWorkBench(null);
 	}
 
 	@Test
-	public void TestIllegalAssemblyLine(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		bench1.addResponsibility("Paint");
-		line.addWorkBench(bench1);
-		AssemblyLine future = line.getFutureAssemblyLine();
-		assertEquals(line.getWorkbenches().get(0).getCurrentJob(), future.getWorkbenches().get(0).getCurrentJob());
+	public void canAdvanceTestTrue(){
+		Action action1 = new Action("paint");
+		action1.setCompleted(true);
+		Task task1 = new Task("task pait");
+		task1.addAction(action1);
+		ArrayList<ITask> list = new ArrayList<ITask>();
+		list.add(task1);
+		try {
+			line.getWorkbenches().get(0).setCurrentTasks(list);
+			for(IWorkBench bench : line.getWorkbenches()){
+				for(ITask task : bench.getCurrentTasks()){
+					for(IAction action: task.getActions()){
+						action.setCompleted(true);
+					}
+				}
+			}
+			assertTrue(line.canAdvance());
+		} catch (ImmutableException e) {}
+	}
+
+	@Test
+	public void canAdvanceTestFalse(){
+		Action action1 = new Action("paint");
+		action1.setCompleted(false);
+		Task task1 = new Task("task pait");
+		task1.addAction(action1);
+		ArrayList<ITask> list = new ArrayList<ITask>();
+		list.add(task1);
+		try {
+			line.getWorkbenches().get(0).setCurrentTasks(list);
+		} catch (ImmutableException e) {		}
+		assertFalse(line.canAdvance());
+	}
+
+	@Test
+	public void testConvertStandardOrderToJob(){
+		UnmodifiableClock clock = new UnmodifiableClock(0,240);
+		StandardOrder order = new StandardOrder("Luigi", this.model, 5, clock);
+		try {
+			int minutes = line.convertStandardOrderToJob(order);
+			assertEquals(420,minutes);
+		} catch (ImmutableException | NotImplementedException e) {}
+
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testConvertStandardOrderToJobError(){
+		try {
+			line.convertStandardOrderToJob(null);
+		} catch (ImmutableException | NotImplementedException e) {}
+	}
+
+	@Test
+	public void testConvertCustoOrderToJob(){
+		UnmodifiableClock clock = new UnmodifiableClock(0,240);
+		UnmodifiableClock deadline = new UnmodifiableClock(5, 800);
+		CustomCarModel model = new CustomCarModel();
+		CustomOrder order = new CustomOrder("Luigi in da house", model, 5, clock, deadline);
+		try {
+			int minutes = line.convertCustomOrderToJob(order);
+			assertEquals(deadline.minus(clock),minutes);
+		} catch (ImmutableException | NotImplementedException e) {}
+
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testConvertCustomOrderToJobError(){
+		try {
+			line.convertCustomOrderToJob(null);
+		} catch (ImmutableException | NotImplementedException e) {}
+	}
+
+	@Test
+	public void TestAttachObserver() {
+		AssemblyLineObserver obs = new AssemblyLineObserver();
+		assertNotNull(obs);
+		line.attachObserver(obs);
+		assertNotNull(line);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void TestInvalidConstructor(){
-		new AssemblyLine(null, new UnmodifiableClock(0));
+	public void TestAttachObserverNull() {
+		line.attachObserver(null);
 	}
 
-	@Test(expected=IllegalStateException.class)
-	public void TestNoCurrentJobs(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		line.addWorkBench(bench1);
+	@Test
+	public void TestDetachObserver() {
+		AssemblyLineObserver obs = new AssemblyLineObserver();
+		assertNotNull(obs);
+		line.attachObserver(obs);
+		assertNotNull(line);
+		line.detachObserver(obs);
+		assertNotNull(line);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void TestDetachObserverNull() {
+		line.detachObserver(null);
+	}
+
+	@Test
+	public void TestDetachObserverNull2() {
+		AssemblyLineObserver obs = new AssemblyLineObserver();
+		assertNotNull(obs);
+		assertNotNull(line);
+		line.detachObserver(obs);
+		assertNotNull(line);
+	}
+
+	@Test
+	public void getBlockingWorkenchesTest(){
+		Action action1 = new Action("paint");
+		action1.setCompleted(false);
+		Task task1 = new Task("task pait");
+		task1.addAction(action1);
+		ArrayList<ITask> list = new ArrayList<ITask>();
+		list.add(task1);
+		try {
+			line.getWorkbenches().get(0).setCurrentTasks(list);
+		} catch (ImmutableException e) {		}
+		assertTrue(line.getBlockingWorkBenches().contains(1));
+		assertTrue(line.getBlockingWorkBenches().size()==1);
+	}
+
+	@Test
+	public void advanceTest() throws ImmutableException, NoSuitableJobFoundException, NotImplementedException{
+		AssemblyLineObserver observer = new AssemblyLineObserver();
+		line.attachObserver(observer);
+		ClockObserver clockObserver = new ClockObserver();
+		Logger logger = new Logger(2, clockObserver, observer);
+		UnmodifiableClock clock = new UnmodifiableClock(0,240);
+		StandardOrder order = new StandardOrder("Luigi", this.model, 10, clock);
+		try {
+			int minutes = line.convertStandardOrderToJob(order);
+			order.setEstimatedTime(clock.getUnmodifiableClockPlusExtraMinutes(minutes));
+		} catch (ImmutableException | NotImplementedException e) {}
 		line.advance();
-	}
 
+		for(IWorkBench bench : line.getWorkbenches()){
+			for(ITask task : bench.getCurrentTasks()){
+				for(IAction action: task.getActions()){
+					action.setCompleted(true);
+				}
+			}
+		}
 
-	@Test
-	public void TestOvertime() throws ImmutableException{
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
-		bench1.addResponsibility("Paint");
-		line.addWorkBench(bench1);
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0));
-		IJob job = new Job(order);
-		ITask task = new Task("Paint");
-		IAction action = new Action("Paint car blue");
-		action.setCompleted(false);
-		task.addAction(action);
-		job.addTask(task);
-		line.addJob(job);
-		bench1.setCurrentJob(Optional.fromNullable(job));
-		bench1.chooseTasksOutOfJob();		
-
-		line.getClock().advanceTime(23*60);
 		line.advance();
-		assertEquals(60, line.getOvertime());
+
+		for(IWorkBench bench : line.getWorkbenches()){
+			for(ITask task : bench.getCurrentTasks()){
+				for(IAction action: task.getActions()){
+					action.setCompleted(true);
+				}
+			}
+		}
+		clockObserver.advanceTime(clock);
+		line.advance();
+
+		for(IWorkBench bench : line.getWorkbenches()){
+			for(ITask task : bench.getCurrentTasks()){
+				for(IAction action: task.getActions()){
+					action.setCompleted(true);
+				}
+			}
+		}
+
+		line.advance();
+
+		clockObserver.startNewDay(new UnmodifiableClock(2, 360));
+		assertEquals(1, logger.averageDays());
 	}
 
 
-	@Test (expected=IllegalArgumentException.class)
-	public void TestSetInvaldOvertime(){
-		line.setOvertime(-1);
-		assertEquals(-1, line.getOvertime());
-	}
-
-	
-	@Test (expected=IllegalArgumentException.class)
-	public void TestSetInvalidCurrentJobs(){
-		List<IJob> jobs = null;
-		line.setCurrentJobs(jobs);
-		assertEquals(2, line.getCurrentJobs().size());
-		assertEquals(jobs, line.getCurrentJobs());
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void TestSetInvalidWorkBenches(){
-		List<IWorkBench> workbenches = null;
-		line.setWorkbenches(workbenches);
-		assertEquals(0, line.getWorkbenches().size());
-		assertEquals(workbenches, line.getWorkbenches());
-	}
-
-	@Test
-	public void TestSetValidCurrentJobs(){
-		List<IJob> jobs = new ArrayList<>();
-		StandardOrder order1 = new StandardOrder("Jef", model, 1, new UnmodifiableClock(0));
-		jobs.add(new Job(order1));
-		jobs.add(new Job(order1));
-		line.setCurrentJobs(jobs);
-		assertEquals(2, line.getCurrentJobs().size());
-		assertEquals(jobs, line.getCurrentJobs());
-	}
-
-	@Test
-	public void TestSetValidOvertime(){
-		line.setOvertime(1);
-		assertEquals(1, line.getOvertime());
+	@Test (expected = IllegalStateException.class)
+	public void advanceTestFail(){
+		Action action1 = new Action("paint");
+		action1.setCompleted(false);
+		Task task1 = new Task("task paint");
+		task1.addAction(action1);
+		ArrayList<ITask> list = new ArrayList<ITask>();
+		list.add(task1);
+		try {
+			line.getWorkbenches().get(0).setCurrentTasks(list);
+			line.advance();
+		} catch (ImmutableException e) {}
+		catch (NoSuitableJobFoundException | NotImplementedException e) {}
 	}
 	
 	@Test
-	public void TestSetValidWorkBenches(){
-		List<IWorkBench> workbenches = new ArrayList<IWorkBench>();
-		workbenches.add(new WorkBench(new HashSet<String>(), "test"));
-		workbenches.add(new WorkBench(new HashSet<String>(), "test2"));
-		line.setWorkbenches(workbenches);
-		assertEquals(2, line.getWorkbenches().size());
-		assertEquals(workbenches, line.getWorkbenches());
+	public void switchToFifoTest(){
+		line.switchToFifo();
 	}
 	
+	@Test
+	public void switchToBatchTest(){
+		List<CarOption> list = new ArrayList<CarOption>();
+		list.add(new CarOption("break", CarOptionCategory.BODY));
+		line.switchToBatch(list);
+	}
+
 	@Test
 	public void TestToString(){
-		assertEquals("", line.toString());
 		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
-		assertEquals("-workbench 1: test", line.toString());
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0));
+		assertEquals("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories,-workbench 4: test", line.toString());
+		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0,240));
 		IJob job = new Job(order);
 		ITask task = new Task("Paint");
 		IAction action = new Action("Paint car blue");
@@ -521,8 +308,8 @@ public class AssemblyLineTest{
 		((Job) job).addTask(task);
 		bench1.setCurrentJob(Optional.fromNullable(job));
 		bench1.chooseTasksOutOfJob();
-		assertEquals("-workbench 1: test,  *Paint: not completed", line.toString());
+		assertEquals("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories,-workbench 4: test,  *Paint: not completed", line.toString());
 		((Action) action).setCompleted(true);
-		assertEquals("-workbench 1: test,  *Paint: completed", line.toString());
+		assertEquals("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories,-workbench 4: test,  *Paint: completed", line.toString());
 	}
 }
