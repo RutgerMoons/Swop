@@ -42,7 +42,7 @@ public class Scheduler implements LogsClock {
 		this.schedulingAlgorithm.AddCustomJob(customJob);
 	}
 	
-	public void addStandardJob(IJob standardJob) {
+	public void addStandardJob(IJob standardJob) throws NotImplementedException {
 		this.schedulingAlgorithm.AddStandardJob(standardJob);
 	}
 	
