@@ -25,7 +25,7 @@ public abstract class SchedulingAlgorithm {
 	
 	public abstract void AddCustomJob(IJob customjob);
 	
-	public abstract void AddStandardJob(IJob standardjob);
+	public abstract void AddStandardJob(IJob standardjob) throws NotImplementedException;
 	
 	public abstract void startNewDay();
 

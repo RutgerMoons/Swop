@@ -47,11 +47,11 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public void AddStandardJob(IJob standardJob) {
+	public void AddStandardJob(IJob standardJob) throws NotImplementedException {
 		if (standardJob == null) {
 			throw new IllegalArgumentException();
 		}
-		if(standardJob.getOrder().getDescription().getCarParts().values().containsAll(this.carOption)){
+		if (standardJob.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.carOption)) {
 			this.batchJobs.add(standardJob);
 		}
 		else{

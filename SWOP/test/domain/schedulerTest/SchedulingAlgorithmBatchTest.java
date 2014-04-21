@@ -80,30 +80,33 @@ public class SchedulingAlgorithmBatchTest {
 	}
 
 	@Test
-	public void testAddStandardJob1(){
+	public void testAddStandardJob1() throws NotImplementedException{
 		Set<CarOption> parts = new HashSet<>();
-		parts.addAll(list);
-//		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
+		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
+		assertEquals(1, parts.size());
 		template = new CarModelSpecification("model", parts, 60);
+		assertEquals(1, template.getCarParts().size());
 		model = new CarModel(template);
+		assertEquals(1, model.getSpecification().getCarParts().size());
+		assertEquals(0, model.getCarParts().size());
 		UnmodifiableClock ordertime = new UnmodifiableClock(2, 30);
 		IOrder order = new StandardOrder("mario", model, 3, ordertime);
 		IJob job = new Job(order);
 		scheduling.AddStandardJob(job);
 		assertEquals(1,scheduling.getStandardJobs().size());
 		
-//		Set<CarOption> parts2 = new HashSet<>();
-//		template = new CarModelSpecification("model", parts2, 60);
-//		model = new CarModel(template);
-//		UnmodifiableClock ordertime2 = new UnmodifiableClock(2, 30);
-//		IOrder order2 = new StandardOrder("mario", model, 3, ordertime2);
-//		IJob job2 = new Job(order2);
-//		scheduling.AddStandardJob(job2);
-//		assertEquals(2,scheduling.getStandardJobs().size());
+		Set<CarOption> parts2 = new HashSet<>();
+		template = new CarModelSpecification("model", parts2, 60);
+		model = new CarModel(template);
+		UnmodifiableClock ordertime2 = new UnmodifiableClock(2, 30);
+		IOrder order2 = new StandardOrder("mario", model, 3, ordertime2);
+		IJob job2 = new Job(order2);
+		scheduling.AddStandardJob(job2);
+		assertEquals(2,scheduling.getStandardJobs().size());
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void testAddStandardJob2(){
+	public void testAddStandardJob2() throws NotImplementedException{
 		scheduling.AddStandardJob(null);
 	}
 	
