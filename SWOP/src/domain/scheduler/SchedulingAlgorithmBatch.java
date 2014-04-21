@@ -98,7 +98,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	@Override
 	public PriorityQueue<IJob> getCustomJobs() {
-		PriorityQueue<IJob> pq = new PriorityQueue<>(customJobs.size(), new JobComparatorDeadLine());
+		PriorityQueue<IJob> pq = new PriorityQueue<>(1, new JobComparatorDeadLine());
 		pq.addAll(this.customJobs);
 		return pq;
 	}
