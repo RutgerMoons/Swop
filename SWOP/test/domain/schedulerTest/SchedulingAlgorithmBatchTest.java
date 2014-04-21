@@ -11,6 +11,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Optional;
+
 import domain.assembly.AssemblyLine;
 import domain.car.CarModel;
 import domain.car.CarModelSpecification;
@@ -112,7 +114,7 @@ public class SchedulingAlgorithmBatchTest {
 	public void startNewDayTest(){
 		ClockObserver obs = new ClockObserver();
 		AssemblyLine ass = new AssemblyLine(obs, new UnmodifiableClock(2, 360));
-		ass.switchToFifo();
+		ass.switchToBatch(list);
 		CustomCarModel customModel = new CustomCarModel();
 		UnmodifiableClock ordertime = new UnmodifiableClock(0, 0);
 		UnmodifiableClock deadline = new UnmodifiableClock(10, 800);
@@ -123,6 +125,15 @@ public class SchedulingAlgorithmBatchTest {
 		} catch (ImmutableException e) {}
 		catch (NotImplementedException e) {}
 		scheduling.startNewDay();
+	}
+	
+	
+	@Test
+	public void transformTest1(){
+		PriorityQueue<IJob> jobs = new PriorityQueue<IJob>(10,new JobComparatorDeadLine());
+		ArrayList<IJob> standardJobs = new ArrayList<IJob>();
+		ArrayList<Optional<IJob>> history = new ArrayList<Optional<IJob>>();
+		scheduling.transform(jobs, standardJobs, history);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -136,4 +147,30 @@ public class SchedulingAlgorithmBatchTest {
 		scheduling.transform(jobs, null, null);
 	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void transformTest4Error(){
+		PriorityQueue<IJob> jobs = new PriorityQueue<IJob>(10,new JobComparatorDeadLine());
+		ArrayList<IJob> standardJobs = new ArrayList<IJob>();
+		scheduling.transform(jobs, standardJobs, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void transformTest5Error(){
+		PriorityQueue<IJob> jobs = new PriorityQueue<IJob>(10,new JobComparatorDeadLine());
+		ArrayList<Optional<IJob>> history = new ArrayList<Optional<IJob>>();
+		scheduling.transform(jobs, null, history);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void transformTest6Error(){
+		ArrayList<IJob> standardJobs = new ArrayList<IJob>();
+		ArrayList<Optional<IJob>> history = new ArrayList<Optional<IJob>>();
+		scheduling.transform(null, standardJobs, history);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void transformTest7Error(){
+		ArrayList<IJob> standardJobs = new ArrayList<IJob>();
+		scheduling.transform(null, standardJobs, null);
+	}
 }
