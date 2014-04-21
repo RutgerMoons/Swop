@@ -14,6 +14,10 @@ public class CustomOrder implements IOrder {
 	private UnmodifiableClock orderTime;
 	private UnmodifiableClock deadline;
 
+	/**
+	 * Create a new CustomOrder of CustomCarModels of 'description, with a quantity of 'quantity', placed by 'garageholder'.
+	 * The Order was placed at the time 'orderTime' and has 'deadline' as deadline.
+	 */
 	public CustomOrder(String garageholder, CustomCarModel description,
 			int quantity, UnmodifiableClock orderTime,
 			UnmodifiableClock deadline) {

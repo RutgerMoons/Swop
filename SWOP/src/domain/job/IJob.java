@@ -67,8 +67,15 @@ public interface IJob {
 	 */
 	public boolean isCompleted();
 
+	/**
+	 * Set the minimalIndex to the given index.
+	 */
 	public void setMinimalIndex(int index) throws ImmutableException;
 
+	/**
+	 * @return
+	 * 		An integer that represents the index of the first workbench at which some Tasks of this Job will need to be completed.
+	 */
 	public int getMinimalIndex();
 
 }

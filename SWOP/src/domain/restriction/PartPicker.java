@@ -78,9 +78,6 @@ public class PartPicker {
 
 	/**
 	 * 
-	 * @param type
-	 * @param availableParts
-	 * @return
 	 */
 	private Collection<CarOption> checkOptionalRestrictions(
 			CarOptionCategory type, Collection<CarOption> availableParts) {

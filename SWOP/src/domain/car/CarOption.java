@@ -8,6 +8,9 @@ public class CarOption {
 	private String description;
 	private CarOptionCategory type;
 
+	/**
+	 * Creates a new CarOption, which has a CarOptionCategory and a specific description.
+	 */
 	public CarOption(String description, CarOptionCategory type) {
 		setDescription(description);
 		setType(type);
@@ -16,9 +19,8 @@ public class CarOption {
 	/**
 	 * 
 	 * @param description
-	 *            The type of this carpart.
-	 * @post the description of this object equals type, | unless type == null |
-	 *       or type is not one of the possible types for this CarPart
+	 *            The type of this CarOption.
+	 * @post the description of this object equals description, | unless description == null
 	 * @throws IllegalArgumentException
 	 *             if description==null or isEmpty
 	 */

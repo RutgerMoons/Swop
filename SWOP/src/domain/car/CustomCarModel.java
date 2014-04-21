@@ -7,6 +7,10 @@ import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
+/**
+ * Class representing CarModels with only a few CarOptions (not a full CarModel) that need to be constructed.
+ *
+ */
 public class CustomCarModel implements ICarModel {
 
 	private HashMap<CarOptionCategory, CarOption> carOptions;

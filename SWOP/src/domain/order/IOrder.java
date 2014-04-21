@@ -27,6 +27,11 @@ public interface IOrder {
 	 */
 	public ICarModel getDescription();
 	
+	/**
+	 * @return
+	 * 		The time this order will usually need at each workbench for its tasks to be completed.
+	 * @throws NotImplementedException
+	 */
 	public int getProductionTime() throws NotImplementedException;
 	
 	public UnmodifiableClock getDeadline() throws NotImplementedException;
@@ -53,6 +58,10 @@ public interface IOrder {
 	 */
 	public void setEstimatedTime(UnmodifiableClock clock) throws ImmutableException;
 	 
+	/**
+	 * @return
+	 * 		The time at which the order was placed.
+	 */
 	public UnmodifiableClock getOrderTime();
 	
 	public void setOrderTime(UnmodifiableClock clock) throws ImmutableException;

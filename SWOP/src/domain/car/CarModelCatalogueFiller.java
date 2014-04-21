@@ -5,16 +5,14 @@ import java.util.Set;
 
 
 /**
- * This class is used to initialize the CarModelCatalogue. The class checks if
- * every carModel is constructed with valid CarParts. For this check uses it,
- * the carPartModelCatalogue.
+ * This class is used to initialize the CarModelCatalogue.
  */
 public class CarModelCatalogueFiller {
 
 
 	/**
 	 * Method that returns all the initial models. It checks for every car model
-	 * if the car model is valid. If not, the car model isn't added to the list.
+	 * if the model is valid. If not, the car model isn't added to the list.
 	 * When every car model is checked, the ArrayList is returned as result.
 	 */
 	public Set<CarModelSpecification> getInitialModels() {
