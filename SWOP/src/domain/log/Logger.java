@@ -36,8 +36,8 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	
 	@Override
 	public void startNewDay(UnmodifiableClock newDay) {
-		this.logHistoryDays.shift();
 		this.advanceTime(newDay);
+		this.logHistoryDays.shift();
 	}
 
 	@Override
