@@ -17,6 +17,9 @@ public class Shift {
 	}
 	
 	public void setNewOvertime(int newOvertime) {
+		if(newOvertime < 0){
+			throw new IllegalArgumentException();
+		}
 		this.overtime = newOvertime;
 	}
 	

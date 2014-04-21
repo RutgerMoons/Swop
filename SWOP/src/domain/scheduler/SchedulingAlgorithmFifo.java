@@ -52,9 +52,9 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	@Override
 	protected void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list) {
-		if (job == null || list == null) {
-			throw new IllegalArgumentException();
-		}
+//		if (job == null || list == null) {
+//			throw new IllegalArgumentException();
+//		}
 		list.add(job);
 		if (list.size() > this.amountOfWorkBenches) {
 			list.remove(0);

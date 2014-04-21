@@ -68,5 +68,32 @@ public class UnmodifiableClock implements Comparable<UnmodifiableClock> {
 		int minutes = (getMinutes() + extra) % MINUTESINADAY;
 		return new UnmodifiableClock(days, minutes);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + days;
+		result = prime * result + minutes;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UnmodifiableClock other = (UnmodifiableClock) obj;
+		if (MINUTESINADAY != other.MINUTESINADAY)
+			return false;
+		if (days != other.days)
+			return false;
+		if (minutes != other.minutes)
+			return false;
+		return true;
+	}
 	
 }

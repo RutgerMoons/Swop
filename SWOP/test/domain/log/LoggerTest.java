@@ -70,17 +70,15 @@ public class LoggerTest {
 		logger.updateCompletedOrder(estimatedTimeOfCompletion1);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion2);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion3);
-		logger.advanceTime(new UnmodifiableClock(5,600));
-		logger.startNewDay(new UnmodifiableClock(1, 0));
+		logger.startNewDay(new UnmodifiableClock(5,600));
 		UnmodifiableClock estimatedTimeOfCompletion4 = new UnmodifiableClock(5,250);
 		UnmodifiableClock estimatedTimeOfCompletion5 = new UnmodifiableClock(5,350);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion4);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion5);
-		logger.advanceTime(new UnmodifiableClock(6,300));
-		logger.startNewDay(new UnmodifiableClock(1, 0));
+		logger.startNewDay(new UnmodifiableClock(6,300));
 		UnmodifiableClock estimatedTimeOfCompletion6 = new UnmodifiableClock(6,150);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion6);
-		logger.startNewDay(new UnmodifiableClock(1, 0));
+		logger.startNewDay(new UnmodifiableClock(7, 0));
 		assertEquals(2,logger.medianDays());
 		assertEquals(225,logger.medianDelays());
 	}
@@ -93,19 +91,17 @@ public class LoggerTest {
 		logger.updateCompletedOrder(estimatedTimeOfCompletion1);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion2);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion3);
-		logger.advanceTime(new UnmodifiableClock(5,600));
-		logger.startNewDay(new UnmodifiableClock(1, 0));
+		logger.startNewDay(new UnmodifiableClock(5,600));
 		UnmodifiableClock estimatedTimeOfCompletion4 = new UnmodifiableClock(5,250);
 		UnmodifiableClock estimatedTimeOfCompletion5 = new UnmodifiableClock(5,350);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion4);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion5);
-		logger.advanceTime(new UnmodifiableClock(6,300));
-		logger.startNewDay(new UnmodifiableClock(1, 0));
-		UnmodifiableClock estimatedTimeOfCompletion6 = new UnmodifiableClock(6,250);
+		logger.startNewDay(new UnmodifiableClock(6,300));
+		UnmodifiableClock estimatedTimeOfCompletion6 = new UnmodifiableClock(6,150);
 		logger.updateCompletedOrder(estimatedTimeOfCompletion6);
-		logger.startNewDay(new UnmodifiableClock(1, 0));
+		logger.startNewDay(new UnmodifiableClock(7, 0));
 		assertEquals(2,logger.averageDays());
-		assertEquals(208,logger.averageDelays());
+		assertEquals(225,logger.averageDelays());
 	}
 
 }
