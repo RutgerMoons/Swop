@@ -41,9 +41,6 @@ public class SchedulerAlgorithmTest {
 		
 	}
 	
-	@Test (expected = IllegalArgumentException.class)
-	public void addCustomJobTest2(){
-		
-	}
+	
 
 }

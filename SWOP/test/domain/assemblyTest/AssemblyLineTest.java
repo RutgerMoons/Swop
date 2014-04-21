@@ -283,12 +283,12 @@ public class AssemblyLineTest{
 	}
 	
 	@Test
-	public void switchToFifoTest(){
+	public void switchToFifoTest() throws NotImplementedException{
 		line.switchToFifo();
 	}
 	
 	@Test
-	public void switchToBatchTest(){
+	public void switchToBatchTest() throws NotImplementedException{
 		List<CarOption> list = new ArrayList<CarOption>();
 		list.add(new CarOption("break", CarOptionCategory.BODY));
 		line.switchToBatch(list);

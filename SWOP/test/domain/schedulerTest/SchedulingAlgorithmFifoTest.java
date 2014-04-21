@@ -84,7 +84,7 @@ public class SchedulingAlgorithmFifoTest {
 	}
 
 	@Test
-	public void testGetEstimatedTimeInMinutes1() throws ImmutableException{
+	public void testGetEstimatedTimeInMinutes1() throws ImmutableException, NotImplementedException{
 		ClockObserver obs = new ClockObserver();
 		AssemblyLine ass = new AssemblyLine(obs, new UnmodifiableClock(2, 360));
 		ass.switchToFifo();
@@ -138,7 +138,7 @@ public class SchedulingAlgorithmFifoTest {
 	}
 
 	@Test
-	public void startNewDayTest(){
+	public void startNewDayTest() throws NotImplementedException, ImmutableException{
 		ClockObserver obs = new ClockObserver();
 		AssemblyLine ass = new AssemblyLine(obs, new UnmodifiableClock(2, 360));
 		ass.switchToFifo();
@@ -146,11 +146,15 @@ public class SchedulingAlgorithmFifoTest {
 		UnmodifiableClock ordertime = new UnmodifiableClock(0, 0);
 		UnmodifiableClock deadline = new UnmodifiableClock(10, 800);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
-		OrderBook orderbook = new OrderBook(ass);
-		try {
-			orderbook.addOrder(customOrder, ordertime);
-		} catch (ImmutableException e) {}
-		catch (NotImplementedException e) {}
+		UnmodifiableClock ordertime2 = new UnmodifiableClock(0, 0);
+		UnmodifiableClock deadline2 = new UnmodifiableClock(10, 810);
+		CustomOrder customOrder2 = new CustomOrder("Mario", customModel, 5, ordertime2, deadline2);
+		IJob job1 = new Job(customOrder);
+		IJob job2 = new Job(customOrder2);
+		job2.setMinimalIndex(2);
+		algorithm.AddCustomJob(job1);
+		algorithm.AddCustomJob(job2);
+		assertEquals(2,algorithm.getCustomJobs().size());
 		algorithm.startNewDay();
 	}
 	

@@ -7,7 +7,6 @@ import java.util.PriorityQueue;
 import com.google.common.base.Optional;
 
 import domain.car.CarOption;
-import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
@@ -30,7 +29,9 @@ public class Scheduler implements LogsClock {
 		clockObserver.attachLogger(this);
 		this.clock = clock;
 		this.amountOfWorkBenches = amountOfWorkBenches;
-		switchToFifo();
+		try {
+			switchToFifo();
+		} catch (NotImplementedException e) {}
 		shifts = new ArrayList<>();
 		Shift shift1 = new Shift(360, 840, 0); 	//shift van 06:00 tot 14:00
 		Shift shift2 = new Shift(840, 1320, 0);	//shift van 14:00 tot 22:00
@@ -46,7 +47,7 @@ public class Scheduler implements LogsClock {
 		this.schedulingAlgorithm.AddStandardJob(standardJob);
 	}
 	
-	public void switchToFifo() {
+	public void switchToFifo() throws NotImplementedException {
 		if (this.schedulingAlgorithm == null) {
 			this.schedulingAlgorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches); 
 		}
@@ -59,7 +60,7 @@ public class Scheduler implements LogsClock {
 		}
 	}
 	
-	public void switchToBatch(List<CarOption> carOptions) {
+	public void switchToBatch(List<CarOption> carOptions) throws NotImplementedException {
 		if (this.schedulingAlgorithm == null) {
 			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carOptions, amountOfWorkBenches); 
 		}

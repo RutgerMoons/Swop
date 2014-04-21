@@ -12,7 +12,7 @@ import domain.job.IJob;
 
 public abstract class SchedulingAlgorithm {
 	
-	public abstract void transform(PriorityQueue<IJob> customjobs, ArrayList<IJob> standardjobs, ArrayList<Optional<IJob>> history);
+	public abstract void transform(PriorityQueue<IJob> customjobs, ArrayList<IJob> standardjobs, ArrayList<Optional<IJob>> history) throws NotImplementedException;
 	
 	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
 			throws NoSuitableJobFoundException, NotImplementedException;

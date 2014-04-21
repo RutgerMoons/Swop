@@ -275,11 +275,11 @@ public class AssemblyLine {
 		}
 	}
 
-	public void switchToFifo() {
+	public void switchToFifo() throws NotImplementedException {
 		this.scheduler.switchToFifo();
 	}
 
-	public void switchToBatch(List<CarOption> carOptions) {
+	public void switchToBatch(List<CarOption> carOptions) throws NotImplementedException {
 		this.scheduler.switchToBatch(carOptions);
 	}
 
