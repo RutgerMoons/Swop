@@ -2,6 +2,7 @@ package controller;
 
 import ui.IClientCommunication;
 import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -28,6 +29,13 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 		if(clientCommunication.askContinue()){
 			String time = facade.processCustomOrder(model, deadline);
 			clientCommunication.showCustomOrder(time);
+			if (facade.canAssemblyLineAdvance()) {
+				try {
+					facade.advanceAssemblyLine();
+				} catch (NoSuitableJobFoundException n) {
+					//no problem :)
+				}
+			}
 		}else{
 			executeUseCase();
 		}

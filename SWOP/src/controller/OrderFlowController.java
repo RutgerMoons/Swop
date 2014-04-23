@@ -6,6 +6,7 @@ import java.util.Set;
 
 import ui.IClientCommunication;
 import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -90,7 +91,11 @@ public class OrderFlowController extends UseCaseFlowController {
 				clientCommunication.showOrder(quantity, realModel, chosenParts,
 						time);
 				if (facade.canAssemblyLineAdvance()) {
-					facade.advanceAssemblyLine();
+					try {
+						facade.advanceAssemblyLine();
+					} catch (NoSuitableJobFoundException n) {
+						//no problem :)
+					}
 				}
 			}
 		}

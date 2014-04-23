@@ -106,7 +106,7 @@ public class Facade {
 		}
 	}
 
-	public void advanceAssemblyLine() throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
+	public void advanceAssemblyLine() throws ImmutableException, NoSuitableJobFoundException{
 		assemblyLine.advance();
 	}
 
