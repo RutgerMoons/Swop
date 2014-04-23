@@ -8,7 +8,9 @@ import domain.observer.ClockObserver;
 import domain.observer.LogsAssemblyLine;
 import domain.observer.LogsClock;
 import domain.order.Delay;
-
+/**
+ * 
+ */
 public class Logger implements LogsClock, LogsAssemblyLine {
 
 	private LogHistoryDays logHistoryDays;
