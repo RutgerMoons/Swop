@@ -1,9 +1,10 @@
 package domain.observer;
 
 import domain.clock.UnmodifiableClock;
+
 /**
- * This class needs to be implemented by classes who want to use these functions.
- *
+ * ClockObservers use this interface as a gateway for addressing complex objects and notifying 
+ * them in case of a change in time by the observed clock
  */
 public interface LogsClock {
 

@@ -3,6 +3,10 @@ package domain.car;
 import java.util.Collections;
 import java.util.Map;
 
+import domain.car.CarModelSpecification;
+import domain.car.CarOption;
+import domain.car.CarOptionCategory;
+import domain.car.ICarModel;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
@@ -68,5 +72,9 @@ public class ImmutableCarModel implements ICarModel {
 	public void setSpecification(CarModelSpecification template)
 			throws ImmutableException {
 		throw new ImmutableException();
+	}
+	@Override
+	public int getTimeAtWorkBench() {
+		return model.getTimeAtWorkBench();
 	}
 }

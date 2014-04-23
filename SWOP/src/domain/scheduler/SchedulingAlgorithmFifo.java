@@ -52,9 +52,6 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	@Override
 	protected void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list) {
-		if (job == null || list == null) {
-			throw new IllegalArgumentException();
-		}
 		list.add(job);
 		if (list.size() > this.amountOfWorkBenches) {
 			list.remove(0);
@@ -62,11 +59,14 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	}
 
-	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) throws NotImplementedException {
+	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay)  {
+		if(job == null){
+			return false;
+		}
 		return job.getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 
-	private int getCurrentTotalProductionTime() throws NotImplementedException {
+	private int getCurrentTotalProductionTime() {
 		int time = 0;
 		ArrayList<Optional<IJob>> historyCopy = getHistory();
 		if (historyCopy.size() == 0) {
@@ -95,7 +95,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) throws NotImplementedException {
+	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime){
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -149,11 +149,11 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		return null;
 	}
 
-	private int getMaximum(ArrayList<Optional<IJob>> list) throws NotImplementedException{
+	private int getMaximum(ArrayList<Optional<IJob>> list) {
 		int biggest = 0;
 		for(Optional<IJob> job : list){
 			if(job.isPresent()) {
-				int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getSpecification().getTimeAtWorkBench();
+				int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getTimeAtWorkBench();
 				if(currentTimeAtWorkbenchForThisJob >= biggest){
 					biggest = currentTimeAtWorkbenchForThisJob;
 				}
@@ -176,8 +176,8 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	private IJob hasToForceCustomJob(UnmodifiableClock currentTime) {
 		int idx = 0;
 		for (IJob job : customJobs) {
-			try {
-				if (job.getOrder().getDeadline().minus(currentTime) - (idx * job.getOrder().getProductionTime()) <= 0) {
+			try{
+				if (job.getOrder().getDeadline().minus(currentTime) - ((idx + job.getMinimalIndex() +1) * job.getOrder().getProductionTime()) <= 0) {
 					return job;
 				}
 			} catch (NotImplementedException e) {
@@ -191,7 +191,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	@Override
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
-			throws NoSuitableJobFoundException, NotImplementedException {
+			throws NoSuitableJobFoundException{
 		/* 
 		 * step 0: check if jobsStartOfDay contains any jobs..
 		 * step 1: check if you have to force some custom jobs
@@ -201,6 +201,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		//Step 0:
 		if (jobsStartOfDay.size() > 0) {
 			Optional<IJob> toReturn = jobsStartOfDay.remove(0);
+			this.customJobs.remove(toReturn.get());
 			addToHistory(toReturn);
 			return toReturn;
 		}
@@ -238,7 +239,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	@Override
 	public void startNewDay() {
 		this.jobsStartOfDay = new ArrayList<>();
-		for (int i = amountOfWorkBenches - 1; i > 0; i--) {
+		for (int i = amountOfWorkBenches - 1; i >= 0; i--) {
 			Optional<IJob> toAdd = Optional.absent();
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();
@@ -247,7 +248,9 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 					break;
 				}
 			}
-			jobsStartOfDay.add(toAdd);
+			if(toAdd.isPresent()){
+				jobsStartOfDay.add(toAdd);
+			}
 		}
 
 	}

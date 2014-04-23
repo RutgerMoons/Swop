@@ -8,9 +8,6 @@ public class CarOption {
 	private String description;
 	private CarOptionCategory type;
 
-	/**
-	 * Creates a new CarOption, which has a CarOptionCategory and a specific description.
-	 */
 	public CarOption(String description, CarOptionCategory type) {
 		setDescription(description);
 		setType(type);
@@ -19,8 +16,9 @@ public class CarOption {
 	/**
 	 * 
 	 * @param description
-	 *            The type of this CarOption.
-	 * @post the description of this object equals description, | unless description == null
+	 *            The type of this carpart.
+	 * @post the description of this object equals type, | unless type == null |
+	 *       or type is not one of the possible types for this CarPart
 	 * @throws IllegalArgumentException
 	 *             if description==null or isEmpty
 	 */
@@ -83,8 +81,9 @@ public class CarOption {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + description.hashCode();
-		result = prime * result + type.hashCode();
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
@@ -97,7 +96,10 @@ public class CarOption {
 		if (getClass() != obj.getClass())
 			return false;
 		CarOption other = (CarOption) obj;
-		if (!description.equals(other.description))
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
 			return false;
 		if (type != other.type)
 			return false;

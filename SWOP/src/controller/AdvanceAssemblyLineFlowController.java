@@ -3,7 +3,6 @@ package controller;
 import ui.IClientCommunication;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -66,7 +65,7 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 			}
 			try{
 				facade.advanceAssemblyLine();
-			} catch(IllegalStateException | ImmutableException | NoSuitableJobFoundException | NotImplementedException e){
+			} catch(IllegalStateException | ImmutableException | NoSuitableJobFoundException e){
 				System.out.println("You can't advance the assemblyline, because there are no orders.");
 			}
 		}

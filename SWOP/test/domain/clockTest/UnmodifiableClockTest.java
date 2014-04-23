@@ -97,5 +97,21 @@ public class UnmodifiableClockTest {
 		UnmodifiableClock clock1 = new UnmodifiableClock(1, 1);
 		clock1.compareTo(null);
 	}
+	
+	@Test
+	public void hashcodeTest(){
+		UnmodifiableClock clock = new UnmodifiableClock(1,1);
+		assertEquals(993,clock.hashCode());
+	}
+	
+	@Test
+	public void equalsTest1(){
+		UnmodifiableClock clock = new UnmodifiableClock(1,1);
+		assertTrue(clock.equals(clock));
+		UnmodifiableClock clock1 = new UnmodifiableClock(1,2);
+		assertFalse(clock.equals(clock1));
+		UnmodifiableClock clock3 = new UnmodifiableClock(1,1);
+		assertTrue(clock.equals(clock3));
+	}
 
 }

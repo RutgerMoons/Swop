@@ -135,4 +135,9 @@ public class CarModel implements ICarModel {
 		}
 		return true;
 	}
+
+	@Override
+	public int getTimeAtWorkBench() {
+		return this.getSpecification().getTimeAtWorkBench();
+	}
 }

@@ -3,14 +3,14 @@ package domain.car;
 import java.util.HashMap;
 import java.util.Map;
 
+import domain.car.CarModelSpecification;
+import domain.car.CarOption;
+import domain.car.CarOptionCategory;
+import domain.car.ICarModel;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
-/**
- * Class representing CarModels with only a few CarOptions (not a full CarModel) that need to be constructed.
- *
- */
 public class CustomCarModel implements ICarModel {
 
 	private HashMap<CarOptionCategory, CarOption> carOptions;
@@ -69,4 +69,10 @@ public class CustomCarModel implements ICarModel {
 		result = result.replaceFirst(line, "");
 		return result;
 	}
+
+	@Override
+	public int getTimeAtWorkBench() {
+		return 60;
+	}
 }
+

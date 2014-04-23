@@ -24,4 +24,7 @@ public interface ICarModel {
 	public CarModelSpecification getSpecification() throws NotImplementedException;
 	
 	public void setSpecification(CarModelSpecification template) throws ImmutableException, NotImplementedException;
+
+
+	public int getTimeAtWorkBench();
 }

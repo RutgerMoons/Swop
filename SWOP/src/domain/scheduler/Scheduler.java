@@ -7,21 +7,36 @@ import java.util.PriorityQueue;
 import com.google.common.base.Optional;
 
 import domain.car.CarOption;
-import domain.clock.Clock;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
 import domain.job.IJob;
 import domain.observer.ClockObserver;
 import domain.observer.LogsClock;
-
+/**
+ * This object is responsible for maintaining a scheduling algorithm, a certain amount of workbenches and shifts.
+ * It also keeps track of current time by using a ClockObserver.
+ * It's responsible for shifting between scheduling algorithms and decouples the assemblyLine and the used scheduling
+ * algorithm.
+ */
 public class Scheduler implements LogsClock {
 
 	private SchedulingAlgorithm schedulingAlgorithm;
 	private final int amountOfWorkBenches;
 	private ArrayList<Shift> shifts;
 	private UnmodifiableClock clock;
-	
+
+	/**
+	 * Constructs a scheduler and initializes the shifts.
+	 * @param amountOfWorkBenches
+	 * 		The amount of workbenches on the associated assemblyLine.
+	 * @param clockObserver
+	 * 		The observer used to keep track of time.
+	 * @param clock
+	 * 		The current time at initialisation.
+	 * 
+	 * @throws IllegalArgumentException
+	 * 		Thrown when the clockObserver or the clock is null.
+	 */
 	public Scheduler(int amountOfWorkBenches, ClockObserver clockObserver, UnmodifiableClock clock) {
 		if (clockObserver == null || clock==null) {
 			throw new IllegalArgumentException();
@@ -37,16 +52,27 @@ public class Scheduler implements LogsClock {
 		shifts.add(shift1);
 		shifts.add(shift2);
 	}
-	
+
+	/**
+	 * Passes the custom job to the current scheduling algorithm.
+	 */
 	public void addCustomJob(IJob customJob) {
 		this.schedulingAlgorithm.AddCustomJob(customJob);
 	}
-	
-	public void addStandardJob(IJob standardJob) {
+
+	/**
+	 * Passes the standard job to the current scheduling algorithm.
+	 */
+	public void addStandardJob(IJob standardJob){
 		this.schedulingAlgorithm.AddStandardJob(standardJob);
 	}
-	
-	public void switchToFifo() {
+
+	/**
+	 * Method for switching to the Fifo algorithm.
+	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
+	 * the fifo algorithm.
+	 */
+	public void switchToFifo()  {
 		if (this.schedulingAlgorithm == null) {
 			this.schedulingAlgorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches); 
 		}
@@ -58,7 +84,12 @@ public class Scheduler implements LogsClock {
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
-	
+
+	/**
+	 * Method for switching to the Batch algorithm.
+	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
+	 * the Batch algorithm.
+	 */
 	public void switchToBatch(List<CarOption> carOptions) {
 		if (this.schedulingAlgorithm == null) {
 			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carOptions, amountOfWorkBenches); 
@@ -71,16 +102,27 @@ public class Scheduler implements LogsClock {
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
-	
-	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException, NotImplementedException {
+
+	/**
+	 * Passes the next job to the assemblyLine.
+	 * 
+	 * @return  
+	 * 
+	 * @throws NoSuitableJobFoundException
+	 * 		Thrown when there're no more jobs.
+	 */
+	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException{
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
 		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
-									- this.clock.getMinutes();
+				- this.clock.getMinutes();
 		return this.schedulingAlgorithm.retrieveNext(minutesTillEndOfDay, clock);
 	}
 
 	@Override
 	public void advanceTime(UnmodifiableClock currentTime) {
+		if(currentTime == null){
+			throw new IllegalArgumentException();
+		}
 		this.clock = currentTime;
 	}
 
@@ -94,9 +136,9 @@ public class Scheduler implements LogsClock {
 		this.clock = newDay;
 		this.schedulingAlgorithm.startNewDay();
 	}
-	
-	public int getEstimatedTimeInMinutes(IJob job) throws NotImplementedException {
+
+	public int getEstimatedTimeInMinutes(IJob job){
 		return this.schedulingAlgorithm.getEstimatedTimeInMinutes(job, this.clock);
 	}
-	
+
 }

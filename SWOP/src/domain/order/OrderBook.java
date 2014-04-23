@@ -99,6 +99,5 @@ public class OrderBook {
 	public void addOrder(CustomOrder order, UnmodifiableClock currentTime) throws ImmutableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
-		
 	}
 }
