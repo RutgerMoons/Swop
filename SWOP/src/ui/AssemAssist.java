@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ui.ClientCommunication;
 import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
@@ -21,7 +22,7 @@ import domain.restriction.OptionalRestriction;
  */
 public class AssemAssist {
 	
-	private static Facade facade;
+	private static Facade facade; 
 	private static ArrayList<UseCaseFlowController> flowControllers;
 	private static UserFlowController userFlowController;
 	private static ClientCommunication clientCommunication;
