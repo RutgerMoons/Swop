@@ -13,6 +13,9 @@ public class ClockObserver {
 	
 	private ArrayList<LogsClock> loggers;
 	
+	/**
+	 * Creates a new ClockObserver and initializes it's internal data structures
+	 */
 	public ClockObserver() {
 		this.loggers = new ArrayList<LogsClock>();
 	}

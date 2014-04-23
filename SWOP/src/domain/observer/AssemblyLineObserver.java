@@ -13,6 +13,9 @@ public class AssemblyLineObserver {
 
 	private ArrayList<LogsAssemblyLine> loggers;
 	
+	/**
+	 * Creates a new AssemblyLineObserver and initializes it's internal data structures
+	 */
 	public AssemblyLineObserver() {
 		this.loggers = new ArrayList<LogsAssemblyLine>();
 	}
