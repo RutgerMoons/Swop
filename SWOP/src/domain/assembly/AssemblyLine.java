@@ -144,7 +144,7 @@ public class AssemblyLine {
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
 
-	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException, NotImplementedException {
+	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException{
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}

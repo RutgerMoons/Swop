@@ -107,7 +107,7 @@ public class Scheduler implements LogsClock {
 	/**
 	 * Passes the next job to the assemblyLine.
 	 * 
-	 * @return 
+	 * @return  
 	 * 
 	 * @throws NoSuitableJobFoundException
 	 * 		Thrown when there're no more jobs.
@@ -138,7 +138,7 @@ public class Scheduler implements LogsClock {
 		this.schedulingAlgorithm.startNewDay();
 	}
 
-	public int getEstimatedTimeInMinutes(IJob job) throws NotImplementedException {
+	public int getEstimatedTimeInMinutes(IJob job){
 		return this.schedulingAlgorithm.getEstimatedTimeInMinutes(job, this.clock);
 	}
 
