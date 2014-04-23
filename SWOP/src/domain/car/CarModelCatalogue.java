@@ -7,7 +7,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableMap;
 
 /**
- * A class representing a catalogue consisting out of carmodels.
+ * A class representing a catalogue consisting of carmodels.
  * 
  */
 public class CarModelCatalogue {

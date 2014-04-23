@@ -85,6 +85,9 @@ public class Clock {
 		return new UnmodifiableClock(getDays(), getMinutes());
 	}
 	
+	/**
+	 * Add an observer to this clock's observers
+	 */
 	public void attachObserver(ClockObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -92,6 +95,9 @@ public class Clock {
 		observers.add(observer);
 	}
 	
+	/**
+	 * Remove an observer from this clock's observers.
+	 */
 	public void detachObserver(ClockObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -99,6 +105,9 @@ public class Clock {
 		observers.remove(observer);
 	}
 	
+	/**
+	 * Notify the observers that the time has advanced.
+	 */
 	public void notifyObserversAdvanceTime() {
 		UnmodifiableClock currentTime = getUnmodifiableClock();
 		for (ClockObserver observer : observers) {
@@ -106,6 +115,9 @@ public class Clock {
 		}
 	}
 	
+	/**
+	 * Notify the observers that a new day has started.
+	 */
 	public void notifyObserversStartNewDay() {
 		for (ClockObserver observer : observers) {
 			observer.startNewDay(getUnmodifiableClock());

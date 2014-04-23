@@ -75,3 +75,4 @@ public class CustomCarModel implements ICarModel {
 		return 60;
 	}
 }
+

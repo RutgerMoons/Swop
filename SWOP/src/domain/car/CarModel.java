@@ -42,7 +42,7 @@ public class CarModel implements ICarModel {
 	/**
 	 * Adds a CarOption to this CarModel. 
 	 * @throws AlreadyInMapException
-	 * 			If the model already has a CarOption of this Type.
+	 * 			If the model already has a CarOption of this Category.
 	 */
 	@Override
 	public void addCarPart(CarOption part) throws AlreadyInMapException {
@@ -126,7 +126,7 @@ public class CarModel implements ICarModel {
 	/**
 	 * Checks if this model is valid.
 	 * @return
-	 * 		If the model contains a CarOption of each mandatory CarOptionCategory.
+	 * 		True if the model contains a CarOption of each mandatory CarOptionCategory.
 	 */
 	public boolean isValid() {
 		for(CarOptionCategory type: CarOptionCategory.values()){

@@ -36,7 +36,7 @@ public class CustomCarModelCatalogue {
 		 *             if model==null or not is valid
 		 */
 		public void addModel(String description, CustomCarModel model) {
-			if (model == null)
+			if (description==null || description.isEmpty() || model == null)
 				throw new IllegalArgumentException();
 			data.put(description, model);
 		}
