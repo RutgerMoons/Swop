@@ -220,6 +220,15 @@ public class Facade {
 
 		List<String> orderDetails = new ArrayList<>();
 		if(chosenOrder!=null){
+			orderDetails.add("Orderdetails:");
+			orderDetails.add(chosenOrder.getQuantity() + " " + chosenOrder.getDescription());
+			
+			String carDetails = "Chosen carOptions: ";
+			for( CarOptionCategory category: chosenOrder.getDescription().getCarParts().keySet() ){
+				carDetails += chosenOrder.getDescription().getCarParts().get(category) + " ";
+			}
+			orderDetails.add(carDetails);
+			
 			orderDetails.add("Order Time: " + chosenOrder.getOrderTime().toString());
 			try {
 				orderDetails.add("(Expected) Completion Time: " + chosenOrder.getDeadline().toString());
