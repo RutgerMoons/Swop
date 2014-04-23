@@ -97,7 +97,7 @@ public class ImmutableOrder implements IOrder {
 	}
 
 	@Override
-	public int getProductionTime() throws NotImplementedException {
+	public int getProductionTime() {
 		return order.getProductionTime();
 	}
 }

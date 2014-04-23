@@ -188,7 +188,11 @@ public class StandardOrder implements IOrder {
 	}
 	
 	@Override
-	public int getProductionTime() throws NotImplementedException {
-		return this.getDescription().getSpecification().getTimeAtWorkBench();
+	public int getProductionTime() {
+		try {
+			return this.getDescription().getSpecification().getTimeAtWorkBench();
+		} catch (NotImplementedException e) {
+			return 0;
+		}
 	}
 }
