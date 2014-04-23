@@ -29,7 +29,7 @@ public class AssemAssist {
 	
 
 	/**
-	 * Initializes all datastructures that the program needs from the start.
+	 * Initializes all data structures that the program needs from the start.
 	 */ 
 	public static void initializeData() {
 		Set<BindingRestriction> bindingRestrictions = new HashSet<>();

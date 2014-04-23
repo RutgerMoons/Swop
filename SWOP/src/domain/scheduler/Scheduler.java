@@ -106,8 +106,6 @@ public class Scheduler implements LogsClock {
 	/**
 	 * Passes the next job to the assemblyLine.
 	 * 
-	 * @return  
-	 * 
 	 * @throws NoSuitableJobFoundException
 	 * 		Thrown when there're no more jobs.
 	 */
@@ -118,6 +116,15 @@ public class Scheduler implements LogsClock {
 		return this.schedulingAlgorithm.retrieveNext(minutesTillEndOfDay, clock);
 	}
 
+	/**
+	 * Method for updating the current time.
+	 * 
+	 * @param currentTime
+	 * 			The new value for the current time
+	 * 
+	 * @throws IllegalArgumentException
+	 * 			Exception is thrown when currentTime is null
+	 */
 	@Override
 	public void advanceTime(UnmodifiableClock currentTime) {
 		if(currentTime == null){
@@ -126,6 +133,11 @@ public class Scheduler implements LogsClock {
 		this.clock = currentTime;
 	}
 
+	/**
+	 * Method called on the start of a new day. The time is updated
+	 * to the given clock and the schedulingAlgorithm will look for a time saving arrangement
+	 * for the custom jobs at the start of the day.
+	 */
 	@Override
 	public void startNewDay(UnmodifiableClock newDay) {
 		if (newDay == null) {
@@ -137,6 +149,9 @@ public class Scheduler implements LogsClock {
 		this.schedulingAlgorithm.startNewDay();
 	}
 
+	/**
+	 * Returns the time in minutes the job will take (at this moment)
+	 */
 	public int getEstimatedTimeInMinutes(IJob job){
 		return this.schedulingAlgorithm.getEstimatedTimeInMinutes(job, this.clock);
 	}

@@ -43,6 +43,16 @@ public class UserBook {
 		return currentUser;
 	}
 	
+	/**
+	 * Looks up the given name. If a user is found, it's returned,
+	 * else a RoleNotYetAssignedException is thrown.
+	 * 
+	 * @param name
+	 * 			The name of the user to look for
+	 * 
+	 * @throws RoleNotYetAssignedException
+	 * 			Thrown when the given name has no role asigned to it yet
+	 */
 	public void login(String name) throws RoleNotYetAssignedException {
 		if (name == null) {
 			throw new IllegalArgumentException();
