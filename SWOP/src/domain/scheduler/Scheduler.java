@@ -101,7 +101,7 @@ public class Scheduler implements LogsClock {
 		}
 	}
 
-	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException, NotImplementedException {
+	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException{
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
 		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
 				- this.clock.getMinutes();

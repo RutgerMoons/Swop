@@ -47,16 +47,18 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public void AddStandardJob(IJob standardJob) throws NotImplementedException {
+	public void AddStandardJob(IJob standardJob){
 		if (standardJob == null) {
 			throw new IllegalArgumentException();
 		}
-		if (standardJob.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.carOption)) {
-			this.batchJobs.add(standardJob);
-		}
-		else{
-			this.standardJobs.add(standardJob);
-		}
+		try {
+			if (standardJob.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.carOption)) {
+				this.batchJobs.add(standardJob);
+			}
+			else{
+				this.standardJobs.add(standardJob);
+			}
+		} catch (NotImplementedException e) {}
 	}
 
 	@Override
@@ -73,14 +75,14 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	}
 
-	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) throws NotImplementedException {
+	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) {
 		if(job == null){
 			return false;
 		}
 		return job.getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 
-	private int getCurrentTotalProductionTime() throws NotImplementedException {
+	private int getCurrentTotalProductionTime() {
 		int time = 0;
 		ArrayList<Optional<IJob>> historyCopy = getHistory();
 		if (historyCopy.size() == 0) {
@@ -104,7 +106,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) throws NotImplementedException {
+	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) {
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -176,7 +178,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		return null;
 	}
 
-	private int getMaximum(ArrayList<Optional<IJob>> list) throws NotImplementedException{
+	private int getMaximum(ArrayList<Optional<IJob>> list) {
 		int biggest = 0;
 		for(Optional<IJob> job : list){
 			if(job.isPresent()){
@@ -219,7 +221,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	@Override
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
-			throws NoSuitableJobFoundException, NotImplementedException {
+			throws NoSuitableJobFoundException{
 		/*
 		 * step 0: check in the beginning of the day if custom jobs can be executed
 		 * step 1: check if you have to force some custom jobs

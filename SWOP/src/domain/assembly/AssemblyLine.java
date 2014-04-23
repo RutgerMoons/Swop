@@ -83,7 +83,7 @@ public class AssemblyLine {
 	 * @throws IllegalStateException
 	 *             If there are no currentJobs
 	 */
-	public void advance() throws ImmutableException, NoSuitableJobFoundException, NotImplementedException {
+	public void advance() throws ImmutableException, NoSuitableJobFoundException {
 		if (!canAdvance()) {
 			throw new IllegalStateException();
 		}
