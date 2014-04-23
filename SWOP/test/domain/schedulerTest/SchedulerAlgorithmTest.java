@@ -88,9 +88,7 @@ public class SchedulerAlgorithmTest {
 	public void switchToBatchTest(){
 		List<CarOption> options = new ArrayList<CarOption>();
 		options.add(new CarOption("manual", CarOptionCategory.AIRCO));
-		try {
-			scheduler.switchToBatch(options);
-		} catch (NotImplementedException e) {}
+		scheduler.switchToBatch(options);
 	}
 	
 	@Test

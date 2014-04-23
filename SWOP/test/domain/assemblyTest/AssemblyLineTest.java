@@ -155,7 +155,7 @@ public class AssemblyLineTest{
 		try {
 			int minutes = line.convertCustomOrderToJob(order);
 			assertEquals(deadline.minus(clock),minutes);
-		} catch (ImmutableException | NotImplementedException e) {}
+		} catch (ImmutableException e) {}
 
 	}
 
@@ -163,7 +163,7 @@ public class AssemblyLineTest{
 	public void testConvertCustomOrderToJobError(){
 		try {
 			line.convertCustomOrderToJob(null);
-		} catch (ImmutableException | NotImplementedException e) {}
+		} catch (ImmutableException e) {}
 	}
 
 	@Test
@@ -279,7 +279,7 @@ public class AssemblyLineTest{
 			line.getWorkbenches().get(0).setCurrentTasks(list);
 			line.advance();
 		} catch (ImmutableException e) {}
-		catch (NoSuitableJobFoundException | NotImplementedException e) {}
+		catch (NoSuitableJobFoundException e) {}
 	}
 	
 	@Test
