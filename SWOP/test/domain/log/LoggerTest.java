@@ -28,6 +28,21 @@ public class LoggerTest {
 		assertEquals(newCurrentTime,logger.getCurrentTime());
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void constructorTest2(){
+		logger = new Logger(5, null , new AssemblyLineObserver());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void constructorTest3(){
+		logger = new Logger(5, new ClockObserver(), null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void constructorTest4(){
+		logger = new Logger(5, null , null);
+	}
+	
 	@Test
 	public void testAdvanceClock(){
 		int days = 4;
