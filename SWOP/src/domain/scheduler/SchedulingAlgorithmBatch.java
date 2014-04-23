@@ -288,7 +288,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public void transform(PriorityQueue<IJob> customJobs, ArrayList<IJob> standardJobs, ArrayList<Optional<IJob>> history) throws NotImplementedException {
+	public void transform(PriorityQueue<IJob> customJobs, ArrayList<IJob> standardJobs, ArrayList<Optional<IJob>> history) {
 		if(customJobs == null || standardJobs == null || history == null){
 			throw new IllegalArgumentException();
 		}
@@ -297,11 +297,16 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		//split jobs into the two remaining queues based on carParts
 
 		for(IJob job : standardJobs){
-			if(job.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.carOption)){
-				this.batchJobs.add(job);
-			}
-			else{
-				this.standardJobs.add(job);
+			try {
+				if(job.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.carOption)){
+					this.batchJobs.add(job);
+				}
+				else{
+					this.standardJobs.add(job);
+				}
+			} catch (NotImplementedException n) {
+				continue;
+				// this error can't occur
 			}
 		}
 	}
