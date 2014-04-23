@@ -122,12 +122,19 @@ public class Facade {
 
 	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex, int time) throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
-
-		Task task = (Task) workbench.getCurrentTasks().get(taskIndex);
+		
+		List<ITask> allTasks = workbench.getCurrentTasks();
+		for (ITask task : allTasks) {
+			if (task.isCompleted()) {
+				allTasks.remove(task);
+			}
+		}
+		ITask task =  allTasks.get(taskIndex);
 		for (IAction action : task.getActions()) {
-			Action act = (Action) action;
+			IAction act =  action;
 			act.setCompleted(true);
 		}
+		
 		if (this.canAssemblyLineAdvance()) {
 			this.advanceAssemblyLine();
 		}
