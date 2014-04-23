@@ -22,7 +22,7 @@ import domain.restriction.OptionalRestriction;
  */
 public class AssemAssist {
 	
-	private static Facade facade; 
+	private static Facade facade;
 	private static ArrayList<UseCaseFlowController> flowControllers;
 	private static UserFlowController userFlowController;
 	private static ClientCommunication clientCommunication;
