@@ -54,7 +54,7 @@ public class UserFactory {
 
 	private User createWorker(String userName) {
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(
-				Arrays.asList(new AccessRight[] { AccessRight.ASSEMBLE }));
+				Arrays.asList(new AccessRight[] { AccessRight.ASSEMBLE, AccessRight.CHECKLINE }));
 		return new User(userName, accessRights);
 	}
 
