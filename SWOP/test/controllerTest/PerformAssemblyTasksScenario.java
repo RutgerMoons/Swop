@@ -1,7 +1,8 @@
 package controllerTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -14,32 +15,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.IClientCommunication;
 import ui.ClientCommunication;
+import ui.IClientCommunication;
 
 import com.google.common.base.Optional;
 
 import controller.AssembleFlowController;
 import domain.assembly.AssemblyLine;
 import domain.assembly.WorkBench;
-import domain.car.Airco;
-import domain.car.Body;
 import domain.car.CarModel;
-import domain.car.Color;
-import domain.car.Engine;
-import domain.car.Gearbox;
-import domain.car.Seat;
-import domain.car.Wheel;
 import domain.clock.Clock;
-<<<<<<< HEAD
 import domain.job.Action;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
-=======
->>>>>>> origin/stef
+import domain.observer.ClockObserver;
 import domain.order.StandardOrder;
-import domain.users.Worker;
+import domain.users.User;
 /**
  * Assumption user is already correctly logged in.
  *
@@ -47,21 +39,24 @@ import domain.users.Worker;
 @RunWith(Parameterized.class)
 public class PerformAssemblyTasksScenario {
 	
-	private IClientCommunication ui;
+	private IClientCommunication clientCommunication;
 	private AssembleFlowController handler;
 	private AssemblyLine line;
 	private IJob job;
 	private StandardOrder order;
-	private Worker worker;
+	private User worker;
 
 	public PerformAssemblyTasksScenario(IClientCommunication ui) {
-		this.ui = ui;
+		this.clientCommunication = ui;
 	}
 
 	@Before
 	public void initialize() {
-		line = new AssemblyLine(new Clock());
-		handler = new AssembleFlowController(ui, line);
+		Clock c = new Clock();
+		ClockObserver clockObserver = new ClockObserver();
+		c.attachObserver(clockObserver);
+		line = new AssemblyLine(clockObserver, c.getUnmodifiableClock());
+		handler = new AssembleFlowController(clientCommunication, line);
 		worker = new Worker("Mario");
 		CarModel model = new CarModel("Volkswagen", new Airco("manual"),
 				new Body("sedan"), new Color("blue"), new Engine(
@@ -98,9 +93,9 @@ public class PerformAssemblyTasksScenario {
 		InputStream in = new ByteArrayInputStream(input.getBytes());
 		System.setIn(in);
 
-		ui = new ClientCommunication();
+		clientCommunication = new ClientCommunication();
 		line = new AssemblyLine(new Clock());
-		handler = new AssembleFlowController(ui, line);
+		handler = new AssembleFlowController(clientCommunication, line);
 		
 		WorkBench bench = (WorkBench) line.getWorkbenches().get(0);
 		bench.setCurrentJob(Optional.fromNullable(job));
@@ -151,9 +146,9 @@ public class PerformAssemblyTasksScenario {
 		InputStream in = new ByteArrayInputStream(input.getBytes());
 		System.setIn(in);
 
-		ui = new ClientCommunication();
+		clientCommunication = new ClientCommunication();
 		line = new AssemblyLine(new Clock());
-		handler = new AssembleFlowController(ui, line);
+		handler = new AssembleFlowController(clientCommunication, line);
 		
 		WorkBench bench = (WorkBench) line.getWorkbenches().get(0);
 		bench.setCurrentJob(Optional.fromNullable(job));
