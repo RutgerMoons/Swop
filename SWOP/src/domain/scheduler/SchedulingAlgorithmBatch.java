@@ -66,9 +66,6 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	@Override
 	protected void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list) {
-		if (job == null || list == null) {
-			throw new IllegalArgumentException();
-		}
 		list.add(job);
 		if (list.size() > this.amountOfWorkBenches) {
 			list.remove(0);
@@ -77,6 +74,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) throws NotImplementedException {
+		if(job == null){
+			return false;
+		}
 		return job.getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 
@@ -180,7 +180,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		int biggest = 0;
 		for(Optional<IJob> job : list){
 			if(job.isPresent()){
-				int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getSpecification().getTimeAtWorkBench();
+				int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getTimeAtWorkBench();
 				if(currentTimeAtWorkbenchForThisJob >= biggest){
 					biggest = currentTimeAtWorkbenchForThisJob;
 				}
@@ -206,7 +206,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		int idx = 0;
 		for (IJob job : customJobs) {
 			try {
-				if (job.getOrder().getDeadline().minus(currentTime) - (idx * job.getOrder().getProductionTime()) <= 0) {
+				if (job.getOrder().getDeadline().minus(currentTime) - ((idx + job.getMinimalIndex() +1) * job.getOrder().getProductionTime()) <= 0) {
 					return job;
 				}
 			} catch (NotImplementedException e) {
@@ -250,6 +250,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			addToHistory(toReturn);
 			return toReturn;
 		}
+		
 		if (canAssembleJobInTime(standardJobs.peek(), currentTotalProductionTime, minutesTillEndOfDay)) {
 			Optional<IJob> toReturn = Optional.fromNullable(standardJobs.poll());
 			addToHistory(toReturn);
@@ -270,7 +271,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	@Override
 	public void startNewDay() {
 		this.jobsStartOfDay = new ArrayList<>();
-		for (int i = amountOfWorkBenches - 1; i > 0; i--) {
+		for (int i = amountOfWorkBenches - 1; i >= 0; i--) {
 			Optional<IJob> toAdd = Optional.absent();
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();
@@ -279,7 +280,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 					break;
 				}
 			}
-			jobsStartOfDay.add(toAdd);
+			if(toAdd.isPresent()){
+				jobsStartOfDay.add(toAdd);
+			}
 		}
 
 	}

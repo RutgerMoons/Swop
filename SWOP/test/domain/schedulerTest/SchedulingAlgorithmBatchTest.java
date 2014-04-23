@@ -1,6 +1,7 @@
 package domain.schedulerTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import domain.car.CustomCarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.IJob;
 import domain.job.Job;
@@ -174,6 +176,66 @@ public class SchedulingAlgorithmBatchTest {
 		}
 	}
 
+	@Test
+	public void retrieveNextJobTest() throws NoSuitableJobFoundException, NotImplementedException{
+		Set<CarOption> parts = new HashSet<>();
+		template = new CarModelSpecification("model", parts, 60);
+		model = new CarModel(template);
+		UnmodifiableClock ordertime1 = new UnmodifiableClock(0, 420); 
+		int quantity =5;
+		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); 
+		IJob sJob1 = new Job(order1);
+		IJob sJob2 = new Job(order1);
+		scheduling.AddStandardJob(sJob1);
+		scheduling.AddStandardJob(sJob2);
+		CustomCarModel customModel = new CustomCarModel();
+		UnmodifiableClock ordertime = new UnmodifiableClock(0, 360);
+		UnmodifiableClock deadline = new UnmodifiableClock(10, 800);
+		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
+		IJob job2 = new Job(customOrder);
+		scheduling.AddCustomJob(job2);
+		// Stel algoritme zit op tijdstip dag 0 360 minuten
+		scheduling.startNewDay();
+		int minTillEndOfDay = 1320;
+		Optional<IJob> job = scheduling.retrieveNext(minTillEndOfDay, new UnmodifiableClock(1,360));
+		assertEquals(job2, job.get());
+		Optional<IJob> newJob = scheduling.retrieveNext(1280, new UnmodifiableClock(1,420));
+		assertEquals(sJob1, newJob.get());
+		CustomCarModel customModel2 = new CustomCarModel();
+		UnmodifiableClock ordertime2 = new UnmodifiableClock(1, 430);
+		UnmodifiableClock deadline2 = new UnmodifiableClock(1, 540);
+		CustomOrder customOrder2 = new CustomOrder("Mario", customModel2, 1, ordertime2, deadline2);
+		IJob job4 = new Job(customOrder2);
+		scheduling.AddCustomJob(job4);
+		Optional<IJob> newJob2 = scheduling.retrieveNext(1220, new UnmodifiableClock(1,480));
+		assertEquals(job4, newJob2.get());
+		Optional<IJob> newJob3 = scheduling.retrieveNext(1160, new UnmodifiableClock(1,520));
+		assertEquals(sJob2, newJob3.get());
+		CustomCarModel customModel3 = new CustomCarModel();
+		UnmodifiableClock ordertime3 = new UnmodifiableClock(1, 530);
+		UnmodifiableClock deadline3 = new UnmodifiableClock(2, 540);
+		CustomOrder customOrder3 = new CustomOrder("Mario", customModel3, 3, ordertime3, deadline3);
+		IJob job5= new Job(customOrder3);
+		scheduling.AddCustomJob(job5);
+		Optional<IJob> newJob4 = scheduling.retrieveNext(1080, new UnmodifiableClock(1,580));
+		assertEquals(job5, newJob4.get());
+		Set<CarOption> parts2 = new HashSet<>();
+		parts2.add(new CarOption("manual", CarOptionCategory.AIRCO));
+		template = new CarModelSpecification("model", parts2, 60);
+		model = new CarModel(template);
+		UnmodifiableClock ordertime4 = new UnmodifiableClock(2, 420); 
+		int quantity2 =5;
+		StandardOrder order4 = new StandardOrder("Luigi", model, quantity2, ordertime4);
+		IJob job6 = new Job(order4);
+		scheduling.AddStandardJob(job6);
+		Optional<IJob> newJob5 = scheduling.retrieveNext(1020, new UnmodifiableClock(1,640));
+		assertEquals(job6,newJob5.get());
+	}
+	
+	@Test (expected = NoSuitableJobFoundException.class)
+	public void retrieveNextJobTest2() throws NoSuitableJobFoundException, NotImplementedException{
+		scheduling.retrieveNext(4545, new UnmodifiableClock(2,3));
+	}
 
 	@Test
 	public void startNewDayTest() throws NotImplementedException, ImmutableException{

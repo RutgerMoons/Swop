@@ -182,7 +182,12 @@ public class SchedulingAlgorithmFifoTest {
 		Optional<IJob> newJob4 = algorithm.retrieveNext(1080, new UnmodifiableClock(1,580));
 		assertEquals(job5, newJob4.get());
 	}
-
+	
+	@Test (expected = NoSuitableJobFoundException.class)
+	public void retrieveNextJobTest2() throws NoSuitableJobFoundException, NotImplementedException{
+		algorithm.retrieveNext(4545, new UnmodifiableClock(2,3));
+	}
+	
 	@Test
 	public void startNewDayTest() throws NotImplementedException, ImmutableException{
 		ClockObserver obs = new ClockObserver();
