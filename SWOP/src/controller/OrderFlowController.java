@@ -66,8 +66,6 @@ public class OrderFlowController extends UseCaseFlowController {
 		} else {
 			String model = clientCommunication.chooseModel(facade
 					.getCarModels());
-			// Om ��n of andere reden vind ie het niet nodig om de
-			// IllegalArgument te catchen?
 			String realModel = facade.getCarModelFromCatalogue(model);
 			facade.createNewModel(realModel);
 

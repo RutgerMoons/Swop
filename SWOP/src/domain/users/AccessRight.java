@@ -2,7 +2,7 @@ package domain.users;
 
 public enum AccessRight {
 	ORDER("Order a car"), ADVANCE("Advance the assemblyline"), ASSEMBLE("Perform assembly tasks"), 
-		SHOWDETAILS("Show order details"), CUSTOMORDER("Place a custom order");
+		SHOWDETAILS("Show order details"), CUSTOMORDER("Place a custom order"), CHECKLINE("Check assembly line status");
 
 	private final String description;
 
