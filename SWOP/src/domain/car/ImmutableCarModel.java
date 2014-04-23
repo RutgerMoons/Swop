@@ -69,4 +69,8 @@ public class ImmutableCarModel implements ICarModel {
 			throws ImmutableException {
 		throw new ImmutableException();
 	}
+	@Override
+	public int getTimeAtWorkBench() {
+		return model.getTimeAtWorkBench();
+	}
 }

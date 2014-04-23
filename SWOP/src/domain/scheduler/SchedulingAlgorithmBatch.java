@@ -221,12 +221,20 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
 			throws NoSuitableJobFoundException, NotImplementedException {
 		/*
+		 * step 0: check in the beginning of the day if custom jobs can be executed
 		 * step 1: check if you have to force some custom jobs
 		 * step 2: check if you can put the first car on the assemblyLine
 		 * step 3: check if custom job can be put on the assemblyLine
 		 */
-		IJob toSchedule = hasToForceCustomJob(currentTime);
+		//Step 0:
+		if (jobsStartOfDay.size() > 0) {
+			Optional<IJob> toReturn = jobsStartOfDay.remove(0);
+			this.customJobs.remove(toReturn.get());
+			addToHistory(toReturn);
+			return toReturn;
+		}
 
+		IJob toSchedule = hasToForceCustomJob(currentTime);
 		int currentTotalProductionTime = getCurrentTotalProductionTime();
 		//Step 1:
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
@@ -294,5 +302,5 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			}
 		}
 	}
-	
+
 }
