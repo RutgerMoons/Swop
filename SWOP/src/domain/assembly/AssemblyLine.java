@@ -28,9 +28,8 @@ import domain.order.StandardOrder;
 import domain.scheduler.Scheduler;
 
 /**
- * 
- * Represents an AssemblyLine. It contains the workbenches and the pending jobs.
- * It also stores the overtime of the day before.
+ * Represents an AssemblyLine. It contains the workbenches and the current jobs on these workbenches.
+ * It's notifies the attached observers when an order is completed. Each assemblyLine has a scheduler.
  * 
  */
 public class AssemblyLine {
@@ -41,15 +40,16 @@ public class AssemblyLine {
 	private Scheduler scheduler;
 
 	/**
-	 * Construct a new AssemblyLine.
+	 * Construct a new AssemblyLine. Initializes a scheduler and an amount of workbenches.
 	 * 
 	 * @param clock
 	 *            The clock that has to be accessed by this AssemblyLine.
+	 *            
 	 * @throws IllegalArgumentException
-	 *             If clock==null
+	 *             Thrown when one or both of the parameters are null.
 	 */
 	public AssemblyLine(ClockObserver clockObserver, UnmodifiableClock clock) {
-		if (clockObserver == null) {
+		if (clockObserver == null || clock == null) {
 			throw new IllegalArgumentException();
 		}
 		workbenches = new ArrayList<IWorkBench>();
@@ -60,12 +60,12 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * Add a workbench to the assemblyline.
+	 * Add a workbench to the assemblyLine.
 	 * 
 	 * @param bench
 	 *            The workbench you want to add.
 	 * @throws IllegalArgumentException
-	 *             If bench==null
+	 *             Thrown when the parameter is null.
 	 */
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
@@ -76,12 +76,16 @@ public class AssemblyLine {
 	/**
 	 * This method advances the workbenches if all the workbenches are
 	 * completed. It shifts the jobs to it's next workstation.
-	 * @throws NoSuitableJobFoundException 
+	 * It notifies its observers when an order is completed.
+	 * 
+	 * @throws NoSuitableJobFoundException
+	 * 		Thrown when no job can be scheduled by the scheduler.
+	 *  
 	 * @throws ImmutableException 
-	 * @throws NotImplementedException 
+	 * 		Thrown when an IOrder has no deadline yet.
 	 * 
 	 * @throws IllegalStateException
-	 *             If there are no currentJobs
+	 * 		Thrown when the assemblyLine cannot advance.
 	 */
 	public void advance() throws ImmutableException, NoSuitableJobFoundException {
 		if (!canAdvance()) {
@@ -108,6 +112,10 @@ public class AssemblyLine {
 		}
 	}
 
+	/**
+	 * Method for checking if the assemblyLine can advance or certain tasks
+	 * have to be finished first.
+	 */
 	public boolean canAdvance() {
 		List<IWorkBench> workBenches = getWorkbenches();
 		for (int i = 0; i < workBenches.size(); i++)
@@ -117,15 +125,18 @@ public class AssemblyLine {
 	}
 
 	/**
-	 * This method converts an order to a list of Jobs, 1 for each car.
+	 * This method converts an order to a list of Jobs, 1 for each car and sets
+	 * the minimal index for each job. This index refers to the first workbench that is
+	 * needed to complete the job. The method returns a list of Jobs.
 	 * 
 	 * @param order
 	 *            The order that needs to be converted to a list of jobs.
-	 * @return A list of jobs.
+	 * 
 	 * @throws ImmutableException 
+	 * 		Thrown when an IOrder has no deadline yet.
 	 * 
 	 * @throws IllegalArgumentException
-	 *             if order==null
+	 *       Thrown when the given parameter is null
 	 */
 	private List<IJob> convertOrderToJob(IOrder order) throws ImmutableException {
 		ICarModel model = order.getDescription();
@@ -144,6 +155,19 @@ public class AssemblyLine {
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
 
+	/**
+	 * This method converts an CustomOrder to a list of Jobs, 1 for each car. 
+	 * The method returns the estimated time of completion for the order.
+	 * 
+	 * @param order
+	 *            The order that needs to be converted to a list of jobs.
+	 *             
+	 * @throws ImmutableException 
+	 * 		Thrown when an IOrder has no deadline yet.
+	 * 
+	 * @throws IllegalArgumentException
+	 *       Thrown when the given parameter is null
+	 */
 	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException{
 		if (order == null) {
 			throw new IllegalArgumentException();
@@ -152,10 +176,22 @@ public class AssemblyLine {
 		for (IJob job : jobs) {
 			this.scheduler.addCustomJob(job);
 		}
-
 		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
 	}
 
+	/**
+	 * This method converts an StandardOrder to a list of Jobs, 1 for each car.
+	 * The method returns the estimated time of completion for the order.
+	 * 
+	 * @param order
+	 *            The order that needs to be converted to a list of jobs.
+	 *             
+	 * @throws ImmutableException 
+	 * 		Thrown when an IOrder has no deadline yet.
+	 * 
+	 * @throws IllegalArgumentException
+	 *       Thrown when the given parameter is null
+	 */
 	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException, NotImplementedException {
 		if (order == null) {
 			throw new IllegalArgumentException();
@@ -168,6 +204,10 @@ public class AssemblyLine {
 		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
 	}
 
+	/**
+	 * Method for returning the index of the first workbench needed to complete the
+	 * given job. It returns a value of -1 when there's no workbench found to complete this job.
+	 */
 	private int getMinimalIndexOfWorkbench(IJob job) {
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			for (ITask task : job.getTasks()) {
@@ -179,6 +219,9 @@ public class AssemblyLine {
 		return -1;
 	}
 
+	/**
+	 * Method for retrieving the workbenches with unfinished tasks.
+	 */
 	public ArrayList<Integer> getBlockingWorkBenches() {
 		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
 		List<IWorkBench> workBenches = getWorkbenches();
@@ -255,6 +298,13 @@ public class AssemblyLine {
 		return assemblyLineString.replaceFirst(",", "");
 	}
 
+	/**
+	 * The observer will be added to the notify list and is subscribed for
+	 * every notification.
+	 * 
+	 * @throws IllegalArgumentException
+	 * 		Thrown when the parameter is null.
+	 */
 	public void attachObserver(AssemblyLineObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -262,6 +312,12 @@ public class AssemblyLine {
 		observers.add(observer);
 	}
 
+	/**
+	 * The observer will be no longer subscribed and will not be notified for future notifications.
+	 * 
+	 * @throws IllegalArgumentException
+	 * 		Thrown when the parameter is null.
+	 */
 	public void detachObserver(AssemblyLineObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -269,17 +325,28 @@ public class AssemblyLine {
 		observers.remove(observer);
 	}
 
+	/**
+	 * Method that notifies all the subscribers when an order is completed and sends the current
+	 * time to every subscriber.
+	 */
 	public void notifyObserverCompleteOrder(UnmodifiableClock aClock) {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}
 	}
 
-	public void switchToFifo() throws NotImplementedException {
+	/**
+	 * Method for asking the scheduler to switch to Fifo algorithm.
+	 */
+	public void switchToFifo(){
 		this.scheduler.switchToFifo();
 	}
 
-	public void switchToBatch(List<CarOption> carOptions) throws NotImplementedException {
+	/**
+	 * Method for asking the scheduler to switch to batch algorithm with as key
+	 * the given list of CarOptions.
+	 */
+	public void switchToBatch(List<CarOption> carOptions){
 		this.scheduler.switchToBatch(carOptions);
 	}
 

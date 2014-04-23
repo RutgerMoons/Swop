@@ -9,7 +9,6 @@ import com.google.common.base.Optional;
 import domain.car.CarOption;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
 import domain.job.IJob;
 import domain.observer.ClockObserver;
 import domain.observer.LogsClock;
@@ -91,7 +90,7 @@ public class Scheduler implements LogsClock {
 	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
 	 * the Batch algorithm.
 	 */
-	public void switchToBatch(List<CarOption> carOptions) throws NotImplementedException {
+	public void switchToBatch(List<CarOption> carOptions) {
 		if (this.schedulingAlgorithm == null) {
 			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carOptions, amountOfWorkBenches); 
 		}
