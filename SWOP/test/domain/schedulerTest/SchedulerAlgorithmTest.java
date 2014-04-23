@@ -76,16 +76,12 @@ public class SchedulerAlgorithmTest {
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
-		try {
-			scheduler.addStandardJob(job);
-		} catch (NotImplementedException e) {}
+		scheduler.addStandardJob(job);
 	}
 	
 	@Test
 	public void switchToFifoTest(){
-		try {
-			scheduler.switchToFifo();
-		} catch (NotImplementedException e) {}
+		scheduler.switchToFifo();
 	}
 	
 	@Test
@@ -147,6 +143,6 @@ public class SchedulerAlgorithmTest {
 			scheduler.addStandardJob(job2);
 			Optional<IJob> job = scheduler.retrieveNextJob();
 			assertEquals(job1, job.get());
-		} catch (NotImplementedException | NoSuitableJobFoundException e1) {}
+		} catch (NoSuitableJobFoundException e1) {}
 	}
 }

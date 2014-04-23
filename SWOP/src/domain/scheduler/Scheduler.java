@@ -63,17 +63,15 @@ public class Scheduler implements LogsClock {
 
 	/**
 	 * Passes the standard job to the current scheduling algorithm.
-
-	 * @throws NotImplementedException
-	 * 		Thrown when TODO
 	 */
 	public void addStandardJob(IJob standardJob){
 		this.schedulingAlgorithm.AddStandardJob(standardJob);
 	}
 
 	/**
-	 * Method
-	 * @throws NotImplementedException
+	 * Method for switching to the Fifo algorithm.
+	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
+	 * the fifo algorithm.
 	 */
 	public void switchToFifo()  {
 		if (this.schedulingAlgorithm == null) {
@@ -88,6 +86,11 @@ public class Scheduler implements LogsClock {
 		}
 	}
 
+	/**
+	 * Method for switching to the Batch algorithm.
+	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
+	 * the Batch algorithm.
+	 */
 	public void switchToBatch(List<CarOption> carOptions) throws NotImplementedException {
 		if (this.schedulingAlgorithm == null) {
 			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carOptions, amountOfWorkBenches); 
@@ -101,7 +104,15 @@ public class Scheduler implements LogsClock {
 		}
 	}
 
-	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException, NotImplementedException {
+	/**
+	 * Passes the next job to the assemblyLine.
+	 * 
+	 * @return 
+	 * 
+	 * @throws NoSuitableJobFoundException
+	 * 		Thrown when there're no more jobs.
+	 */
+	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException{
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
 		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
 				- this.clock.getMinutes();
