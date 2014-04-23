@@ -89,6 +89,9 @@ public class OrderFlowController extends UseCaseFlowController {
 				}
 				clientCommunication.showOrder(quantity, realModel, chosenParts,
 						time);
+				if (facade.canAssemblyLineAdvance()) {
+					facade.advanceAssemblyLine();
+				}
 			}
 		}
 	}
