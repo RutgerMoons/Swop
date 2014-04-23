@@ -62,7 +62,7 @@ public class SchedulingAlgorithmBatchTest {
 	}
 
 	@Test
-	public void testAddCustomOrder1() throws AlreadyInMapException{
+	public void addCustomOrderTest1() throws AlreadyInMapException{
 		CustomCarModel customModel = new CustomCarModel();
 		UnmodifiableClock ordertime = new UnmodifiableClock(2, 30);
 		UnmodifiableClock deadline = new UnmodifiableClock(5, 30);
@@ -75,12 +75,12 @@ public class SchedulingAlgorithmBatchTest {
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void testAddCustomOrder2(){
+	public void addCustomOrderTest2(){
 		scheduling.AddCustomJob(null);
 	}
 
 	@Test
-	public void testAddStandardJob1() throws NotImplementedException{
+	public void addStandardJobTest1() throws NotImplementedException{
 		Set<CarOption> parts = new HashSet<>();
 		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
 		assertEquals(1, parts.size());
@@ -106,12 +106,12 @@ public class SchedulingAlgorithmBatchTest {
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void testAddStandardJob2() throws NotImplementedException{
+	public void addStandardJobTest2() throws NotImplementedException{
 		scheduling.AddStandardJob(null);
 	}
 
 	@Test
-	public void testGetEstimatedTimeInMinutes1() throws ImmutableException, NotImplementedException{
+	public void getEstimatedTimeInMinutesTest1() throws ImmutableException, NotImplementedException{
 		ClockObserver obs = new ClockObserver();
 		AssemblyLine ass = new AssemblyLine(obs, new UnmodifiableClock(2, 360));
 		ass.switchToBatch(list);
@@ -151,7 +151,7 @@ public class SchedulingAlgorithmBatchTest {
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void testGetEstimatedTimeInMinutes2(){
+	public void getEstimatedTimeInMinutesTest2(){
 		UnmodifiableClock clock = new UnmodifiableClock(0,500);
 		try {
 			scheduling.getEstimatedTimeInMinutes(null, clock);
@@ -161,7 +161,7 @@ public class SchedulingAlgorithmBatchTest {
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void testGetEstimatedTimeInMinutes3(){
+	public void getEstimatedTimeInMinutesTest3(){
 		CustomCarModel customModel = new CustomCarModel();
 		UnmodifiableClock ordertime = new UnmodifiableClock(0, 30);
 		UnmodifiableClock deadline = new UnmodifiableClock(5, 30);
@@ -195,7 +195,6 @@ public class SchedulingAlgorithmBatchTest {
 		assertEquals(2,scheduling.getCustomJobs().size());
 		scheduling.startNewDay();
 	}
-
 
 	@Test
 	public void transformTest1() throws NotImplementedException{

@@ -65,4 +65,9 @@ public class CustomCarModel implements ICarModel {
 		result = result.replaceFirst(line, "");
 		return result;
 	}
+
+	@Override
+	public int getTimeAtWorkBench() {
+		return 60;
+	}
 }

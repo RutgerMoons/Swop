@@ -82,6 +82,9 @@ public class Scheduler implements LogsClock {
 
 	@Override
 	public void advanceTime(UnmodifiableClock currentTime) {
+		if(currentTime == null){
+			throw new IllegalArgumentException();
+		}
 		this.clock = currentTime;
 	}
 
