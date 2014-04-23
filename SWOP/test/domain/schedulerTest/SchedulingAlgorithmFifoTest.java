@@ -148,14 +148,8 @@ public class SchedulingAlgorithmFifoTest {
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); 
 		IJob sJob1 = new Job(order1);
 		IJob sJob2 = new Job(order1);
-		IJob sJob3 = new Job(order1);
-		IJob sJob4 = new Job(order1);
-		IJob sJob5 = new Job(order1);
 		algorithm.AddStandardJob(sJob1);
 		algorithm.AddStandardJob(sJob2);
-		algorithm.AddStandardJob(sJob3);
-		algorithm.AddStandardJob(sJob4);
-		algorithm.AddStandardJob(sJob5);
 		CustomCarModel customModel = new CustomCarModel();
 		UnmodifiableClock ordertime = new UnmodifiableClock(0, 360);
 		UnmodifiableClock deadline = new UnmodifiableClock(10, 800);
@@ -179,6 +173,14 @@ public class SchedulingAlgorithmFifoTest {
 		assertEquals(job4, newJob2.get());
 		Optional<IJob> newJob3 = algorithm.retrieveNext(1160, new UnmodifiableClock(1,520));
 		assertEquals(sJob2, newJob3.get());
+		CustomCarModel customModel3 = new CustomCarModel();
+		UnmodifiableClock ordertime3 = new UnmodifiableClock(1, 530);
+		UnmodifiableClock deadline3 = new UnmodifiableClock(2, 540);
+		CustomOrder customOrder3 = new CustomOrder("Mario", customModel3, 3, ordertime3, deadline3);
+		IJob job5= new Job(customOrder3);
+		algorithm.AddCustomJob(job5);
+		Optional<IJob> newJob4 = algorithm.retrieveNext(1080, new UnmodifiableClock(1,580));
+		assertEquals(job5, newJob4.get());
 	}
 
 	@Test
