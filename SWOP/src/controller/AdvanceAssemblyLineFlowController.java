@@ -66,7 +66,7 @@ public class AdvanceAssemblyLineFlowController extends UseCaseFlowController{
 			}
 			try{
 				facade.advanceAssemblyLine();
-			} catch(IllegalStateException | ImmutableException | NoSuitableJobFoundException | NotImplementedException e){
+			} catch(IllegalStateException | ImmutableException | NoSuitableJobFoundException e){
 				System.out.println("You can't advance the assemblyline, because there are no orders.");
 			}
 		}
