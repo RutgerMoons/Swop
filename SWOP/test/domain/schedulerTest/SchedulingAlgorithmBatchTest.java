@@ -155,11 +155,7 @@ public class SchedulingAlgorithmBatchTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void getEstimatedTimeInMinutesTest2(){
 		UnmodifiableClock clock = new UnmodifiableClock(0,500);
-		try {
-			scheduling.getEstimatedTimeInMinutes(null, clock);
-		} catch (NotImplementedException e) {
-			e.printStackTrace();
-		}
+		scheduling.getEstimatedTimeInMinutes(null, clock);
 	}
 
 	@Test (expected = IllegalArgumentException.class)
@@ -169,11 +165,7 @@ public class SchedulingAlgorithmBatchTest {
 		UnmodifiableClock deadline = new UnmodifiableClock(5, 30);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob customJob = new Job(customOrder);
-		try {
-			scheduling.getEstimatedTimeInMinutes(customJob, null);
-		} catch (NotImplementedException e) {
-			e.printStackTrace();
-		}
+		scheduling.getEstimatedTimeInMinutes(customJob, null);
 	}
 
 	@Test
