@@ -104,7 +104,7 @@ public class PartPicker {
 			}
 
 		}
-		return Collections.unmodifiableCollection(availableParts);
+		return availableParts;
 	}
 
 	/**
@@ -117,20 +117,23 @@ public class PartPicker {
 	private Collection<CarOption> checkBindingRestrictions(
 			CarOptionCategory type) {
 		Set<CarOption> availableParts = new HashSet<>();
-		
+
 		for (BindingRestriction restriction : bindingRestrictions) {
 			if (model.getCarParts().values()
 					.contains(restriction.getChosenCarPart())
 					&& restriction.getRestrictedCarPart().getType().equals(type)
 					&& model.getSpecification().getCarParts().values()
-							.contains(restriction.getRestrictedCarPart())) {
+					.contains(restriction.getRestrictedCarPart())) {
 				availableParts.add(restriction.getRestrictedCarPart());
 			}
 		}
 
-		if (availableParts.isEmpty())
-			return model.getSpecification().getCarParts().get(type);
-		return Collections.unmodifiableCollection(availableParts);
+		if (availableParts.isEmpty()){
+			for(CarOption option: model.getSpecification().getCarParts().get(type)){
+				availableParts.add(option);
+			}
+		}
+		return availableParts;
 	}
 
 	/**
@@ -166,7 +169,7 @@ public class PartPicker {
 			}
 		}
 
-		return Collections.unmodifiableCollection(availableParts);
+		return availableParts;
 	}
 
 	/**
@@ -183,7 +186,7 @@ public class PartPicker {
 		bindingRestrictions.add(restriction);
 
 	}
-	
+
 	/**
 	 * Add an OptionalRestriction that the PartPicker has to take into account.
 	 */
