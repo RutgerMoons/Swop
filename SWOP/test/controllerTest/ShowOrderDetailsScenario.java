@@ -1,7 +1,5 @@
 package controllerTest;
 
-import static org.junit.Assert.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -14,11 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import controller.OrderFlowController;
-
 import ui.ClientCommunication;
 import ui.IClientCommunication;
-
+import controller.OrderFlowController;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;

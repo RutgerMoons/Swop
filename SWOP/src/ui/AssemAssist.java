@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ui.ClientCommunication;
 import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;

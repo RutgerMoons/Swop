@@ -1,6 +1,7 @@
 package controllerTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,8 +19,6 @@ import org.junit.runners.Parameterized;
 
 import ui.ClientCommunication;
 import ui.IClientCommunication;
-
-
 import controller.AssembleFlowController;
 import controller.OrderFlowController;
 import domain.car.CarModelSpecification;

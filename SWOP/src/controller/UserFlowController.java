@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ui.IClientCommunication;
-
-
 import domain.exception.ImmutableException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.facade.Facade;

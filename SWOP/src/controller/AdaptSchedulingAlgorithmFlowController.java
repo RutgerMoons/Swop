@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -80,7 +79,7 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 	    ArrayList<String> sets = new ArrayList<String>();
 		sets.add(0, "Possible Batches:");
 		int i = 1;
-		for (Iterator iterator = batches.iterator(); iterator.hasNext();) {
+		for (Iterator<Set<CarOption>> iterator = batches.iterator(); iterator.hasNext();) {
 			Set<CarOption> s = (Set<CarOption>) iterator.next();
 			String tmp = "";
 			for (CarOption o : s) {

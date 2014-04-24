@@ -1,20 +1,17 @@
 package domain.scheduler;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import domain.car.CarOption;
 import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
 import domain.job.IJob;
 import domain.observer.ClockObserver;
 import domain.observer.LogsClock;
