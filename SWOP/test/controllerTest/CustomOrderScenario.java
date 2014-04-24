@@ -30,6 +30,8 @@ public class CustomOrderScenario {
 		
 		bindingRestrictions.add(new BindingRestriction(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE), new CarOption("manual", CarOptionCategory.AIRCO)));
 		this.facade = new Facade(bindingRestrictions, optionalRestrictions);
+		
+		facade.createAndAddUser("c", "custom car shop manager");
 	}
 	
 	@Test
@@ -52,6 +54,12 @@ public class CustomOrderScenario {
 		String customTaskInstalling = "installing custom seats";
 		List<String> specificTasksInstalling= facade.getSpecificCustomTasks(customTaskInstalling);
 		assertTrue(specificTasksInstalling.contains("SEATS: custom"));
+		
+		String model = "SEATS: custom";
+		String deadline = "1,2,3";
+		
+		String time = facade.processCustomOrder(model, deadline);
+		assertEquals(time,"day 1, 2 hours, 3 minutes.");
 	}
 	
 }
