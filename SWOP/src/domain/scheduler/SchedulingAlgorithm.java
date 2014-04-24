@@ -11,6 +11,16 @@ import domain.job.IJob;
 
 public abstract class SchedulingAlgorithm {
 	
+	protected final SchedulingAlgorithmType schedulingAlgorithmType;
+	
+	public SchedulingAlgorithm(SchedulingAlgorithmType type) {
+		this.schedulingAlgorithmType = type;
+	}
+	
+	public SchedulingAlgorithmType getSchedulingAlgorithmType() {
+		return this.schedulingAlgorithmType;
+	}
+	
 	/**
 	 * The scheduling algorithm gets all the internal data used to schedule jobs and will initialize its
 	 * internal data structures with the given parameters. This method should be used when switching

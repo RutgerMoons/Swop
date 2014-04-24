@@ -32,6 +32,7 @@ import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
 import domain.scheduler.SchedulingAlgorithmFifo;
+import domain.scheduler.SchedulingAlgorithmType;
 
 
 public class SchedulingAlgorithmFifoTest {
@@ -78,7 +79,7 @@ public class SchedulingAlgorithmFifoTest {
 	@Before
 	public void constructorTest() {
 		int amountOfWorkBenches = 3;
-		algorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches);	
+		algorithm = new SchedulingAlgorithmFifo(SchedulingAlgorithmType.FIFO, amountOfWorkBenches);	
 		assertNotNull(algorithm.getCustomJobs());
 		assertNotNull(algorithm.getHistory());
 		assertNotNull(algorithm.getStandardJobs());

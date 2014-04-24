@@ -204,6 +204,13 @@ public class Facade {
 		}
 		return completedOrders;
 	}
+	
+	/**
+	 * Returns the currently used Scheduling Algorithm Type as String
+	 */
+	public String getCurrentSchedulingAlgorithmAsString() {
+		return this.assemblyLine.getCurrentSchedulingAlgorithmAsString();
+	}
 
 	public List<String> getCustomTasks() {
 		List<String> tasks = new ArrayList<>();
@@ -273,6 +280,13 @@ public class Facade {
 		}
 		return pendingOrders;
 
+	}
+	
+	/**
+	 * Returns a list of all the possible scheduling algorithms as Strings.
+	 */
+	public ArrayList<String> getPossibleSchedulingAlgorithms() {
+		return this.assemblyLine.getPossibleSchedulingAlgorithms();
 	}
 
 	public List<String> getSpecificCustomTasks(String taskDescription){
@@ -396,6 +410,19 @@ public class Facade {
 
 	public void startNewDay() {
 		clock.startNewDay();
-
+	}
+	
+	/**
+	 * Switches the scheduling algorithm to use Fifo.
+	 */
+	public void switchToFifo() {
+		this.assemblyLine.switchToFifo();
+	}
+	
+	/**
+	 * Switches the scheduling algorithm to use Batch with the given List of CarOptions.
+	 */
+	public void switchToBatch(List<CarOption> batch) {
+		this.assemblyLine.switchToBatch(batch);
 	}
 }

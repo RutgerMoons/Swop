@@ -208,6 +208,20 @@ public class ClientCommunication implements IClientCommunication {
 		}
 		return index;
 	}
+	
+	/**
+	 * Asks the user to enter an integer 0 < integer <= maxValue
+	 * If the answer isn't valid, the system informs the user and repeats the question,
+	 * until a valid answer is given.
+	 */
+	public int getIndex(int maxValue) {
+		int answer = askNumber("Please enter an integer greater than 0 and lesser than or equal to " + Integer.toString(maxValue));
+		while (answer <= 0 || answer > maxValue) {
+			invalidAnswerPrompt();
+			answer = askNumber("Please enter an integer greater than 0 and lesser than or equal to" + Integer.toString(maxValue));
+		}
+		return answer;
+	}
 
 	/**
 	 * ask the name of the user and return this
@@ -288,6 +302,15 @@ public class ClientCommunication implements IClientCommunication {
 				Arrays.asList(assemblyline.split(",")));
 		assemblyLineStrings.add(0, tense + " assemblyline:");
 		show(assemblyLineStrings);
+	}
+	
+	public void showAlgorithms(String current, ArrayList<String> possible) {
+		possible.add(0, "current algorithm: " + current + "\n");
+		show(possible);
+	}
+	
+	public void showAlgorithmSwitched(String type) {
+		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type));
 	}
 
 	/**

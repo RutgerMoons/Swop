@@ -84,6 +84,13 @@ public interface IClientCommunication {
 	public int getFlowControllerIndex(List<String> accessRights);
 	
 	/**
+	 * Asks the user to enter an integer 0 < integer <= maxValue
+	 * If the answer isn't valid, the system informs the user and repeats the question,
+	 * until a valid answer is given.
+	 */
+	public int getIndex(int maxValue);
+	
+	/**
 	 * Get the users' name.
 	 * @return
 	 * 			A String that represents the user's name.
@@ -120,6 +127,11 @@ public interface IClientCommunication {
 	 * 			String that indicates whether the other parameter is a current or future assemblyline.
 	 */
 	public void showAssemblyLine(String assemblyline, String tense);
+	
+	/**
+	 * Show the user the currently used Scheduling Algorithm and all the possible Scheduling Algorithms
+	 */
+	public void showAlgorithms(String currentAlgorithm, ArrayList<String> algorithms);
 	
 	/**
 	 * Show the user which benches are keeping the assemblyline from advancing.
@@ -183,9 +195,11 @@ public interface IClientCommunication {
 	public String showCustomTasks(List<String> tasks);
 
 	public String askDeadline();
+	
+	public void showAlgorithmSwitched(String type);
 
 	public void showCustomOrder(String time);
-
+	
 	public void showStatistics(List<String> statistics);
 	
 	

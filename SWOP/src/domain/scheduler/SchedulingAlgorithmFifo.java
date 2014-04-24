@@ -21,7 +21,8 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
 	private PriorityQueue<IJob> standardJobs;
 
-	public SchedulingAlgorithmFifo(int amountOfWorkBenches) {
+	public SchedulingAlgorithmFifo(SchedulingAlgorithmType type, int amountOfWorkBenches) {
+		super(type);
 		customJobs = new PriorityQueue<IJob>(10, new JobComparatorDeadLine());
 		standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
 		this.amountOfWorkBenches = amountOfWorkBenches;
