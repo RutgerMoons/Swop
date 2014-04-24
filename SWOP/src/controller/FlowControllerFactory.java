@@ -24,7 +24,6 @@ public class FlowControllerFactory {
 	
 	public ArrayList<UseCaseFlowController> createFlowControllers() {
 		ArrayList<UseCaseFlowController> flowControllers = new ArrayList<UseCaseFlowController>();
-		flowControllers.add(new AdvanceAssemblyLineFlowController(AccessRight.ADVANCE, iClientCommunication, facade));
 		flowControllers.add(new AssembleFlowController(AccessRight.ASSEMBLE, iClientCommunication, facade));
 		flowControllers.add(new OrderFlowController(AccessRight.ORDER, iClientCommunication, facade));
 		flowControllers.add(new ShowOrderDetailsFlowController(AccessRight.SHOWDETAILS, iClientCommunication, facade));
