@@ -34,6 +34,7 @@ import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
 import domain.scheduler.SchedulingAlgorithmBatch;
+import domain.scheduler.SchedulingAlgorithmType;
 
 public class SchedulingAlgorithmBatchTest {
 
@@ -47,7 +48,7 @@ public class SchedulingAlgorithmBatchTest {
 		int amount = 3;
 		list = new ArrayList<CarOption>();
 		list.add(new CarOption("manual", CarOptionCategory.AIRCO));
-		scheduling = new SchedulingAlgorithmBatch(list, amount);
+		scheduling = new SchedulingAlgorithmBatch(SchedulingAlgorithmType.BATCH, list, amount);
 	}
 
 	@Test
@@ -60,7 +61,7 @@ public class SchedulingAlgorithmBatchTest {
 
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorTestError(){
-		scheduling = new SchedulingAlgorithmBatch(null, 3);
+		scheduling = new SchedulingAlgorithmBatch(SchedulingAlgorithmType.BATCH, null, 3);
 	}
 
 	@Test

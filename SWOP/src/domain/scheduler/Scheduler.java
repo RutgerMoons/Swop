@@ -21,9 +21,10 @@ import domain.observer.LogsClock;
 public class Scheduler implements LogsClock {
 
 	private SchedulingAlgorithm schedulingAlgorithm;
-	private final int amountOfWorkBenches;
+	//private final int amountOfWorkBenches;
 	private ArrayList<Shift> shifts;
 	private UnmodifiableClock clock;
+	private SchedulingAlgorithmFactory schedulingAlgorithmFactory;
 
 	/**
 	 * Constructs a scheduler and initializes the shifts.
@@ -44,13 +45,14 @@ public class Scheduler implements LogsClock {
 		// this observer should stay referenced in the facade to avoid garbage collection
 		clockObserver.attachLogger(this);
 		this.clock = clock;
-		this.amountOfWorkBenches = amountOfWorkBenches;
-		switchToFifo();
+		//this.amountOfWorkBenches = amountOfWorkBenches;
 		shifts = new ArrayList<>();
 		Shift shift1 = new Shift(360, 840, 0); 	//shift van 06:00 tot 14:00
 		Shift shift2 = new Shift(840, 1320, 0);	//shift van 14:00 tot 22:00
 		shifts.add(shift1);
 		shifts.add(shift2);
+		this.schedulingAlgorithmFactory = new SchedulingAlgorithmFactory(amountOfWorkBenches);
+		switchToFifo();
 	}
 
 	/**
@@ -74,13 +76,13 @@ public class Scheduler implements LogsClock {
 	 */
 	public void switchToFifo()  {
 		if (this.schedulingAlgorithm == null) {
-			this.schedulingAlgorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches); 
+			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createFifo();
 		}
 		else {
 			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
 			ArrayList<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
 			ArrayList<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
-			this.schedulingAlgorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches);
+			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createFifo();
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
@@ -92,13 +94,13 @@ public class Scheduler implements LogsClock {
 	 */
 	public void switchToBatch(List<CarOption> carOptions) {
 		if (this.schedulingAlgorithm == null) {
-			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carOptions, amountOfWorkBenches); 
+			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(carOptions); 
 		}
 		else {
 			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
 			ArrayList<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
 			ArrayList<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
-			this.schedulingAlgorithm = new SchedulingAlgorithmBatch(carOptions, amountOfWorkBenches);
+			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(carOptions);
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
