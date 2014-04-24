@@ -279,11 +279,16 @@ public class Facade {
 		throw new IllegalArgumentException();
 	}
 
-	
+	/**
+	 * Get a set of all the CarModelSpecifications that the Catalogue has.
+	 */
 	public Set<String> getCarModelSpecifications() {
 		return this.carModelCatalogue.getCatalogue().keySet();
 	}
 
+	/**
+	 * Get a set off all the CarPartTypes that are available.
+	 */
 	public Set<String> getCarPartTypes() {
 		Set<String> types = new HashSet<>();
 		for (CarOptionCategory type : CarOptionCategory.values()) {
@@ -293,6 +298,9 @@ public class Facade {
 		return types;
 	}
 
+	/**
+	 * Get a list of the completed orders of the user that is currently logged in. 
+	 */
 	public ArrayList<String> getCompletedOrders() {
 		ArrayList<String> completedOrders = new ArrayList<String>();
 		if (this.orderBook.getCompletedOrders().containsKey(
@@ -312,6 +320,10 @@ public class Facade {
 		return this.assemblyLine.getCurrentSchedulingAlgorithmAsString();
 	}
 
+	/**
+	 * Get a list of available CustomTasks from the catalogue. 
+	 * @return
+	 */
 	public List<String> getCustomTasks() {
 		List<String> tasks = new ArrayList<>();
 		for (String model : customCarModelCatalogue.getCatalogue().keySet()) {
@@ -320,6 +332,11 @@ public class Facade {
 		return tasks;
 	}
 
+	/**
+	 * Get a list of details of an order.
+	 * @param orderString
+	 * 			The string representing the order.
+	 */
 	public List<String> getOrderDetails(String orderString) {
 		IOrder chosenOrder = null;
 		for (IOrder order : orderBook.getPendingOrders().values()) {
@@ -361,6 +378,11 @@ public class Facade {
 		return orderDetails;
 	}
 
+	/**
+	 * Get the still available Parts for the model that is being built. 
+	 * @param type
+	 * 			The type of the parts that has to be selected. 
+	 */
 	public Set<String> getParts(String type) {
 		Set<String> parts = new HashSet<>();
 		CarOptionCategory category = CarOptionCategory.valueOf(type);
@@ -375,7 +397,10 @@ public class Facade {
 		}
 		return parts;
 	}
-
+	
+	/**
+	 * Get a list of pending orders of the user that is currently logged in.
+	 */
 	public ArrayList<String> getPendingOrders() {
 		ArrayList<String> pendingOrders = new ArrayList<String>();
 		Collection<IOrder> orders = orderBook.getPendingOrders().get(
@@ -399,6 +424,11 @@ public class Facade {
 		return this.assemblyLine.getPossibleSchedulingAlgorithms();
 	}
 
+	/**
+	 * Get a list of specific Custom Tasks on the basis of the taskDescription.
+	 * The taskDescription is like "spraying car bodies" or "installing custom seats"
+	 * 
+	 */
 	public List<String> getSpecificCustomTasks(String taskDescription) {
 		List<String> tasks = new ArrayList<>();
 		for (CustomCarModel model : customCarModelCatalogue.getCatalogue().get(
@@ -457,6 +487,9 @@ public class Facade {
 		return statistics;
 	}
 
+	/**
+	 * Get a list of tasks of a Workbench, specified by the workBenchIndex.
+	 */
 	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex) {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(
 				workBenchIndex);
@@ -469,6 +502,9 @@ public class Facade {
 		return tasks;
 	}
 
+	/**
+	 * Get the names of the WorkBenches.
+	 */
 	public ArrayList<String> getWorkBenchNames() {
 		ArrayList<String> workbenches = new ArrayList<String>();
 		for (IWorkBench w : this.assemblyLine.getWorkbenches()) {
@@ -476,23 +512,44 @@ public class Facade {
 		}
 		return workbenches;
 	}
-
-	public void login(String userName) throws RoleNotYetAssignedException,
-			IllegalArgumentException {
+	
+	/**
+	 * Login with a userName.
+	 * @param userName
+	 * 			The name of the user.
+	 * @throws RoleNotYetAssignedException
+	 * 			If it's the first time that this user logs in.
+	 */
+	public void login(String userName) throws RoleNotYetAssignedException {
 		userBook.login(userName);
 	}
 
+	/**
+	 * Log the current user out.
+	 */
 	public void logout() {
 		userBook.logout();
 	}
 
-	public String processCustomOrder(String model, String deadline) {
+	/**
+	 * Create and schedule a CustomOrder.
+	 * 
+	 * @param model
+	 * 			The name of the CustomCarModel that has to be ordered.
+	 * @param deadline
+	 * 			The deadline of the 
+	 * @return
+	 */
+	public String processCustomOrder(String model, String deadline) throws IllegalArgumentException{
 		CustomCarModel customModel = null;
 		for (CustomCarModel custom : customCarModelCatalogue.getCatalogue()
 				.values()) {
 			if (custom.toString().equals(model)) {
 				customModel = custom;
 			}
+		}
+		if(customModel==null){
+			throw new IllegalArgumentException();
 		}
 		String[] split = deadline.split(",");
 		int days = Integer.parseInt(split[0]);
