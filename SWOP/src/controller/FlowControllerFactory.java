@@ -30,6 +30,7 @@ public class FlowControllerFactory {
 		flowControllers.add(new ShowOrderDetailsFlowController(AccessRight.SHOWDETAILS, iClientCommunication, facade));
 		flowControllers.add(new CustomOrderFlowController(AccessRight.CUSTOMORDER, iClientCommunication, facade));
 		flowControllers.add(new CheckAssemblyLineFlowController(AccessRight.CHECKLINE, iClientCommunication, facade));
+		flowControllers.add(new CheckStatisticsFlowController(AccessRight.STATISTICS, iClientCommunication, facade));
 				return flowControllers;
 	}
 	

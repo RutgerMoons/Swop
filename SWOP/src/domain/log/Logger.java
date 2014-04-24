@@ -106,6 +106,10 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	}
 
 	private int median(List<Integer> list) {
+		if(list.size() == 0){
+			return 0;
+		}
+		
 		if (list.size() % 2 == 1) {
 			return list.get(list.size() / 2);
 		} else {
@@ -130,6 +134,10 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	}
 
 	private int average(List<Integer> list) {
+		if(list.size() == 0){
+			return 0;
+		}
+		
 		int sum = 0;
 		for (Integer i : list) {
 			sum += i;

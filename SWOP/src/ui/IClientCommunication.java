@@ -185,6 +185,8 @@ public interface IClientCommunication {
 	public String askDeadline();
 
 	public void showCustomOrder(String time);
+
+	public void showStatistics(List<String> statistics);
 	
 	
 }

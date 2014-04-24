@@ -48,7 +48,7 @@ public class UserFactory {
 
 	private User createManager(String userName) {
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(
-				Arrays.asList(new AccessRight[] { AccessRight.ADVANCE }));
+				Arrays.asList(new AccessRight[] { AccessRight.ADVANCE, AccessRight.STATISTICS }));
 		return new User(userName, accessRights);
 	}
 
