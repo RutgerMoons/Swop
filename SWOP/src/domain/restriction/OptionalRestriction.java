@@ -24,7 +24,6 @@ public class OptionalRestriction{
 	}
 	
 	/**
-	 * @return
 	 * 		The CarOption which, if chosen, makes the CarOptionCategory become mandatory/optional.
 	 */
 	public CarOption getCarPart(){
@@ -32,7 +31,6 @@ public class OptionalRestriction{
 	}
 	
 	/**
-	 * @return
 	 * 		The CarOptionCategory that becomes mandatory/optional if the CarOption is chosen.
 	 */
 	public CarOptionCategory getCarPartType(){
@@ -40,7 +38,6 @@ public class OptionalRestriction{
 	}
 	
 	/**
-	 * @return
 	 * 		True if the CarOptionCategory becomes optional.
 	 * 		False if the CarOptionCategory becomes mandatory.
 	 */
@@ -49,7 +46,6 @@ public class OptionalRestriction{
 	}
 
 	/**
-	 * @return
 	 * 		True if a CarOption of the CarOptionCategory of this restriction has already been chosen.
 	 * 		False otherwise.
 	 */
@@ -57,6 +53,12 @@ public class OptionalRestriction{
 		return restrictedPartAlreadyChosen;
 	}
 
+	/**
+	 * Set if the restrictedparts is already chosen.
+	 * @param restrictedPartAlreadyChosen
+	 * 			True if a CarOption of the CarOptionCategory of this restriction has already been chosen.
+	 * 			False otherwise.
+	 */
 	public void setRestrictedPartAlreadyChosen(
 			Boolean restrictedPartAlreadyChosen) {
 		this.restrictedPartAlreadyChosen = restrictedPartAlreadyChosen;
