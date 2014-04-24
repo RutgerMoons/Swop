@@ -358,10 +358,18 @@ public class ClientCommunication implements IClientCommunication {
 		if (model == null || estimatedTime == null) {
 			throw new IllegalArgumentException();
 		}
-		show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
-				+ model + " Estimated completion time: " + estimatedTime)));
-		show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
-		show(chosenParts);
+		if(estimatedTime == ""){
+			show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
+					+ model )));
+			show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
+			show(chosenParts);
+		}
+		else{
+			show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
+					+ model + " Estimated completion time: " + estimatedTime)));
+			show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
+			show(chosenParts);
+		}
 	}
 
 	/**
@@ -510,7 +518,7 @@ public class ClientCommunication implements IClientCommunication {
 		}catch(NumberFormatException e){
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -518,7 +526,7 @@ public class ClientCommunication implements IClientCommunication {
 	public void showCustomOrder(String time) {
 		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
 	}
-	
+
 	@Override
 	public void showStatistics(List<String> statistics){
 		List<String> statisticsToShow = new ArrayList<String>();
