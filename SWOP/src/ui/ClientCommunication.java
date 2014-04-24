@@ -312,6 +312,17 @@ public class ClientCommunication implements IClientCommunication {
 	public void showAlgorithmSwitched(String type) {
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type));
 	}
+	
+	public void showAlgorithmSwitched(String type, String batch) {
+		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type + 
+							" with batch: " + batch));
+	}
+	/**
+	 * Shows batches with index
+	 */
+	public void showBatches(ArrayList<String> batches) {
+		show(batches);
+	}
 
 	/**
 	 * Show the user which benches are keeping the assemblyline from advancing.

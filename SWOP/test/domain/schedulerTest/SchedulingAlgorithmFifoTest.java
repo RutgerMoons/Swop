@@ -98,9 +98,7 @@ public class SchedulingAlgorithmFifoTest {
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); // 420 minuten op de band
 		OrderBook orderbook = new OrderBook(ass);
-		try {
-			orderbook.addOrder(order1, ordertime1);
-		} catch (NotImplementedException e1) {}
+		orderbook.addOrder(order1, ordertime1);
 
 		CustomCarModel customModel = new CustomCarModel();
 		UnmodifiableClock ordertime = new UnmodifiableClock(0, 0);

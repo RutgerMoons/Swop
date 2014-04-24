@@ -19,17 +19,18 @@ import domain.exception.NotImplementedException;
  * 
  */
 public class OrderBook {
-	/**
-	 * Two hashmaps for differentiating the completed from the pending orders.
-	 * The key references to the name of the garageholder. The value references
-	 * to all the orders of this garageholder.
-	 */
+
 	// private HashMap<String, ArrayList<Order>> pendingOrders;
 	// private HashMap<String, ArrayList<Order>> completedOrders;
 	private Multimap<String, IOrder> pendingOrders;
 	private Multimap<String, IOrder> completedOrders;
 	private AssemblyLine assemblyLine;
 
+	/**
+	 * Create a new OrderBook.
+	 * @param assemblyLine
+	 * 			The assemblyline the OrderBook belongs to.
+	 */
 	public OrderBook(AssemblyLine assemblyLine) {
 		initializeBook();
 		this.assemblyLine = assemblyLine;
@@ -87,15 +88,32 @@ public class OrderBook {
 	 * as a key to the hashmap and the order is added to a new arraylist and
 	 * this arraylist is added to pendingOrders.
 	 * 
+	 * The estimated time of completion is automatically set to the order.
 	 * @param order
+	 * 			The StandardOrder you want to add.
 	 * @throws ImmutableException 
-	 * @throws NotImplementedException 
+	 * 			If the order is an ImmutableOrder.
+	 * 			
 	 */
-	public void addOrder(StandardOrder order, UnmodifiableClock currentTime) throws ImmutableException, NotImplementedException {
+	public void addOrder(StandardOrder order, UnmodifiableClock currentTime) throws ImmutableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertStandardOrderToJob(order)));
 	}
 	
+	/**
+	 * Method for adding an order to the pending orders list. It checks if the
+	 * garageholder already has pending orders. If so the order is simply added
+	 * to the corresponding arraylist. If not, the garageholders name is added
+	 * as a key to the hashmap and the order is added to a new arraylist and
+	 * this arraylist is added to pendingOrders.
+	 * 
+	 * The estimated time of completion is automatically set to the order.
+	 * @param order
+	 * 			The CustomOrder you want to add.
+	 * @throws ImmutableException 
+	 * 			If the order is an ImmutableOrder.
+	 * 			
+	 */
 	public void addOrder(CustomOrder order, UnmodifiableClock currentTime) throws ImmutableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));

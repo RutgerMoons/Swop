@@ -1,6 +1,7 @@
 package domain.restriction;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class PartPicker {
 	}
 
 	/**
-	 * Creates a new CarModel that will be built according to the template, by this PartPicker.
+	 * Creates a new CarModel that will be built according to the CarModelSpecification, by this PartPicker.
 	 * @param template
 	 * 			The CarModelSpecification according to which this CarModel will be built.
 	 */
@@ -73,7 +74,7 @@ public class PartPicker {
 		availableParts = removeConflictingBindingParts(type, availableParts);
 		availableParts = checkOptionalRestrictions(type, availableParts);
 
-		return availableParts;
+		return Collections.unmodifiableCollection(availableParts);
 	}
 
 	/**
@@ -115,19 +116,22 @@ public class PartPicker {
 	private Collection<CarOption> checkBindingRestrictions(
 			CarOptionCategory type) {
 		Set<CarOption> availableParts = new HashSet<>();
-		
+
 		for (BindingRestriction restriction : bindingRestrictions) {
 			if (model.getCarParts().values()
 					.contains(restriction.getChosenCarPart())
 					&& restriction.getRestrictedCarPart().getType().equals(type)
 					&& model.getSpecification().getCarParts().values()
-							.contains(restriction.getRestrictedCarPart())) {
+					.contains(restriction.getRestrictedCarPart())) {
 				availableParts.add(restriction.getRestrictedCarPart());
 			}
 		}
 
-		if (availableParts.isEmpty())
-			return model.getSpecification().getCarParts().get(type);
+		if (availableParts.isEmpty()){
+			for(CarOption option: model.getSpecification().getCarParts().get(type)){
+				availableParts.add(option);
+			}
+		}
 		return availableParts;
 	}
 
@@ -167,32 +171,53 @@ public class PartPicker {
 		return availableParts;
 	}
 
+	/**
+	 * Get the CarModel that has been built or is being build by the PartPicker.
+	 */
 	public CarModel getModel() {
 		return model;
 	}
 
+	/**
+	 * Add a BindingRestriction that the PartPicker has to take into account.
+	 */
 	public void addBindingRestriction(BindingRestriction restriction) {
 		bindingRestrictions.add(restriction);
 
 	}
 
+	/**
+	 * Add an OptionalRestriction that the PartPicker has to take into account.
+	 */
 	public void addOptionalRestriction(OptionalRestriction restriction) {
 		optionalRestrictions.add(restriction);
 	}
 
+	/**
+	 * Get the BindingRestrictions the PartPicker has to take into account.
+	 */
 	public Set<BindingRestriction> getBindingRestrictions() {
-		return bindingRestrictions;
+		return Collections.unmodifiableSet(bindingRestrictions);
 	}
 
+	/**
+	 * Set the BindingRestrictions the PartPicker has to take into account.
+	 */
 	public void setBindingRestrictions(
 			Set<BindingRestriction> bindingRestrictions) {
 		this.bindingRestrictions = bindingRestrictions;
 	}
 
+	/**
+	 * Get the OptionalRestrictions the PartPicker has to take into account.
+	 */
 	public Set<OptionalRestriction> getOptionalRestrictions() {
-		return optionalRestrictions;
+		return Collections.unmodifiableSet(optionalRestrictions);
 	}
 
+	/**
+	 * Set the OptionalRestrictions the PartPicker has to take into account.
+	 */
 	public void setOptionalRestrictions(
 			Set<OptionalRestriction> optionalRestrictions) {
 		this.optionalRestrictions = optionalRestrictions;

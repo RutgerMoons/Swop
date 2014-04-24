@@ -1,10 +1,13 @@
 package domain.scheduler;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Sets;
 
 import domain.car.CarOption;
 import domain.clock.UnmodifiableClock;
@@ -170,6 +173,58 @@ public class Scheduler implements LogsClock {
 	 */
 	public ArrayList<String> getPossibleSchedulingAlgorithms() {
 		return this.schedulingAlgorithmFactory.getPossibleAlgorithmTypes();
+	}
+	
+	/**
+	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
+	 */
+	public Set<Set<CarOption>> getAllCarOptionsInPendingOrders() {
+		HashSet<CarOption> set = new HashSet<CarOption>();
+		ArrayList<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
+		
+		// get all the CarOptions that occur in the pending orders
+		for (IJob job : jobs) {
+			for (CarOption o : job.getOrder().getDescription().getCarParts().values()) {
+				set.add(o);
+			}
+		}
+		
+		// get all the CarOptions that occur in the pending orders 3 or more times
+		HashSet<CarOption> threeOrMoreTimes = new HashSet<>();
+		for (CarOption option : set) {
+			int counter = 0;
+			for (IJob job : jobs) {
+				if (job.getOrder().getDescription().getCarParts().values().contains(option)) {
+					counter++;
+				}
+			}
+			if (counter >= 3) {
+				threeOrMoreTimes.add(option);
+			}
+		} 
+
+		// get all the CarOptions that occur in the pending orders 3 or more times
+		Set<Set<CarOption>> toReturn = new HashSet<Set<CarOption>>();
+	    Set<Set<CarOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
+	    for (Set<CarOption> subset : powerSet) {
+      		if (subset.size() <= 0) {
+      			continue;
+      		}
+      		
+      		int counter = 0;
+      		for (IJob job : jobs) {
+				if (job.getOrder().getDescription().getCarParts().values().containsAll(subset)) {
+					counter++;
+				}
+
+			}
+      		if (counter >= 3) {
+      			toReturn.add(subset);
+      		}
+	      	
+	    }
+		
+		return toReturn;
 	}
 
 }

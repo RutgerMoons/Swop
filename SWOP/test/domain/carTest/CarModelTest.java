@@ -1,6 +1,10 @@
 package domain.carTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -118,8 +122,7 @@ public class CarModelTest {
 		parts.add(new CarOption("sport", CarOptionCategory.BODY));
 		CarModelSpecification template2 = new CarModelSpecification("modelb",
 				parts, 50);
-		template2.getCarParts().put(CarOptionCategory.AIRCO,
-				new CarOption("abl", CarOptionCategory.AIRCO));
+
 		CarModel car4 = new CarModel(template2);
 		car4.addCarPart(part1);
 		car4.addCarPart(part2);

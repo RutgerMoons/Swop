@@ -126,9 +126,7 @@ public class SchedulingAlgorithmBatchTest {
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); // 420 minuten op de band
 		OrderBook orderbook = new OrderBook(ass);
-		try {
-			orderbook.addOrder(order1, ordertime1);
-		} catch (NotImplementedException e1) {}
+		orderbook.addOrder(order1, ordertime1);
 		// Custom job
 		CustomCarModel customModel = new CustomCarModel();
 		UnmodifiableClock ordertime = new UnmodifiableClock(0, 0);
@@ -145,9 +143,7 @@ public class SchedulingAlgorithmBatchTest {
 		UnmodifiableClock ordertime2 = new UnmodifiableClock(2, 420); // om 7 uur op dag 2
 		int quantity2 =5;
 		StandardOrder order2 = new StandardOrder("Luigi", model, quantity2, ordertime2); // 420 minuten op de band
-		try {
-			orderbook.addOrder(order2, ordertime2);
-		} catch (NotImplementedException e1) {}
+		orderbook.addOrder(order2, ordertime2);
 		assertEquals(new UnmodifiableClock(8, 440), customOrder.getEstimatedTime());
 		assertEquals(new UnmodifiableClock(2,780), order1.getEstimatedTime());
 		assertEquals(new UnmodifiableClock(2, 840), order2.getEstimatedTime());
