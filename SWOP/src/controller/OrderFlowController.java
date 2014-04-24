@@ -64,8 +64,8 @@ public class OrderFlowController extends UseCaseFlowController {
 			return;
 		} else {
 			String model = clientCommunication.chooseModel(facade
-					.getCarModels());
-			String realModel = facade.getCarModelFromCatalogue(model);
+					.getCarModelSpecifications());
+			String realModel = facade.getCarModelSpecificationFromCatalogue(model);
 			facade.createNewModel(realModel);
 
 			List<String> chosenParts = createModel();
