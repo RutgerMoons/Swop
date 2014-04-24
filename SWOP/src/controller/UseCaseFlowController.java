@@ -18,6 +18,15 @@ public abstract class UseCaseFlowController {
 	protected IClientCommunication clientCommunication;
 	protected Facade facade;
 	
+	/**
+	 * Construct a new FlowController.
+	 * @param accessRight
+	 * 			The accessRight needed to perform the use case.
+	 * @param clientCommunication
+	 * 			The IClientCommunication the FlowController uses to communicate with the user.
+	 * @param facade
+	 * 			The Facade the Flowcontroller uses to access the domain logic.
+	 */
 	public UseCaseFlowController(AccessRight accessRight, IClientCommunication clientCommunication, Facade facade){
 		if (accessRight == null || clientCommunication == null || facade == null) {
 			throw new NullPointerException();
@@ -31,8 +40,6 @@ public abstract class UseCaseFlowController {
 	 * Execute the use case.
 	 * @param user
 	 * 			primary actor in this use case
-	 * @throws ImmutableException 
-	 * @throws IllegalArgumentException 
 	 */
 	public abstract void executeUseCase() throws IllegalArgumentException, ImmutableException;
 

@@ -6,8 +6,21 @@ import domain.exception.NoSuitableJobFoundException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
+/**
+ * Defines the program flow for the 'Order single task' use case.
+ *
+ */
 public class CustomOrderFlowController extends UseCaseFlowController {
 
+	/**
+	 * Construct a new CustomOrderFlowController.
+	 * @param accessRight
+	 * 			The accessRight needed to perform this use case.
+	 * @param clientCommunication
+	 * 			The IClientCommunication this FlowController uses to communicate with the user.
+	 * @param facade
+	 * 			The Facade this Flowcontroller uses to access the domain logic.
+	 */
 	public CustomOrderFlowController(AccessRight accessRight,
 			IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
@@ -19,6 +32,9 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 		customOrder();
 	}
 
+	/**
+	 * Place a new CustomOrder, as described by the user.
+	 */
 	private void customOrder() throws IllegalArgumentException, ImmutableException {
 		String customTaskDescription = clientCommunication.showCustomTasks(facade.getCustomTasks());
 
@@ -34,6 +50,8 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 					facade.advanceAssemblyLine();
 				} catch (NoSuitableJobFoundException n) {
 					//no problem :)
+				} catch (IllegalArgumentException e){
+					executeUseCase();
 				}
 			}
 		}else{

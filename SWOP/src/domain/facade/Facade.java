@@ -537,8 +537,7 @@ public class Facade {
 	 * @param model
 	 * 			The name of the CustomCarModel that has to be ordered.
 	 * @param deadline
-	 * 			The deadline of the 
-	 * @return
+	 * 			The deadline of the CustomOrder
 	 */
 	public String processCustomOrder(String model, String deadline) throws IllegalArgumentException{
 		CustomCarModel customModel = null;
@@ -567,6 +566,17 @@ public class Facade {
 		return order.getEstimatedTime().toString();
 	}
 
+	/**
+	 * Create and schedule a standard order.
+	 * @param quantity
+	 * 			The amount of cars you want to order.
+	 * @throws ImmutableException
+	 * 			This is never thrown here.
+	 * @throws IllegalStateException
+	 * 			If the CarModel isn't a valid model.
+	 * @throws NotImplementedException
+	 * 			This is never thrown here.
+	 */
 	public String processOrder(int quantity) throws ImmutableException,
 			IllegalStateException, NotImplementedException {
 		CarModel carModel = picker.getModel();
@@ -579,6 +589,9 @@ public class Facade {
 		return order.getEstimatedTime().toString();
 	}
 
+	/**
+	 * Advance the clock to the next day.
+	 */
 	public void startNewDay() {
 		clock.startNewDay();
 	}

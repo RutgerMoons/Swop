@@ -6,12 +6,22 @@ import ui.IClientCommunication;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
-
+/**
+ * This class is used to create all the necessary FlowControllers. 
+ *
+ */
 public class FlowControllerFactory {
 
 	private final IClientCommunication iClientCommunication;
 	private final Facade facade;
 	
+	/**
+	 * Create a new FlowControllerFactory.
+	 * @param iClientCommunication
+	 * 			The IClientCommunication that all the FlowControllers created by this factory will use to communicate with the  user.
+	 * @param facade
+	 * 			The Facade that all the FlowControllers created by this factory will use to access domain logic.
+	 */
 	public FlowControllerFactory(IClientCommunication iClientCommunication, Facade facade) {
 		if (iClientCommunication == null || facade == null) {
 			throw new IllegalArgumentException();
@@ -20,6 +30,9 @@ public class FlowControllerFactory {
 		this.facade = facade;
 	}
 	
+	/**
+	 * Create all the necesarry FlowControllers and return them.
+	 */
 	public ArrayList<UseCaseFlowController> createFlowControllers() {
 		ArrayList<UseCaseFlowController> flowControllers = new ArrayList<UseCaseFlowController>();
 		flowControllers.add(new AssembleFlowController(AccessRight.ASSEMBLE, iClientCommunication, facade));
