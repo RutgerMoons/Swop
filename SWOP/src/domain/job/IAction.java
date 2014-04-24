@@ -26,18 +26,12 @@ public interface IAction {
 	
 	/**
 	 * Get the description of the action.
-	 * 
-	 * @return A String representing description of the action.
 	 */
 	public String getDescription();
 	
 	
 	/**
 	 * Set the description of this action.
-	 * 
-	 * @param description
-	 *            The description you want to give to this action represented as
-	 *            a String.
 	 * @throws ImmutableException 
 	 * 			  If the IAction is an ImmutableAction.
 	 * @throws IllegalArgumentException
