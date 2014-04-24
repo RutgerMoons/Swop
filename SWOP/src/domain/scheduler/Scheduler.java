@@ -202,7 +202,8 @@ public class Scheduler implements LogsClock {
 				threeOrMoreTimes.add(option);
 			}
 		} 
-		// get all the CarOptions that occur in the pending orders 3 or more times
+
+		// get all the sets of CarOptions that occur in the pending orders 3 or more times
 		Set<Set<CarOption>> toReturn = new HashSet<Set<CarOption>>();
 	    Set<Set<CarOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
 	    for (Set<CarOption> subset : powerSet) {
