@@ -72,7 +72,7 @@ public class Scheduler implements LogsClock {
 	/**
 	 * Method for switching to the Fifo algorithm.
 	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
-	 * the fifo algorithm.
+	 * the fifo algorithm created by the factory.
 	 */
 	public void switchToFifo()  {
 		if (this.schedulingAlgorithm == null) {
@@ -90,7 +90,7 @@ public class Scheduler implements LogsClock {
 	/**
 	 * Method for switching to the Batch algorithm.
 	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
-	 * the Batch algorithm.
+	 * the Batch algorithm created by the factory.
 	 */
 	public void switchToBatch(List<CarOption> carOptions) {
 		if (this.schedulingAlgorithm == null) {

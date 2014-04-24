@@ -1,5 +1,8 @@
 package domain.scheduler;
 
+/**
+ * A clean way to differentiate Scheduling Algorithms
+ */
 public enum SchedulingAlgorithmType {
 
 	FIFO("Fifo"), BATCH("Batch");
