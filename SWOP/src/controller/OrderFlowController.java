@@ -12,17 +12,16 @@ import domain.facade.Facade;
 import domain.users.AccessRight;
 
 /**
- * TODO : documentatie updaten Defines the program flow for the 'Order New Car'
- * use case.
+ * Defines the program flow for the 'Order New Car' use case.
  * 
  */
 public class OrderFlowController extends UseCaseFlowController {
 
 	/**
-	 * Construct a new OrderHandler
+	 * Construct a new OrderFlowController
 	 * 
 	 * @param iClientCommunication
-	 *            The UIfacade this OrderHandler has to use to communicate with
+	 *            The UIfacade this OrderFlowController has to use to communicate with
 	 *            the user.
 	 */
 	public OrderFlowController(AccessRight accessRight,
@@ -62,7 +61,7 @@ public class OrderFlowController extends UseCaseFlowController {
 	 */
 	public void placeNewOrder() throws ImmutableException {
 		if (!this.clientCommunication.askContinue()) {
-			this.executeUseCase();
+			return;
 		} else {
 			String model = clientCommunication.chooseModel(facade
 					.getCarModels());
@@ -76,10 +75,9 @@ public class OrderFlowController extends UseCaseFlowController {
 			clientCommunication.showOrder(quantity, realModel, chosenParts,
 					estimatedTime);
 			if (!this.clientCommunication.askContinue()) {
-				this.executeUseCase();
+				return;
 			} else {
 				String time = "";
-
 				try {
 					time = facade.processOrder(quantity);
 				} catch (IllegalStateException | NotImplementedException e) {

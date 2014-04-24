@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import ui.IClientCommunication;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
 
 /**
- * TODO : update documentatie
  * Defines the program flow for the 'Perform Assembly Tasks' use case.
  *
  */
@@ -20,7 +18,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	/**
 	 * Construct a new AssembleHandler.
 	 * @param iClientCommunication
-	 * 			The UIfacade this AssembleHandler has to use to communicate with the user.
+	 * 			The UIfacade this AssembleFlowController has to use to communicate with the user.
 	 */
 	public AssembleFlowController(AccessRight accessRight, IClientCommunication iClientCommunication, Facade facade) {
 		super(accessRight, iClientCommunication, facade);
@@ -29,8 +27,6 @@ public class AssembleFlowController extends UseCaseFlowController {
 
 	/**
 	 * Execute the use case.
-	 * @param user
-	 * 			primary actor in this use case
 	 */
 	@Override
 	public void executeUseCase(){

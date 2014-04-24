@@ -27,34 +27,48 @@ public interface IOrder {
 	 */
 	public ICarModel getDescription();
 	
+	/**
+	 * Get the production time of the order, so how long it takes to produce all the cars. 
+	 */
 	public int getProductionTime();
 	
+	/**
+	 * Get the deadline of a CustomOrder.
+	 *  
+	 * @throws NotImplementedException
+	 * 			if the Order isn't a CustomOrder
+	 */
 	public UnmodifiableClock getDeadline() throws NotImplementedException;
 	
+	/**
+	 * Set the deadline of the CustomOrder
+	 * @throws NotImplementedException
+	 * 			if the Order isn't a CustomOrder
+	 * @throws ImmutableException
+	 * 			if the IOrder is an ImmutableOrder.
+	 */
 	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException, ImmutableException;
 	
 	/**
 	 * Get the estimated time until completion.
-	 * 
-	 * @return An array of 2 integers, with the first the days until completion
-	 *         (1 is tomorrow), the second integer gives the time of completion
-	 *         (in minutes) on that day.
 	 */
 	public UnmodifiableClock getEstimatedTime();
 	
 	/**
-	 * Set the estimated time, the first integer gives the days from today
-	 * before it's finished (so 1 is tomorrow); the second integer gives the
-	 * time of completion (in minutes) on that day.
-	 * 
-	 * @param array
-	 * @throws ImmutableException 
-	 * 			If the IOrder is an ImmutableOrder.
+	 * Set the estimated time of completion of the Order.
 	 */
 	public void setEstimatedTime(UnmodifiableClock clock) throws ImmutableException;
 	 
+	/**
+	 * Get the time when the Order is ordered.
+	 */
 	public UnmodifiableClock getOrderTime();
-	
+
+	/**
+	 * Set the time when the Order is ordered. 
+	 * @throws ImmutableException
+	 * 			if the IOrder is an ImmutableOrder.
+	 */
 	public void setOrderTime(UnmodifiableClock clock) throws ImmutableException;
 	
 	/**

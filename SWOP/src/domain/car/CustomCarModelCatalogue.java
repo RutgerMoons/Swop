@@ -4,6 +4,10 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
+/**
+ * This class represents a catalogue that consists of CustomCarModels. 
+ *
+ */
 public class CustomCarModelCatalogue {
 
 	// private HashMap<String, HashMap<Class<?>, CarPart>> data;

@@ -5,6 +5,10 @@ import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 
+/**
+ * Class representing an order from a Custom Car Shop Manager.
+ *
+ */
 public class CustomOrder implements IOrder {
 
 	private ICarModel description;

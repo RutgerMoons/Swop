@@ -25,7 +25,7 @@ public class UserBookTest {
 
 	@Test
 	public void TestAddUser() {
-		User user = new User("Stef", Arrays.asList(AccessRight.ADVANCE));
+		User user = new User("Stef", Arrays.asList(AccessRight.ORDER));
 		book.addUser(user);
 		assertEquals(user, book.getUserBook().get("Stef"));
 	}
@@ -33,7 +33,7 @@ public class UserBookTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void TestAddSameUser(){
 		UserBook book = new UserBook();
-		book.addUser(new User("Stef", Arrays.asList(AccessRight.ADVANCE)));
+		book.addUser(new User("Stef", Arrays.asList(AccessRight.ORDER)));
 		book.addUser(new User("Stef", Arrays.asList(AccessRight.ASSEMBLE)));
 	}
 
@@ -45,7 +45,7 @@ public class UserBookTest {
 	
 	@Test
 	public void testLogin() throws RoleNotYetAssignedException{
-		book.addUser(new User("Stef", Arrays.asList(AccessRight.ADVANCE)));
+		book.addUser(new User("Stef", Arrays.asList(AccessRight.ORDER)));
 		book.login("Stef");
 		assertEquals("Stef", book.getCurrentUser().getName());
 	}
@@ -62,7 +62,7 @@ public class UserBookTest {
 	
 	@Test
 	public void testLogout() throws RoleNotYetAssignedException{
-		book.addUser(new User("Stef", Arrays.asList(AccessRight.ADVANCE)));
+		book.addUser(new User("Stef", Arrays.asList(AccessRight.ORDER)));
 		book.login("Stef");
 		assertEquals("Stef", book.getCurrentUser().getName());
 		book.logout();

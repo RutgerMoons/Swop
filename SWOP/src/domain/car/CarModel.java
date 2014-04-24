@@ -31,19 +31,13 @@ public class CarModel implements ICarModel {
 		forcedOptionalTypes = new HashMap<>();
 	}
 
-	/**
-	 * Returns all the CarOptions of which this model currently consists.
-	 */
+	
 	@Override
 	public Map<CarOptionCategory, CarOption> getCarParts() {
 		return carOptions;
 	}
 
-	/**
-	 * Adds a CarOption to this CarModel. 
-	 * @throws AlreadyInMapException
-	 * 			If the model already has a CarOption of this Category.
-	 */
+	
 	@Override
 	public void addCarPart(CarOption part) throws AlreadyInMapException {
 		if (part == null)
@@ -103,21 +97,25 @@ public class CarModel implements ICarModel {
 		return true;
 	}
 
+	
 	@Override
 	public Map<CarOption, Boolean> getForcedOptionalTypes() {
 		return forcedOptionalTypes;
 	}
 
+	
 	@Override
 	public void addForcedOptionalType(CarOption type, boolean bool){
 		forcedOptionalTypes.put(type, bool);
 	}
 
+	
 	@Override
 	public CarModelSpecification getSpecification() {
 		return specification;
 	}
 
+	
 	@Override
 	public void setSpecification(CarModelSpecification template) {
 		this.specification = template;
@@ -136,6 +134,7 @@ public class CarModel implements ICarModel {
 		return true;
 	}
 
+	
 	@Override
 	public int getTimeAtWorkBench() {
 		return this.getSpecification().getTimeAtWorkBench();

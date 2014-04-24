@@ -28,7 +28,7 @@ public class UserFactoryTest {
 		
 		User manager = factory.createUser("Karen", "manager");
 		assertEquals("Karen", manager.getName());
-		assertEquals(AccessRight.ADVANCE, manager.getAccessRights().get(0));
+		assertEquals(AccessRight.STATISTICS, manager.getAccessRights().get(0));
 		
 		User worker = factory.createUser("Rutger", "worker");
 		assertEquals("Rutger", worker.getName());

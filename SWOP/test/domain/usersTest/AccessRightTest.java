@@ -12,11 +12,11 @@ public class AccessRightTest {
 
 	@Test
 	public void test() {
-		assertEquals(AccessRight.ADVANCE, AccessRight.ADVANCE);
-		assertNotEquals(AccessRight.ADVANCE, AccessRight.ASSEMBLE);
+		assertEquals(AccessRight.SHOWDETAILS, AccessRight.SHOWDETAILS);
+		assertNotEquals(AccessRight.CHECKLINE, AccessRight.ASSEMBLE);
 		
-		assertEquals("Advance the assemblyline", AccessRight.ADVANCE.toString());
-		assertEquals(AccessRight.ADVANCE, AccessRight.valueOf("ADVANCE"));
+		assertEquals("Show order details", AccessRight.SHOWDETAILS.toString());
+		assertEquals(AccessRight.SHOWDETAILS, AccessRight.valueOf("SHOWDETAILS"));
 	}
 
 }

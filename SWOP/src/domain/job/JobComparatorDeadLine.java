@@ -4,6 +4,10 @@ import java.util.Comparator;
 
 import domain.exception.NotImplementedException;
 
+/**
+ * This comparator compares 2 Jobs on it's deadline.  
+ *
+ */
 public class JobComparatorDeadLine implements Comparator<IJob> {
 
 	@Override

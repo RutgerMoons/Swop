@@ -1,14 +1,15 @@
 package controllerTest;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,33 +19,33 @@ import org.junit.runners.Parameterized;
 import ui.ClientCommunication;
 import ui.IClientCommunication;
 
-import com.google.common.base.Optional;
 
 import controller.AssembleFlowController;
-import domain.assembly.AssemblyLine;
-import domain.assembly.WorkBench;
-import domain.car.CarModel;
-import domain.clock.Clock;
-import domain.job.Action;
-import domain.job.IJob;
-import domain.job.Job;
-import domain.job.Task;
-import domain.observer.ClockObserver;
-import domain.order.StandardOrder;
-import domain.users.User;
+import controller.OrderFlowController;
+import domain.car.CarModelSpecification;
+import domain.car.CarOption;
+import domain.car.CarOptionCategory;
+import domain.exception.ImmutableException;
+import domain.exception.NoSuitableJobFoundException;
+import domain.facade.Facade;
+import domain.restriction.BindingRestriction;
+import domain.restriction.OptionalRestriction;
+import domain.restriction.PartPicker;
+import domain.users.AccessRight;
 /**
- * Assumption user is already correctly logged in.
+ * Scenario test for checking use case 4.3
  *
  */
 @RunWith(Parameterized.class)
 public class PerformAssemblyTasksScenario {
 	
 	private IClientCommunication clientCommunication;
-	private AssembleFlowController handler;
-	private AssemblyLine line;
-	private IJob job;
-	private StandardOrder order;
-	private User worker;
+	private AssembleFlowController controller;
+	private OrderFlowController order;
+	private PartPicker picker;
+	private Set<BindingRestriction> bindingRestrictions;
+	private Set<OptionalRestriction> optionalRestrictions;
+	private Facade facade;
 
 	public PerformAssemblyTasksScenario(IClientCommunication ui) {
 		this.clientCommunication = ui;
@@ -52,80 +53,53 @@ public class PerformAssemblyTasksScenario {
 
 	@Before
 	public void initialize() {
-		Clock c = new Clock();
-		ClockObserver clockObserver = new ClockObserver();
-		c.attachObserver(clockObserver);
-		line = new AssemblyLine(clockObserver, c.getUnmodifiableClock());
-		handler = new AssembleFlowController(clientCommunication, line);
-		worker = new Worker("Mario");
-		CarModel model = new CarModel("Volkswagen", new Airco("manual"),
-				new Body("sedan"), new Color("blue"), new Engine(
-						"standard 2l 4 cilinders"), new Gearbox(
-						"6 speed manual"), new Seat("leather black"),
-				new Wheel("comfort"));
-		order = new StandardOrder("Jef", model, 1);
-		job = new Job(order);
-		Task task = new Task("Paint");
-		Action action = new Action("Paint car blue");
-		action.setCompleted(false);
-		task.addAction(action);
-		((Job) job).addTask(task);
-
-		
+		this.initializeRestrictions();
+		facade = new Facade(bindingRestrictions, optionalRestrictions);
+		AccessRight accessRight = AccessRight.ASSEMBLE;
+		controller = new AssembleFlowController(accessRight, clientCommunication, facade);
+		order = new OrderFlowController(AccessRight.ORDER, clientCommunication, facade);
 	}
 	
 	@Test
-	public void PerformUseCase(){
+	public void PerformUseCase() throws ImmutableException, NoSuitableJobFoundException{
+		//placement of an order
+		facade.createAndAddUser("Mario", "garageholder");
 		String s = System.lineSeparator();
-		ByteArrayOutputStream myout = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(myout));
-		String input = "1" // The workbench the worker is residing at, step 2
-						+ s 
-						+ "1" // The worker selects a task, step 4
-						+ s 
-						+ "ENTER" // Pressed by worker when task is finished, step 6
-						+ s 
-						+ "Y" // Worker chooses to continue, step 4 again
-						+ s
-						+"1"
-						+s
-						+"N";
-		InputStream in = new ByteArrayInputStream(input.getBytes());
-		System.setIn(in);
-
+		String input1 = "Y" + s // step 2, user wants to place an order
+						+ "model A" + s // step 4, user chooses a car model
+						+ "1" + s // step 6 completing of ordering form
+						+ "1" + s // step 6 completing of ordering form
+						+ "1" + s // step 6 completing of ordering form
+						+ "1" + s // step 6 completing of ordering form
+						+ "1" + s // step 6 completing of ordering form
+						+ "1" + s // step 6 completing of ordering form
+						+ "1" + s
+						+ "1" + s
+						+ "Y" + s // approvement of order step 6
+						+ "N" + s; // end of flow
+		InputStream in1 = new ByteArrayInputStream(input1.getBytes());
+		System.setIn(in1);
 		clientCommunication = new ClientCommunication();
-		line = new AssemblyLine(new Clock());
-		handler = new AssembleFlowController(clientCommunication, line);
+		AccessRight accessRight = AccessRight.ORDER;
+		order = new OrderFlowController(accessRight, clientCommunication, facade);
+		order.placeNewOrder();
 		
-		WorkBench bench = (WorkBench) line.getWorkbenches().get(0);
-		bench.setCurrentJob(Optional.fromNullable(job));
-		bench.chooseTasksOutOfJob();
-
-		handler.executeUseCase(worker);
-		String output = myout.toString();
-		assertEquals(
-				"Workbenches:"+ s //Status of the workbenches, step 1
-				+ "1: car body" + s 
-				+ "2: drivetrain" + s 
-				+ "3: accessories" + s + s 
-				+ "What's the number of the workbench you're currently residing at?" + s //Step 1
-				+ "Tasks:" + s // Showing of the pending tasks, step 3 
-				+ "1.Paint" + s + s 
-				+ "Which taskNumber do you choose?" + s
-				+ "Your task: " + s //Step 5, system shows information about the chosen task
-				+ "Paint" + s
-				+ "Required actions: 1.Paint car blue" + s + s 
-				+ "Press enter when you're finished" + s 
-				+ "All the tasks at this workbench are completed" + s + s // step 7, updated vieuw of the workbench
-				+ "Do you want to continue? Y/N" + s
-				+ "Workbenches:"+ s //Status of the workbenches, step 1
-				+ "1: car body" + s 
-				+ "2: drivetrain" + s 
-				+ "3: accessories" + s + s 
-				+ "What's the number of the workbench you're currently residing at?" + s
-				+ "All the tasks at this workbench are completed"+s+s
-				+ "Do you want to continue? Y/N" +s, // step 8
-				output);
+		// working at a workbench
+		facade.createAndAddUser("Luigi", "worker");
+		
+		assertTrue("car body".equalsIgnoreCase(facade.getWorkBenchNames().get(0)));
+		assertTrue("drivetrain".equalsIgnoreCase(facade.getWorkBenchNames().get(1)));
+		assertTrue("accessories".equalsIgnoreCase(facade.getWorkBenchNames().get(2)));
+		// Worker wants to work at the first workbench
+		assertTrue(facade.getTasksOfChosenWorkBench(0).contains(
+				"Paint,Required actions: 1.Put on black color"));
+		assertTrue(facade.getTasksOfChosenWorkBench(0).
+				contains("Assembly,Required actions: 1.Put on sedan body"));
+		
+		// Worker has completed the first task at his workbench. 40 minutes has elapsed
+		int time = 40;
+		facade.completeChosenTaskAtChosenWorkBench(0, 0, time);
+		// assemblyLine will advance if needed		
 	}
 	
 	
@@ -137,24 +111,13 @@ public class PerformAssemblyTasksScenario {
 		System.setOut(new PrintStream(myout));
 		String input = "1" // The workbench the worker is residing at, step 2
 						+ s 
-						+ "1" // The worker selects a task, step 4
-						+ s 
-						+ "ENTER" // Pressed by worker when task is finished, step 6
-						+ s 
 						+ "N" // Worker does not choose to continue, step 8a
 						+ s;
 		InputStream in = new ByteArrayInputStream(input.getBytes());
 		System.setIn(in);
-
 		clientCommunication = new ClientCommunication();
-		line = new AssemblyLine(new Clock());
-		handler = new AssembleFlowController(clientCommunication, line);
-		
-		WorkBench bench = (WorkBench) line.getWorkbenches().get(0);
-		bench.setCurrentJob(Optional.fromNullable(job));
-		bench.chooseTasksOutOfJob();
-
-		handler.executeUseCase(worker);
+		controller = new AssembleFlowController(AccessRight.ASSEMBLE, clientCommunication, facade);
+		controller.executeUseCase();
 		String output = myout.toString();
 		assertEquals(
 				"Workbenches:"+ s //Status of the workbenches, step 1
@@ -162,13 +125,6 @@ public class PerformAssemblyTasksScenario {
 				+ "2: drivetrain" + s 
 				+ "3: accessories" + s + s 
 				+ "What's the number of the workbench you're currently residing at?" + s //Step 1
-				+ "Tasks:" + s // Showing of the pending tasks, step 3 
-				+ "1.Paint" + s + s 
-				+ "Which taskNumber do you choose?" + s
-				+ "Your task: " + s //Step 5, system shows information about the chosen task
-				+ "Paint" + s
-				+ "Required actions: 1.Paint car blue" + s + s 
-				+ "Press enter when you're finished" + s 
 				+ "All the tasks at this workbench are completed" + s + s // step 7, updated vieuw of the workbench
 				+ "Do you want to continue? Y/N" + s, // step 8
 				output);
@@ -176,6 +132,43 @@ public class PerformAssemblyTasksScenario {
 	}
 	
 
+	public void initializeRestrictions(){
+		bindingRestrictions = new HashSet<>();
+		optionalRestrictions = new HashSet<>();
+		optionalRestrictions.add(new OptionalRestriction(new CarOption("sport", CarOptionCategory.BODY), CarOptionCategory.SPOILER, false));
+		
+		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
+		
+		bindingRestrictions.add(new BindingRestriction(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE), new CarOption("manual", CarOptionCategory.AIRCO)));
+		
+		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
+		
+		Set<CarOption> parts = new HashSet<>();
+		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		
+		parts.add(new CarOption("black", CarOptionCategory.COLOR));
+		parts.add(new CarOption("white", CarOptionCategory.COLOR));
+		
+		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
+		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+	
+		parts.add(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
+		
+		parts.add(new CarOption("leather white", CarOptionCategory.SEATS));
+		parts.add(new CarOption("leather black", CarOptionCategory.SEATS));
+		
+		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
+		parts.add(new CarOption("automatic", CarOptionCategory.AIRCO));
+		
+		parts.add(new CarOption("winter", CarOptionCategory.WHEEL));
+		parts.add(new CarOption("sports", CarOptionCategory.WHEEL));
+		
+		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
+		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
+		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
+		picker.setNewModel(template);
+	}
 
 	@Parameterized.Parameters
 	public static Collection<Object[]> primeNumbers() {

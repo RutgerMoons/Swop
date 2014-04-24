@@ -17,8 +17,6 @@ public interface ITask {
 	/**
 	 * Set the list of Actions that this Task contains.
 	 * 
-	 * @param actions
-	 *            A list of Actions.
 	 * @throws ImmutableException 
 	 * 		 	  If the ITask is an ImmutableTask.
 	 * @throws IllegalArgumentException
@@ -29,8 +27,6 @@ public interface ITask {
 	/**
 	 * Add an Action to this Task.
 	 * 
-	 * @param action
-	 *            The action you want to add.
 	 * @throws ImmutableException 
 	 * 		 	  If the ITask is an ImmutableTask.
 	 * @throws IllegalArgumentException
@@ -48,16 +44,12 @@ public interface ITask {
 	
 	/**
 	 * Get the description of this Task.
-	 * 
-	 * @return The description of this Task.
 	 */
 	public String getTaskDescription();
 	
 	/**
 	 * Set the description of this Task.
-	 * 
-	 * @param taskDescription
-	 *            The description you want to give to this Task.
+	 * .
 	 * @throws ImmutableException 
 	 * 		 	  If the ITask is an ImmutableTask.
 	 * @throws IllegalArgumentException

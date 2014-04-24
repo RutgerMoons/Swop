@@ -17,23 +17,23 @@ public class UserTest {
 	User user;
 	@Before
 	public void initialize() {
-		user = new User("Stef", Arrays.asList(AccessRight.ADVANCE));
+		user = new User("Stef", Arrays.asList(AccessRight.ORDER));
 	}
 
 	@Test
 	public void testConstructor() {
 		assertEquals("Stef", user.getName());
-		assertEquals(AccessRight.ADVANCE, user.getAccessRights().get(0));
+		assertEquals(AccessRight.ORDER, user.getAccessRights().get(0));
 	}
 	
 	@Test(expected= IllegalArgumentException.class)
 	public void testIllegalConstructor1(){
-		new User("", Arrays.asList(AccessRight.ADVANCE));
+		new User("", Arrays.asList(AccessRight.ORDER));
 	}
 
 	@Test(expected= IllegalArgumentException.class)
 	public void testIllegalConstructor2(){
-		new User(null, Arrays.asList(AccessRight.ADVANCE));
+		new User(null, Arrays.asList(AccessRight.ORDER));
 	}
 	
 	@Test(expected= IllegalArgumentException.class)
@@ -47,11 +47,11 @@ public class UserTest {
 		assertNotEquals(user, user2);
 		assertNotEquals(user.hashCode(), user2.hashCode());
 		
-		User user3 = new User("bla", Arrays.asList(AccessRight.ADVANCE));
+		User user3 = new User("bla", Arrays.asList(AccessRight.ORDER));
 		assertNotEquals(user, user3);
 		assertNotEquals(user.hashCode(), user3.hashCode());
 		
-		User user4 = new User("Stef", Arrays.asList(AccessRight.ADVANCE));
+		User user4 = new User("Stef", Arrays.asList(AccessRight.ORDER));
 		assertEquals(user, user4);
 		assertEquals(user.hashCode(), user4.hashCode());
 		

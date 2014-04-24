@@ -13,6 +13,7 @@ public class BindingRestriction{
 	
 	/**
 	 * Create a new bindingrestriction between two CarOptions.
+	 * The restrictedPart is the part that surely has to be added to the CarModel.
 	 */
 	public BindingRestriction(CarOption chosenPart, CarOption restrictedPart){
 		this.chosenPart = chosenPart;
@@ -20,7 +21,6 @@ public class BindingRestriction{
 	}
 
 	/**
-	 * @return
 	 * 		The CarOption that has to be chosen also, in case the other CarOption is chosen.
 	 */
 	public CarOption getRestrictedCarPart() {
@@ -28,7 +28,6 @@ public class BindingRestriction{
 	}
 
 	/**
-	 * @return
 	 * 		The CarOption that, if it is chosen, makes it so that the other CarOption also has to be chosen.
 	 */
 	public CarOption getChosenCarPart(){
