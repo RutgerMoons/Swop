@@ -477,8 +477,6 @@ public class ClientCommunication implements IClientCommunication {
 			orderString.add(i + "." + order);
 			i++;
 		}
-
-
 		if(!pendingOrders.isEmpty() || !completedOrders.isEmpty()){
 			show(orderString);
 			if(!askContinue()){
@@ -490,7 +488,8 @@ public class ClientCommunication implements IClientCommunication {
 				if (partNumber == indexOfCompletedOrders) {
 					partNumber++;
 				}
-
+				System.out.println("HERE");
+				System.out.println(orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1));
 				return orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1);
 			} else {
 				invalidAnswerPrompt();

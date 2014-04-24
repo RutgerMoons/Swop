@@ -10,7 +10,7 @@ import domain.job.IJob;
 import domain.job.ITask;
 
 /**
- * Represents a WorkBench from an assemblyline.
+ * Represents a WorkBench from an assemblyLine.
  * 
  */
 public class WorkBench implements IWorkBench {
@@ -29,7 +29,7 @@ public class WorkBench implements IWorkBench {
 	 * @param workbenchName
 	 *            A name for this workbench
 	 * @throws IllegalArgumentException
-	 *             -if workbenchName==null or isEmpty -if responsibilities==null
+	 *            Thrown when workbenchName==null or isEmpty -if responsibilities==null
 	 */
 	public WorkBench(Set<String> responsibilities, String workbenchName) {
 		if (workbenchName == null || workbenchName.isEmpty()) {
@@ -54,6 +54,10 @@ public class WorkBench implements IWorkBench {
 		return currentJob;
 	}
 
+	/**
+	 * Sets the current job on the workbench.
+	 * An IllegalArgumentException is thrown when the parameter is null.
+	 */
 	@Override
 	public void setCurrentJob(Optional<IJob> optional) {
 		if (optional == null)

@@ -1,5 +1,7 @@
 package controllerTest;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -15,6 +17,7 @@ import org.junit.runners.Parameterized;
 import ui.ClientCommunication;
 import ui.IClientCommunication;
 import controller.OrderFlowController;
+import controller.ShowOrderDetailsFlowController;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
@@ -34,6 +37,7 @@ public class ShowOrderDetailsScenario {
 	private Set<OptionalRestriction> optionalRestrictions;
 	private IClientCommunication clientCommunication;
 	private OrderFlowController order;
+	private ShowOrderDetailsFlowController controller;
 	
 	public ShowOrderDetailsScenario(IClientCommunication ui) {
 		this.clientCommunication = ui;
@@ -107,10 +111,14 @@ public class ShowOrderDetailsScenario {
 		AccessRight accessRight = AccessRight.ORDER;
 		order = new OrderFlowController(accessRight, clientCommunication, facade);
 		order.placeNewOrder();
-		
+		controller = new ShowOrderDetailsFlowController(AccessRight.SHOWDETAILS, clientCommunication, facade);
+		controller.checkOrderDetails();
 		System.out.println("details");
-		System.out.println(facade.getOrderDetails("5 model A Estimated completion time: day 0, 2 hours, 30 minutes."));
-
+		String detail = "5 model A Estimated completion time: 0 days and 5 hours and 50 minutes";
+		assertTrue(facade.getOrderDetails(detail).contains("Orderdetails:"));
+		assertTrue(facade.getOrderDetails(detail).contains("5 model A"));
+		assertTrue(facade.getOrderDetails(detail).contains("Order Time: day 0, 0 hours, 0 minutes."));
+		assertTrue(facade.getOrderDetails(detail).contains("(Expected) Completion Time: day 0, 5 hours, 50 minutes."));
 
 	}
 
