@@ -3,6 +3,8 @@ package domain.car;
 import java.util.Set;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
 /**
@@ -34,24 +36,39 @@ public class CarModelSpecification {
 		}
 	}
 
+	/**
+	 * Get the name of the specification.
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Set the name of the specification.
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	/**
+	 * Get the time the specification has to spend on a workbench.
+	 */
 	public int getTimeAtWorkBench() {
 		return timeAtWorkBench;
 	}
 
+	/**
+	 * Set the time the specification has to spend on a workbench.
+	 */
 	public void setTimeAtWorkBench(int timeAtWorkBench) {
 		this.timeAtWorkBench = timeAtWorkBench;
 	}
 
+	/**
+	 * Get the CarParts that this model has to offer. 
+	 */
 	public Multimap<CarOptionCategory, CarOption> getCarParts() {
-		return parts;
+		return new ImmutableMultimap.Builder<CarOptionCategory, CarOption>().putAll(parts).build();
 	}
 
 	@Override

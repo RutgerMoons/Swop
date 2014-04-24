@@ -1,18 +1,26 @@
 package domain.car;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 
+/**
+ * This class is used to fill the CustomCarModelCatalogue.  
+ *
+ */
 public class CustomCarModelCatalogueFiller {
 
+	/**
+	 * Get the initial CustomCarModels that can be added to the catalogue. 
+	 */
 	public Multimap<String, CustomCarModel> getInitialModels(){
 		Multimap<String, CustomCarModel> models = HashMultimap.create();
 		models.putAll(getSeats());
 		models.putAll(getColors());
-		return models;
+		return new ImmutableMultimap.Builder<String, CustomCarModel>().putAll(models).build();
 	}
 
 	private Multimap<String, CustomCarModel> getSeats() {
