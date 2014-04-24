@@ -18,7 +18,7 @@ import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 
-public class CheckAssemblyLineFlowControllerTest {
+public class CheckAssemblyLineScenario {
 
 	private Facade facade;
 	private PartPicker picker;
