@@ -1,6 +1,6 @@
 package controllerTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -29,7 +30,7 @@ import domain.restriction.PartPicker;
 import domain.users.AccessRight;
 
 /**
- * Assumption : the garageholder is succesfully logged in.
+ * Scenario test for checking use case 4.1.
  * 
  */
 @RunWith(Parameterized.class)
@@ -38,15 +39,16 @@ public class OrderNewCarScenario {
 	private Facade facade;
 	private IClientCommunication ui;
 	private OrderFlowController controller;
-//	private OrderBook book;
-//	private StandardOrder order;
-//	private CarModelCatalogue catalogue;
-//	private ClockObserver clockobserver;
 	private PartPicker picker;
-	Set<BindingRestriction> bindingRestrictions;
-	Set<OptionalRestriction> optionalRestrictions;
+	private Set<BindingRestriction> bindingRestrictions;
+	private Set<OptionalRestriction> optionalRestrictions;
 	
 	public OrderNewCarScenario(IClientCommunication ui) {
+		this.ui = ui;
+	}
+	
+	@Before
+	public void initialize(){
 		this.initializeRestrictions();
 		facade = new Facade(bindingRestrictions, optionalRestrictions);
 		AccessRight accessRight = AccessRight.ORDER;
