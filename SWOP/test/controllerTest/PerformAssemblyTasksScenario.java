@@ -1,9 +1,7 @@
 package controllerTest;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
-import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -21,31 +19,19 @@ import org.junit.runners.Parameterized;
 import ui.ClientCommunication;
 import ui.IClientCommunication;
 
-import com.google.common.base.Optional;
 
 import controller.AssembleFlowController;
 import controller.OrderFlowController;
-import domain.assembly.AssemblyLine;
-import domain.assembly.WorkBench;
-import domain.car.CarModel;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;
 import domain.car.CarOptionCategory;
-import domain.clock.Clock;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.facade.Facade;
-import domain.job.Action;
-import domain.job.IJob;
-import domain.job.Job;
-import domain.job.Task;
-import domain.observer.ClockObserver;
-import domain.order.StandardOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.users.AccessRight;
-import domain.users.User;
 /**
  * Scenario test for checking use case 4.3
  *

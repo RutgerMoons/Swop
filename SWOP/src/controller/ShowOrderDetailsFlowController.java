@@ -13,8 +13,7 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 	}
 
 	@Override
-	public void executeUseCase() throws IllegalArgumentException,
-	ImmutableException {
+	public void executeUseCase() throws IllegalArgumentException,ImmutableException {
 		checkOrderDetails();
 	}
 
