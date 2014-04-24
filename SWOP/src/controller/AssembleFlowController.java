@@ -65,7 +65,6 @@ public class AssembleFlowController extends UseCaseFlowController {
 					int time = clientCommunication.getElapsedTime();
 					facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber, time);
 				} catch (ImmutableException e) {
-					System.out.println("Error here");
 				}
 				catch ( NoSuitableJobFoundException e ){
 					chooseTask(workbenchIndex);
