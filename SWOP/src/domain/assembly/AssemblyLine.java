@@ -13,7 +13,6 @@ import domain.car.ICarModel;
 import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.IJob;
@@ -360,6 +359,13 @@ public class AssemblyLine {
 	 */
 	public void switchToBatch(List<CarOption> carOptions){
 		this.scheduler.switchToBatch(carOptions);
+	}
+	
+	/**
+	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
+	 */
+	public Set<Set<CarOption>> getAllCarOptionsInPendingOrders() {
+		return this.scheduler.getAllCarOptionsInPendingOrders();
 	}
 
 }

@@ -1,13 +1,12 @@
 package controllerTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-
 
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;

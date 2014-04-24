@@ -540,4 +540,11 @@ public class Facade {
 	public void switchToBatch(List<CarOption> batch) {
 		this.assemblyLine.switchToBatch(batch);
 	}
+	
+	/**
+	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
+	 */
+	public Set<Set<CarOption>> getAllCarOptionsInPendingOrders() {
+		return this.assemblyLine.getAllCarOptionsInPendingOrders();
+	}
 }

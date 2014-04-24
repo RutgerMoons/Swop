@@ -197,10 +197,19 @@ public interface IClientCommunication {
 	public String askDeadline();
 	
 	public void showAlgorithmSwitched(String type);
+	
+	public void showAlgorithmSwitched(String type, String batch);
+	
+	/**
+	 * Shows batches with index
+	 */
+	public void showBatches(ArrayList<String> batches); 
 
 	public void showCustomOrder(String time);
 	
 	public void showStatistics(List<String> statistics);
+	
+	
 	
 	
 }
