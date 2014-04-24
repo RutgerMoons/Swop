@@ -135,7 +135,7 @@ public class AssemblyLineTest{
 		try {
 			int minutes = line.convertStandardOrderToJob(order);
 			assertEquals(420,minutes);
-		} catch (ImmutableException | NotImplementedException e) {}
+		} catch (ImmutableException e) {}
 
 	}
 
@@ -143,7 +143,7 @@ public class AssemblyLineTest{
 	public void testConvertStandardOrderToJobError(){
 		try {
 			line.convertStandardOrderToJob(null);
-		} catch (ImmutableException | NotImplementedException e) {}
+		} catch (ImmutableException e) {}
 	}
 
 	@Test
@@ -229,7 +229,7 @@ public class AssemblyLineTest{
 		try {
 			int minutes = line.convertStandardOrderToJob(order);
 			order.setEstimatedTime(clock.getUnmodifiableClockPlusExtraMinutes(minutes));
-		} catch (ImmutableException | NotImplementedException e) {}
+		} catch (ImmutableException e) {}
 		line.advance();
 
 		for(IWorkBench bench : line.getWorkbenches()){
