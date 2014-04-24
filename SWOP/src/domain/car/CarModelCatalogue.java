@@ -7,12 +7,11 @@ import java.util.Set;
 import com.google.common.collect.ImmutableMap;
 
 /**
- * A class representing a catalogue consisting of carmodels.
+ * A class representing a catalogue consisting of CarModelSpecifications.
  * 
  */
 public class CarModelCatalogue {
 
-	// private HashMap<String, HashMap<Class<?>, CarPart>> data;
 	private Map<String, CarModelSpecification> data;
 
 	/**
@@ -26,7 +25,7 @@ public class CarModelCatalogue {
 	}
 
 	/**
-	 * Returns an immutable Map of carmodels with their names.
+	 * Returns an immutable Map of CarModelSpecifications with their names.
 	 */
 	public Map<String, CarModelSpecification> getCatalogue() {
 		return new ImmutableMap.Builder<String, CarModelSpecification>()
@@ -34,9 +33,8 @@ public class CarModelCatalogue {
 	}
 
 	/**
-	 * Method for initializing the catalogue. The given arrayList of models is
-	 * included in the catalogue. This method is used by the
-	 * carModelCatalogueFiller.
+	 * Method for initializing the catalogue. The given arrayList of CarModelSpecifications is
+	 * included in the catalogue.
 	 */
 	public void initializeCatalogue(Set<CarModelSpecification> models) {
 		for (CarModelSpecification model : models) {
@@ -45,17 +43,17 @@ public class CarModelCatalogue {
 	}
 
 	/**
-	 * Add a new model to the catalogue.
+	 * Add a new specification to the catalogue.
 	 * 
-	 * @param model
-	 *            The model you want to add.
+	 * @param specification
+	 *            The specification you want to add.
 	 * @throws IllegalArgumentException
-	 *             if model==null or not is valid
+	 *             if specification==null
 	 */
-	public void addModel(CarModelSpecification model) {
-		if (model == null)
+	public void addModel(CarModelSpecification specification) {
+		if (specification == null)
 			throw new IllegalArgumentException();
-		data.put(model.getDescription(), model);
+		data.put(specification.getDescription(), specification);
 
 	}
 }

@@ -3,6 +3,8 @@ package domain.car;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+
 
 /**
  * This class is used to initialize the CarModelCatalogue.
@@ -20,7 +22,7 @@ public class CarModelCatalogueFiller {
 		models.add(getModelA());
 		models.add(getModelB());
 		models.add(getModelC());
-		return models;
+		return ImmutableSet.copyOf(models);
 	}
 
 	private CarModelSpecification getModelC() {
