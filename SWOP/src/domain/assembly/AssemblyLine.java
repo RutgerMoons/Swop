@@ -28,7 +28,7 @@ import domain.scheduler.Scheduler;
 
 /**
  * Represents an AssemblyLine. It contains the workbenches and the current jobs on these workbenches.
- * It's notifies the attached observers when an order is completed. Each assemblyLine has a scheduler.
+ * It notifies the attached observers when an order is completed. Each assemblyLine has a scheduler.
  * 
  */
 public class AssemblyLine {

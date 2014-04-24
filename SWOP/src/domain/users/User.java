@@ -4,8 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents a single User. This is an abstract class, choose 1 of it's
- * subclasses to instantiate.
+ * Represents a single User. 
  * 
  */
 public class User {
@@ -14,7 +13,8 @@ public class User {
 	private List<AccessRight> accessRights;
 
 	/**
-	 * Each user has a name. This name is given when a new User is constructed.
+	 * Each user has a name. This name is given when a new User is constructed. 
+	 * A user might also have some accessrights it can use to perform some use case.
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if name == null or isEmpty or AccessRights == null

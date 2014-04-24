@@ -1,5 +1,9 @@
 package domain.users;
 
+/**
+ * Respresents an AccessRight thta might be necessary to perform some use case (execute flowcontroller) 
+ *
+ */
 public enum AccessRight {
 	ORDER("Order a car"), ASSEMBLE("Perform assembly tasks"), 
 		SHOWDETAILS("Show order details"), CUSTOMORDER("Place a custom order"), 

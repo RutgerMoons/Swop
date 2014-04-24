@@ -192,6 +192,9 @@ public class ClientCommunication implements IClientCommunication {
 		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)");
 	}
 
+	/**
+	 * retrieves which use case the user wants to perform
+	 */
 	@Override
 	public int getFlowControllerIndex(List<String> accessRights) {
 		System.out.println("Options:");
@@ -266,6 +269,9 @@ public class ClientCommunication implements IClientCommunication {
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
 
+	/**
+	 * log the current user out
+	 */
 	@Override
 	public void logout() {
 		System.out.println("Session finished correctly.");
@@ -304,15 +310,24 @@ public class ClientCommunication implements IClientCommunication {
 		show(assemblyLineStrings);
 	}
 	
+	/**
+	 * show all possible scheduling algorithms
+	 */
 	public void showAlgorithms(String current, ArrayList<String> possible) {
 		possible.add(0, "current algorithm: " + current + "\n");
 		show(possible);
 	}
 	
+	/**
+	 * Notify the user that the scheduling algorithm was succesfully switched.
+	 */
 	public void showAlgorithmSwitched(String type) {
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type));
 	}
 	
+	/**
+	 * Notify the user that the scheduling algorithm was succesfully switched.
+	 */
 	public void showAlgorithmSwitched(String type, String batch) {
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type + 
 							" with batch: " + batch));
@@ -434,6 +449,9 @@ public class ClientCommunication implements IClientCommunication {
 				Arrays.asList("All the tasks at this workbench are completed")));
 	}
 
+	/**
+	 * Lets the user choose a CarOption when he is putting his model together.
+	 */
 	@Override
 	public String choosePart(Set<String> parts) {
 		ArrayList<String> partsString = new ArrayList<String>();
@@ -456,12 +474,18 @@ public class ClientCommunication implements IClientCommunication {
 
 	}
 
+	/**
+	 * Notify the user that the carModel he has put togehther is not a valid model.
+	 */
 	@Override
 	public void showInvalidModel() {
 		show(new ArrayList<String>(
 				Arrays.asList("You created an invalid model, try again!")));
 	}
 
+	/**
+	 * Lets the user choose an order out of all his pending/completed orders.
+	 */
 	@Override
 	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders) {
 		ArrayList<String> orderString = new ArrayList<String>();
@@ -502,11 +526,17 @@ public class ClientCommunication implements IClientCommunication {
 		}
 	}
 
+	/**
+	 * Show the details of the given order.
+	 */
 	@Override
 	public void showOrderDetails(List<String> orderDetails) {
 		show(orderDetails);
 	}
 
+	/**
+	 * Show the given custom tasks and let the user choose one.
+	 */
 	@Override
 	public String showCustomTasks(List<String> tasks) {
 		ArrayList<String> customString = new ArrayList<String>();
@@ -528,6 +558,9 @@ public class ClientCommunication implements IClientCommunication {
 		}
 	}
 
+	/**
+	 * Ask the user for a deadline.
+	 */
 	@Override
 	public String askDeadline() {
 		while (true) {
@@ -555,11 +588,17 @@ public class ClientCommunication implements IClientCommunication {
 		return true;
 	}
 
+	/**
+	 * Show a custom order with the given estimated completion time.
+	 */
 	@Override
 	public void showCustomOrder(String time) {
 		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
 	}
 
+	/**
+	 * Show the given statistics to the user.
+	 */
 	@Override
 	public void showStatistics(List<String> statistics){
 		List<String> statisticsToShow = new ArrayList<String>();

@@ -21,7 +21,7 @@ public class BindingRestriction{
 	}
 
 	/**
-	 * 		The CarOption that has to be chosen also, in case the other CarOption is chosen.
+	 * The CarOption that has to be chosen also, in case the other CarOption is chosen.
 	 */
 	public CarOption getRestrictedCarPart() {
 		return restrictedPart;
