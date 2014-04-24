@@ -39,6 +39,9 @@ public interface IClientCommunication {
 	 */
 	public String chooseModel(Set<String> catalogue);
 	
+	/**
+	 * Lets the user choose a CarOption when he is putting his model together.
+	 */
 	public String choosePart(Set<String> parts);
 	
 	/**
@@ -114,6 +117,9 @@ public interface IClientCommunication {
 	 */
 	public void invalidUserPrompt();
 	
+	/**
+	 * log the current user out
+	 */
 	public void logout();
 	
 	/**
@@ -186,27 +192,59 @@ public interface IClientCommunication {
 	 */
 	public void showWorkBenchCompleted();
 
+	/**
+	 * Notify the user that the carModel he has put togehther is not a valid model.
+	 */
 	public void showInvalidModel();
 	
+	/**
+	 * Lets the user choose an order out of all his pending/completed orders.
+	 */
 	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders);
 
+	/**
+	 * Show the details of the given order.
+	 */
 	public void showOrderDetails(List<String> orderDetails);
 
+	/**
+	 * Show the given custom tasks and let the user choose one.
+	 */
 	public String showCustomTasks(List<String> tasks);
 
+	/**
+	 * Ask the user for a deadline.
+	 */
 	public String askDeadline();
 	
+	/**
+	 * Notify the user that the scheduling algorithm was succesfully switched.
+	 */
 	public void showAlgorithmSwitched(String type);
 	
+	/**
+	 * Notify the user that the scheduling algorithm was succesfully switched using the given batch.
+	 */
 	public void showAlgorithmSwitched(String type, String batch);
 	
 	/**
 	 * Shows batches with index
 	 */
 	public void showBatches(ArrayList<String> batches); 
-
+	
+	/**
+	 * Show a custom order with the given estimated completion time.
+	 */
 	public void showCustomOrder(String time);
 	
+	/**
+	 * Shows the user there are no specification batches to switch the scheduling algorithm to.
+	 */
+	public void showNoBatchesAvailable();
+	
+	/**
+	 * Show the given statistics to the user.
+	 */
 	public void showStatistics(List<String> statistics);
 	
 	

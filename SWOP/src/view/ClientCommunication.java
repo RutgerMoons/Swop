@@ -43,6 +43,21 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
+	 * Ask the user for a deadline.
+	 */
+	@Override
+	public String askDeadline() {
+		while (true) {
+			show(new ArrayList<String>(Arrays.asList("What is the deadline? (Days,Hours,Minutes   untill completion)")));
+			String answer = inputReader.nextLine();
+			if (answer != null && isValidDeadline(answer)) {
+				return answer;
+			}
+			invalidAnswerPrompt();
+		}
+	}
+
+	/**
 	 * User presses enter to indicate he's finished It doesn't matter if there's
 	 * something typed
 	 */
@@ -118,6 +133,74 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
+	 * Lets the user choose an order out of all his pending/completed orders.
+	 */
+	@Override
+	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders) {
+		ArrayList<String> orderString = new ArrayList<String>();
+		orderString.add(0, "Pending Orders:");
+		int i = 1;
+		for (String order : pendingOrders) {
+			orderString.add(i + "." + order);
+			i++;
+		}
+
+		orderString.add("Completed Orders:");
+		for (String order : completedOrders) {
+			orderString.add(i + "." + order);
+			i++;
+		}
+		if(!pendingOrders.isEmpty() || !completedOrders.isEmpty()){
+			show(orderString);
+			if(!askContinue()){
+				return "No Order";
+			}
+			int partNumber = askNumber("Which Order do you choose?");
+			if (partNumber >= 1 && partNumber <= (orderString.size() - 2)) { //de -2 zijn de lijnen Pending Orders: en Completed Orders:
+				int indexOfCompletedOrders = orderString.indexOf("Completed Orders:");
+				if (partNumber == indexOfCompletedOrders) {
+					partNumber++;
+				}
+				System.out.println("HERE");
+				System.out.println(orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1));
+				return orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1);
+			} else {
+				invalidAnswerPrompt();
+				return chooseOrder(pendingOrders, completedOrders);
+			}
+		}else{
+			orderString.add("There are no pending or completed orders, so you can't choose an order");
+			show(orderString);
+			return "No Order";
+		}
+	}
+
+	/**
+	 * Lets the user choose a CarOption when he is putting his model together.
+	 */
+	@Override
+	public String choosePart(Set<String> parts) {
+		ArrayList<String> partsString = new ArrayList<String>();
+		partsString.add(0, "Possible parts:");
+		int i = 1;
+		for (String part : parts) {
+			partsString.add(i + "." + part);
+			i++;
+		}
+		show(partsString);
+
+		int partNumber = askNumber("Which Part Number do you choose?");
+		if (partNumber >= 1 && partNumber <= parts.size()) {
+			return partsString.get(partNumber).substring(
+					partsString.get(partNumber).indexOf(".") + 1);
+		} else {
+			invalidAnswerPrompt();
+			return choosePart(parts);
+		}
+
+	}
+
+	/**
 	 * user has to indicate which role he fulfills
 	 */
 	@Override
@@ -153,7 +236,7 @@ public class ClientCommunication implements IClientCommunication {
 			return chooseTask(tasks);
 		}
 	}
-
+	
 	/**
 	 * returns the number of the workbench at which the user is currently
 	 * residing
@@ -211,7 +294,7 @@ public class ClientCommunication implements IClientCommunication {
 		}
 		return index;
 	}
-	
+
 	/**
 	 * Asks the user to enter an integer 0 < integer <= maxValue
 	 * If the answer isn't valid, the system informs the user and repeats the question,
@@ -268,7 +351,23 @@ public class ClientCommunication implements IClientCommunication {
 	public void invalidUserPrompt() {
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
+	
+	private boolean isValidDeadline(String answer) {
+		String[] split = answer.split(",");
+		if(split.length!=3){
+			return false;
+		}
+		try{
+			Integer.parseInt(split[0]);
+			Integer.parseInt(split[1]);
+			Integer.parseInt(split[2]);
+		}catch(NumberFormatException e){
+			return false;
+		}
 
+		return true;
+	}
+	
 	/**
 	 * log the current user out
 	 */
@@ -276,7 +375,7 @@ public class ClientCommunication implements IClientCommunication {
 	public void logout() {
 		System.out.println("Session finished correctly.");
 	}
-
+	
 	/**
 	 * Show message to the users.
 	 * 
@@ -288,6 +387,28 @@ public class ClientCommunication implements IClientCommunication {
 			System.out.println(message.get(i));
 		}
 		System.out.println("");
+	}
+	/**
+	 * show all possible scheduling algorithms
+	 */
+	public void showAlgorithms(String current, ArrayList<String> possible) {
+		possible.add(0, "current algorithm: " + current + "\n");
+		show(possible);
+	}
+
+	/**
+	 * Notify the user that the scheduling algorithm was succesfully switched.
+	 */
+	public void showAlgorithmSwitched(String type) {
+		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type));
+	}
+
+	/**
+	 * Notify the user that the scheduling algorithm was succesfully switched using the given batch.
+	 */
+	public void showAlgorithmSwitched(String type, String batch) {
+		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type + 
+							" with batch: " + batch));
 	}
 
 	/**
@@ -309,29 +430,7 @@ public class ClientCommunication implements IClientCommunication {
 		assemblyLineStrings.add(0, tense + " assemblyline:");
 		show(assemblyLineStrings);
 	}
-	
-	/**
-	 * show all possible scheduling algorithms
-	 */
-	public void showAlgorithms(String current, ArrayList<String> possible) {
-		possible.add(0, "current algorithm: " + current + "\n");
-		show(possible);
-	}
-	
-	/**
-	 * Notify the user that the scheduling algorithm was succesfully switched.
-	 */
-	public void showAlgorithmSwitched(String type) {
-		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type));
-	}
-	
-	/**
-	 * Notify the user that the scheduling algorithm was succesfully switched.
-	 */
-	public void showAlgorithmSwitched(String type, String batch) {
-		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type + 
-							" with batch: " + batch));
-	}
+
 	/**
 	 * Shows batches with index
 	 */
@@ -388,6 +487,54 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
+	 * Show a custom order with the given estimated completion time.
+	 */
+	@Override
+	public void showCustomOrder(String time) {
+		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
+	}
+
+	/**
+	 * Show the given custom tasks and let the user choose one.
+	 */
+	@Override
+	public String showCustomTasks(List<String> tasks) {
+		ArrayList<String> customString = new ArrayList<String>();
+		customString.add(0, "Possible tasks:");
+		int i = 1;
+		for (String customTask : tasks) {
+			customString.add(i + "." + customTask);
+			i++;
+		}
+		show(customString);
+
+		int customNumber = askNumber("Which Task do you choose?");
+		if (customNumber >= 1 && customNumber <= tasks.size()) {
+			return customString.get(customNumber).substring(
+					customString.get(customNumber).indexOf(".") + 1);
+		} else {
+			invalidAnswerPrompt();
+			return showCustomTasks(tasks);
+		}
+	}
+
+	/**
+	 * Notify the user that the carModel he has put togehther is not a valid model.
+	 */
+	@Override
+	public void showInvalidModel() {
+		show(new ArrayList<String>(
+				Arrays.asList("You created an invalid model, try again!")));
+	}
+
+	/**
+	 * Shows the user there are no specification batches to switch the scheduling algorithm to.
+	 */
+	public void showNoBatchesAvailable() {
+		show(new ArrayList<String>(Arrays.asList("No batches available")));
+	}
+
+	/**
 	 * Show the user the order he is about to place.
 	 * 
 	 * @param quantity
@@ -420,6 +567,13 @@ public class ClientCommunication implements IClientCommunication {
 			show(chosenParts);
 		}
 	}
+	/**
+	 * Show the details of the given order.
+	 */
+	@Override
+	public void showOrderDetails(List<String> orderDetails) {
+		show(orderDetails);
+	}
 
 	/**
 	 * Show the user his pending orders.
@@ -438,164 +592,7 @@ public class ClientCommunication implements IClientCommunication {
 			show(new ArrayList<String>(
 					Arrays.asList("You have no pending Orders")));
 	}
-
-	/**
-	 * Notify the user that all the tasks at the workbench he's working on are
-	 * completed.
-	 */
-	@Override
-	public void showWorkBenchCompleted() {
-		show(new ArrayList<String>(
-				Arrays.asList("All the tasks at this workbench are completed")));
-	}
-
-	/**
-	 * Lets the user choose a CarOption when he is putting his model together.
-	 */
-	@Override
-	public String choosePart(Set<String> parts) {
-		ArrayList<String> partsString = new ArrayList<String>();
-		partsString.add(0, "Possible parts:");
-		int i = 1;
-		for (String part : parts) {
-			partsString.add(i + "." + part);
-			i++;
-		}
-		show(partsString);
-
-		int partNumber = askNumber("Which Part Number do you choose?");
-		if (partNumber >= 1 && partNumber <= parts.size()) {
-			return partsString.get(partNumber).substring(
-					partsString.get(partNumber).indexOf(".") + 1);
-		} else {
-			invalidAnswerPrompt();
-			return choosePart(parts);
-		}
-
-	}
-
-	/**
-	 * Notify the user that the carModel he has put togehther is not a valid model.
-	 */
-	@Override
-	public void showInvalidModel() {
-		show(new ArrayList<String>(
-				Arrays.asList("You created an invalid model, try again!")));
-	}
-
-	/**
-	 * Lets the user choose an order out of all his pending/completed orders.
-	 */
-	@Override
-	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders) {
-		ArrayList<String> orderString = new ArrayList<String>();
-		orderString.add(0, "Pending Orders:");
-		int i = 1;
-		for (String order : pendingOrders) {
-			orderString.add(i + "." + order);
-			i++;
-		}
-
-		orderString.add("Completed Orders:");
-		for (String order : completedOrders) {
-			orderString.add(i + "." + order);
-			i++;
-		}
-		if(!pendingOrders.isEmpty() || !completedOrders.isEmpty()){
-			show(orderString);
-			if(!askContinue()){
-				return "No Order";
-			}
-			int partNumber = askNumber("Which Order do you choose?");
-			if (partNumber >= 1 && partNumber <= (orderString.size() - 2)) { //de -2 zijn de lijnen Pending Orders: en Completed Orders:
-				int indexOfCompletedOrders = orderString.indexOf("Completed Orders:");
-				if (partNumber == indexOfCompletedOrders) {
-					partNumber++;
-				}
-				System.out.println("HERE");
-				System.out.println(orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1));
-				return orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1);
-			} else {
-				invalidAnswerPrompt();
-				return chooseOrder(pendingOrders, completedOrders);
-			}
-		}else{
-			orderString.add("There are no pending or completed orders, so you can't choose an order");
-			show(orderString);
-			return "No Order";
-		}
-	}
-
-	/**
-	 * Show the details of the given order.
-	 */
-	@Override
-	public void showOrderDetails(List<String> orderDetails) {
-		show(orderDetails);
-	}
-
-	/**
-	 * Show the given custom tasks and let the user choose one.
-	 */
-	@Override
-	public String showCustomTasks(List<String> tasks) {
-		ArrayList<String> customString = new ArrayList<String>();
-		customString.add(0, "Possible tasks:");
-		int i = 1;
-		for (String customTask : tasks) {
-			customString.add(i + "." + customTask);
-			i++;
-		}
-		show(customString);
-
-		int customNumber = askNumber("Which Task do you choose?");
-		if (customNumber >= 1 && customNumber <= tasks.size()) {
-			return customString.get(customNumber).substring(
-					customString.get(customNumber).indexOf(".") + 1);
-		} else {
-			invalidAnswerPrompt();
-			return showCustomTasks(tasks);
-		}
-	}
-
-	/**
-	 * Ask the user for a deadline.
-	 */
-	@Override
-	public String askDeadline() {
-		while (true) {
-			show(new ArrayList<String>(Arrays.asList("What is the deadline? (Days,Hours,Minutes   untill completion)")));
-			String answer = inputReader.nextLine();
-			if (answer != null && isValidDeadline(answer)) {
-				return answer;
-			}
-			invalidAnswerPrompt();
-		}
-	}
-	private boolean isValidDeadline(String answer) {
-		String[] split = answer.split(",");
-		if(split.length!=3){
-			return false;
-		}
-		try{
-			Integer.parseInt(split[0]);
-			Integer.parseInt(split[1]);
-			Integer.parseInt(split[2]);
-		}catch(NumberFormatException e){
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Show a custom order with the given estimated completion time.
-	 */
-	@Override
-	public void showCustomOrder(String time) {
-		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
-	}
-
+	
 	/**
 	 * Show the given statistics to the user.
 	 */
@@ -610,5 +607,15 @@ public class ClientCommunication implements IClientCommunication {
 		statisticsToShow.add("*median delay: " + statistics.get(5));
 		statisticsToShow.add("*two last delays:     second last:" + statistics.get(6) + "     last:" + statistics.get(7));
 		show(statisticsToShow);
+	}
+
+	/**
+	 * Notify the user that all the tasks at the workbench he's working on are
+	 * completed.
+	 */
+	@Override
+	public void showWorkBenchCompleted() {
+		show(new ArrayList<String>(
+				Arrays.asList("All the tasks at this workbench are completed")));
 	}
 }

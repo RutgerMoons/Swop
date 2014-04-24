@@ -88,6 +88,10 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		// switch to batch with the chosen batch
 		
 		Set<Set<CarOption>> batches = facade.getAllCarOptionsInPendingOrders();
+		if (batches.size() <= 0) {
+			clientCommunication.showNoBatchesAvailable();
+			return;
+		}
 	    ArrayList<Set<CarOption>> batchList = new ArrayList<>(batches);
 	    ArrayList<String> sets = new ArrayList<String>();
 		sets.add(0, "Possible Batches:");
