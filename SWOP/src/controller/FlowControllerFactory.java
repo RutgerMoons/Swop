@@ -30,7 +30,9 @@ public class FlowControllerFactory {
 		flowControllers.add(new CustomOrderFlowController(AccessRight.CUSTOMORDER, iClientCommunication, facade));
 		flowControllers.add(new CheckAssemblyLineFlowController(AccessRight.CHECKLINE, iClientCommunication, facade));
 		flowControllers.add(new CheckStatisticsFlowController(AccessRight.STATISTICS, iClientCommunication, facade));
-				return flowControllers;
+		flowControllers.add(new AdaptSchedulingAlgorithmFlowController(AccessRight.SWITCH_SCHEDULING_ALGORITHM,
+																		iClientCommunication, facade));
+		return flowControllers;
 	}
 	
 	

@@ -157,5 +157,19 @@ public class Scheduler implements LogsClock {
 	public int getEstimatedTimeInMinutes(IJob job){
 		return this.schedulingAlgorithm.getEstimatedTimeInMinutes(job, this.clock);
 	}
+	
+	/**
+	 * Returns the currently used Scheduling Algorithm Type as String
+	 */
+	public String getCurrentSchedulingAlgorithmAsString() {
+		return this.schedulingAlgorithm.getSchedulingAlgorithmType().toString();
+	}
+	
+	/**
+	 * Returns a list of all the possible scheduling algorithms as Strings.
+	 */
+	public ArrayList<String> getPossibleSchedulingAlgorithms() {
+		return this.schedulingAlgorithmFactory.getPossibleAlgorithmTypes();
+	}
 
 }

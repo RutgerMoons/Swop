@@ -239,6 +239,20 @@ public class AssemblyLine {
 	public List<IJob> getCurrentJobs() {
 		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
 	}
+	
+	/**
+	 * Returns the currently used Scheduling Algorithm Type as String
+	 */
+	public String getCurrentSchedulingAlgorithmAsString() {
+		return this.scheduler.getCurrentSchedulingAlgorithmAsString();
+	}
+	
+	/**
+	 * Returns a list of all the possible scheduling algorithms as Strings.
+	 */
+	public ArrayList<String> getPossibleSchedulingAlgorithms() {
+		return this.scheduler.getPossibleSchedulingAlgorithms();
+	}
 
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
