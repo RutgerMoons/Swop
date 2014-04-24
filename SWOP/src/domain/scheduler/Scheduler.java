@@ -210,21 +210,16 @@ public class Scheduler implements LogsClock {
       		if (subset.size() <= 0) {
       			continue;
       		}
-      		
       		int counter = 0;
       		for (IJob job : jobs) {
 				if (job.getOrder().getDescription().getCarParts().values().containsAll(subset)) {
 					counter++;
 				}
-
 			}
       		if (counter >= 3) {
       			toReturn.add(subset);
       		}
-	      	
 	    }
-		
 		return toReturn;
 	}
-
 }
