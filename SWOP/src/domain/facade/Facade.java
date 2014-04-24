@@ -3,6 +3,7 @@ package domain.facade;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -26,10 +27,8 @@ import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
-import domain.job.Action;
 import domain.job.IAction;
 import domain.job.ITask;
-import domain.job.Task;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
@@ -121,21 +120,22 @@ public class Facade {
 		return assemblyLine.canAdvance();
 	}
 
-	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex, int time) throws IllegalStateException, ImmutableException, NoSuitableJobFoundException, NotImplementedException {
+	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex, int taskIndex, int time) throws ImmutableException, NoSuitableJobFoundException {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(workBenchIndex);
-		
+
 		List<ITask> allTasks = workbench.getCurrentTasks();
-		for (ITask task : allTasks) {
-			if (task.isCompleted()) {
-				allTasks.remove(task);
-			}
+		Iterator<ITask> iter = allTasks.iterator();
+		while (iter.hasNext()) {
+			ITask task = iter.next();
+			if (task.isCompleted())
+				iter.remove();
 		}
+
 		ITask task =  allTasks.get(taskIndex);
 		for (IAction action : task.getActions()) {
-			IAction act =  action;
-			act.setCompleted(true);
+			action.setCompleted(true);
 		}
-		
+
 		if (this.canAssemblyLineAdvance()) {
 			this.advanceAssemblyLine();
 		}
@@ -230,13 +230,13 @@ public class Facade {
 		if(chosenOrder!=null){
 			orderDetails.add("Orderdetails:");
 			orderDetails.add(chosenOrder.getQuantity() + " " + chosenOrder.getDescription());
-			
+
 			String carDetails = "Chosen carOptions: ";
 			for( CarOptionCategory category: chosenOrder.getDescription().getCarParts().keySet() ){
 				carDetails += chosenOrder.getDescription().getCarParts().get(category) + " ";
 			}
 			orderDetails.add(carDetails);
-			
+
 			orderDetails.add("Order Time: " + chosenOrder.getOrderTime().toString());
 			try {
 				orderDetails.add("(Expected) Completion Time: " + chosenOrder.getDeadline().toString());
@@ -298,12 +298,12 @@ public class Facade {
 	 */
 	public List<String> getStatistics(){
 		int detail = 2;		//aantal dagen waarvan gedetailleerde/exacte numbers voor moeten worden weeregegeven
-		
+
 		List<String> statistics = new ArrayList<String>();
-		
+
 		statistics.add("" + logger.averageDays());
 		statistics.add("" + logger.medianDays());
-		
+
 		List<Integer> detailedDays = new ArrayList<Integer>(logger.getDetailedDays());
 		while(detailedDays.size()<detail){ //als er geen statistics van genoeg dagen terug zijn: voeg 0 toe voor die dag(en)
 			detailedDays.add(0,0);
@@ -311,10 +311,10 @@ public class Facade {
 		for(int i = 0; i<detail ;i++){
 			statistics.add("" + detailedDays.get(i));
 		}
-		
+
 		statistics.add("" + logger.averageDelays());
 		statistics.add("" + logger.medianDelays());
-		
+
 		List<Delay> detailedDelays = new ArrayList<Delay>(logger.getDetailedDelays());
 		while(detailedDelays.size()<detail){ //als er niet genoeg delays zijn: voeg null toe voor die dag(en)
 			detailedDelays.add(null);
@@ -327,12 +327,12 @@ public class Facade {
 				statistics.add(detailedDelays.get(i).toString());
 			}
 		}
-		
-		
-		
+
+
+
 		return statistics;
 	}
-	
+
 	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex) {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(
 				workBenchIndex);

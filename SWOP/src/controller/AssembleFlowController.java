@@ -64,10 +64,11 @@ public class AssembleFlowController extends UseCaseFlowController {
 				try {
 					int time = clientCommunication.getElapsedTime();
 					facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber, time);
-				} catch (IllegalStateException | ImmutableException
-						| NoSuitableJobFoundException | NotImplementedException e) {
-					System.out.println("we went full retard, niggah!");
-					executeUseCase();
+				} catch (ImmutableException e) {
+					System.out.println("Error here");
+				}
+				catch ( NoSuitableJobFoundException e ){
+					chooseTask(workbenchIndex);
 				}
 				chooseTask(workbenchIndex);
 			}
