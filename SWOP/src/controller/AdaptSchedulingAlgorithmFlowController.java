@@ -1,8 +1,12 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
 
 import ui.IClientCommunication;
+import domain.car.CarOption;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -53,6 +57,9 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		}
 	}
 	
+	/**
+	 * Changes the scheduling algorithm to the chosen type.
+	 */
 	private void chooseStandardAlgorithm(String type) {
 		if (type.equalsIgnoreCase("Fifo")) {
 			facade.switchToFifo();
@@ -60,10 +67,43 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		}
 	}
 	
+	/**
+	 * Changes the Scheduling algorithm to batch with a batch specified by the user.
+	 */
 	private void chooseBatch() {
 		// present all possible batches
 		// let user pick from all the batches
 		// switch to batch with the chosen batch
+		
+		Set<Set<CarOption>> batches = facade.getAllCarOptionsInPendingOrders();
+	    ArrayList<Set<CarOption>> batchList = new ArrayList<>(batches);
+	    ArrayList<String> sets = new ArrayList<String>();
+		sets.add(0, "Possible Batches:");
+		int i = 1;
+		for (Iterator iterator = batches.iterator(); iterator.hasNext();) {
+			Set<CarOption> s = (Set<CarOption>) iterator.next();
+			String tmp = "";
+			for (CarOption o : s) {
+				tmp += o.toString() + ", ";
+			}
+			tmp = tmp.substring(0, tmp.length() - 2);
+			sets.add(i, Integer.toString(i) + ". " + tmp);
+			i++;
+		}
+		
+		clientCommunication.showBatches(sets);
+		int index = clientCommunication.getIndex(sets.size()) - 1;
+		
+		ArrayList<CarOption> toSet = new ArrayList<CarOption>(batchList.get(index));
+		facade.switchToBatch(toSet);
+		
+		String tmp = "";
+		for (CarOption o : batchList.get(index)) {
+			tmp += o.toString() + ", ";
+		}
+		tmp = tmp.substring(0, tmp.length() - 2);
+		
+		clientCommunication.showAlgorithmSwitched("Batch", tmp);
 	}
 	
 	

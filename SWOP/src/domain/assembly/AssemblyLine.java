@@ -363,5 +363,12 @@ public class AssemblyLine {
 	public void switchToBatch(List<CarOption> carOptions){
 		this.scheduler.switchToBatch(carOptions);
 	}
+	
+	/**
+	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
+	 */
+	public Set<Set<CarOption>> getAllCarOptionsInPendingOrders() {
+		return this.scheduler.getAllCarOptionsInPendingOrders();
+	}
 
 }
