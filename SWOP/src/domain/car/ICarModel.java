@@ -6,6 +6,9 @@ import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
+/**
+ * Interface for limiting access to standard CarModels.
+ */
 public interface ICarModel {
 
 	/**

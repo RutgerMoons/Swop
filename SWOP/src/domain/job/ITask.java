@@ -4,7 +4,9 @@ import java.util.List;
 
 import domain.exception.ImmutableException;
 
-
+/**
+ * Interface for limiting access to standard Tasks.
+ */
 public interface ITask {
 
 	/**

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**TODO: fix deze documentatie
+/**
  * Interface for the userinterface. Any userinterface that is attached to this program has to implement all these methods somehow.
  *
  */

@@ -5,7 +5,9 @@ import java.util.List;
 import domain.exception.ImmutableException;
 import domain.order.IOrder;
 
-
+/**
+ * Interface for limiting access to standard Jobs.
+ */
 public interface IJob {
 
 	/**

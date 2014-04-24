@@ -15,6 +15,11 @@ import domain.job.IJob;
 import domain.job.JobComparatorDeadLine;
 import domain.job.JobComparatorOrderTime;
 
+/**
+ * Represents a scheduling algorithm used for scheduling Jobs on an AssemblyLine.
+ * Uses a set of CarOptions and gives a higher priority to Jobs that contain
+ * all of these CarOptions.
+ */
 public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	private final int amountOfWorkBenches;

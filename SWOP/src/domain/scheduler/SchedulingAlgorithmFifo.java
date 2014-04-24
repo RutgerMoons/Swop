@@ -13,6 +13,10 @@ import domain.job.IJob;
 import domain.job.JobComparatorDeadLine;
 import domain.job.JobComparatorOrderTime;
 
+/**
+ * Represents a scheduling algorithm used for scheduling Jobs on an AssemblyLine.
+ * Uses the time of ordering and gives a higher priority to Jobs that are ordered first.
+ */
 public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	private final int amountOfWorkBenches;

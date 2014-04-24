@@ -4,7 +4,7 @@ import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ui.IClientCommunication;
+import view.IClientCommunication;
 import domain.exception.ImmutableException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.facade.Facade;

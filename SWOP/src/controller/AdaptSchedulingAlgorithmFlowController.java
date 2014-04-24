@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-import ui.IClientCommunication;
+import view.IClientCommunication;
 import domain.car.CarOption;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;

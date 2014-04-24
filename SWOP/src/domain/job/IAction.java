@@ -2,6 +2,9 @@ package domain.job;
 
 import domain.exception.ImmutableException;
 
+/**
+ * Interface for limiting access to standard Actions.
+ */
 public interface IAction {
 	
 	/**

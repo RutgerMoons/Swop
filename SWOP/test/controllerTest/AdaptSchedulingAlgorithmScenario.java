@@ -9,8 +9,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import ui.ClientCommunication;
-import ui.IClientCommunication;
+import view.ClientCommunication;
+import view.IClientCommunication;
 import controller.OrderFlowController;
 import domain.car.CarModelSpecification;
 import domain.car.CarOption;

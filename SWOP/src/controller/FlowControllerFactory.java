@@ -2,7 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
-import ui.IClientCommunication;
+import view.IClientCommunication;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 

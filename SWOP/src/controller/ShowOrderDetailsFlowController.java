@@ -1,6 +1,6 @@
 package controller;
 
-import ui.IClientCommunication;
+import view.IClientCommunication;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;

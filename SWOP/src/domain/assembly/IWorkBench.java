@@ -9,7 +9,9 @@ import domain.exception.ImmutableException;
 import domain.job.IJob;
 import domain.job.ITask;
 
-
+/**
+ * Interface for limiting access to standard WorkBenches.
+ */
 public interface IWorkBench {
 
 	/**

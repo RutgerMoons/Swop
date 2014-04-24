@@ -14,8 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import ui.ClientCommunication;
-import ui.IClientCommunication;
+import view.ClientCommunication;
+import view.IClientCommunication;
 import controller.OrderFlowController;
 import controller.ShowOrderDetailsFlowController;
 import domain.car.CarModelSpecification;

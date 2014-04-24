@@ -2,6 +2,9 @@ package domain.order;
 
 import domain.clock.UnmodifiableClock;
 
+/**
+ * Object with attributes to calculate and represent the delay of an order.
+ */
 public class Delay {
 	
 	private final UnmodifiableClock estimated;

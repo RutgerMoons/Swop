@@ -7,6 +7,9 @@ import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
+/**
+ * Represents a set of CarOptions used in the creation of Single Task Orders by Custom Car Shop Managers.
+ */
 public class CustomCarModel implements ICarModel {
 
 	private HashMap<CarOptionCategory, CarOption> carOptions;

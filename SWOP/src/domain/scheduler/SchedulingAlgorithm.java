@@ -9,6 +9,10 @@ import domain.clock.UnmodifiableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.IJob;
 
+/**
+ * Abstract class that represents a possible scheduling algorithm used for 
+ * scheduling Jobs on an AssemblyLine
+ */
 public abstract class SchedulingAlgorithm {
 	
 	protected final SchedulingAlgorithmType schedulingAlgorithmType;

@@ -5,6 +5,9 @@ import domain.clock.UnmodifiableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
+/**
+ * Interface for limiting access to standard Orders.
+ */
 public interface IOrder {
 
 	/**

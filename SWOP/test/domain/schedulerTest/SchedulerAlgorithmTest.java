@@ -11,8 +11,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import ui.ClientCommunication;
-import ui.IClientCommunication;
+import view.ClientCommunication;
+import view.IClientCommunication;
 
 import com.google.common.base.Optional;
 

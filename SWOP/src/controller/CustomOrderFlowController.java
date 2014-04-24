@@ -1,6 +1,6 @@
 package controller;
 
-import ui.IClientCommunication;
+import view.IClientCommunication;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.facade.Facade;

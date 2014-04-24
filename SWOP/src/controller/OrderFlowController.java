@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import ui.IClientCommunication;
+import view.IClientCommunication;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
