@@ -1,5 +1,9 @@
 package domain.clock;
 
+/**
+ * Class representing a snapshot of the clock at some point.
+ *
+ */
 public class UnmodifiableClock implements Comparable<UnmodifiableClock> {
 
 	private final int days;

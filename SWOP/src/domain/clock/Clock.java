@@ -7,7 +7,6 @@ import domain.observer.ClockObserver;
 /**
  * Represents a clock that stores the current time (in minutes) and the current day.
  */
-//TODO : methode voor snapshot in de toekomst
 public class Clock {
 	
 	private final int MINUTESINADAY = 1440;

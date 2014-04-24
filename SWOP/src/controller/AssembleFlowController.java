@@ -16,9 +16,13 @@ import domain.users.AccessRight;
 public class AssembleFlowController extends UseCaseFlowController {
 
 	/**
-	 * Construct a new AssembleHandler.
+	 * Construct a new AssembleFlowController.
+	 * @param accessRight
+	 * 			The AccessRight needed to perform this use case.
 	 * @param iClientCommunication
-	 * 			The UIfacade this AssembleFlowController has to use to communicate with the user.
+	 * 			The IClientCommpunication this AssembleFlowController has to use to communicate with the user.
+	 * @param facade 
+	 * 			The Facade this FlowController uses to access the domain logic.
 	 */
 	public AssembleFlowController(AccessRight accessRight, IClientCommunication iClientCommunication, Facade facade) {
 		super(accessRight, iClientCommunication, facade);
