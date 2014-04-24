@@ -50,6 +50,8 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 					facade.advanceAssemblyLine();
 				} catch (NoSuitableJobFoundException n) {
 					//no problem :)
+				} catch (IllegalArgumentException e){
+					executeUseCase();
 				}
 			}
 		}else{
