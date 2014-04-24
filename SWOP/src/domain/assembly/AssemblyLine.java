@@ -183,8 +183,6 @@ public class AssemblyLine {
 	 * This method converts an StandardOrder to a list of Jobs, 1 for each car.
 	 * The method returns the estimated time of completion for the order.
 	 * 
-	 * @param order
-	 *            The order that needs to be converted to a list of jobs.
 	 *             
 	 * @throws ImmutableException 
 	 * 		Thrown when an IOrder has no deadline yet.
@@ -192,7 +190,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *       Thrown when the given parameter is null
 	 */
-	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException, NotImplementedException {
+	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException{
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
