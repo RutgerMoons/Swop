@@ -202,7 +202,6 @@ public class Scheduler implements LogsClock {
 				threeOrMoreTimes.add(option);
 			}
 		} 
-
 		// get all the CarOptions that occur in the pending orders 3 or more times
 		Set<Set<CarOption>> toReturn = new HashSet<Set<CarOption>>();
 	    Set<Set<CarOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
@@ -210,21 +209,16 @@ public class Scheduler implements LogsClock {
       		if (subset.size() <= 0) {
       			continue;
       		}
-      		
       		int counter = 0;
       		for (IJob job : jobs) {
 				if (job.getOrder().getDescription().getCarParts().values().containsAll(subset)) {
 					counter++;
 				}
-
 			}
       		if (counter >= 3) {
       			toReturn.add(subset);
       		}
-	      	
 	    }
-		
 		return toReturn;
 	}
-
 }
