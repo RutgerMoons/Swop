@@ -77,20 +77,21 @@ public class PartPicker {
 	}
 
 	/**
-	 * 
+	 * Makes sure that the optionality of the correct CarOptionCategories is overridden for the current CarModel, according to the OptionalRestrictions.
+	 * Also makes sure that if a restriction can't be fulfilled anymore due to already chosen parts, the CarOption in the first part of the restriction can't be chosen anymore. 
 	 */
 	private Collection<CarOption> checkOptionalRestrictions(
 			CarOptionCategory type, Collection<CarOption> availableParts) {
 
 		for (OptionalRestriction restriction : optionalRestrictions) {
 			Map<CarOptionCategory, CarOption> parts = model.getCarParts();
-			if (restriction.getCarPart().getType().equals(type)) {				//de availableparts die teruggegeven worden zijn om een CarPart te kiezen van hetzelfde type als het CarPart dat in het eerste deel van de restrictie staat
+			if (restriction.getCarPart().getType().equals(type)) {				
 				if (!restriction.getRestrictedPartAlreadyChosen()) {
 					model.addForcedOptionalType(restriction.getCarPart(),
 							restriction.isOptional());
-				} else if (restriction.getRestrictedPartAlreadyChosen()			//als het 2e part uit de restriction al gekozen is, maar het zit niet in het model
-						&& !parts.containsKey(restriction.getCarPartType())) {  // ==> user heeft 'optional' gekozen
-					availableParts.remove(restriction.getCarPart());			//   ==> er kan niet meer aan de restrictie voldaan worden, dus het 1e part moet uit de availableParts verwijderd worden
+				} else if (restriction.getRestrictedPartAlreadyChosen()			
+						&& !parts.containsKey(restriction.getCarPartType())) {  
+					availableParts.remove(restriction.getCarPart());			
 				}
 
 			} else if (restriction.getCarPartType().equals(type)) {
@@ -134,7 +135,7 @@ public class PartPicker {
 	 * Removes CarOptions from the Collection of still available CarOptions 
 	 * if, due to the already chosen parts in the model,
 	 * a BindingRestriction can't be fulfilled anymore. 
-	 * (If the second part of the  restriction can't be fulfilled anymore, the CarOption in the first part is removed from te Collection.)
+	 * (If the second part of the  restriction can't be fulfilled anymore, the CarOption in the first part is removed from the Collection.)
 	 * @param type
 	 * 		The CarOptionCategory of which the still available parts will be returned.
 	 * @param availableParts
