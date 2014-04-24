@@ -1,7 +1,10 @@
 package domain.job;
 
 import java.util.Comparator;
-
+/**
+ * This comparator compares 2 Jobs on it's time of order.  
+ *
+ */
 public class JobComparatorOrderTime implements Comparator<IJob> {
 
 	@Override
