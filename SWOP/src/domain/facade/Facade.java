@@ -88,7 +88,7 @@ public class Facade {
 		this.assemblyLineObserver = new AssemblyLineObserver();
 		this.assemblyLine.attachObserver(assemblyLineObserver);
 
-		this.logger = new Logger(2, clockObserver, assemblyLineObserver);
+		this.logger = new Logger(2);
 
 		this.vehicleSpecificationCatalogue = new VehicleSpecificationCatalogue();
 		this.customVehicleCatalogue = new CustomVehicleCatalogue();

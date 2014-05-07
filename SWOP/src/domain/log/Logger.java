@@ -33,14 +33,9 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	 * @throws IllegalArgumentException
 	 * 			Exception is thrown when one of the observers is null
 	 */
-	public Logger(int numberOfDaysOfDetailedHistory, ClockObserver clockObserver, AssemblyLineObserver assemblyLineObserver) {
-		if(clockObserver == null || assemblyLineObserver == null){
-			throw new IllegalArgumentException();
-		}
+	public Logger(int numberOfDaysOfDetailedHistory) {
 		this.logHistoryDays = new LogHistoryDays(numberOfDaysOfDetailedHistory);
 		this.logHistoryDelays = new LogHistoryDelays(numberOfDaysOfDetailedHistory);
-		assemblyLineObserver.attachLogger(this);
-		clockObserver.attachLogger(this);
 	}
 
 	/**

@@ -6,10 +6,10 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 
-import domain.assembly.AssemblyLine;
 import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
+import domain.observer.LogsAssemblyLine;
 
 /**
  * this class will be used to keep record of two kinds of orders. these two
@@ -18,22 +18,18 @@ import domain.exception.NotImplementedException;
  * 
  * 
  */
-public class OrderBook {
+public class OrderBook implements LogsAssemblyLine{
 
 	// private HashMap<String, ArrayList<Order>> pendingOrders;
 	// private HashMap<String, ArrayList<Order>> completedOrders;
 	private Multimap<String, IOrder> pendingOrders;
 	private Multimap<String, IOrder> completedOrders;
-	private AssemblyLine assemblyLine;
-
+	//TODO assemblyLineObserver zodat assembly genotified wordt wanneer een nieuw order binnenkomt
 	/**
 	 * Create a new OrderBook.
-	 * @param assemblyLine
-	 * 			The assemblyline the OrderBook belongs to.
 	 */
-	public OrderBook(AssemblyLine assemblyLine) {
+	public OrderBook() {
 		initializeBook();
-		this.assemblyLine = assemblyLine;
 	}
 
 	/**
@@ -117,5 +113,11 @@ public class OrderBook {
 	public void addOrder(CustomOrder order, ImmutableClock currentTime) throws ImmutableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
+	}
+
+	@Override
+	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder) {
+		// TODO Auto-generated method stub
+		
 	}
 }

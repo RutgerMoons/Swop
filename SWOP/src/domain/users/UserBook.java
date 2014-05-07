@@ -13,7 +13,11 @@ public class UserBook {
 	
 	private HashMap<String,User> userBook = new HashMap<String,User>();
 	private User currentUser;
+	private UserFactory factory;
 	
+	public UserBook(){
+		factory = new UserFactory();
+	}
 	/**
 	 * Returns the User Book
 	 * 
@@ -21,6 +25,15 @@ public class UserBook {
 	 */
 	public Map<String, User> getUserBook() {
 		return Collections.unmodifiableMap(userBook);
+	}
+	
+	
+	/**
+	 * Method for creating a new user given his name and role.
+	 * @pre UserBook does not contain the combination of name and role.
+	 */
+	public void createUser(String userName, String role){
+		this.factory.createUser(userName, role);
 	}
 	
 	/**
