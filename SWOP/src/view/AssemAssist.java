@@ -40,6 +40,8 @@ public class AssemAssist {
 		
 		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("platform truck", VehicleOptionCategory.BODY), new VehicleOption("heavy duty", VehicleOptionCategory.WHEEL)));
+		
 		clientCommunication = new ClientCommunication();
 		facade = new Facade(bindingRestrictions, optionalRestrictions);
 		FlowControllerFactory flowControllerFactory = new FlowControllerFactory(clientCommunication, facade);
