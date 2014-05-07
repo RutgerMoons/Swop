@@ -9,11 +9,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
 
 public class CheckStatisticsScenario {
 

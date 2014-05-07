@@ -14,10 +14,6 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 
 import domain.assembly.AssemblyLine;
-import domain.car.Vehicle;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.CustomVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
@@ -33,6 +29,10 @@ import domain.order.OrderBook;
 import domain.order.StandardOrder;
 import domain.scheduler.SchedulingAlgorithmFifo;
 import domain.scheduler.SchedulingAlgorithmType;
+import domain.vehicle.CustomVehicle;
+import domain.vehicle.Vehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleSpecification;
 
 
 public class SchedulingAlgorithmFifoTest {

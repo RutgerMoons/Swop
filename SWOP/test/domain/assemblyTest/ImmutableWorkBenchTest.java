@@ -15,10 +15,6 @@ import com.google.common.base.Optional;
 import domain.assembly.IWorkBench;
 import domain.assembly.UnmodifiableWorkBench;
 import domain.assembly.WorkBench;
-import domain.car.Vehicle;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
@@ -27,6 +23,10 @@ import domain.job.IJob;
 import domain.job.Job;
 import domain.job.Task;
 import domain.order.StandardOrder;
+import domain.vehicle.Vehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 
 public class ImmutableWorkBenchTest {

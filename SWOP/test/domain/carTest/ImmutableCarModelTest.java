@@ -10,15 +10,15 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.Vehicle;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
-import domain.car.IVehicle;
-import domain.car.UnmodifiableVehicle;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
+import domain.vehicle.IVehicle;
+import domain.vehicle.UnmodifiableVehicle;
+import domain.vehicle.Vehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 public class ImmutableCarModelTest {
 

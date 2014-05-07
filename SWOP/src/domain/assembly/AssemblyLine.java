@@ -8,8 +8,6 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
-import domain.car.VehicleOption;
-import domain.car.IVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
@@ -25,6 +23,8 @@ import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.StandardOrder;
 import domain.scheduler.Scheduler;
+import domain.vehicle.IVehicle;
+import domain.vehicle.VehicleOption;
 
 /**
  * Represents an AssemblyLine. It contains the workbenches and the current jobs on these workbenches.

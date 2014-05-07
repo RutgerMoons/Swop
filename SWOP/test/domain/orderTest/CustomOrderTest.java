@@ -11,15 +11,15 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
-import domain.car.CustomVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 import domain.job.Action;
 import domain.order.CustomOrder;
+import domain.vehicle.CustomVehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
 
 public class CustomOrderTest {
 	private CustomVehicle model;

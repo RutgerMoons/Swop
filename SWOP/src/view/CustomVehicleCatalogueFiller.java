@@ -4,11 +4,11 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-import domain.car.CustomVehicle;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
+import domain.vehicle.CustomVehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
 
 /**
  * This class is used to fill the CustomCarModelCatalogue.  

@@ -12,14 +12,14 @@ import org.junit.Test;
 import view.ClientCommunication;
 import view.IClientCommunication;
 import controller.OrderFlowController;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.users.AccessRight;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 public class AdaptSchedulingAlgorithmScenario {
 

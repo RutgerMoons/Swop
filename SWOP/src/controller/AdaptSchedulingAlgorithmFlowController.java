@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import view.IClientCommunication;
-import domain.car.VehicleOption;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
+import domain.vehicle.VehicleOption;
 
 /**
  * Defines the program flow for the 'Adapt scheduling algorithm' use case.

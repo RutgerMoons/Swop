@@ -12,13 +12,13 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.exception.AlreadyInMapException;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 public class RestrictionTest {
 	PartPicker picker;

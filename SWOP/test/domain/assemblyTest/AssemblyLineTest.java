@@ -18,11 +18,6 @@ import com.google.common.base.Optional;
 import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
 import domain.assembly.WorkBench;
-import domain.car.Vehicle;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
-import domain.car.CustomVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
@@ -39,6 +34,11 @@ import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.StandardOrder;
+import domain.vehicle.CustomVehicle;
+import domain.vehicle.Vehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 
 public class AssemblyLineTest{

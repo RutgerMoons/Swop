@@ -1,4 +1,4 @@
-package domain.car;
+package domain.vehicle;
 
 /**
  * Abstract class representing a part of a car.

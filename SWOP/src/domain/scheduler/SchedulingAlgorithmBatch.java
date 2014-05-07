@@ -7,13 +7,13 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
-import domain.car.VehicleOption;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.IJob;
 import domain.job.JobComparatorDeadLine;
 import domain.job.JobComparatorOrderTime;
+import domain.vehicle.VehicleOption;
 
 /**
  * Represents a scheduling algorithm used for scheduling Jobs on an AssemblyLine.

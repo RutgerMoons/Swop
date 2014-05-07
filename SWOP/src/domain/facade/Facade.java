@@ -14,13 +14,6 @@ import com.google.common.collect.Multimap;
 
 import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
-import domain.car.Vehicle;
-import domain.car.VehicleSpecificationCatalogue;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
-import domain.car.CustomVehicle;
-import domain.car.CustomVehicleCatalogue;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
@@ -45,6 +38,13 @@ import domain.users.AccessRight;
 import domain.users.User;
 import domain.users.UserBook;
 import domain.users.UserFactory;
+import domain.vehicle.CustomVehicle;
+import domain.vehicle.CustomVehicleCatalogue;
+import domain.vehicle.Vehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
+import domain.vehicle.VehicleSpecificationCatalogue;
 
 /**
  * This class is the layer between the Domain model and the UI. The UI can only
@@ -115,22 +115,15 @@ public class Facade {
 	/**
 	 * Add a Part to the CarModel that is being built.
 	 * 
-	 * @param type
-	 *            The type of CarPart as a String.
 	 * @param part
-	 *            The part as a string.
+	 * 			The part you want to add to the model.
 	 */
-	public void addPartToModel(String type, String part) {
-		VehicleOptionCategory vehicleOptionCategory = VehicleOptionCategory.valueOf(type);
-		for (VehicleOption actualPart : picker.getModel().getSpecification()
-				.getCarParts().get(vehicleOptionCategory)) {
-			if (actualPart.toString().equals(part))
-				try {
-					picker.getModel().addCarPart(actualPart);
-				} catch (AlreadyInMapException e) { // ga nooit gebeuren omdat
-													// je 1x alle types
-													// overloopt
-				}
+	public void addPartToModel(VehicleOption part) {
+		
+		
+		try {
+			picker.getModel().addCarPart(part);
+		} catch (AlreadyInMapException e) {
 		}
 	}
 

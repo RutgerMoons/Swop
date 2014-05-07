@@ -11,11 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.assembly.AssemblyLine;
-import domain.car.Vehicle;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
-import domain.car.CustomVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
@@ -24,6 +19,11 @@ import domain.observer.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
+import domain.vehicle.CustomVehicle;
+import domain.vehicle.Vehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 
 /*

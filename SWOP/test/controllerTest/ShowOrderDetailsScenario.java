@@ -18,15 +18,15 @@ import view.ClientCommunication;
 import view.IClientCommunication;
 import controller.OrderFlowController;
 import controller.ShowOrderDetailsFlowController;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.users.AccessRight;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 @RunWith(Parameterized.class)
 public class ShowOrderDetailsScenario {

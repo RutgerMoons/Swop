@@ -7,12 +7,12 @@ import java.util.Set;
 import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
 
 
 /**
