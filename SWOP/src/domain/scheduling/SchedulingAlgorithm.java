@@ -1,4 +1,4 @@
-package domain.scheduler;
+package domain.scheduling;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;

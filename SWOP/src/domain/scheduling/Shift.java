@@ -1,4 +1,4 @@
-package domain.scheduler;
+package domain.scheduling;
 /**
  * Object representing a shift. Shift has a start hour, an end hour and an amount of overtime.
  */
