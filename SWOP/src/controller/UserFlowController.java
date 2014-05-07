@@ -4,9 +4,9 @@ import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
-import view.IClientCommunication;
-import domain.exception.UnmodifiableException;
+import view.ClientCommunication;
 import domain.exception.RoleNotYetAssignedException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -21,7 +21,7 @@ public class UserFlowController {
 	
 	private ArrayList<UseCaseFlowController> useCaseFlowControllers;
 	private Facade facade;
-	private IClientCommunication ClientCommunication;
+	private ClientCommunication ClientCommunication;
 	
 	/**
 	 * Creates a new UserHandler.
@@ -34,7 +34,7 @@ public class UserFlowController {
 	 * @throws NullPointerException
 	 * 			if one of the given arguments is null.
 	 */
-	public UserFlowController(IClientCommunication iClientCommunication, Facade facade, ArrayList<UseCaseFlowController> useCaseFlowControllers) throws NullPointerException{
+	public UserFlowController(ClientCommunication iClientCommunication, Facade facade, ArrayList<UseCaseFlowController> useCaseFlowControllers) throws NullPointerException{
 		if(iClientCommunication == null || facade == null || useCaseFlowControllers == null) {
 			throw new NullPointerException();
 		}

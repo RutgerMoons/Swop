@@ -1,8 +1,8 @@
 package controller;
 
-import view.IClientCommunication;
-import domain.exception.UnmodifiableException;
+import view.ClientCommunication;
 import domain.exception.NoSuitableJobFoundException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -22,7 +22,7 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 	 * 			The Facade this Flowcontroller uses to access the domain logic.
 	 */
 	public CustomOrderFlowController(AccessRight accessRight,
-			IClientCommunication clientCommunication, Facade facade) {
+			ClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 

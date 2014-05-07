@@ -2,9 +2,9 @@ package controller;
 
 import java.util.ArrayList;
 
-import view.IClientCommunication;
-import domain.exception.UnmodifiableException;
+import view.ClientCommunication;
 import domain.exception.NoSuitableJobFoundException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -24,7 +24,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * @param facade 
 	 * 			The Facade this FlowController uses to access the domain logic.
 	 */
-	public AssembleFlowController(AccessRight accessRight, IClientCommunication iClientCommunication, Facade facade) {
+	public AssembleFlowController(AccessRight accessRight, ClientCommunication iClientCommunication, Facade facade) {
 		super(accessRight, iClientCommunication, facade);
 	}
 

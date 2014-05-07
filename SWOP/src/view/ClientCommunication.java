@@ -10,7 +10,7 @@ import java.util.Set;
  * A text-based user interface to interact with the system.
  * 
  */
-public class ClientCommunication implements IClientCommunication {
+public class ClientCommunication{
 
 	private Scanner inputReader;
 
@@ -20,10 +20,10 @@ public class ClientCommunication implements IClientCommunication {
 
 	/**
 	 * Ask if the user wants to advance the assemblyline.
-	 * 
-	 * @return A String that equals either "Y" (for yes) or "N" (for no).
+	 * @return
+	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	@Override
+	
 	public boolean askAdvance() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want advance the assemblyLine? Y/N",
@@ -32,10 +32,10 @@ public class ClientCommunication implements IClientCommunication {
 
 	/**
 	 * Ask the user if he wants to continue.
-	 * 
-	 * @return A String that equals either "Y" (for yes) or "N" (for no).
+	 * @return
+	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	@Override
+	
 	public boolean askContinue() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want to continue? Y/N", expected)
@@ -45,7 +45,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Ask the user for a deadline.
 	 */
-	@Override
+	
 	public String askDeadline() {
 		while (true) {
 			show(new ArrayList<String>(Arrays.asList("What is the deadline? (Days,Hours,Minutes   untill completion)")));
@@ -58,10 +58,11 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
-	 * User presses enter to indicate he's finished It doesn't matter if there's
-	 * something typed
+	 * Ask if the user is finished.
+	 * @return
+	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	@Override
+	
 	public String askFinished() {
 		return askQuestion("Press enter when you're finished");
 	}
@@ -116,9 +117,12 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
-	 * the user has to indicate which model to order
+	 * Choose the car model the user wants to order.
+	 * @param catalogue
+	 * 			A Set which contains Strings that represent the names of all possible car models that can be ordered.
+	 * @return
 	 */
-	@Override
+	
 	public String chooseModel(Set<String> catalogue) {
 		ArrayList<String> catalogueInString = new ArrayList<String>();
 
@@ -135,7 +139,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Lets the user choose an order out of all his pending/completed orders.
 	 */
-	@Override
+	
 	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders) {
 		ArrayList<String> orderString = new ArrayList<String>();
 		orderString.add(0, "Pending Orders:");
@@ -178,7 +182,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Lets the user choose a CarOption when he is putting his model together.
 	 */
-	@Override
+	
 	public String choosePart(Set<String> parts) {
 		ArrayList<String> partsString = new ArrayList<String>();
 		partsString.add(0, "Possible parts:");
@@ -201,9 +205,11 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
-	 * user has to indicate which role he fulfills
+	 * Let the user indicate which role he fulfills.
+	 * @return
+	 * 			A String that represents which role the user fulfills.
 	 */
-	@Override
+	
 	public String chooseRole() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("manager",
 				"garageholder", "worker", "custom car shop manager"));
@@ -212,12 +218,14 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
-	 * the user indicates which tasks he wants to perform
-	 * 
-	 * @param The
-	 *            tasks at the user's current workbench
+	 * Let the user indicate which task he wants to perform.
+	 * @param tasks
+	 * 			ArrayList that contains Strings. Each String represents the description of one of the tasks.
+	 * @return
+	 * 			A strictly positive integer.
+	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
 	 */
-	@Override
+	
 	public int chooseTask(ArrayList<String> tasks) {
 		ArrayList<String> tasksString = new ArrayList<String>();
 		tasksString.add(0, "Tasks:");
@@ -238,14 +246,16 @@ public class ClientCommunication implements IClientCommunication {
 	}
 	
 	/**
-	 * returns the number of the workbench at which the user is currently
-	 * residing
-	 * 
-	 * @param The
-	 *            amount of workbenches in the assemblyline this is necessary to
-	 *            validate the user input
+	 * Let the user indicate which workbench he's working at.
+	 * @param numberOfWorkbenches
+	 * 			Integer that represents how many workbenches the user can choose from.
+	 * @param workbenches
+	 * 			ArrayList that contains Strings. Each String represents the name of one of the workbenches.
+	 * @return
+	 * 			A strictly positive integer. 
+	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
 	 */
-	@Override
+	
 	public int chooseWorkBench(int numberOfWorkBenches,
 			ArrayList<String> workbenches) {
 		ArrayList<String> workBenchNames = new ArrayList<>();
@@ -266,19 +276,20 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
-	 * ask the user how much time has passed and return this if it is an integer
-	 * a negative integer -> new day 0 or positive integer -> amount of minutes
-	 * passed
+	 * Let the user indicate how much time has passed.
+	 * @return
+	 * 			An integer representing the elapsed time (in minutes).
 	 */
-	@Override
+	
 	public int getElapsedTime() {
 		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)");
 	}
 
 	/**
-	 * retrieves which use case the user wants to perform
+	 * presents the user with all of his possible use cases 
+	 * and the user indicates which use case to perform
 	 */
-	@Override
+	
 	public int getFlowControllerIndex(List<String> accessRights) {
 		System.out.println("Options:");
 		int i = 1;
@@ -310,9 +321,11 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
-	 * ask the name of the user and return this
+	 * Get the users' name.
+	 * @return
+	 * 			A String that represents the user's name.
 	 */
-	@Override
+	
 	public String getName() {
 		String answer = "";
 		while ((answer = askQuestion("Hello user, what's your name?")) == null
@@ -323,9 +336,11 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
-	 * Ask the amount of cars to order, until the response is a positive integer
+	 * Let the user indicate how many cars he wants to order.
+	 * @return
+	 * 			a positive integer representing the quantity
 	 */
-	@Override
+	
 	public int getQuantity() {
 		int quantity = askNumber("How many cars do you want to order?");
 		while (quantity <= 0) {
@@ -338,7 +353,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Notify the user that the answer he has given is not a valid answer.
 	 */
-	@Override
+	
 	public void invalidAnswerPrompt() {
 		show(new ArrayList<String>(
 				Arrays.asList("Sorry, that's not a valid response")));
@@ -347,7 +362,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Notify the user that the answer he has given is not a valid user.
 	 */
-	@Override
+	
 	public void invalidUserPrompt() {
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
@@ -371,7 +386,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * log the current user out
 	 */
-	@Override
+	
 	public void logout() {
 		System.out.println("Session finished correctly.");
 	}
@@ -389,7 +404,7 @@ public class ClientCommunication implements IClientCommunication {
 		System.out.println("");
 	}
 	/**
-	 * show all possible scheduling algorithms
+	 * Show the user the currently used Scheduling Algorithm and all the possible Scheduling Algorithms
 	 */
 	public void showAlgorithms(String current, ArrayList<String> possible) {
 		possible.add(0, "current algorithm: " + current + "\n");
@@ -413,17 +428,15 @@ public class ClientCommunication implements IClientCommunication {
 
 	/**
 	 * Show the user the assemblyline.
-	 * 
 	 * @param assemblyline
-	 *            A String representing the assemblyline. The String contains
-	 *            all the workbenches in the assemblyline and all the tasks at
-	 *            each workbench (with indication whether the task has been
-	 *            completed), each of them separated by a comma.
+	 * 			A String representing the assemblyline.
+	 * 			The String contains all the workbenches in the assemblyline 
+	 * 			and all the tasks at each workbench (with indication whether the task has been completed), 
+	 * 			each of them separated by a comma.
 	 * @param tense
-	 *            String that indicates whether the other parameter is a current
-	 *            or future assemblyline.
+	 * 			String that indicates whether the other parameter is a current or future assemblyline.
 	 */
-	@Override
+	
 	public void showAssemblyLine(String assemblyline, String tense) {
 		ArrayList<String> assemblyLineStrings = new ArrayList<String>(
 				Arrays.asList(assemblyline.split(",")));
@@ -440,12 +453,10 @@ public class ClientCommunication implements IClientCommunication {
 
 	/**
 	 * Show the user which benches are keeping the assemblyline from advancing.
-	 * 
 	 * @param notCompletedBenches
-	 *            A list of integers. Each integer represents the number of a
-	 *            workbench that is blocking the assemblyline.
+	 * 			A list of integers. Each integer represents the number of a workbench that is blocking the assemblyline.
 	 */
-	@Override
+	
 	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches) {
 		show(new ArrayList<String>(
 				Arrays.asList("AssemblyLine can't be advanced because of workbench "
@@ -454,13 +465,12 @@ public class ClientCommunication implements IClientCommunication {
 
 	/**
 	 * Show the user the task he has chosen.
-	 * 
 	 * @param task
-	 *            A String that represents the task. This String contains the
-	 *            task description, "Required actions:", and all the actions
-	 *            required. Each of these elements are separated by a comma.
+	 * 			A String that represents the task. 
+	 * 			This String contains the task description, "Required actions:", and all the actions required.
+	 * 			Each of these elements are separated by a comma.
 	 */
-	@Override
+	
 	public void showChosenTask(String task) {
 		ArrayList<String> taskStrings = new ArrayList<String>(
 				Arrays.asList(task.split(",")));
@@ -470,13 +480,12 @@ public class ClientCommunication implements IClientCommunication {
 
 	/**
 	 * Show the user's completed orders.
-	 * 
 	 * @param pendingOrders
-	 *            An ArrayList of Strings. Each String in this ArrayList
-	 *            represents an order. It contains the quantity and the name of
-	 *            the model, separated by comma's.
+	 * 			An ArrayList of Strings.
+	 * 			Each String in this ArrayList represents an order. 
+	 * 			It contains the quantity and the name of the model, separated by comma's.
 	 */
-	@Override
+	
 	public void showCompletedOrders(ArrayList<String> completedOrders) {
 		if (!completedOrders.isEmpty()) {
 			completedOrders.add(0, "Your completed orders:");
@@ -489,7 +498,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Show a custom order with the given estimated completion time.
 	 */
-	@Override
+	
 	public void showCustomOrder(String time) {
 		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
 	}
@@ -497,7 +506,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Show the given custom tasks and let the user choose one.
 	 */
-	@Override
+	
 	public String showCustomTasks(List<String> tasks) {
 		ArrayList<String> customString = new ArrayList<String>();
 		customString.add(0, "Possible tasks:");
@@ -521,7 +530,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Notify the user that the carModel he has put togehther is not a valid model.
 	 */
-	@Override
+	
 	public void showInvalidModel() {
 		show(new ArrayList<String>(
 				Arrays.asList("You created an invalid model, try again!")));
@@ -536,19 +545,16 @@ public class ClientCommunication implements IClientCommunication {
 
 	/**
 	 * Show the user the order he is about to place.
-	 * 
 	 * @param quantity
-	 *            An integer representing the quantity of cars the user is about
-	 *            to order.
-	 * @param carModel
-	 *            A String representing the name of the carmodel the user is
-	 *            about to order.
+	 * 			An integer representing the quantity of cars the user is about to order.
+	 * @param realModel 
+	 * @param chosenParts
+	 * 			A String representing the name of the carmodel the user is about to order.
 	 * @param estimatedTime
-	 *            The estimated completion time, represented by two integers:
-	 *            the day and the time (in minutes). If the estimated completion
-	 *            time == -1, the completion time can't be shown.
+	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
+	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
-	@Override
+	
 	public void showOrder(int quantity, String model, List<String> chosenParts,
 			String estimatedTime) {
 		if (model == null || estimatedTime == null) {
@@ -570,20 +576,19 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Show the details of the given order.
 	 */
-	@Override
+	
 	public void showOrderDetails(List<String> orderDetails) {
 		show(orderDetails);
 	}
 
 	/**
-	 * Show the user his pending orders.
-	 * 
+	 * Show the user's pending orders.
 	 * @param pendingOrders
-	 *            An ArrayList of Strings. Each String in this ArrayList
-	 *            represents an order. It contains the quantity, the name of the
-	 *            model and the estimated time, all separated by comma's.
+	 * 			An ArrayList of Strings.
+	 * 			Each String in this ArrayList represents an order. 
+	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
 	 */
-	@Override
+	
 	public void showPendingOrders(ArrayList<String> pendingOrders) {
 		if (!pendingOrders.isEmpty()) {
 			pendingOrders.add(0, "Your pending orders:");
@@ -596,7 +601,7 @@ public class ClientCommunication implements IClientCommunication {
 	/**
 	 * Show the given statistics to the user.
 	 */
-	@Override
+	
 	public void showStatistics(List<String> statistics){
 		List<String> statisticsToShow = new ArrayList<String>();
 		statisticsToShow.add("Statistics:");
@@ -610,10 +615,9 @@ public class ClientCommunication implements IClientCommunication {
 	}
 
 	/**
-	 * Notify the user that all the tasks at the workbench he's working on are
-	 * completed.
+	 * Notify the user that all the tasks at the workbench he's working on are completed.
 	 */
-	@Override
+	
 	public void showWorkBenchCompleted() {
 		show(new ArrayList<String>(
 				Arrays.asList("All the tasks at this workbench are completed")));
