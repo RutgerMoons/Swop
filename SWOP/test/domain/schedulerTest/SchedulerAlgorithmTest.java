@@ -32,7 +32,7 @@ import domain.order.StandardOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
-import domain.scheduler.Scheduler;
+import domain.scheduling.Scheduler;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;

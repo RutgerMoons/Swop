@@ -22,7 +22,7 @@ import domain.observer.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.StandardOrder;
-import domain.scheduler.Scheduler;
+import domain.scheduling.Scheduler;
 import domain.vehicle.IVehicle;
 import domain.vehicle.VehicleOption;
 

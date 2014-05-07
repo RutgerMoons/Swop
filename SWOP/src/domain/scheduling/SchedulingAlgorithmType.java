@@ -1,4 +1,4 @@
-package domain.scheduler;
+package domain.scheduling;
 
 /**
  * A clean way to differentiate Scheduling Algorithms
