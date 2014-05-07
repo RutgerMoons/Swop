@@ -1,5 +1,4 @@
 .metadata
-*.jar
 *.class
 .classpath
 bin/
