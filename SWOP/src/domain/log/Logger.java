@@ -2,7 +2,7 @@ package domain.log;
 
 import java.util.List;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
 import domain.observer.LogsAssemblyLine;
@@ -18,7 +18,7 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 
 	private LogHistoryDays logHistoryDays;
 	private LogHistoryDelays logHistoryDelays;
-	private UnmodifiableClock currentTime;
+	private ImmutableClock currentTime;
 
 	/**
 	 * A new logger is constructed:
@@ -53,14 +53,14 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	 * 			Exception is thrown when currentTime is null
 	 */
 	@Override
-	public void advanceTime(UnmodifiableClock currentTime) {
+	public void advanceTime(ImmutableClock currentTime) {
 		if (currentTime == null) {
 			throw new IllegalArgumentException();
 		}
 		this.currentTime = currentTime;
 	}
 
-	public UnmodifiableClock getCurrentTime(){
+	public ImmutableClock getCurrentTime(){
 		return this.currentTime;
 	}
 
@@ -69,7 +69,7 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	 * to the given clock and the helper object logHistoryDays is shifted.
 	 */
 	@Override
-	public void startNewDay(UnmodifiableClock newDay) {
+	public void startNewDay(ImmutableClock newDay) {
 		this.advanceTime(newDay);
 		this.logHistoryDays.shift();
 	}
@@ -80,7 +80,7 @@ public class Logger implements LogsClock, LogsAssemblyLine {
 	 * This method throws an IllegalArgumentException when the parameter is null.
 	 */
 	@Override
-	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfCompletion) {
+	public void updateCompletedOrder(ImmutableClock estimatedTimeOfCompletion) {
 		if (estimatedTimeOfCompletion == null) {
 			throw new IllegalArgumentException();
 		}

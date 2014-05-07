@@ -6,16 +6,16 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CustomCarModel;
-import domain.car.CustomCarModelCatalogue;
+import domain.car.CustomVehicle;
+import domain.car.CustomVehicleCatalogue;
 
 public class CustomCarModelCatalogueTest {
 
-	private CustomCarModelCatalogue catalogue;
+	private CustomVehicleCatalogue catalogue;
 	
 	@Before
 	public void initialize(){
-		this.catalogue = new CustomCarModelCatalogue();
+		this.catalogue = new CustomVehicleCatalogue();
 	}
 	
 	@Test
@@ -25,7 +25,7 @@ public class CustomCarModelCatalogueTest {
 	
 	@Test
 	public void testAddModel(){
-		catalogue.addModel("test", new CustomCarModel());
+		catalogue.addModel("test", new CustomVehicle());
 		assertEquals(1, catalogue.getCatalogue().size());
 	}
 	
@@ -36,12 +36,12 @@ public class CustomCarModelCatalogueTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testAddEmptyDescription(){
-		catalogue.addModel("", new CustomCarModel());
+		catalogue.addModel("", new CustomVehicle());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testAddNullDescription(){
-		catalogue.addModel(null, new CustomCarModel());
+		catalogue.addModel(null, new CustomVehicle());
 	}
 
 }

@@ -10,36 +10,36 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.car.ICarModel;
-import domain.car.ImmutableCarModel;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.car.IVehicle;
+import domain.car.UnmodifiableVehicle;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
 public class ImmutableCarModelTest {
 
-	private ICarModel car;
-	private ICarModel immutable;
+	private IVehicle car;
+	private IVehicle immutable;
 	@Before
 	public void initialize(){
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
-		car = new CarModel(template);
-		immutable = new ImmutableCarModel(car);
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		car = new Vehicle(template);
+		immutable = new UnmodifiableVehicle(car);
 	}
 	
 	
 	@Test
 	public void testGetters() throws AlreadyInMapException, ImmutableException, NotImplementedException {
-		car.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		car.addCarPart(new CarOption("break", CarOptionCategory.BODY));
+		car.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		car.addCarPart(new VehicleOption("break", VehicleOptionCategory.BODY));
 		
-		car.addForcedOptionalType(new CarOption("sport", CarOptionCategory.BODY), false);
+		car.addForcedOptionalType(new VehicleOption("sport", VehicleOptionCategory.BODY), false);
 		
 		assertEquals(car.getCarParts(), immutable.getCarParts());
 		assertEquals(car.toString(), immutable.toString());
@@ -48,12 +48,12 @@ public class ImmutableCarModelTest {
 		
 		assertEquals(car.getSpecification(), immutable.getSpecification());
 		
-		assertFalse(immutable.getForcedOptionalTypes().get(new CarOption("sport", CarOptionCategory.BODY)));
+		assertFalse(immutable.getForcedOptionalTypes().get(new VehicleOption("sport", VehicleOptionCategory.BODY)));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidConstructor(){
-		new ImmutableCarModel(null);
+		new UnmodifiableVehicle(null);
 	}
 	
 	

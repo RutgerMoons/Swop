@@ -9,8 +9,8 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 
-import domain.car.CarOption;
-import domain.clock.UnmodifiableClock;
+import domain.car.VehicleOption;
+import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.IJob;
 import domain.observer.ClockObserver;
@@ -26,7 +26,7 @@ public class Scheduler implements LogsClock {
 	private SchedulingAlgorithm schedulingAlgorithm;
 	//private final int amountOfWorkBenches;
 	private ArrayList<Shift> shifts;
-	private UnmodifiableClock clock;
+	private ImmutableClock clock;
 	private SchedulingAlgorithmFactory schedulingAlgorithmFactory;
 
 	/**
@@ -41,7 +41,7 @@ public class Scheduler implements LogsClock {
 	 * @throws IllegalArgumentException
 	 * 		Thrown when the clockObserver or the clock is null.
 	 */
-	public Scheduler(int amountOfWorkBenches, ClockObserver clockObserver, UnmodifiableClock clock) {
+	public Scheduler(int amountOfWorkBenches, ClockObserver clockObserver, ImmutableClock clock) {
 		if (clockObserver == null || clock==null) {
 			throw new IllegalArgumentException();
 		}
@@ -95,15 +95,15 @@ public class Scheduler implements LogsClock {
 	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
 	 * the Batch algorithm created by the factory.
 	 */
-	public void switchToBatch(List<CarOption> carOptions) {
+	public void switchToBatch(List<VehicleOption> vehicleOptions) {
 		if (this.schedulingAlgorithm == null) {
-			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(carOptions); 
+			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(vehicleOptions); 
 		}
 		else {
 			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
 			ArrayList<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
 			ArrayList<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
-			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(carOptions);
+			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(vehicleOptions);
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
@@ -131,7 +131,7 @@ public class Scheduler implements LogsClock {
 	 * 			Exception is thrown when currentTime is null
 	 */
 	@Override
-	public void advanceTime(UnmodifiableClock currentTime) {
+	public void advanceTime(ImmutableClock currentTime) {
 		if(currentTime == null){
 			throw new IllegalArgumentException();
 		}
@@ -144,7 +144,7 @@ public class Scheduler implements LogsClock {
 	 * for the custom jobs at the start of the day.
 	 */
 	@Override
-	public void startNewDay(UnmodifiableClock newDay) {
+	public void startNewDay(ImmutableClock newDay) {
 		if (newDay == null) {
 			throw new IllegalArgumentException();
 		}
@@ -178,20 +178,20 @@ public class Scheduler implements LogsClock {
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<CarOption>> getAllCarOptionsInPendingOrders() {
-		HashSet<CarOption> set = new HashSet<CarOption>();
+	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+		HashSet<VehicleOption> set = new HashSet<VehicleOption>();
 		ArrayList<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
 		
 		// get all the CarOptions that occur in the pending orders
 		for (IJob job : jobs) {
-			for (CarOption o : job.getOrder().getDescription().getCarParts().values()) {
+			for (VehicleOption o : job.getOrder().getDescription().getCarParts().values()) {
 				set.add(o);
 			}
 		}
 		
 		// get all the CarOptions that occur in the pending orders 3 or more times
-		HashSet<CarOption> threeOrMoreTimes = new HashSet<>();
-		for (CarOption option : set) {
+		HashSet<VehicleOption> threeOrMoreTimes = new HashSet<>();
+		for (VehicleOption option : set) {
 			int counter = 0;
 			for (IJob job : jobs) {
 				if (job.getOrder().getDescription().getCarParts().values().contains(option)) {
@@ -204,9 +204,9 @@ public class Scheduler implements LogsClock {
 		} 
 
 		// get all the sets of CarOptions that occur in the pending orders 3 or more times
-		Set<Set<CarOption>> toReturn = new HashSet<Set<CarOption>>();
-	    Set<Set<CarOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
-	    for (Set<CarOption> subset : powerSet) {
+		Set<Set<VehicleOption>> toReturn = new HashSet<Set<VehicleOption>>();
+	    Set<Set<VehicleOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
+	    for (Set<VehicleOption> subset : powerSet) {
       		if (subset.size() <= 0) {
       			continue;
       		}

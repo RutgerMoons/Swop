@@ -5,18 +5,18 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 import domain.order.Delay;
 
 public class DelayTest {
 	
-	private UnmodifiableClock estimated, completed;
+	private ImmutableClock estimated, completed;
 	private Delay delay;
 	
 	@Before
 	public void initialize() {
-		estimated = new UnmodifiableClock(2,400);
-		completed = new UnmodifiableClock(2,850);
+		estimated = new ImmutableClock(2,400);
+		completed = new ImmutableClock(2,850);
 		delay = new Delay(estimated,completed);
 		assertEquals(450, delay.getDelay());
 	}

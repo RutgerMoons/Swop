@@ -9,58 +9,58 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.clock.UnmodifiableClock;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 import domain.order.IOrder;
-import domain.order.ImmutableOrder;
+import domain.order.UnmodifiableOrder;
 import domain.order.StandardOrder;
 
 public class ImmutableOrderTest {
-	CarModel model;
+	Vehicle model;
 	IOrder order;
 	IOrder immutable;
-	CarModelSpecification template;
+	VehicleSpecification template;
 	@Before
 	public void initialize() throws AlreadyInMapException{
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts.add(new CarOption("white", CarOptionCategory.COLOR));
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
 		
-		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 	
-		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
 		
-		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
+		parts.add(new VehicleOption("Leather White", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
 		
-		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("Automatic", CarOptionCategory.AIRCO));
+		parts.add(new VehicleOption("Manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 		
-		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
+		parts.add(new VehicleOption("Winter", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
 		
-		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
-		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
-		template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
-		model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		model.addCarPart(new CarOption("sedan", CarOptionCategory.BODY));
-		model.addCarPart(new CarOption("red", CarOptionCategory.COLOR));
-		model.addCarPart(new CarOption("standard 2l 4 cilinders", CarOptionCategory.ENGINE));
-		model.addCarPart(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
-		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
-		order = new StandardOrder("Mario",model,3, new UnmodifiableClock(1, 1));
-		immutable = new ImmutableOrder(order);
+		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		template = new VehicleSpecification("model", parts, 60);
+		model = new Vehicle(template);
+		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model.addCarPart(new VehicleOption("sedan", VehicleOptionCategory.BODY));
+		model.addCarPart(new VehicleOption("red", VehicleOptionCategory.COLOR));
+		model.addCarPart(new VehicleOption("standard 2l 4 cilinders", VehicleOptionCategory.ENGINE));
+		model.addCarPart(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
+		model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
+		order = new StandardOrder("Mario",model,3, new ImmutableClock(1, 1));
+		immutable = new UnmodifiableOrder(order);
 	}
 
 	@Test
@@ -78,12 +78,12 @@ public class ImmutableOrderTest {
 
 	@Test (expected = IllegalArgumentException.class)
 	public void invalidConstructorTest(){
-		new ImmutableOrder(null);
+		new UnmodifiableOrder(null);
 	}
 	
 	@Test(expected = ImmutableException.class)
 	public void testImmutable1() throws ImmutableException{
-		immutable.setEstimatedTime(new UnmodifiableClock(0, 0));
+		immutable.setEstimatedTime(new ImmutableClock(0, 0));
 	}
 	
 	@Test(expected = ImmutableException.class)
@@ -98,16 +98,16 @@ public class ImmutableOrderTest {
 	
 	@Test(expected = ImmutableException.class)
 	public void testSetDeadline() throws NotImplementedException, ImmutableException{
-		immutable.setDeadline(new UnmodifiableClock(5, 5));
+		immutable.setDeadline(new ImmutableClock(5, 5));
 	}
 	
 	@Test(expected=ImmutableException.class)
 	public void testGetAndSetOrderTime() throws ImmutableException{
-		order.setOrderTime(new UnmodifiableClock(0, 0));
+		order.setOrderTime(new ImmutableClock(0, 0));
 		assertEquals(order.getOrderTime(), immutable.getOrderTime());
 		
 		
-		immutable.setOrderTime(new UnmodifiableClock(3, 3));
+		immutable.setOrderTime(new ImmutableClock(3, 3));
 	}
 
 	@Test

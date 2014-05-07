@@ -6,37 +6,37 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
 import domain.job.Action;
 
 public class CarPartTest {
 
 	@Test
 	public void testConstructor(){
-		CarOption part = new CarOption("manual", CarOptionCategory.AIRCO);
+		VehicleOption part = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
 		assertNotNull(part.getType());
 		assertNotNull(part.getDescription());
 		assertEquals("manual", part.getDescription());
-		assertEquals(CarOptionCategory.AIRCO, part.getType());
+		assertEquals(VehicleOptionCategory.AIRCO, part.getType());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidArgument() {
-		new CarOption("manual", null);
+		new VehicleOption("manual", null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidArgument2() {
-		new CarOption("", CarOptionCategory.AIRCO);
+		new VehicleOption("", VehicleOptionCategory.AIRCO);
 	}
 	
 	@Test
 	public void testEqualsAndHashCode(){
-		CarOption part1 = new CarOption("manual", CarOptionCategory.AIRCO);
-		CarOption part2 = new CarOption("automatic", CarOptionCategory.AIRCO);
-		CarOption part4 = new CarOption("manual", CarOptionCategory.COLOR);
-		CarOption part5 = new CarOption("manual", CarOptionCategory.AIRCO);
+		VehicleOption part1 = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
+		VehicleOption part2 = new VehicleOption("automatic", VehicleOptionCategory.AIRCO);
+		VehicleOption part4 = new VehicleOption("manual", VehicleOptionCategory.COLOR);
+		VehicleOption part5 = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
 		
 		assertNotEquals(part1, part2);
 		assertNotEquals(part1, part4);
@@ -55,25 +55,25 @@ public class CarPartTest {
 	
 	@Test
 	public void testToString(){
-		CarOption part = new CarOption("manual", CarOptionCategory.AIRCO);
+		VehicleOption part = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
 		assertEquals("AIRCO: manual", part.toString());
 	}
 	
 	@Test
 	public void testTaskDescription(){
-		assertEquals("Airco", new CarOption("manual", CarOptionCategory.AIRCO).getTaskDescription());
-		assertEquals("Assembly", new CarOption("manual", CarOptionCategory.BODY).getTaskDescription());
-		assertEquals("Paint", new CarOption("manual", CarOptionCategory.COLOR).getTaskDescription());
-		assertEquals("Engine", new CarOption("manual", CarOptionCategory.ENGINE).getTaskDescription());
-		assertEquals("Gearbox", new CarOption("manual", CarOptionCategory.GEARBOX).getTaskDescription());
-		assertEquals("Seats", new CarOption("manual", CarOptionCategory.SEATS).getTaskDescription());
-		assertEquals("Spoiler", new CarOption("manual", CarOptionCategory.SPOILER).getTaskDescription());
-		assertEquals("Wheels", new CarOption("manual", CarOptionCategory.WHEEL).getTaskDescription());
+		assertEquals("Airco", new VehicleOption("manual", VehicleOptionCategory.AIRCO).getTaskDescription());
+		assertEquals("Assembly", new VehicleOption("manual", VehicleOptionCategory.BODY).getTaskDescription());
+		assertEquals("Paint", new VehicleOption("manual", VehicleOptionCategory.COLOR).getTaskDescription());
+		assertEquals("Engine", new VehicleOption("manual", VehicleOptionCategory.ENGINE).getTaskDescription());
+		assertEquals("Gearbox", new VehicleOption("manual", VehicleOptionCategory.GEARBOX).getTaskDescription());
+		assertEquals("Seats", new VehicleOption("manual", VehicleOptionCategory.SEATS).getTaskDescription());
+		assertEquals("Spoiler", new VehicleOption("manual", VehicleOptionCategory.SPOILER).getTaskDescription());
+		assertEquals("Wheels", new VehicleOption("manual", VehicleOptionCategory.WHEEL).getTaskDescription());
 	}
 	
 	@Test
 	public void testActionDescription(){
-		assertEquals("Put on manual airco", new CarOption("manual", CarOptionCategory.AIRCO).getActionDescription());
+		assertEquals("Put on manual airco", new VehicleOption("manual", VehicleOptionCategory.AIRCO).getActionDescription());
 	}
 	
 }

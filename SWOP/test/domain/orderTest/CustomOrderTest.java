@@ -11,10 +11,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.car.CustomCarModel;
-import domain.clock.UnmodifiableClock;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.car.CustomVehicle;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
@@ -22,17 +22,17 @@ import domain.job.Action;
 import domain.order.CustomOrder;
 
 public class CustomOrderTest {
-	private CustomCarModel model;
-	private UnmodifiableClock orderTime;
-	private UnmodifiableClock deadline;
+	private CustomVehicle model;
+	private ImmutableClock orderTime;
+	private ImmutableClock deadline;
 	@Before
 	public void initializeModel() throws AlreadyInMapException, ImmutableException {
-		orderTime = new UnmodifiableClock(1, 10);
-		deadline = new UnmodifiableClock(5, 20);
-		Set<CarOption> parts = new HashSet<>();
+		orderTime = new ImmutableClock(1, 10);
+		deadline = new ImmutableClock(5, 20);
+		Set<VehicleOption> parts = new HashSet<>();
 
-		model = new CustomCarModel();
-		model.addCarPart(new CarOption("low", CarOptionCategory.SPOILER));
+		model = new CustomVehicle();
+		model.addCarPart(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class CustomOrderTest {
 		assertEquals(3, order.getQuantity());
 		assertEquals(3, order.getPendingCars());
 		
-		UnmodifiableClock clock = new UnmodifiableClock(0, 5);
+		ImmutableClock clock = new ImmutableClock(0, 5);
 		order.setEstimatedTime(clock);
 		assertEquals(0, order.getEstimatedTime().getDays());
 		assertEquals(5, order.getEstimatedTime().getMinutes());
@@ -90,7 +90,7 @@ public class CustomOrderTest {
 	@Test
 	public void testEstimatedTime1() {
 		CustomOrder order = new CustomOrder("Mario", model, 3, orderTime, deadline);
-		UnmodifiableClock clock = new UnmodifiableClock(0, 5);
+		ImmutableClock clock = new ImmutableClock(0, 5);
 		order.setEstimatedTime(clock);
 		assertEquals(0, order.getEstimatedTime().getDays());
 		assertEquals(5, order.getEstimatedTime().getMinutes());
@@ -113,8 +113,8 @@ public class CustomOrderTest {
 
 	@Test
 	public void TestEqualsAndHashcode() throws AlreadyInMapException, ImmutableException {
-		CustomCarModel model2 = new CustomCarModel();
-		model2.addCarPart(new CarOption("high", CarOptionCategory.SPOILER));
+		CustomVehicle model2 = new CustomVehicle();
+		model2.addCarPart(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		assertFalse(order1.equals(null));
@@ -136,7 +136,7 @@ public class CustomOrderTest {
 		String line = System.lineSeparator();
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		
-		order1.setEstimatedTime(new UnmodifiableClock(1, 100));
+		order1.setEstimatedTime(new ImmutableClock(1, 100));
 		assertEquals(
 				"2 SPOILER: low"+line+ "Deadline: 5 days and 0 hours and 20 minutes" + line+" Estimated completion time: 1 days and 1 hours and 40 minutes",
 				order1.toString());
@@ -151,7 +151,7 @@ public class CustomOrderTest {
 	@Test
 	public void testSetDeadline() throws NotImplementedException{
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
-		order1.setDeadline(new UnmodifiableClock(0, 0));
+		order1.setDeadline(new ImmutableClock(0, 0));
 		assertEquals(0, order1.getDeadline().getDays());
 		assertEquals(0, order1.getDeadline().getMinutes());
 	}
@@ -164,7 +164,7 @@ public class CustomOrderTest {
 	
 	@Test
 	public void testGetAndSetOrderTime(){
-		UnmodifiableClock clock = new UnmodifiableClock(4, 45);
+		ImmutableClock clock = new ImmutableClock(4, 45);
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		order1.setOrderTime(clock);
 		assertEquals(clock, order1.getOrderTime());

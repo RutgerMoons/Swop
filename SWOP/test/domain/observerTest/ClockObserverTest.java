@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
@@ -49,7 +49,7 @@ public class ClockObserverTest {
 		AssemblyLineObserver observer2 = new AssemblyLineObserver();
 		Logger logger = new Logger(3, observer, observer2);
 		observer.attachLogger(logger);
-		observer.advanceTime(new UnmodifiableClock(1,100));
+		observer.advanceTime(new ImmutableClock(1,100));
 	}
 	
 	@Test
@@ -57,7 +57,7 @@ public class ClockObserverTest {
 		AssemblyLineObserver observer2 = new AssemblyLineObserver();
 		Logger logger = new Logger(3, observer, observer2);
 		observer.attachLogger(logger);
-		observer.startNewDay(new UnmodifiableClock(1,0));
+		observer.startNewDay(new ImmutableClock(1,0));
 	}
 
 }

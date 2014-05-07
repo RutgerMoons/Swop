@@ -1,6 +1,6 @@
 package domain.observer;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 
 /**
  * ClockObservers use this interface as a gateway for addressing complex objects and notifying 
@@ -8,8 +8,8 @@ import domain.clock.UnmodifiableClock;
  */
 public interface LogsClock {
 
-	public void advanceTime(UnmodifiableClock currentTime);
+	public void advanceTime(ImmutableClock currentTime);
 	
-	public void startNewDay(UnmodifiableClock newDay);
+	public void startNewDay(ImmutableClock newDay);
 	
 }

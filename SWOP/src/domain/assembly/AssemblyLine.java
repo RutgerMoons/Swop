@@ -8,9 +8,9 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
-import domain.car.CarOption;
-import domain.car.ICarModel;
-import domain.clock.UnmodifiableClock;
+import domain.car.VehicleOption;
+import domain.car.IVehicle;
+import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.Action;
@@ -47,7 +47,7 @@ public class AssemblyLine {
 	 * @throws IllegalArgumentException
 	 *             Thrown when one or both of the parameters are null.
 	 */
-	public AssemblyLine(ClockObserver clockObserver, UnmodifiableClock clock) {
+	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock) {
 		if (clockObserver == null || clock == null) {
 			throw new IllegalArgumentException();
 		}
@@ -138,11 +138,11 @@ public class AssemblyLine {
 	 *       Thrown when the given parameter is null
 	 */
 	private List<IJob> convertOrderToJob(IOrder order) throws ImmutableException {
-		ICarModel model = order.getDescription();
+		IVehicle model = order.getDescription();
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
 			IJob job = new Job(order);
-			for (CarOption part : model.getCarParts().values()) {
+			for (VehicleOption part : model.getCarParts().values()) {
 				ITask task = new Task(part.getTaskDescription());
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);
@@ -340,7 +340,7 @@ public class AssemblyLine {
 	 * Method that notifies all the subscribers when an order is completed and sends the current
 	 * time to every subscriber.
 	 */
-	public void notifyObserverCompleteOrder(UnmodifiableClock aClock) {
+	public void notifyObserverCompleteOrder(ImmutableClock aClock) {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}
@@ -357,14 +357,14 @@ public class AssemblyLine {
 	 * Method for asking the scheduler to switch to batch algorithm with as key
 	 * the given list of CarOptions.
 	 */
-	public void switchToBatch(List<CarOption> carOptions){
-		this.scheduler.switchToBatch(carOptions);
+	public void switchToBatch(List<VehicleOption> vehicleOptions){
+		this.scheduler.switchToBatch(vehicleOptions);
 	}
 	
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<CarOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		return this.scheduler.getAllCarOptionsInPendingOrders();
 	}
 

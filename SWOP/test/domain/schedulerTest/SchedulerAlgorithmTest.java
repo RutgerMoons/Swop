@@ -17,13 +17,13 @@ import view.IClientCommunication;
 import com.google.common.base.Optional;
 
 import domain.assembly.AssemblyLine;
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.car.CustomCarModel;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.car.CustomVehicle;
 import domain.clock.Clock;
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
@@ -45,8 +45,8 @@ public class SchedulerAlgorithmTest {
 	private IClientCommunication clientCommunication;
 	private Scheduler scheduler;
 	private ClockObserver clock;
-	private CarModel model;
-	private CarModelSpecification template;
+	private Vehicle model;
+	private VehicleSpecification template;
 	private Set<BindingRestriction> bindingRestrictions;
 	private Set<OptionalRestriction> optionalRestrictions;
 	private PartPicker picker;
@@ -57,44 +57,44 @@ public class SchedulerAlgorithmTest {
 		clientCommunication = new ClientCommunication();
 		int amount = 3;
 		clock = new ClockObserver();
-		scheduler = new Scheduler(amount,clock, new UnmodifiableClock(0,600));
+		scheduler = new Scheduler(amount,clock, new ImmutableClock(0,600));
 	}
 	
 	public void initializeRestrictions(){
 		bindingRestrictions = new HashSet<>();
 		optionalRestrictions = new HashSet<>();
-		optionalRestrictions.add(new OptionalRestriction(new CarOption("sport", CarOptionCategory.BODY), CarOptionCategory.SPOILER, false));
+		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
 		
-		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
 		
-		bindingRestrictions.add(new BindingRestriction(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE), new CarOption("manual", CarOptionCategory.AIRCO)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
 		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
 		
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts.add(new CarOption("white", CarOptionCategory.COLOR));
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
 		
-		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 	
-		parts.add(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
 		
-		parts.add(new CarOption("leather white", CarOptionCategory.SEATS));
-		parts.add(new CarOption("leather black", CarOptionCategory.SEATS));
+		parts.add(new VehicleOption("leather white", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 		
-		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("automatic", CarOptionCategory.AIRCO));
+		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
 		
-		parts.add(new CarOption("winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("sports", CarOptionCategory.WHEEL));
+		parts.add(new VehicleOption("winter", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
 		
-		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
-		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
-		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
+		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
 		picker.setNewModel(template);
 	}
 	
@@ -105,7 +105,7 @@ public class SchedulerAlgorithmTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorTest2(){
-		scheduler = new Scheduler(3,null, new UnmodifiableClock(0,100));
+		scheduler = new Scheduler(3,null, new ImmutableClock(0,100));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -115,9 +115,9 @@ public class SchedulerAlgorithmTest {
 	
 	@Test
 	public void addCustomJobTest(){
-		CustomCarModel customModel = new CustomCarModel();
-		UnmodifiableClock ordertime = new UnmodifiableClock(0, 0);
-		UnmodifiableClock deadline = new UnmodifiableClock(10, 800);
+		CustomVehicle customModel = new CustomVehicle();
+		ImmutableClock ordertime = new ImmutableClock(0, 0);
+		ImmutableClock deadline = new ImmutableClock(10, 800);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob job = new Job(customOrder);
 		scheduler.addCustomJob(job);
@@ -125,10 +125,10 @@ public class SchedulerAlgorithmTest {
 	
 	@Test
 	public void addStandardJobTest(){
-		Set<CarOption> parts = new HashSet<>();
-		template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
-		UnmodifiableClock ordertime1 = new UnmodifiableClock(2, 360); 
+		Set<VehicleOption> parts = new HashSet<>();
+		template = new VehicleSpecification("model", parts, 60);
+		model = new Vehicle(template);
+		ImmutableClock ordertime1 = new ImmutableClock(2, 360); 
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
@@ -142,14 +142,14 @@ public class SchedulerAlgorithmTest {
 	
 	@Test
 	public void switchToBatchTest(){
-		List<CarOption> options = new ArrayList<CarOption>();
-		options.add(new CarOption("manual", CarOptionCategory.AIRCO));
+		List<VehicleOption> options = new ArrayList<VehicleOption>();
+		options.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		scheduler.switchToBatch(options);
 	}
 	
 	@Test
 	public void advanceTimeTest(){
-		scheduler.advanceTime(new UnmodifiableClock(0,540));
+		scheduler.advanceTime(new ImmutableClock(0,540));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -159,7 +159,7 @@ public class SchedulerAlgorithmTest {
 	
 	@Test
 	public void startNewDayTest(){
-		scheduler.startNewDay(new UnmodifiableClock(1,420));
+		scheduler.startNewDay(new ImmutableClock(1,420));
 	}
 
 	@Test (expected = IllegalArgumentException.class)
@@ -169,10 +169,10 @@ public class SchedulerAlgorithmTest {
 	
 	@Test
 	public void getEstimatedTimeInMinutes() throws NotImplementedException{
-		Set<CarOption> parts = new HashSet<>();
-		template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
-		UnmodifiableClock ordertime1 = new UnmodifiableClock(2, 360); 
+		Set<VehicleOption> parts = new HashSet<>();
+		template = new VehicleSpecification("model", parts, 60);
+		model = new Vehicle(template);
+		ImmutableClock ordertime1 = new ImmutableClock(2, 360); 
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
@@ -184,10 +184,10 @@ public class SchedulerAlgorithmTest {
 	@Test
 	public void retrieveNextJobTest() throws NotImplementedException{
 		// Standard job not containing necessary parts of list.
-		Set<CarOption> parts = new HashSet<>();
-		template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
-		UnmodifiableClock ordertime1 = new UnmodifiableClock(0, 660); // om 6 uur op dag 2
+		Set<VehicleOption> parts = new HashSet<>();
+		template = new VehicleSpecification("model", parts, 60);
+		model = new Vehicle(template);
+		ImmutableClock ordertime1 = new ImmutableClock(0, 660); // om 6 uur op dag 2
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); // 420 minuten op de band
 		IJob job1 = new Job(order1);
@@ -202,19 +202,19 @@ public class SchedulerAlgorithmTest {
 	
 	@Test
 	public void getAllCarOptionsInPendingOrdersTest() {
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		model = new Vehicle(template);
 
 		try {
-			model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-			model.addCarPart(new CarOption("sedan",  CarOptionCategory.BODY));
-			model.addCarPart(new CarOption("red",  CarOptionCategory.COLOR));
-			model.addCarPart(new CarOption("standard 2l 4 cilinders",  CarOptionCategory.ENGINE));
-			model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
-			model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-			model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+			model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+			model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
+			model.addCarPart(new VehicleOption("red",  VehicleOptionCategory.COLOR));
+			model.addCarPart(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
+			model.addCarPart(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
+			model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+			model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		} catch (AlreadyInMapException e) {}
 		Clock c = new Clock();
 		AssemblyLine line = new AssemblyLine(clock, c.getUnmodifiableClock());
@@ -223,7 +223,7 @@ public class SchedulerAlgorithmTest {
 			line.convertStandardOrderToJob(order);
 		} catch (ImmutableException e) { }
 		
-		Set<Set<CarOption>> powerSet = line.getAllCarOptionsInPendingOrders();
+		Set<Set<VehicleOption>> powerSet = line.getAllCarOptionsInPendingOrders();
 		assertEquals(127, powerSet.size());
 	}
 	

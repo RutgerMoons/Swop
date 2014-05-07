@@ -9,10 +9,10 @@ import java.util.Set;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
 import domain.exception.AlreadyInMapException;
 
 /**
@@ -21,7 +21,7 @@ import domain.exception.AlreadyInMapException;
 public class PartPicker {
 	private Set<BindingRestriction> bindingRestrictions;
 	private Set<OptionalRestriction> optionalRestrictions;
-	private CarModel model;
+	private Vehicle model;
 
 	/**
 	 * Creates a new PartPicker.
@@ -41,11 +41,11 @@ public class PartPicker {
 	 * @param template
 	 * 			The CarModelSpecification according to which this CarModel will be built.
 	 */
-	public void setNewModel(CarModelSpecification template) {
+	public void setNewModel(VehicleSpecification template) {
 		for (OptionalRestriction restriction : optionalRestrictions) {
 			restriction.setRestrictedPartAlreadyChosen(false);
 		}
-		model = new CarModel(template);
+		model = new Vehicle(template);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class PartPicker {
 	 * @throws AlreadyInMapException
 	 * 			If the CarModel already contains a CarOption of the same type.
 	 */
-	public void addCarPartToModel(CarOption part) throws AlreadyInMapException {
+	public void addCarPartToModel(VehicleOption part) throws AlreadyInMapException {
 		model.addCarPart(part);
 	}
 
@@ -66,9 +66,9 @@ public class PartPicker {
 	 * @return
 	 * 		A Collection that contains the still available CarOptions of the given CarOptionCategory.
 	 */
-	public Collection<CarOption> getStillAvailableCarParts(
-			CarOptionCategory type) {
-		Collection<CarOption> availableParts = new HashSet<>();
+	public Collection<VehicleOption> getStillAvailableCarParts(
+			VehicleOptionCategory type) {
+		Collection<VehicleOption> availableParts = new HashSet<>();
 
 		availableParts = checkBindingRestrictions(type);
 		availableParts = removeConflictingBindingParts(type, availableParts);
@@ -81,11 +81,11 @@ public class PartPicker {
 	 * Makes sure that the optionality of the correct CarOptionCategories is overridden for the current CarModel, according to the OptionalRestrictions.
 	 * Also makes sure that if a restriction can't be fulfilled anymore due to already chosen parts, the CarOption in the first part of the restriction can't be chosen anymore. 
 	 */
-	private Collection<CarOption> checkOptionalRestrictions(
-			CarOptionCategory type, Collection<CarOption> availableParts) {
+	private Collection<VehicleOption> checkOptionalRestrictions(
+			VehicleOptionCategory type, Collection<VehicleOption> availableParts) {
 
 		for (OptionalRestriction restriction : optionalRestrictions) {
-			Map<CarOptionCategory, CarOption> parts = model.getCarParts();
+			Map<VehicleOptionCategory, VehicleOption> parts = model.getCarParts();
 			if (restriction.getCarPart().getType().equals(type)) {				
 				if (!restriction.getRestrictedPartAlreadyChosen()) {
 					model.addForcedOptionalType(restriction.getCarPart(),
@@ -113,9 +113,9 @@ public class PartPicker {
 	 * @return
 	 * 		The still available CarOptions as a Collection.
 	 */
-	private Collection<CarOption> checkBindingRestrictions(
-			CarOptionCategory type) {
-		Set<CarOption> availableParts = new HashSet<>();
+	private Collection<VehicleOption> checkBindingRestrictions(
+			VehicleOptionCategory type) {
+		Set<VehicleOption> availableParts = new HashSet<>();
 
 		for (BindingRestriction restriction : bindingRestrictions) {
 			if (model.getCarParts().values()
@@ -128,7 +128,7 @@ public class PartPicker {
 		}
 
 		if (availableParts.isEmpty()){
-			for(CarOption option: model.getSpecification().getCarParts().get(type)){
+			for(VehicleOption option: model.getSpecification().getCarParts().get(type)){
 				availableParts.add(option);
 			}
 		}
@@ -147,10 +147,10 @@ public class PartPicker {
 	 * @return
 	 * 		The CarOptions that are still available after the right CarOptions are removed from the given Collection.
 	 */
-	private Collection<CarOption> removeConflictingBindingParts(
-			CarOptionCategory type, Collection<CarOption> availableParts) {
+	private Collection<VehicleOption> removeConflictingBindingParts(
+			VehicleOptionCategory type, Collection<VehicleOption> availableParts) {
 
-		Multimap<CarOption, CarOption> options = HashMultimap.create();
+		Multimap<VehicleOption, VehicleOption> options = HashMultimap.create();
 		for (BindingRestriction restriction : bindingRestrictions) {
 			if (restriction.getChosenCarPart().getType().equals(type)) {
 				options.put(restriction.getChosenCarPart(),
@@ -158,9 +158,9 @@ public class PartPicker {
 			}
 		}
 
-		for (CarOption option1 : options.keySet()) {
-			for (CarOption option2 : options.get(option1)) {
-				CarOption inModel = model.getCarParts().get(option2.getType());
+		for (VehicleOption option1 : options.keySet()) {
+			for (VehicleOption option2 : options.get(option1)) {
+				VehicleOption inModel = model.getCarParts().get(option2.getType());
 				if (inModel != null && !options.get(option1).contains(inModel)) {
 					availableParts.remove(option1);
 				}
@@ -174,7 +174,7 @@ public class PartPicker {
 	/**
 	 * Get the CarModel that has been built or is being build by the PartPicker.
 	 */
-	public CarModel getModel() {
+	public Vehicle getModel() {
 		return model;
 	}
 

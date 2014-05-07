@@ -1,8 +1,8 @@
 package domain.order;
 
-import domain.car.CarModel;
-import domain.car.ICarModel;
-import domain.clock.UnmodifiableClock;
+import domain.car.Vehicle;
+import domain.car.IVehicle;
+import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 
 /**
@@ -15,11 +15,11 @@ import domain.exception.NotImplementedException;
  */
 public class StandardOrder implements IOrder {
 
-	private ICarModel description;
+	private IVehicle description;
 	private String garageholder;
 	private int quantity, pendingCars;
-	private UnmodifiableClock estimatedTime;
-	private UnmodifiableClock orderTime;
+	private ImmutableClock estimatedTime;
+	private ImmutableClock orderTime;
 
 	
 
@@ -27,7 +27,7 @@ public class StandardOrder implements IOrder {
 	 * Constructor of an Order, given the name of the orderer, the type of
 	 * carModel and the amount of cars to be ordered.
 	 */
-	public StandardOrder(String holder, CarModel description, int quantity, UnmodifiableClock orderTime) {
+	public StandardOrder(String holder, Vehicle description, int quantity, ImmutableClock orderTime) {
 		this.setDescription(description);
 		this.setGarageHolder(holder);
 		this.setQuantity(quantity);
@@ -92,7 +92,7 @@ public class StandardOrder implements IOrder {
 	 * The method throws an IllegalArgumentException is the given name equals
 	 * null.s
 	 */
-	private void setDescription(ICarModel description2) {
+	private void setDescription(IVehicle description2) {
 		if (description2 == null) {
 			throw new IllegalArgumentException();
 		}
@@ -101,17 +101,17 @@ public class StandardOrder implements IOrder {
 
 	
 	@Override
-	public ICarModel getDescription() {
+	public IVehicle getDescription() {
 		return description;
 	}
 
 	@Override
-	public UnmodifiableClock getOrderTime() {
+	public ImmutableClock getOrderTime() {
 		return orderTime;
 	}
 
 	@Override
-	public void setOrderTime(UnmodifiableClock orderTime) {
+	public void setOrderTime(ImmutableClock orderTime) {
 		if(orderTime == null){
 			throw new IllegalArgumentException();
 		}
@@ -119,12 +119,12 @@ public class StandardOrder implements IOrder {
 	}
 
 	@Override
-	public UnmodifiableClock getEstimatedTime() {
+	public ImmutableClock getEstimatedTime() {
 		return this.estimatedTime;
 	}
 
 	@Override
-	public void setEstimatedTime(UnmodifiableClock clock) {
+	public void setEstimatedTime(ImmutableClock clock) {
 		if (clock == null) {
 			throw new IllegalArgumentException();
 		}
@@ -178,12 +178,12 @@ public class StandardOrder implements IOrder {
 	}
 
 	@Override
-	public UnmodifiableClock getDeadline() throws NotImplementedException {
+	public ImmutableClock getDeadline() throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException {
+	public void setDeadline(ImmutableClock clock) throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 	

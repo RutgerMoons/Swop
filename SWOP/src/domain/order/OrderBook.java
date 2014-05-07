@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.assembly.AssemblyLine;
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
@@ -95,7 +95,7 @@ public class OrderBook {
 	 * 			If the order is an ImmutableOrder.
 	 * 			
 	 */
-	public void addOrder(StandardOrder order, UnmodifiableClock currentTime) throws ImmutableException {
+	public void addOrder(StandardOrder order, ImmutableClock currentTime) throws ImmutableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertStandardOrderToJob(order)));
 	}
@@ -114,7 +114,7 @@ public class OrderBook {
 	 * 			If the order is an ImmutableOrder.
 	 * 			
 	 */
-	public void addOrder(CustomOrder order, UnmodifiableClock currentTime) throws ImmutableException, NotImplementedException {
+	public void addOrder(CustomOrder order, ImmutableClock currentTime) throws ImmutableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
 	}

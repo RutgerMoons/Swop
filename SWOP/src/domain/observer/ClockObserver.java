@@ -2,7 +2,7 @@ package domain.observer;
 
 import java.util.ArrayList;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 
 /**
  * This object can attach and detach any object that implements the LogsClock interface
@@ -43,7 +43,7 @@ public class ClockObserver {
 	/**
 	 * Every subscribed object will be notified and receives the current time
 	 */
-	public void advanceTime(UnmodifiableClock currentTime) {
+	public void advanceTime(ImmutableClock currentTime) {
 		for (LogsClock logger : loggers) {
 			logger.advanceTime(currentTime);
 		}
@@ -52,7 +52,7 @@ public class ClockObserver {
 	/**
 	 * Every subscribed object will be notified that a new day has started and receives the current time
 	 */
-	public void startNewDay(UnmodifiableClock newDay) {
+	public void startNewDay(ImmutableClock newDay) {
 		for (LogsClock logger : loggers) {
 			logger.startNewDay(newDay);
 		}

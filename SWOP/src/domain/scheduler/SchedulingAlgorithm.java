@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.IJob;
 
@@ -42,7 +42,7 @@ public abstract class SchedulingAlgorithm {
 	 * @throws NoSuitableJobFoundException
 	 * 			Thrown when no job can be scheduled this day
 	 */
-	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
+	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) 
 			throws NoSuitableJobFoundException;
 	
 	/**
@@ -88,7 +88,7 @@ public abstract class SchedulingAlgorithm {
 	 * @throws IllegalArgumentException
 	 * 			thrown when one or more of the parameters are null
 	 */
-	public abstract int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) ;
+	public abstract int getEstimatedTimeInMinutes(IJob job, ImmutableClock currentTime) ;
 	
 	/**
 	 * Add the given job to history

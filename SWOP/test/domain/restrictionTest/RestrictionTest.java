@@ -12,9 +12,9 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
 import domain.exception.AlreadyInMapException;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -26,49 +26,49 @@ public class RestrictionTest {
 	public void initialize(){
 		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
 		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
-		optionalRestrictions.add(new OptionalRestriction(new CarOption("sport", CarOptionCategory.BODY), CarOptionCategory.SPOILER, false));
+		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
 		
-		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
 		
-		bindingRestrictions.add(new BindingRestriction(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE), new CarOption("manual", CarOptionCategory.AIRCO)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
 		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
 		
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts.add(new CarOption("white", CarOptionCategory.COLOR));
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
 		
-		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 	
-		parts.add(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
 		
-		parts.add(new CarOption("leather white", CarOptionCategory.SEATS));
-		parts.add(new CarOption("leather black", CarOptionCategory.SEATS));
+		parts.add(new VehicleOption("leather white", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 		
-		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("automatic", CarOptionCategory.AIRCO));
+		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
 		
-		parts.add(new CarOption("winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("sports", CarOptionCategory.WHEEL));
+		parts.add(new VehicleOption("winter", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
 		
-		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
-		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
-		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
+		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
 		picker.setNewModel(template);
 		
 	}
 
 	@Test
 	public void testBodyToSpoiler() throws AlreadyInMapException {
-		CarOption sport = new CarOption("sport", CarOptionCategory.BODY);
+		VehicleOption sport = new VehicleOption("sport", VehicleOptionCategory.BODY);
 		picker.addCarPartToModel(sport);
-		picker.getStillAvailableCarParts(CarOptionCategory.BODY);
+		picker.getStillAvailableCarParts(VehicleOptionCategory.BODY);
 		
-		picker.getStillAvailableCarParts(CarOptionCategory.SPOILER);
+		picker.getStillAvailableCarParts(VehicleOptionCategory.SPOILER);
 		
 		assertFalse(picker.getModel().getForcedOptionalTypes().get(sport));
 		
@@ -76,85 +76,85 @@ public class RestrictionTest {
 	
 	@Test
 	public void testSpoilerToBody1() throws AlreadyInMapException {
-		picker.getStillAvailableCarParts(CarOptionCategory.SPOILER);
+		picker.getStillAvailableCarParts(VehicleOptionCategory.SPOILER);
 		
-		Collection<CarOption> available = picker.getStillAvailableCarParts(CarOptionCategory.BODY);
+		Collection<VehicleOption> available = picker.getStillAvailableCarParts(VehicleOptionCategory.BODY);
 		
-		assertFalse(available.contains(new CarOption("sport", CarOptionCategory.BODY)));
+		assertFalse(available.contains(new VehicleOption("sport", VehicleOptionCategory.BODY)));
 	}
 
 	@Test
 	public void testSpoilerToBody2() throws AlreadyInMapException {
-		picker.getStillAvailableCarParts(CarOptionCategory.SPOILER);
-		picker.addCarPartToModel(new CarOption("low", CarOptionCategory.SPOILER));
-		Collection<CarOption> available = picker.getStillAvailableCarParts(CarOptionCategory.BODY);
+		picker.getStillAvailableCarParts(VehicleOptionCategory.SPOILER);
+		picker.addCarPartToModel(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		Collection<VehicleOption> available = picker.getStillAvailableCarParts(VehicleOptionCategory.BODY);
 		
-		assertTrue(available.contains(new CarOption("sport", CarOptionCategory.BODY)));
+		assertTrue(available.contains(new VehicleOption("sport", VehicleOptionCategory.BODY)));
 	}
 	
 	
 	@Test
 	public void testSportToEngines() throws AlreadyInMapException{
-		picker.addCarPartToModel(new CarOption("sport", CarOptionCategory.BODY));
-		picker.getStillAvailableCarParts(CarOptionCategory.BODY);
-		Collection<CarOption> available = picker.getStillAvailableCarParts(CarOptionCategory.ENGINE);
+		picker.addCarPartToModel(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		picker.getStillAvailableCarParts(VehicleOptionCategory.BODY);
+		Collection<VehicleOption> available = picker.getStillAvailableCarParts(VehicleOptionCategory.ENGINE);
 		
-		assertTrue(available.contains(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE)));
-		assertTrue(available.contains(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
-		assertFalse(available.contains(new CarOption("standard 2l V4", CarOptionCategory.ENGINE)));
+		assertTrue(available.contains(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
+		assertTrue(available.contains(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
+		assertFalse(available.contains(new VehicleOption("standard 2l V4", VehicleOptionCategory.ENGINE)));
 	}
 	
 	
 	@Test
 	public void testEngineNoSport() throws AlreadyInMapException{
 		
-		picker.addCarPartToModel(new CarOption("standard 2l V4", CarOptionCategory.ENGINE));
-		picker.getStillAvailableCarParts(CarOptionCategory.ENGINE);
-		Collection<CarOption> available = picker.getStillAvailableCarParts(CarOptionCategory.BODY);
+		picker.addCarPartToModel(new VehicleOption("standard 2l V4", VehicleOptionCategory.ENGINE));
+		picker.getStillAvailableCarParts(VehicleOptionCategory.ENGINE);
+		Collection<VehicleOption> available = picker.getStillAvailableCarParts(VehicleOptionCategory.BODY);
 		
-		assertFalse(available.contains(new CarOption("sport", CarOptionCategory.BODY)));
+		assertFalse(available.contains(new VehicleOption("sport", VehicleOptionCategory.BODY)));
 		
 	}
 	
 	@Test
 	public void testCorrectEngineToSport() throws AlreadyInMapException{
 		
-		picker.addCarPartToModel(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		picker.getStillAvailableCarParts(CarOptionCategory.ENGINE);
-		Collection<CarOption> available = picker.getStillAvailableCarParts(CarOptionCategory.BODY);
+		picker.addCarPartToModel(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+		picker.getStillAvailableCarParts(VehicleOptionCategory.ENGINE);
+		Collection<VehicleOption> available = picker.getStillAvailableCarParts(VehicleOptionCategory.BODY);
 		
-		assertTrue(available.contains(new CarOption("sport", CarOptionCategory.BODY)));
+		assertTrue(available.contains(new VehicleOption("sport", VehicleOptionCategory.BODY)));
 		
 	}
 	
 	@Test
 	public void testUltraManualAirco() throws AlreadyInMapException{
 		
-		picker.addCarPartToModel(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
-		picker.getStillAvailableCarParts(CarOptionCategory.ENGINE);
-		Collection<CarOption> available = picker.getStillAvailableCarParts(CarOptionCategory.AIRCO);
+		picker.addCarPartToModel(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
+		picker.getStillAvailableCarParts(VehicleOptionCategory.ENGINE);
+		Collection<VehicleOption> available = picker.getStillAvailableCarParts(VehicleOptionCategory.AIRCO);
 		
-		assertTrue(available.contains(new CarOption("manual", CarOptionCategory.AIRCO)));
-		assertFalse(available.contains(new CarOption("automatic", CarOptionCategory.AIRCO)));
+		assertTrue(available.contains(new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
+		assertFalse(available.contains(new VehicleOption("automatic", VehicleOptionCategory.AIRCO)));
 		
 	}
 	
 	@Test
 	public void testAutomaticAircoNoUltra() throws AlreadyInMapException{
 		
-		picker.addCarPartToModel(new CarOption("automatic", CarOptionCategory.AIRCO));
-		picker.getStillAvailableCarParts(CarOptionCategory.AIRCO);
-		Collection<CarOption> available = picker.getStillAvailableCarParts(CarOptionCategory.ENGINE);
+		picker.addCarPartToModel(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
+		picker.getStillAvailableCarParts(VehicleOptionCategory.AIRCO);
+		Collection<VehicleOption> available = picker.getStillAvailableCarParts(VehicleOptionCategory.ENGINE);
 		
-		assertFalse(available.contains(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
+		assertFalse(available.contains(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
 		
 	}
 	
 	@Test
 	public void testBodyBreakNoSpoiler() throws AlreadyInMapException{
-		CarOption breakBody = new CarOption("break", CarOptionCategory.BODY);
+		VehicleOption breakBody = new VehicleOption("break", VehicleOptionCategory.BODY);
 		picker.addCarPartToModel(breakBody);
-		picker.getStillAvailableCarParts(CarOptionCategory.BODY);
+		picker.getStillAvailableCarParts(VehicleOptionCategory.BODY);
 
 		assertNull(picker.getModel().getForcedOptionalTypes().get(breakBody));
 		
@@ -164,8 +164,8 @@ public class RestrictionTest {
 	@Test
 	public void testAdd(){
 		picker = new PartPicker(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>());
-		picker.addBindingRestriction(new BindingRestriction(new CarOption("blabla", CarOptionCategory.AIRCO), new CarOption("test", CarOptionCategory.BODY)));
-		picker.addOptionalRestriction(new OptionalRestriction(new CarOption("blabla", CarOptionCategory.ENGINE), CarOptionCategory.SPOILER, false));
+		picker.addBindingRestriction(new BindingRestriction(new VehicleOption("blabla", VehicleOptionCategory.AIRCO), new VehicleOption("test", VehicleOptionCategory.BODY)));
+		picker.addOptionalRestriction(new OptionalRestriction(new VehicleOption("blabla", VehicleOptionCategory.ENGINE), VehicleOptionCategory.SPOILER, false));
 		
 		assertEquals(1, picker.getBindingRestrictions().size());
 		assertEquals(1, picker.getOptionalRestrictions().size());

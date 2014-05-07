@@ -11,12 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.assembly.AssemblyLine;
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.car.CustomCarModel;
-import domain.clock.UnmodifiableClock;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.car.CustomVehicle;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
@@ -31,35 +31,35 @@ import domain.order.StandardOrder;
  */
 public class OrderBookTest {
 	OrderBook orderBook;
-	CarModel model1;
-	CarModel model2;
+	Vehicle model1;
+	Vehicle model2;
 	@Before
 	public void setUp() throws AlreadyInMapException{
-		orderBook = new OrderBook(new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0,0)));
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
+		orderBook = new OrderBook(new AssemblyLine(new ClockObserver(), new ImmutableClock(0,0)));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		
-		CarModelSpecification specification = new CarModelSpecification("test", parts, 60);
-		model1 = new CarModel(specification);
+		VehicleSpecification specification = new VehicleSpecification("test", parts, 60);
+		model1 = new Vehicle(specification);
 		
-		Set<CarOption> parts2 = new HashSet<>();
-		parts2.add(new CarOption("sport", CarOptionCategory.BODY));
-		parts2.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts2.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
-		CarModelSpecification specification2 = new CarModelSpecification("test", parts2, 60);
-		model2 = new CarModel(specification2);
+		Set<VehicleOption> parts2 = new HashSet<>();
+		parts2.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		parts2.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts2.add(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
+		VehicleSpecification specification2 = new VehicleSpecification("test", parts2, 60);
+		model2 = new Vehicle(specification2);
 }
 
 	@Test
 	public void test1() throws ImmutableException, NotImplementedException {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
-		StandardOrder order = new StandardOrder("Mario", model1,3, new UnmodifiableClock(0,0));
-		orderBook.addOrder(order, new UnmodifiableClock(0, 0));
+		StandardOrder order = new StandardOrder("Mario", model1,3, new ImmutableClock(0,0));
+		orderBook.addOrder(order, new ImmutableClock(0, 0));
 		assertFalse(orderBook.getPendingOrders().isEmpty());
-		StandardOrder order2 = new StandardOrder("Mario",model2,2, new UnmodifiableClock(0,0));
-		orderBook.addOrder(order2, new UnmodifiableClock(0, 0));
+		StandardOrder order2 = new StandardOrder("Mario",model2,2, new ImmutableClock(0,0));
+		orderBook.addOrder(order2, new ImmutableClock(0, 0));
 		assertEquals(1,orderBook.getPendingOrders().keySet().size());
 		assertEquals(2,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		orderBook.updateOrderBook(order2);
@@ -77,9 +77,9 @@ public class OrderBookTest {
 	public void testAddCustomOrder() throws ImmutableException, NotImplementedException {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
-		CustomCarModel customModel = new CustomCarModel();
-		CustomOrder order = new CustomOrder("Mario", customModel,3, new UnmodifiableClock(0,20), new UnmodifiableClock(1, 420));
-		orderBook.addOrder(order, new UnmodifiableClock(0, 0));
+		CustomVehicle customModel = new CustomVehicle();
+		CustomOrder order = new CustomOrder("Mario", customModel,3, new ImmutableClock(0,20), new ImmutableClock(1, 420));
+		orderBook.addOrder(order, new ImmutableClock(0, 0));
 		
 		assertFalse(orderBook.getPendingOrders().isEmpty());
 		assertEquals(1,orderBook.getPendingOrders().keySet().size());
@@ -105,7 +105,7 @@ public class OrderBookTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void test3(){
 		orderBook.initializeBook();
-		StandardOrder order = new StandardOrder(null,null,0, new UnmodifiableClock(0,20));
+		StandardOrder order = new StandardOrder(null,null,0, new ImmutableClock(0,20));
 		orderBook.updateOrderBook(order);
 		
 	}

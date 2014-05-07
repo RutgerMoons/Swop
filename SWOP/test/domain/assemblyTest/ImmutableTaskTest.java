@@ -9,7 +9,7 @@ import org.junit.Test;
 import domain.exception.ImmutableException;
 import domain.job.Action;
 import domain.job.ITask;
-import domain.job.ImmutableTask;
+import domain.job.UnmodifiableTask;
 import domain.job.Task;
 
 
@@ -19,7 +19,7 @@ public class ImmutableTaskTest {
 	@Before
 	public void initialize(){
 		task = new Task("Test");
-		immutable = new ImmutableTask(task);
+		immutable = new UnmodifiableTask(task);
 		
 	}
 	
@@ -35,7 +35,7 @@ public class ImmutableTaskTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void illegalConstructorTest(){
-		new ImmutableTask(null);
+		new UnmodifiableTask(null);
 	}
 	
 	@Test(expected=ImmutableException.class)

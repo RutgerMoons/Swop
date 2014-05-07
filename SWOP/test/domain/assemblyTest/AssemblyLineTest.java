@@ -18,12 +18,12 @@ import com.google.common.base.Optional;
 import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
 import domain.assembly.WorkBench;
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.car.CustomCarModel;
-import domain.clock.UnmodifiableClock;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.car.CustomVehicle;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
@@ -44,25 +44,25 @@ import domain.order.StandardOrder;
 public class AssemblyLineTest{
 
 	private AssemblyLine line;
-	private CarModel model;
+	private Vehicle model;
 
 	@Before
 	public void initialize() {
-		line = new AssemblyLine(new ClockObserver(), new UnmodifiableClock(0,240));
+		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0,240));
 
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		model = new Vehicle(template);
 
 		try {
-			model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-			model.addCarPart(new CarOption("sedan",  CarOptionCategory.BODY));
-			model.addCarPart(new CarOption("red",  CarOptionCategory.COLOR));
-			model.addCarPart(new CarOption("standard 2l 4 cilinders",  CarOptionCategory.ENGINE));
-			model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
-			model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-			model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+			model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+			model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
+			model.addCarPart(new VehicleOption("red",  VehicleOptionCategory.COLOR));
+			model.addCarPart(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
+			model.addCarPart(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
+			model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+			model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		} catch (AlreadyInMapException e) {}
 	}
 
@@ -75,7 +75,7 @@ public class AssemblyLineTest{
 
 	@Test(expected = IllegalArgumentException.class)
 	public void TestInvalidConstructor(){
-		new AssemblyLine(null, new UnmodifiableClock(0, 240));
+		new AssemblyLine(null, new ImmutableClock(0, 240));
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void testConvertStandardOrderToJob(){
-		UnmodifiableClock clock = new UnmodifiableClock(0,240);
+		ImmutableClock clock = new ImmutableClock(0,240);
 		StandardOrder order = new StandardOrder("Luigi", this.model, 5, clock);
 		try {
 			int minutes = line.convertStandardOrderToJob(order);
@@ -148,9 +148,9 @@ public class AssemblyLineTest{
 
 	@Test
 	public void testConvertCustoOrderToJob(){
-		UnmodifiableClock clock = new UnmodifiableClock(0,240);
-		UnmodifiableClock deadline = new UnmodifiableClock(5, 800);
-		CustomCarModel model = new CustomCarModel();
+		ImmutableClock clock = new ImmutableClock(0,240);
+		ImmutableClock deadline = new ImmutableClock(5, 800);
+		CustomVehicle model = new CustomVehicle();
 		CustomOrder order = new CustomOrder("Luigi in da house", model, 5, clock, deadline);
 		try {
 			int minutes = line.convertCustomOrderToJob(order);
@@ -224,7 +224,7 @@ public class AssemblyLineTest{
 		line.attachObserver(observer);
 		ClockObserver clockObserver = new ClockObserver();
 		Logger logger = new Logger(2, clockObserver, observer);
-		UnmodifiableClock clock = new UnmodifiableClock(0,240);
+		ImmutableClock clock = new ImmutableClock(0,240);
 		StandardOrder order = new StandardOrder("Luigi", this.model, 10, clock);
 		try {
 			int minutes = line.convertStandardOrderToJob(order);
@@ -262,7 +262,7 @@ public class AssemblyLineTest{
 
 		line.advance();
 
-		clockObserver.startNewDay(new UnmodifiableClock(2, 360));
+		clockObserver.startNewDay(new ImmutableClock(2, 360));
 		assertEquals(1, logger.averageDays());
 	}
 
@@ -289,8 +289,8 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void switchToBatchTest() throws NotImplementedException{
-		List<CarOption> list = new ArrayList<CarOption>();
-		list.add(new CarOption("break", CarOptionCategory.BODY));
+		List<VehicleOption> list = new ArrayList<VehicleOption>();
+		list.add(new VehicleOption("break", VehicleOptionCategory.BODY));
 		line.switchToBatch(list);
 	}
 
@@ -300,7 +300,7 @@ public class AssemblyLineTest{
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
 		assertEquals("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories,-workbench 4: test", line.toString());
-		StandardOrder order = new StandardOrder("Stef", model, 1, new UnmodifiableClock(0,240));
+		StandardOrder order = new StandardOrder("Stef", model, 1, new ImmutableClock(0,240));
 		IJob job = new Job(order);
 		ITask task = new Task("Paint");
 		IAction action = new Action("Paint car blue");

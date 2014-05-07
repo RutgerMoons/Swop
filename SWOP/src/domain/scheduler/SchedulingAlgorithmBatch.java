@@ -7,8 +7,8 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
-import domain.car.CarOption;
-import domain.clock.UnmodifiableClock;
+import domain.car.VehicleOption;
+import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.IJob;
@@ -24,18 +24,18 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	private final int amountOfWorkBenches;
 	private PriorityQueue<IJob> batchJobs;
-	private List<CarOption> carOption;
+	private List<VehicleOption> vehicleOption;
 	private PriorityQueue<IJob> customJobs;
 	private ArrayList<Optional<IJob>> history;
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
 	private PriorityQueue<IJob> standardJobs;
 
-	public SchedulingAlgorithmBatch(SchedulingAlgorithmType type, List<CarOption> carParts, int amountOfWorkBenches) {
+	public SchedulingAlgorithmBatch(SchedulingAlgorithmType type, List<VehicleOption> carParts, int amountOfWorkBenches) {
 		super(type);
 		if (carParts == null) {
 			throw new IllegalArgumentException();
 		}
-		this.carOption = carParts;
+		this.vehicleOption = carParts;
 		this.amountOfWorkBenches = amountOfWorkBenches;
 		customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
 		standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
@@ -58,7 +58,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			throw new IllegalArgumentException();
 		}
 		try {
-			if (standardJob.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.carOption)) {
+			if (standardJob.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.vehicleOption)) {
 				this.batchJobs.add(standardJob);
 			}
 			else{
@@ -112,7 +112,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime) {
+	public int getEstimatedTimeInMinutes(IJob job, ImmutableClock currentTime) {
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -210,7 +210,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	 * If a custom job has to be forced, return the most urgent
 	 * return null if no job has to be forced.
 	 */
-	private IJob hasToForceCustomJob(UnmodifiableClock currentTime) {
+	private IJob hasToForceCustomJob(ImmutableClock currentTime) {
 		int idx = 0;
 		for (IJob job : customJobs) {
 			try {
@@ -226,7 +226,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
+	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) 
 			throws NoSuitableJobFoundException{
 		/*
 		 * step 0: check in the beginning of the day if custom jobs can be executed
@@ -306,7 +306,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 		for(IJob job : standardJobs){
 			try {
-				if(job.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.carOption)){
+				if(job.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.vehicleOption)){
 					this.batchJobs.add(job);
 				}
 				else{

@@ -1,0 +1,76 @@
+package domain.car;
+
+import java.util.Collections;
+import java.util.Map;
+
+import domain.exception.AlreadyInMapException;
+import domain.exception.ImmutableException;
+import domain.exception.NotImplementedException;
+
+/**
+ * Create an Immutable CarModel, only the getters are accessible.
+ *
+ */
+public class UnmodifiableVehicle implements IVehicle {
+
+	private IVehicle model;
+	
+	/**
+	 * Create an Immutable CarModel.
+	 * 
+	 * @param model
+	 * 			The mutable CarModel.
+	 */
+	public UnmodifiableVehicle(IVehicle model){
+		if(model==null)
+			throw new IllegalArgumentException();
+		this.model = model;
+	}
+	@Override
+	public Map<VehicleOptionCategory, VehicleOption> getCarParts() {
+		return Collections.unmodifiableMap(model.getCarParts());
+	}
+
+	@Override
+	public int hashCode(){
+		return model.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		return model.equals(obj);
+	}
+
+	@Override
+	public String toString(){
+		return model.toString();
+	}
+	@Override
+	public void addCarPart(VehicleOption part) throws AlreadyInMapException,
+			ImmutableException {
+		throw new ImmutableException();
+		
+	}
+	@Override
+	public Map<VehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
+		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
+	}
+	@Override
+	public void addForcedOptionalType(VehicleOption type, boolean bool)
+			throws ImmutableException {
+		throw new ImmutableException();
+	}
+	@Override
+	public VehicleSpecification getSpecification() throws NotImplementedException {
+		return model.getSpecification();
+	}
+	@Override
+	public void setSpecification(VehicleSpecification template)
+			throws ImmutableException {
+		throw new ImmutableException();
+	}
+	@Override
+	public int getTimeAtWorkBench() {
+		return model.getTimeAtWorkBench();
+	}
+}

@@ -1,8 +1,8 @@
 package domain.order;
 
-import domain.car.CustomCarModel;
-import domain.car.ICarModel;
-import domain.clock.UnmodifiableClock;
+import domain.car.CustomVehicle;
+import domain.car.IVehicle;
+import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 
 /**
@@ -11,20 +11,20 @@ import domain.exception.ImmutableException;
  */
 public class CustomOrder implements IOrder {
 
-	private ICarModel description;
+	private IVehicle description;
 	private String garageholder;
 	private int quantity, pendingCars;
-	private UnmodifiableClock estimatedTime;
-	private UnmodifiableClock orderTime;
-	private UnmodifiableClock deadline;
+	private ImmutableClock estimatedTime;
+	private ImmutableClock orderTime;
+	private ImmutableClock deadline;
 
 	/**
 	 * Create a new CustomOrder of CustomCarModels of 'description, with a quantity of 'quantity', placed by 'garageholder'.
 	 * The Order was placed at the time 'orderTime' and has 'deadline' as deadline.
 	 */
-	public CustomOrder(String garageholder, CustomCarModel description,
-			int quantity, UnmodifiableClock orderTime,
-			UnmodifiableClock deadline) {
+	public CustomOrder(String garageholder, CustomVehicle description,
+			int quantity, ImmutableClock orderTime,
+			ImmutableClock deadline) {
 		setGarageholder(garageholder);
 		setDescription(description);
 		setQuantity(quantity);
@@ -74,7 +74,7 @@ public class CustomOrder implements IOrder {
 	}
 	
 	@Override
-	public ICarModel getDescription() {
+	public IVehicle getDescription() {
 		return description;
 	}
 
@@ -83,7 +83,7 @@ public class CustomOrder implements IOrder {
 	 * The method throws an IllegalArgumentException is the given name equals
 	 * null.s
 	 */
-	private void setDescription(ICarModel description) {
+	private void setDescription(IVehicle description) {
 		if (description == null) {
 			throw new IllegalArgumentException();
 		}
@@ -91,12 +91,12 @@ public class CustomOrder implements IOrder {
 	}
 	
 	@Override
-	public UnmodifiableClock getDeadline() {
+	public ImmutableClock getDeadline() {
 		return deadline;
 	}
 
 	@Override
-	public void setDeadline(UnmodifiableClock clock) {
+	public void setDeadline(ImmutableClock clock) {
 		if(clock == null)
 			throw new IllegalArgumentException();
 		this.deadline = clock;
@@ -104,12 +104,12 @@ public class CustomOrder implements IOrder {
 	}
 
 	@Override
-	public UnmodifiableClock getEstimatedTime() {
+	public ImmutableClock getEstimatedTime() {
 		return estimatedTime;
 	}
 
 	@Override
-	public void setEstimatedTime(UnmodifiableClock clock) {
+	public void setEstimatedTime(ImmutableClock clock) {
 		if(clock == null)
 			throw new IllegalArgumentException();
 		estimatedTime = clock;
@@ -117,12 +117,12 @@ public class CustomOrder implements IOrder {
 	}
 
 	@Override
-	public UnmodifiableClock getOrderTime() {
+	public ImmutableClock getOrderTime() {
 		return orderTime;
 	}
 
 	@Override
-	public void setOrderTime(UnmodifiableClock clock) {
+	public void setOrderTime(ImmutableClock clock) {
 		if(clock == null)
 			throw new IllegalArgumentException();
 		orderTime = clock;

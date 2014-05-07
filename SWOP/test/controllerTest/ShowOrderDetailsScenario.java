@@ -18,9 +18,9 @@ import view.ClientCommunication;
 import view.IClientCommunication;
 import controller.OrderFlowController;
 import controller.ShowOrderDetailsFlowController;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
@@ -53,38 +53,38 @@ public class ShowOrderDetailsScenario {
 	public void initializeRestrictions(){
 		bindingRestrictions = new HashSet<>();
 		optionalRestrictions = new HashSet<>();
-		optionalRestrictions.add(new OptionalRestriction(new CarOption("sport", CarOptionCategory.BODY), CarOptionCategory.SPOILER, false));
+		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
 
-		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
 
-		bindingRestrictions.add(new BindingRestriction(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE), new CarOption("manual", CarOptionCategory.AIRCO)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 
 		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
 
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts.add(new CarOption("white", CarOptionCategory.COLOR));
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
 
-		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 
-		parts.add(new CarOption("6 speed manual", CarOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
 
-		parts.add(new CarOption("leather white", CarOptionCategory.SEATS));
-		parts.add(new CarOption("leather black", CarOptionCategory.SEATS));
+		parts.add(new VehicleOption("leather white", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 
-		parts.add(new CarOption("manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("automatic", CarOptionCategory.AIRCO));
+		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
 
-		parts.add(new CarOption("winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("sports", CarOptionCategory.WHEEL));
+		parts.add(new VehicleOption("winter", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
 
-		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
-		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
-		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
+		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
 		picker.setNewModel(template);
 	}
 

@@ -7,21 +7,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import view.CustomVehicleCatalogueFiller;
+import view.VehicleSpecificationCatalogueFiller;
+
 import com.google.common.collect.Multimap;
 
 import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
-import domain.car.CarModel;
-import domain.car.CarModelCatalogue;
-import domain.car.CarModelCatalogueFiller;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.car.CustomCarModel;
-import domain.car.CustomCarModelCatalogue;
-import domain.car.CustomCarModelCatalogueFiller;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecificationCatalogue;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.car.CustomVehicle;
+import domain.car.CustomVehicleCatalogue;
 import domain.clock.Clock;
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
@@ -54,10 +55,10 @@ public class Facade {
 
 	private AssemblyLine assemblyLine;
 	private AssemblyLineObserver assemblyLineObserver;
-	private CarModelCatalogue carModelCatalogue;
+	private VehicleSpecificationCatalogue vehicleSpecificationCatalogue;
 	private Clock clock;
 	private ClockObserver clockObserver;
-	private CustomCarModelCatalogue customCarModelCatalogue;
+	private CustomVehicleCatalogue customVehicleCatalogue;
 	private Logger logger;
 
 	private OrderBook orderBook;
@@ -89,24 +90,24 @@ public class Facade {
 
 		this.logger = new Logger(2, clockObserver, assemblyLineObserver);
 
-		this.carModelCatalogue = new CarModelCatalogue();
-		this.customCarModelCatalogue = new CustomCarModelCatalogue();
+		this.vehicleSpecificationCatalogue = new VehicleSpecificationCatalogue();
+		this.customVehicleCatalogue = new CustomVehicleCatalogue();
 		this.orderBook = new OrderBook(assemblyLine);
 		this.userBook = new UserBook();
 		this.userFactory = new UserFactory();
 		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
 
-		CarModelCatalogueFiller carModelFiller = new CarModelCatalogueFiller();
-		for (CarModelSpecification model : carModelFiller.getInitialModels()) {
-			carModelCatalogue.addModel(model);
+		VehicleSpecificationCatalogueFiller carModelFiller = new VehicleSpecificationCatalogueFiller();
+		for (VehicleSpecification model : carModelFiller.getInitialModels()) {
+			vehicleSpecificationCatalogue.addModel(model);
 		}
 
-		CustomCarModelCatalogueFiller customCarModelFiller = new CustomCarModelCatalogueFiller();
-		Multimap<String, CustomCarModel> customModels = customCarModelFiller
+		CustomVehicleCatalogueFiller customCarModelFiller = new CustomVehicleCatalogueFiller();
+		Multimap<String, CustomVehicle> customModels = customCarModelFiller
 				.getInitialModels();
 		for (String model : customModels.keySet()) {
-			for (CustomCarModel customModel : customModels.get(model)) {
-				customCarModelCatalogue.addModel(model, customModel);
+			for (CustomVehicle customModel : customModels.get(model)) {
+				customVehicleCatalogue.addModel(model, customModel);
 			}
 		}
 	}
@@ -120,9 +121,9 @@ public class Facade {
 	 *            The part as a string.
 	 */
 	public void addPartToModel(String type, String part) {
-		CarOptionCategory carOptionCategory = CarOptionCategory.valueOf(type);
-		for (CarOption actualPart : picker.getModel().getSpecification()
-				.getCarParts().get(carOptionCategory)) {
+		VehicleOptionCategory vehicleOptionCategory = VehicleOptionCategory.valueOf(type);
+		for (VehicleOption actualPart : picker.getModel().getSpecification()
+				.getCarParts().get(vehicleOptionCategory)) {
 			if (actualPart.toString().equals(part))
 				try {
 					picker.getModel().addCarPart(actualPart);
@@ -236,7 +237,7 @@ public class Facade {
 	 *            creating the CarModel
 	 */
 	public void createNewModel(String realModel) {
-		picker.setNewModel(carModelCatalogue.getCatalogue().get(realModel));
+		picker.setNewModel(vehicleSpecificationCatalogue.getCatalogue().get(realModel));
 	}
 
 	/**
@@ -271,7 +272,7 @@ public class Facade {
 	 */
 	public String getCarModelSpecificationFromCatalogue(String specificationName)
 			throws IllegalArgumentException {
-		for (String model : this.carModelCatalogue.getCatalogue().keySet()) {
+		for (String model : this.vehicleSpecificationCatalogue.getCatalogue().keySet()) {
 			if (model.equalsIgnoreCase(specificationName)) {
 				return model;
 			}
@@ -283,7 +284,7 @@ public class Facade {
 	 * Get a set of all the CarModelSpecifications that the Catalogue has.
 	 */
 	public Set<String> getCarModelSpecifications() {
-		return this.carModelCatalogue.getCatalogue().keySet();
+		return this.vehicleSpecificationCatalogue.getCatalogue().keySet();
 	}
 
 	/**
@@ -291,7 +292,7 @@ public class Facade {
 	 */
 	public Set<String> getCarPartTypes() {
 		Set<String> types = new HashSet<>();
-		for (CarOptionCategory type : CarOptionCategory.values()) {
+		for (VehicleOptionCategory type : VehicleOptionCategory.values()) {
 			types.add(type.toString());
 
 		}
@@ -326,7 +327,7 @@ public class Facade {
 	 */
 	public List<String> getCustomTasks() {
 		List<String> tasks = new ArrayList<>();
-		for (String model : customCarModelCatalogue.getCatalogue().keySet()) {
+		for (String model : customVehicleCatalogue.getCatalogue().keySet()) {
 			tasks.add(model);
 		}
 		return tasks;
@@ -357,7 +358,7 @@ public class Facade {
 					+ chosenOrder.getDescription());
 
 			String carDetails = "Chosen carOptions: ";
-			for (CarOptionCategory category : chosenOrder.getDescription()
+			for (VehicleOptionCategory category : chosenOrder.getDescription()
 					.getCarParts().keySet()) {
 				carDetails += chosenOrder.getDescription().getCarParts()
 						.get(category)
@@ -385,8 +386,8 @@ public class Facade {
 	 */
 	public Set<String> getParts(String type) {
 		Set<String> parts = new HashSet<>();
-		CarOptionCategory category = CarOptionCategory.valueOf(type);
-		for (CarOption part : picker.getStillAvailableCarParts(category)) {
+		VehicleOptionCategory category = VehicleOptionCategory.valueOf(type);
+		for (VehicleOption part : picker.getStillAvailableCarParts(category)) {
 			if (category.isOptional()
 					|| (picker.getModel().getForcedOptionalTypes()
 							.get(category) != null && picker.getModel()
@@ -431,7 +432,7 @@ public class Facade {
 	 */
 	public List<String> getSpecificCustomTasks(String taskDescription) {
 		List<String> tasks = new ArrayList<>();
-		for (CustomCarModel model : customCarModelCatalogue.getCatalogue().get(
+		for (CustomVehicle model : customVehicleCatalogue.getCatalogue().get(
 				taskDescription)) {
 			tasks.add(model.toString());
 		}
@@ -540,8 +541,8 @@ public class Facade {
 	 * 			The deadline of the CustomOrder
 	 */
 	public String processCustomOrder(String model, String deadline) throws IllegalArgumentException{
-		CustomCarModel customModel = null;
-		for (CustomCarModel custom : customCarModelCatalogue.getCatalogue()
+		CustomVehicle customModel = null;
+		for (CustomVehicle custom : customVehicleCatalogue.getCatalogue()
 				.values()) {
 			if (custom.toString().equals(model)) {
 				customModel = custom;
@@ -555,7 +556,7 @@ public class Facade {
 		int hours = Integer.parseInt(split[1]);
 		int minutes = Integer.parseInt(split[2]);
 		minutes += hours * 60;
-		UnmodifiableClock deadlineClock = new UnmodifiableClock(days, minutes);
+		ImmutableClock deadlineClock = new ImmutableClock(days, minutes);
 		CustomOrder order = new CustomOrder(
 				userBook.getCurrentUser().getName(), customModel, 1,
 				clock.getUnmodifiableClock(), deadlineClock);
@@ -579,12 +580,12 @@ public class Facade {
 	 */
 	public String processOrder(int quantity) throws ImmutableException,
 			IllegalStateException, NotImplementedException {
-		CarModel carModel = picker.getModel();
+		Vehicle vehicle = picker.getModel();
 
-		if (!carModel.isValid())
+		if (!vehicle.isValid())
 			throw new IllegalStateException();
 		StandardOrder order = new StandardOrder(userBook.getCurrentUser()
-				.getName(), carModel, quantity, clock.getUnmodifiableClock());
+				.getName(), vehicle, quantity, clock.getUnmodifiableClock());
 		this.orderBook.addOrder(order, clock.getUnmodifiableClock());
 		return order.getEstimatedTime().toString();
 	}
@@ -607,14 +608,14 @@ public class Facade {
 	 * Switches the scheduling algorithm to use Batch with the given List of
 	 * CarOptions.
 	 */
-	public void switchToBatch(List<CarOption> batch) {
+	public void switchToBatch(List<VehicleOption> batch) {
 		this.assemblyLine.switchToBatch(batch);
 	}
 	
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<CarOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		return this.assemblyLine.getAllCarOptionsInPendingOrders();
 	}
 }

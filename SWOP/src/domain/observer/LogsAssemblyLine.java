@@ -1,6 +1,6 @@
 package domain.observer;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 
 /**
  * AssemblyLineObservers use this interface as a gateway for addressing complex objects and notifying 
@@ -8,6 +8,6 @@ import domain.clock.UnmodifiableClock;
  */
 public interface LogsAssemblyLine {
 
-	public void updateCompletedOrder(UnmodifiableClock estimatedTimeOfOrder);
+	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder);
 	
 }

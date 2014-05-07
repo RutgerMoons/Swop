@@ -8,38 +8,38 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
 
 public class CarModelTemplateTest {
 
-	CarModelSpecification template;
+	VehicleSpecification template;
 	@Before
 	public void initialize(){
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts.add(new CarOption("white", CarOptionCategory.COLOR));
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
 		
-		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 	
-		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
 		
-		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
+		parts.add(new VehicleOption("Leather White", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
 		
-		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("Automatic", CarOptionCategory.AIRCO));
+		parts.add(new VehicleOption("Manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 		
-		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
+		parts.add(new VehicleOption("Winter", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
 		
-		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
-		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
-		template = new CarModelSpecification("model", parts, 60);
+		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		template = new VehicleSpecification("model", parts, 60);
 	}
 
 	@Test

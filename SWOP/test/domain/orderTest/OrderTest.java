@@ -11,11 +11,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.clock.UnmodifiableClock;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
 import domain.job.Action;
@@ -23,46 +23,46 @@ import domain.order.StandardOrder;
 
 public class OrderTest {
 
-	private CarModel model;
-	private CarModelSpecification template;
-	private UnmodifiableClock clock;
+	private Vehicle model;
+	private VehicleSpecification template;
+	private ImmutableClock clock;
 
 	@Before
 	public void initializeModel() throws AlreadyInMapException {
-		clock = new UnmodifiableClock(0,20);
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		clock = new ImmutableClock(0,20);
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts.add(new CarOption("white", CarOptionCategory.COLOR));
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
 		
-		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 	
-		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
 		
-		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
+		parts.add(new VehicleOption("Leather White", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
 		
-		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("Automatic", CarOptionCategory.AIRCO));
+		parts.add(new VehicleOption("Manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 		
-		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
+		parts.add(new VehicleOption("Winter", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
 		
-		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
-		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
-		template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
-		model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		model.addCarPart(new CarOption("sedan", CarOptionCategory.BODY));
-		model.addCarPart(new CarOption("red", CarOptionCategory.COLOR));
-		model.addCarPart(new CarOption("standard 2l 4 cilinders",
-				CarOptionCategory.ENGINE));
-		model.addCarPart(new CarOption("6 speed manual",
-				CarOptionCategory.GEARBOX));
-		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		template = new VehicleSpecification("model", parts, 60);
+		model = new Vehicle(template);
+		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model.addCarPart(new VehicleOption("sedan", VehicleOptionCategory.BODY));
+		model.addCarPart(new VehicleOption("red", VehicleOptionCategory.COLOR));
+		model.addCarPart(new VehicleOption("standard 2l 4 cilinders",
+				VehicleOptionCategory.ENGINE));
+		model.addCarPart(new VehicleOption("6 speed manual",
+				VehicleOptionCategory.GEARBOX));
+		model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class OrderTest {
 		assertEquals(3, order.getQuantity());
 		assertEquals(3, order.getPendingCars());
 		
-		UnmodifiableClock clock = new UnmodifiableClock(0, 5);
+		ImmutableClock clock = new ImmutableClock(0, 5);
 		order.setEstimatedTime(clock);
 		assertEquals(0, order.getEstimatedTime().getDays());
 		assertEquals(5, order.getEstimatedTime().getMinutes());
@@ -120,7 +120,7 @@ public class OrderTest {
 	@Test
 	public void testEstimatedTime1() {
 		StandardOrder order = new StandardOrder("Mario", model, 3, clock);
-		UnmodifiableClock clock = new UnmodifiableClock(0, 5);
+		ImmutableClock clock = new ImmutableClock(0, 5);
 		order.setEstimatedTime(clock);
 		assertEquals(0, order.getEstimatedTime().getDays());
 		assertEquals(5, order.getEstimatedTime().getMinutes());
@@ -143,17 +143,17 @@ public class OrderTest {
 
 	@Test
 	public void TestEqualsAndHashcode() throws AlreadyInMapException {
-		CarModelSpecification template2 = new CarModelSpecification("abc", new HashSet<CarOption>(), 50);
-		CarModel model2 = new CarModel(template2);
-		model2.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		model2.addCarPart(new CarOption("sedan", CarOptionCategory.BODY));
-		model2.addCarPart(new CarOption("red", CarOptionCategory.COLOR));
-		model2.addCarPart(new CarOption("standard 2l 4 cilinders",
-				CarOptionCategory.ENGINE));
-		model2.addCarPart(new CarOption("6 speed manual",
-				CarOptionCategory.GEARBOX));
-		model2.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-		model2.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), 50);
+		Vehicle model2 = new Vehicle(template2);
+		model2.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model2.addCarPart(new VehicleOption("sedan", VehicleOptionCategory.BODY));
+		model2.addCarPart(new VehicleOption("red", VehicleOptionCategory.COLOR));
+		model2.addCarPart(new VehicleOption("standard 2l 4 cilinders",
+				VehicleOptionCategory.ENGINE));
+		model2.addCarPart(new VehicleOption("6 speed manual",
+				VehicleOptionCategory.GEARBOX));
+		model2.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model2.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		assertFalse(order1.equals(null));
@@ -174,7 +174,7 @@ public class OrderTest {
 	public void testToString() {
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		
-		order1.setEstimatedTime(new UnmodifiableClock(1, 100));
+		order1.setEstimatedTime(new ImmutableClock(1, 100));
 		assertEquals(
 				"2 model Estimated completion time: 1 days and 1 hours and 40 minutes",
 				order1.toString());
@@ -189,7 +189,7 @@ public class OrderTest {
 	@Test(expected=NotImplementedException.class)
 	public void testSetDeadline() throws NotImplementedException{
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
-		order1.setDeadline(new UnmodifiableClock(0, 0));
+		order1.setDeadline(new ImmutableClock(0, 0));
 	}
 	
 	@Test
@@ -200,7 +200,7 @@ public class OrderTest {
 	
 	@Test
 	public void testGetAndSetOrderTime(){
-		UnmodifiableClock clock = new UnmodifiableClock(4, 45);
+		ImmutableClock clock = new ImmutableClock(4, 45);
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		order1.setOrderTime(clock);
 		assertEquals(clock, order1.getOrderTime());

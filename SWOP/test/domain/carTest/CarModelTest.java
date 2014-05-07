@@ -12,46 +12,46 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
 import domain.exception.AlreadyInMapException;
 import domain.job.Action;
 
 public class CarModelTest {
-	CarModelSpecification template;
+	VehicleSpecification template;
 
 	@Before
 	public void initialize() {
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 
-		parts.add(new CarOption("black", CarOptionCategory.COLOR));
-		parts.add(new CarOption("white", CarOptionCategory.COLOR));
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
 
-		parts.add(new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE));
-		parts.add(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 
-		parts.add(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
 
-		parts.add(new CarOption("Leather White", CarOptionCategory.SEATS));
-		parts.add(new CarOption("Leather Black", CarOptionCategory.SEATS));
+		parts.add(new VehicleOption("Leather White", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
 
-		parts.add(new CarOption("Manual", CarOptionCategory.AIRCO));
-		parts.add(new CarOption("Automatic", CarOptionCategory.AIRCO));
+		parts.add(new VehicleOption("Manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 
-		parts.add(new CarOption("Winter", CarOptionCategory.WHEEL));
-		parts.add(new CarOption("Sports", CarOptionCategory.WHEEL));
+		parts.add(new VehicleOption("Winter", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
 
-		parts.add(new CarOption("high", CarOptionCategory.SPOILER));
-		parts.add(new CarOption("low", CarOptionCategory.SPOILER));
-		template = new CarModelSpecification("model", parts, 60);
+		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		template = new VehicleSpecification("model", parts, 60);
 	}
 
 	@Test
 	public void testConstructor() {
-		CarModel model = new CarModel(template);
+		Vehicle model = new Vehicle(template);
 		assertEquals(template, model.getSpecification());
 		assertNotNull(model.getCarParts());
 		assertNotNull(model.getForcedOptionalTypes());
@@ -59,20 +59,20 @@ public class CarModelTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidConstructor() {
-		new CarModel(null);
+		new Vehicle(null);
 	}
 
 	@Test
 	public void testAdd() throws AlreadyInMapException {
-		CarModel car = new CarModel(template);
-		CarOption part = new CarOption("manual", CarOptionCategory.AIRCO);
+		Vehicle car = new Vehicle(template);
+		VehicleOption part = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
 		car.addCarPart(part);
 		assertEquals(part, car.getCarParts().get(part.getType()));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalAdd1() throws AlreadyInMapException {
-		CarModel car = new CarModel(template);
+		Vehicle car = new Vehicle(template);
 
 		car.addCarPart(null);
 
@@ -80,9 +80,9 @@ public class CarModelTest {
 
 	@Test(expected = AlreadyInMapException.class)
 	public void testIllegalAdd2() throws AlreadyInMapException {
-		CarModel car = new CarModel(template);
-		CarOption part1 = new CarOption("manual", CarOptionCategory.AIRCO);
-		CarOption part2 = new CarOption("automatic", CarOptionCategory.AIRCO);
+		Vehicle car = new Vehicle(template);
+		VehicleOption part1 = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
+		VehicleOption part2 = new VehicleOption("automatic", VehicleOptionCategory.AIRCO);
 
 		car.addCarPart(part1);
 		car.addCarPart(part2);
@@ -91,22 +91,22 @@ public class CarModelTest {
 
 	@Test
 	public void testToString() {
-		CarModel car1 = new CarModel(template);
+		Vehicle car1 = new Vehicle(template);
 		assertEquals("model", car1.toString());
 	}
 
 	@Test
 	public void testEquals() throws AlreadyInMapException {
-		CarModel car1 = new CarModel(template);
-		CarOption part1 = new CarOption("manual", CarOptionCategory.AIRCO);
-		CarOption part2 = new CarOption("break", CarOptionCategory.BODY);
+		Vehicle car1 = new Vehicle(template);
+		VehicleOption part1 = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
+		VehicleOption part2 = new VehicleOption("break", VehicleOptionCategory.BODY);
 		car1.addCarPart(part1);
 		car1.addCarPart(part2);
 
-		CarModel car2 = new CarModel(template);
+		Vehicle car2 = new Vehicle(template);
 		assertNotEquals(car1, car2);
 
-		CarModel car3 = new CarModel(template);
+		Vehicle car3 = new Vehicle(template);
 		assertNotEquals(car1, car3);
 		assertNotEquals(car1.hashCode(), car3.hashCode());
 
@@ -118,12 +118,12 @@ public class CarModelTest {
 		assertEquals(car1, car3);
 		assertEquals(car1.hashCode(), car3.hashCode());
 
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		CarModelSpecification template2 = new CarModelSpecification("modelb",
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		VehicleSpecification template2 = new VehicleSpecification("modelb",
 				parts, 50);
 
-		CarModel car4 = new CarModel(template2);
+		Vehicle car4 = new Vehicle(template2);
 		car4.addCarPart(part1);
 		car4.addCarPart(part2);
 		assertNotEquals(car1, car4);
@@ -136,33 +136,33 @@ public class CarModelTest {
 
 	@Test
 	public void testForcedOptions() {
-		CarModel model = new CarModel(template);
-		model.addForcedOptionalType(new CarOption("sport",
-				CarOptionCategory.BODY), false);
+		Vehicle model = new Vehicle(template);
+		model.addForcedOptionalType(new VehicleOption("sport",
+				VehicleOptionCategory.BODY), false);
 
 		assertFalse(model.getForcedOptionalTypes().get(
-				new CarOption("sport", CarOptionCategory.BODY)));
+				new VehicleOption("sport", VehicleOptionCategory.BODY)));
 
 	}
 
 	@Test
 	public void testValidCar() throws AlreadyInMapException {
-		CarModel model = new CarModel(template);
+		Vehicle model = new Vehicle(template);
 		assertFalse(model.isValid());
 
-		model.addCarPart(new CarOption("sport", CarOptionCategory.BODY));
+		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
 
-		model.addCarPart(new CarOption("white", CarOptionCategory.COLOR));
+		model.addCarPart(new VehicleOption("white", VehicleOptionCategory.COLOR));
 
-		model.addCarPart(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE));
+		model.addCarPart(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 
-		model.addCarPart(new CarOption("6 Speed Manual", CarOptionCategory.GEARBOX));
+		model.addCarPart(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
 		
-		model.addCarPart(new CarOption("Leather Black", CarOptionCategory.SEATS));
+		model.addCarPart(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
 
-		model.addCarPart(new CarOption("Automatic", CarOptionCategory.AIRCO));
+		model.addCarPart(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 
-		model.addCarPart(new CarOption("Sports", CarOptionCategory.WHEEL));
+		model.addCarPart(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
 		assertTrue(model.isValid());
 	}
 }

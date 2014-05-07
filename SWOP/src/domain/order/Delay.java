@@ -1,17 +1,17 @@
 package domain.order;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 
 /**
  * Object with attributes to calculate and represent the delay of an order.
  */
 public class Delay {
 	
-	private final UnmodifiableClock estimated;
-	private final UnmodifiableClock completed;
+	private final ImmutableClock estimated;
+	private final ImmutableClock completed;
 	private final int delay;
 	
-	public Delay(UnmodifiableClock estimated, UnmodifiableClock completed) {
+	public Delay(ImmutableClock estimated, ImmutableClock completed) {
 		if (estimated == null || completed == null) {
 			throw new IllegalArgumentException();
 		}

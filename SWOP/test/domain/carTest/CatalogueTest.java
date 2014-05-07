@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import domain.car.CarModelCatalogue;
-import domain.car.CarModelCatalogueFiller;
-import domain.car.CarModelSpecification;
+import view.VehicleSpecificationCatalogueFiller;
+import domain.car.VehicleSpecificationCatalogue;
+import domain.car.VehicleSpecification;
 import domain.exception.AlreadyInMapException;
 
 public class CatalogueTest {
@@ -19,8 +19,8 @@ public class CatalogueTest {
 	@Test
 	public void Test() {
 
-		CarModelCatalogue cat = new CarModelCatalogue();
-		CarModelCatalogueFiller filler = new CarModelCatalogueFiller();
+		VehicleSpecificationCatalogue cat = new VehicleSpecificationCatalogue();
+		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
 		
 		cat.initializeCatalogue(filler.getInitialModels());
 		assertNotNull(cat.getCatalogue());
@@ -30,8 +30,8 @@ public class CatalogueTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void Test2() {
-		CarModelCatalogue cat = new CarModelCatalogue();
-		Set<CarModelSpecification> list = new HashSet<CarModelSpecification>();
+		VehicleSpecificationCatalogue cat = new VehicleSpecificationCatalogue();
+		Set<VehicleSpecification> list = new HashSet<VehicleSpecification>();
 		list.add(null);
 		cat.initializeCatalogue(list);
 
@@ -39,7 +39,7 @@ public class CatalogueTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void Test3() throws AlreadyInMapException {
-		CarModelCatalogue cat = new CarModelCatalogue();
+		VehicleSpecificationCatalogue cat = new VehicleSpecificationCatalogue();
 		cat.addModel(null);
 	}
 }

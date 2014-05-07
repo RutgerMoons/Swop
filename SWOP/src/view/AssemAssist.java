@@ -7,8 +7,8 @@ import java.util.Set;
 import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
@@ -33,12 +33,12 @@ public class AssemAssist {
 	public static void initializeData() {
 		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
 		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
-		optionalRestrictions.add(new OptionalRestriction(new CarOption("sport", CarOptionCategory.BODY), CarOptionCategory.SPOILER, false));
+		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
 		
-		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("performance 2.5l V6", CarOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new CarOption("sport", CarOptionCategory.BODY), new CarOption("ultra 3l V8", CarOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
 		
-		bindingRestrictions.add(new BindingRestriction(new CarOption("ultra 3l V8", CarOptionCategory.ENGINE), new CarOption("manual", CarOptionCategory.AIRCO)));
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
 		clientCommunication = new ClientCommunication();
 		facade = new Facade(bindingRestrictions, optionalRestrictions);

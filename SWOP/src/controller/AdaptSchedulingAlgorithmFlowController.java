@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import view.IClientCommunication;
-import domain.car.CarOption;
+import domain.car.VehicleOption;
 import domain.exception.ImmutableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -87,19 +87,19 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		// let user pick from all the batches
 		// switch to batch with the chosen batch
 		
-		Set<Set<CarOption>> batches = facade.getAllCarOptionsInPendingOrders();
+		Set<Set<VehicleOption>> batches = facade.getAllCarOptionsInPendingOrders();
 		if (batches.size() <= 0) {
 			clientCommunication.showNoBatchesAvailable();
 			return;
 		}
-	    ArrayList<Set<CarOption>> batchList = new ArrayList<>(batches);
+	    ArrayList<Set<VehicleOption>> batchList = new ArrayList<>(batches);
 	    ArrayList<String> sets = new ArrayList<String>();
 		sets.add(0, "Possible Batches:");
 		int i = 1;
-		for (Iterator<Set<CarOption>> iterator = batches.iterator(); iterator.hasNext();) {
-			Set<CarOption> s = (Set<CarOption>) iterator.next();
+		for (Iterator<Set<VehicleOption>> iterator = batches.iterator(); iterator.hasNext();) {
+			Set<VehicleOption> s = (Set<VehicleOption>) iterator.next();
 			String tmp = "";
-			for (CarOption o : s) {
+			for (VehicleOption o : s) {
 				tmp += o.toString() + ", ";
 			}
 			tmp = tmp.substring(0, tmp.length() - 2);
@@ -110,11 +110,11 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		clientCommunication.showBatches(sets);
 		int index = clientCommunication.getIndex(sets.size()) - 1;
 		
-		ArrayList<CarOption> toSet = new ArrayList<CarOption>(batchList.get(index));
+		ArrayList<VehicleOption> toSet = new ArrayList<VehicleOption>(batchList.get(index));
 		facade.switchToBatch(toSet);
 		
 		String tmp = "";
-		for (CarOption o : batchList.get(index)) {
+		for (VehicleOption o : batchList.get(index)) {
 			tmp += o.toString() + ", ";
 		}
 		tmp = tmp.substring(0, tmp.length() - 2);

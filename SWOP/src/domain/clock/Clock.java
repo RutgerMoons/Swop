@@ -80,8 +80,8 @@ public class Clock {
 		notifyObserversStartNewDay();
 	}
 	
-	public UnmodifiableClock getUnmodifiableClock() {
-		return new UnmodifiableClock(getDays(), getMinutes());
+	public ImmutableClock getUnmodifiableClock() {
+		return new ImmutableClock(getDays(), getMinutes());
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public class Clock {
 	 * Notify the observers that the time has advanced.
 	 */
 	public void notifyObserversAdvanceTime() {
-		UnmodifiableClock currentTime = getUnmodifiableClock();
+		ImmutableClock currentTime = getUnmodifiableClock();
 		for (ClockObserver observer : observers) {
 			observer.advanceTime(currentTime);
 		}

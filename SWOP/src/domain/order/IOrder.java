@@ -1,7 +1,7 @@
 package domain.order;
 
-import domain.car.ICarModel;
-import domain.clock.UnmodifiableClock;
+import domain.car.IVehicle;
+import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
@@ -28,7 +28,7 @@ public interface IOrder {
 	/**
 	 * Returns an Immutable CarModel for encapsulation.
 	 */
-	public ICarModel getDescription();
+	public IVehicle getDescription();
 	
 	/**
 	 * Get the production time of the order, so how long it takes to produce all the cars. 
@@ -41,7 +41,7 @@ public interface IOrder {
 	 * @throws NotImplementedException
 	 * 			if the Order isn't a CustomOrder
 	 */
-	public UnmodifiableClock getDeadline() throws NotImplementedException;
+	public ImmutableClock getDeadline() throws NotImplementedException;
 	
 	/**
 	 * Set the deadline of the CustomOrder
@@ -50,29 +50,29 @@ public interface IOrder {
 	 * @throws ImmutableException
 	 * 			if the IOrder is an ImmutableOrder.
 	 */
-	public void setDeadline(UnmodifiableClock clock) throws NotImplementedException, ImmutableException;
+	public void setDeadline(ImmutableClock clock) throws NotImplementedException, ImmutableException;
 	
 	/**
 	 * Get the estimated time until completion.
 	 */
-	public UnmodifiableClock getEstimatedTime();
+	public ImmutableClock getEstimatedTime();
 	
 	/**
 	 * Set the estimated time of completion of the Order.
 	 */
-	public void setEstimatedTime(UnmodifiableClock clock) throws ImmutableException;
+	public void setEstimatedTime(ImmutableClock clock) throws ImmutableException;
 	 
 	/**
 	 * Get the time when the Order is ordered.
 	 */
-	public UnmodifiableClock getOrderTime();
+	public ImmutableClock getOrderTime();
 
 	/**
 	 * Set the time when the Order is ordered. 
 	 * @throws ImmutableException
 	 * 			if the IOrder is an ImmutableOrder.
 	 */
-	public void setOrderTime(UnmodifiableClock clock) throws ImmutableException;
+	public void setOrderTime(ImmutableClock clock) throws ImmutableException;
 	
 	/**
 	 * Method for decreasing the amount of pendingCars each time an car of the

@@ -13,13 +13,13 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 
 import domain.assembly.IWorkBench;
-import domain.assembly.ImmutableWorkBench;
+import domain.assembly.UnmodifiableWorkBench;
 import domain.assembly.WorkBench;
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.clock.UnmodifiableClock;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.job.Action;
@@ -38,27 +38,27 @@ public class ImmutableWorkBenchTest {
 		responsibilities.add("paint");
 
 		bench = new WorkBench(responsibilities, "paintbooth");
-		immutable = new ImmutableWorkBench(bench);
+		immutable = new UnmodifiableWorkBench(bench);
 		
 	}
 	@Test
 	public void test() throws AlreadyInMapException, ImmutableException {
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
-		CarModel model = new CarModel(template);
-		model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		model.addCarPart(new CarOption("sedan",  CarOptionCategory.BODY));
-		model.addCarPart(new CarOption("red",  CarOptionCategory.COLOR));
-		model.addCarPart(new CarOption("standard 2l 4 cilinders",  CarOptionCategory.ENGINE));
-		model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
-		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		Vehicle model = new Vehicle(template);
+		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
+		model.addCarPart(new VehicleOption("red",  VehicleOptionCategory.COLOR));
+		model.addCarPart(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
+		model.addCarPart(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
+		model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		
 		assertEquals("paintbooth", immutable.getWorkbenchName());
 		assertTrue(immutable.getResponsibilities().contains("paint"));
 		
-		IJob job = new Job(new StandardOrder("Stef", model, 1, new UnmodifiableClock(0,240)));
+		IJob job = new Job(new StandardOrder("Stef", model, 1, new ImmutableClock(0,240)));
 		Task task= new Task("paint");
 		task.addAction(new Action("paint blue"));
 		((Job) job).addTask(task);
@@ -74,7 +74,7 @@ public class ImmutableWorkBenchTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void illegalConstructorTest(){
-		new ImmutableWorkBench(null);
+		new UnmodifiableWorkBench(null);
 	}
 	
 	@Test(expected=ImmutableException.class)

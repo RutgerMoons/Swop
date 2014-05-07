@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import domain.car.CarOption;
+import domain.car.VehicleOption;
 
 /**
  * A clean way to construct Scheduling Algorithms.
@@ -27,7 +27,7 @@ public class SchedulingAlgorithmFactory {
 	/**
 	 * Returns a new Batch Scheduling Algorithm
 	 */
-	public SchedulingAlgorithmBatch createBatch(List<CarOption> carParts) {
+	public SchedulingAlgorithmBatch createBatch(List<VehicleOption> carParts) {
 		return new SchedulingAlgorithmBatch(SchedulingAlgorithmType.BATCH, carParts, amountOfWorkBenches);
 	}
 	

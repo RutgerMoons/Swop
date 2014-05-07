@@ -5,32 +5,32 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.car.CustomCarModel;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.car.CustomVehicle;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
 
 public class CustomCarModelTest {
 
-	CustomCarModel model;
+	CustomVehicle model;
 	@Before
 	public void initialize(){
-		model = new CustomCarModel();
+		model = new CustomVehicle();
 	}
 
 	@Test
 	public void testAddCarPart() throws AlreadyInMapException, ImmutableException {
-		CarOption sportBody = new CarOption("sport", CarOptionCategory.BODY);
+		VehicleOption sportBody = new VehicleOption("sport", VehicleOptionCategory.BODY);
 		model.addCarPart(sportBody);
-		assertEquals(sportBody, model.getCarParts().get(CarOptionCategory.BODY));
+		assertEquals(sportBody, model.getCarParts().get(VehicleOptionCategory.BODY));
 	}
 	
 	@Test(expected=AlreadyInMapException.class)
 	public void testAddInvalidCarparts() throws AlreadyInMapException, ImmutableException {
-		model.addCarPart(new CarOption("sport", CarOptionCategory.BODY));
-		model.addCarPart(new CarOption("break", CarOptionCategory.BODY));
+		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		model.addCarPart(new VehicleOption("break", VehicleOptionCategory.BODY));
 	}
 
 	@Test(expected=IllegalArgumentException.class)
@@ -40,7 +40,7 @@ public class CustomCarModelTest {
 	
 	@Test
 	public void testToString() throws AlreadyInMapException, ImmutableException{
-		model.addCarPart(new CarOption("sport", CarOptionCategory.BODY));
+		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		String s = System.lineSeparator();
 		assertEquals("BODY: sport", model.toString());
 	}
@@ -52,7 +52,7 @@ public class CustomCarModelTest {
 	
 	@Test(expected=NotImplementedException.class)
 	public void testAddForcedOptionalTypes() throws ImmutableException, NotImplementedException{
-		model.addForcedOptionalType(new CarOption("sport", CarOptionCategory.BODY), false);
+		model.addForcedOptionalType(new VehicleOption("sport", VehicleOptionCategory.BODY), false);
 	}
 	
 	@Test(expected=NotImplementedException.class)

@@ -11,16 +11,16 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.CarModel;
-import domain.car.CarModelSpecification;
-import domain.car.CarOption;
-import domain.car.CarOptionCategory;
-import domain.clock.UnmodifiableClock;
+import domain.car.Vehicle;
+import domain.car.VehicleSpecification;
+import domain.car.VehicleOption;
+import domain.car.VehicleOptionCategory;
+import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
 import domain.job.IJob;
 import domain.job.ITask;
-import domain.job.ImmutableJob;
+import domain.job.UnmodifiableJob;
 import domain.job.Job;
 import domain.job.Task;
 import domain.order.StandardOrder;
@@ -28,23 +28,23 @@ import domain.order.StandardOrder;
 public class ImmutableJobTest {
 	IJob job;
 	IJob immutable;
-	CarModel model;
+	Vehicle model;
 	@Before
 	public void initialize() throws AlreadyInMapException{
-		Set<CarOption> parts = new HashSet<>();
-		parts.add(new CarOption("sport", CarOptionCategory.BODY));
-		CarModelSpecification template = new CarModelSpecification("model", parts, 60);
-		model = new CarModel(template);
-		model.addCarPart(new CarOption("manual", CarOptionCategory.AIRCO));
-		model.addCarPart(new CarOption("sedan",  CarOptionCategory.BODY));
-		model.addCarPart(new CarOption("red",  CarOptionCategory.COLOR));
-		model.addCarPart(new CarOption("standard 2l 4 cilinders",  CarOptionCategory.ENGINE));
-		model.addCarPart(new CarOption("6 speed manual",  CarOptionCategory.GEARBOX));
-		model.addCarPart(new CarOption("leather black", CarOptionCategory.SEATS));
-		model.addCarPart(new CarOption("comfort", CarOptionCategory.WHEEL));
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		model = new Vehicle(template);
+		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
+		model.addCarPart(new VehicleOption("red",  VehicleOptionCategory.COLOR));
+		model.addCarPart(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
+		model.addCarPart(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
+		model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		
-		job = new Job(new StandardOrder("Stef", model, 1, new UnmodifiableClock(0,240)));
-		immutable = new ImmutableJob(job);
+		job = new Job(new StandardOrder("Stef", model, 1, new ImmutableClock(0,240)));
+		immutable = new UnmodifiableJob(job);
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class ImmutableJobTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void illegalConstructorTest(){
-		new ImmutableJob(null);
+		new UnmodifiableJob(null);
 	}
 	
 	@Test(expected=ImmutableException.class)

@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
-import domain.clock.UnmodifiableClock;
+import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.IJob;
@@ -100,7 +100,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(IJob job, UnmodifiableClock currentTime){
+	public int getEstimatedTimeInMinutes(IJob job, ImmutableClock currentTime){
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -178,7 +178,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	 * If a custom job has to be forced, return the most urgent
 	 * return null if no job has to be forced.
 	 */
-	private IJob hasToForceCustomJob(UnmodifiableClock currentTime) {
+	private IJob hasToForceCustomJob(ImmutableClock currentTime) {
 		int idx = 0;
 		for (IJob job : customJobs) {
 			try{
@@ -195,7 +195,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 
 	@Override
-	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, UnmodifiableClock currentTime) 
+	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) 
 			throws NoSuitableJobFoundException{
 		/* 
 		 * step 0: check if jobsStartOfDay contains any jobs..
