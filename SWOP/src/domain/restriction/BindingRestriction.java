@@ -1,6 +1,6 @@
 package domain.restriction;
 
-import domain.car.VehicleOption;
+import domain.vehicle.VehicleOption;
 
 /**
  * Class representing a restriction of this kind: "If CarOption 'a' is chosen, CarOption 'b' also has to be chosen."

@@ -1,10 +1,10 @@
 package domain.order;
 
-import domain.car.IVehicle;
-import domain.car.UnmodifiableVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
+import domain.vehicle.IVehicle;
+import domain.vehicle.UnmodifiableVehicle;
 
 /**
  * Create an Immutable Order, only the getters are accessible.

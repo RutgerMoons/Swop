@@ -1,4 +1,4 @@
-package domain.car;
+package domain.vehicle;
 
 /**
  * Represents the possible CarOptionCategories to which a CarOption can belong.

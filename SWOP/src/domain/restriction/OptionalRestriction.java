@@ -1,7 +1,7 @@
 package domain.restriction;
 
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
 
 /**
  * Class representing a restriction of this kind: "If CarOption 'a' is chosen, CarOptionCategory 'b' becomes mandatory/optional."

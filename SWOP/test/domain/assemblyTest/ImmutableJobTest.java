@@ -11,10 +11,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.car.Vehicle;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.ImmutableException;
@@ -24,6 +20,10 @@ import domain.job.UnmodifiableJob;
 import domain.job.Job;
 import domain.job.Task;
 import domain.order.StandardOrder;
+import domain.vehicle.Vehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 public class ImmutableJobTest {
 	IJob job;

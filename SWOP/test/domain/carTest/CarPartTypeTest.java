@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import domain.car.VehicleOptionCategory;
+import domain.vehicle.VehicleOptionCategory;
 
 public class CarPartTypeTest {
 

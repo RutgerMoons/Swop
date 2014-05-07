@@ -17,11 +17,6 @@ import view.IClientCommunication;
 import com.google.common.base.Optional;
 
 import domain.assembly.AssemblyLine;
-import domain.car.Vehicle;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
-import domain.car.CustomVehicle;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
@@ -38,6 +33,11 @@ import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.scheduler.Scheduler;
+import domain.vehicle.CustomVehicle;
+import domain.vehicle.Vehicle;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 public class SchedulerAlgorithmTest {
 

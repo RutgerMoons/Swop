@@ -9,12 +9,12 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 
-import domain.car.VehicleOption;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.IJob;
 import domain.observer.ClockObserver;
 import domain.observer.LogsClock;
+import domain.vehicle.VehicleOption;
 /**
  * This object is responsible for maintaining a scheduling algorithm, a certain amount of workbenches and shifts.
  * It also keeps track of current time by using a ClockObserver.

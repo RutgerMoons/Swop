@@ -1,4 +1,4 @@
-package domain.car;
+package domain.vehicle;
 
 import java.util.Collections;
 import java.util.Map;

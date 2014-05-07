@@ -1,4 +1,4 @@
-package domain.car;
+package domain.vehicle;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;

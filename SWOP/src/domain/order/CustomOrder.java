@@ -1,9 +1,9 @@
 package domain.order;
 
-import domain.car.CustomVehicle;
-import domain.car.IVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
+import domain.vehicle.CustomVehicle;
+import domain.vehicle.IVehicle;
 
 /**
  * Class representing an order from a Custom Car Shop Manager.

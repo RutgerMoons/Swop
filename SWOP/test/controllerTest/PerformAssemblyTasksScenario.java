@@ -21,9 +21,6 @@ import view.ClientCommunication;
 import view.IClientCommunication;
 import controller.AssembleFlowController;
 import controller.OrderFlowController;
-import domain.car.VehicleSpecification;
-import domain.car.VehicleOption;
-import domain.car.VehicleOptionCategory;
 import domain.exception.ImmutableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.facade.Facade;
@@ -31,6 +28,9 @@ import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.users.AccessRight;
+import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 /**
  * Scenario test for checking use case 4.3
  *

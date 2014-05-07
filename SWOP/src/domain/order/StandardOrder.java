@@ -1,9 +1,9 @@
 package domain.order;
 
-import domain.car.Vehicle;
-import domain.car.IVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
+import domain.vehicle.IVehicle;
+import domain.vehicle.Vehicle;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes

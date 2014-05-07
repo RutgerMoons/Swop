@@ -9,9 +9,9 @@ import java.util.Set;
 import org.junit.Test;
 
 import view.VehicleSpecificationCatalogueFiller;
-import domain.car.VehicleSpecificationCatalogue;
-import domain.car.VehicleSpecification;
 import domain.exception.AlreadyInMapException;
+import domain.vehicle.VehicleSpecification;
+import domain.vehicle.VehicleSpecificationCatalogue;
 
 public class CatalogueTest {
 

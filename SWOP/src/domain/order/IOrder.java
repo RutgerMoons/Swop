@@ -1,9 +1,9 @@
 package domain.order;
 
-import domain.car.IVehicle;
 import domain.clock.ImmutableClock;
 import domain.exception.ImmutableException;
 import domain.exception.NotImplementedException;
+import domain.vehicle.IVehicle;
 
 /**
  * Interface for limiting access to standard Orders.
