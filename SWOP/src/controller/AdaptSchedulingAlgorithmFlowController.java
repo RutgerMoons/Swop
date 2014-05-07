@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import view.IClientCommunication;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 import domain.vehicle.VehicleOption;
@@ -30,7 +30,7 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 	}
 
 	@Override
-	public void executeUseCase() throws IllegalArgumentException, ImmutableException {
+	public void executeUseCase() throws IllegalArgumentException, UnmodifiableException {
 		if(this.clientCommunication.askContinue()) {
 			showAlgorithms();
 		}

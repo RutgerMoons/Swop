@@ -20,7 +20,7 @@ import domain.assembly.IWorkBench;
 import domain.assembly.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.Action;
@@ -111,7 +111,7 @@ public class AssemblyLineTest{
 				}
 			}
 			assertTrue(line.canAdvance());
-		} catch (ImmutableException e) {}
+		} catch (UnmodifiableException e) {}
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class AssemblyLineTest{
 		list.add(task1);
 		try {
 			line.getWorkbenches().get(0).setCurrentTasks(list);
-		} catch (ImmutableException e) {		}
+		} catch (UnmodifiableException e) {		}
 		assertFalse(line.canAdvance());
 	}
 
@@ -135,7 +135,7 @@ public class AssemblyLineTest{
 		try {
 			int minutes = line.convertStandardOrderToJob(order);
 			assertEquals(420,minutes);
-		} catch (ImmutableException e) {}
+		} catch (UnmodifiableException e) {}
 
 	}
 
@@ -143,7 +143,7 @@ public class AssemblyLineTest{
 	public void testConvertStandardOrderToJobError(){
 		try {
 			line.convertStandardOrderToJob(null);
-		} catch (ImmutableException e) {}
+		} catch (UnmodifiableException e) {}
 	}
 
 	@Test
@@ -155,7 +155,7 @@ public class AssemblyLineTest{
 		try {
 			int minutes = line.convertCustomOrderToJob(order);
 			assertEquals(deadline.minus(clock),minutes);
-		} catch (ImmutableException e) {}
+		} catch (UnmodifiableException e) {}
 
 	}
 
@@ -163,7 +163,7 @@ public class AssemblyLineTest{
 	public void testConvertCustomOrderToJobError(){
 		try {
 			line.convertCustomOrderToJob(null);
-		} catch (ImmutableException e) {}
+		} catch (UnmodifiableException e) {}
 	}
 
 	@Test
@@ -213,13 +213,13 @@ public class AssemblyLineTest{
 		list.add(task1);
 		try {
 			line.getWorkbenches().get(0).setCurrentTasks(list);
-		} catch (ImmutableException e) {		}
+		} catch (UnmodifiableException e) {		}
 		assertTrue(line.getBlockingWorkBenches().contains(1));
 		assertTrue(line.getBlockingWorkBenches().size()==1);
 	}
 
 	@Test
-	public void advanceTest() throws ImmutableException, NoSuitableJobFoundException, NotImplementedException{
+	public void advanceTest() throws UnmodifiableException, NoSuitableJobFoundException, NotImplementedException{
 		AssemblyLineObserver observer = new AssemblyLineObserver();
 		line.attachObserver(observer);
 		ClockObserver clockObserver = new ClockObserver();
@@ -229,7 +229,7 @@ public class AssemblyLineTest{
 		try {
 			int minutes = line.convertStandardOrderToJob(order);
 			order.setEstimatedTime(clock.getUnmodifiableClockPlusExtraMinutes(minutes));
-		} catch (ImmutableException e) {}
+		} catch (UnmodifiableException e) {}
 		line.advance();
 
 		for(IWorkBench bench : line.getWorkbenches()){
@@ -278,7 +278,7 @@ public class AssemblyLineTest{
 		try {
 			line.getWorkbenches().get(0).setCurrentTasks(list);
 			line.advance();
-		} catch (ImmutableException e) {}
+		} catch (UnmodifiableException e) {}
 		catch (NoSuitableJobFoundException e) {}
 	}
 	

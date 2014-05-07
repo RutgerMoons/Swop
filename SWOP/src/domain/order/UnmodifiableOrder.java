@@ -1,7 +1,7 @@
 package domain.order;
 
 import domain.clock.ImmutableClock;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.vehicle.IVehicle;
 import domain.vehicle.UnmodifiableVehicle;
@@ -66,13 +66,13 @@ public class UnmodifiableOrder implements IOrder {
 	}
 
 	@Override
-	public void setEstimatedTime(ImmutableClock clock) throws ImmutableException {
-		throw new ImmutableException();
+	public void setEstimatedTime(ImmutableClock clock) throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 
 	@Override
-	public void completeCar() throws ImmutableException {
-		throw new ImmutableException();
+	public void completeCar() throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 
 	@Override
@@ -82,8 +82,8 @@ public class UnmodifiableOrder implements IOrder {
 
 	@Override
 	public void setDeadline(ImmutableClock clock)
-			throws NotImplementedException, ImmutableException {
-		throw new ImmutableException();
+			throws NotImplementedException, UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 
 	@Override
@@ -92,8 +92,8 @@ public class UnmodifiableOrder implements IOrder {
 	}
 
 	@Override
-	public void setOrderTime(ImmutableClock clock) throws ImmutableException {
-		throw new ImmutableException();
+	public void setOrderTime(ImmutableClock clock) throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package controller;
 import java.util.ArrayList;
 
 import view.IClientCommunication;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -64,7 +64,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 				try {
 					int time = clientCommunication.getElapsedTime();
 					facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber, time);
-				} catch (ImmutableException e) {
+				} catch (UnmodifiableException e) {
 				}
 				catch ( NoSuitableJobFoundException e ){
 					chooseTask(workbenchIndex);

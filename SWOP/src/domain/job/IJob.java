@@ -2,7 +2,7 @@ package domain.job;
 
 import java.util.List;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.order.IOrder;
 
 /**
@@ -18,12 +18,12 @@ public interface IJob {
 	/**
 	 * Allocate a new Order to this Job.
 	 * 
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		  	  If the IJob is an ImmutableJob.
 	 * @throws IllegalArgumentException
 	 *             If order==null
 	 */
-	public void setOrder(IOrder order) throws ImmutableException;
+	public void setOrder(IOrder order) throws UnmodifiableException;
 
 	/**
 	 * Get the tasks that have to be completed before the Job(Car) is finished.
@@ -36,22 +36,22 @@ public interface IJob {
 	 * Set a new list of tasks that have to be completed before the Job(Car) is
 	 * finished.
 	 * 
-	 * @throws ImmutableException
+	 * @throws UnmodifiableException
 	 * 			  If the IJob is an ImmutableJob.
 	 * @throws IllegalArgumentException
 	 *             If tasks==null
 	 */
-	public void setTasks(List<ITask> tasks) throws ImmutableException;
+	public void setTasks(List<ITask> tasks) throws UnmodifiableException;
 
 	/**
 	 * Add a new task to the Job.
 	 * 
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		 	  If the IJob is an ImmutableJob.
 	 * @throws IllegalArgumentException
 	 *             If task==null
 	 */
-	public void addTask(ITask task) throws ImmutableException;
+	public void addTask(ITask task) throws UnmodifiableException;
 
 	/**
 	 * Check if the Job(Car) is completed.
@@ -64,7 +64,7 @@ public interface IJob {
 	/**
 	 * Set the minimalIndex of the first workbench at which some Tasks of this Job will need to be completed qto the given index.
 	 */
-	public void setMinimalIndex(int index) throws ImmutableException;
+	public void setMinimalIndex(int index) throws UnmodifiableException;
 
 	/**
 	 * @return

@@ -7,7 +7,7 @@ import java.util.Set;
 import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -40,6 +40,8 @@ public class AssemAssist {
 		
 		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
+		bindingRestrictions.add(new BindingRestriction(new VehicleOption("platform truck", VehicleOptionCategory.BODY), new VehicleOption("heavy duty", VehicleOptionCategory.WHEEL)));
+		
 		clientCommunication = new ClientCommunication();
 		facade = new Facade(bindingRestrictions, optionalRestrictions);
 		FlowControllerFactory flowControllerFactory = new FlowControllerFactory(clientCommunication, facade);
@@ -60,7 +62,7 @@ public class AssemAssist {
 			userFlowController.login();
 			try {
 				userFlowController.performDuties();
-			} catch (IllegalArgumentException | ImmutableException e) {
+			} catch (IllegalArgumentException | UnmodifiableException e) {
 			}
 			userFlowController.logout();
 		} while (true);

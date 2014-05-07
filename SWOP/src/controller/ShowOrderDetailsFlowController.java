@@ -1,7 +1,7 @@
 package controller;
 
 import view.IClientCommunication;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -26,14 +26,14 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 	}
 
 	@Override
-	public void executeUseCase() throws IllegalArgumentException,ImmutableException {
+	public void executeUseCase() throws IllegalArgumentException,UnmodifiableException {
 		checkOrderDetails();
 	}
 
 	/**
 	 * Get the details of the order the user chose and show them to the user.
 	 */
-	public void checkOrderDetails() throws IllegalArgumentException, ImmutableException {
+	public void checkOrderDetails() throws IllegalArgumentException, UnmodifiableException {
 		String order = clientCommunication.chooseOrder(facade.getPendingOrders(), facade.getCompletedOrders());
 		if(!order.equals("No Order")){
 			clientCommunication.showOrderDetails(facade.getOrderDetails(order));

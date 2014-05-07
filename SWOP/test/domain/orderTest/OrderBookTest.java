@@ -13,7 +13,7 @@ import org.junit.Test;
 import domain.assembly.AssemblyLine;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.observer.ClockObserver;
 import domain.order.CustomOrder;
@@ -52,7 +52,7 @@ public class OrderBookTest {
 }
 
 	@Test
-	public void test1() throws ImmutableException, NotImplementedException {
+	public void test1() throws UnmodifiableException, NotImplementedException {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
 		StandardOrder order = new StandardOrder("Mario", model1,3, new ImmutableClock(0,0));
@@ -74,7 +74,7 @@ public class OrderBookTest {
 	}
 	
 	@Test
-	public void testAddCustomOrder() throws ImmutableException, NotImplementedException {
+	public void testAddCustomOrder() throws UnmodifiableException, NotImplementedException {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
 		CustomVehicle customModel = new CustomVehicle();

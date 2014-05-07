@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 
 /**
@@ -25,7 +25,7 @@ public class CustomVehicle implements IVehicle {
 
 	@Override
 	public void addCarPart(VehicleOption part) throws AlreadyInMapException,
-			ImmutableException {
+			UnmodifiableException {
 		if(part==null){
 			throw new IllegalArgumentException();
 		}
@@ -42,7 +42,7 @@ public class CustomVehicle implements IVehicle {
 
 	@Override
 	public void addForcedOptionalType(VehicleOption type, boolean bool)
-			throws ImmutableException, NotImplementedException {
+			throws UnmodifiableException, NotImplementedException {
 		throw new NotImplementedException();
 	}
 
@@ -53,7 +53,7 @@ public class CustomVehicle implements IVehicle {
 
 	@Override
 	public void setSpecification(VehicleSpecification template)
-			throws ImmutableException, NotImplementedException {
+			throws UnmodifiableException, NotImplementedException {
 		throw new NotImplementedException();
 	}
 

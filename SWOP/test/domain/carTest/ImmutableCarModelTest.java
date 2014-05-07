@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.vehicle.IVehicle;
 import domain.vehicle.UnmodifiableVehicle;
@@ -35,7 +35,7 @@ public class ImmutableCarModelTest {
 	
 	
 	@Test
-	public void testGetters() throws AlreadyInMapException, ImmutableException, NotImplementedException {
+	public void testGetters() throws AlreadyInMapException, UnmodifiableException, NotImplementedException {
 		car.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		car.addCarPart(new VehicleOption("break", VehicleOptionCategory.BODY));
 		
@@ -57,18 +57,18 @@ public class ImmutableCarModelTest {
 	}
 	
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable1() throws AlreadyInMapException, ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable1() throws AlreadyInMapException, UnmodifiableException{
 		immutable.addCarPart(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable2() throws ImmutableException, NotImplementedException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable2() throws UnmodifiableException, NotImplementedException{
 		immutable.addForcedOptionalType(null, true);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable3() throws ImmutableException, NotImplementedException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable3() throws UnmodifiableException, NotImplementedException{
 		immutable.setSpecification(null);
 	}
 	

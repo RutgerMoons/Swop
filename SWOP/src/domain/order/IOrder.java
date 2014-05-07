@@ -1,7 +1,7 @@
 package domain.order;
 
 import domain.clock.ImmutableClock;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.vehicle.IVehicle;
 
@@ -47,10 +47,10 @@ public interface IOrder {
 	 * Set the deadline of the CustomOrder
 	 * @throws NotImplementedException
 	 * 			if the Order isn't a CustomOrder
-	 * @throws ImmutableException
+	 * @throws UnmodifiableException
 	 * 			if the IOrder is an ImmutableOrder.
 	 */
-	public void setDeadline(ImmutableClock clock) throws NotImplementedException, ImmutableException;
+	public void setDeadline(ImmutableClock clock) throws NotImplementedException, UnmodifiableException;
 	
 	/**
 	 * Get the estimated time until completion.
@@ -60,7 +60,7 @@ public interface IOrder {
 	/**
 	 * Set the estimated time of completion of the Order.
 	 */
-	public void setEstimatedTime(ImmutableClock clock) throws ImmutableException;
+	public void setEstimatedTime(ImmutableClock clock) throws UnmodifiableException;
 	 
 	/**
 	 * Get the time when the Order is ordered.
@@ -69,17 +69,17 @@ public interface IOrder {
 
 	/**
 	 * Set the time when the Order is ordered. 
-	 * @throws ImmutableException
+	 * @throws UnmodifiableException
 	 * 			if the IOrder is an ImmutableOrder.
 	 */
-	public void setOrderTime(ImmutableClock clock) throws ImmutableException;
+	public void setOrderTime(ImmutableClock clock) throws UnmodifiableException;
 	
 	/**
 	 * Method for decreasing the amount of pendingCars each time an car of the
 	 * order is completed.
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 			If the IOrder is an ImmutableOrder
 	 */
-	public void completeCar() throws ImmutableException;
+	public void completeCar() throws UnmodifiableException;
 	
 }

@@ -1,7 +1,7 @@
 package controller;
 
 import view.IClientCommunication;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -28,14 +28,14 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 
 	@Override
 	public void executeUseCase() throws IllegalArgumentException,
-	ImmutableException {
+	UnmodifiableException {
 		customOrder();
 	}
 
 	/**
 	 * Place a new CustomOrder, as described by the user.
 	 */
-	private void customOrder() throws IllegalArgumentException, ImmutableException {
+	private void customOrder() throws IllegalArgumentException, UnmodifiableException {
 		String customTaskDescription = clientCommunication.showCustomTasks(facade.getCustomTasks());
 
 		String model = clientCommunication.showCustomTasks(facade.getSpecificCustomTasks(customTaskDescription));

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.job.Action;
 import domain.job.ITask;
 import domain.job.UnmodifiableTask;
@@ -24,7 +24,7 @@ public class ImmutableTaskTest {
 	}
 	
 	@Test
-	public void test() throws ImmutableException{
+	public void test() throws UnmodifiableException{
 		assertEquals("Test", immutable.getTaskDescription());
 		Action action = new Action("Paint");
 		task.addAction(action);
@@ -38,18 +38,18 @@ public class ImmutableTaskTest {
 		new UnmodifiableTask(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable1() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable1() throws UnmodifiableException{
 		immutable.setActions(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable2() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable2() throws UnmodifiableException{
 		immutable.addAction(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable3() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable3() throws UnmodifiableException{
 		immutable.setTaskDescription(null);
 	}
 }

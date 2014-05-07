@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
@@ -81,13 +81,13 @@ public class ImmutableOrderTest {
 		new UnmodifiableOrder(null);
 	}
 	
-	@Test(expected = ImmutableException.class)
-	public void testImmutable1() throws ImmutableException{
+	@Test(expected = UnmodifiableException.class)
+	public void testImmutable1() throws UnmodifiableException{
 		immutable.setEstimatedTime(new ImmutableClock(0, 0));
 	}
 	
-	@Test(expected = ImmutableException.class)
-	public void testImmutable2() throws ImmutableException{
+	@Test(expected = UnmodifiableException.class)
+	public void testImmutable2() throws UnmodifiableException{
 		immutable.completeCar();
 	}
 	
@@ -96,13 +96,13 @@ public class ImmutableOrderTest {
 		immutable.getDeadline();
 	}
 	
-	@Test(expected = ImmutableException.class)
-	public void testSetDeadline() throws NotImplementedException, ImmutableException{
+	@Test(expected = UnmodifiableException.class)
+	public void testSetDeadline() throws NotImplementedException, UnmodifiableException{
 		immutable.setDeadline(new ImmutableClock(5, 5));
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testGetAndSetOrderTime() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testGetAndSetOrderTime() throws UnmodifiableException{
 		order.setOrderTime(new ImmutableClock(0, 0));
 		assertEquals(order.getOrderTime(), immutable.getOrderTime());
 		

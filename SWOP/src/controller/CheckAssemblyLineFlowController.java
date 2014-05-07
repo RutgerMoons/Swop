@@ -1,7 +1,7 @@
 package controller;
 
 import view.IClientCommunication;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -26,7 +26,7 @@ public class CheckAssemblyLineFlowController extends UseCaseFlowController{
 
 	
 	@Override
-	public void executeUseCase() throws IllegalArgumentException,ImmutableException {
+	public void executeUseCase() throws IllegalArgumentException,UnmodifiableException {
 		this.clientCommunication.showAssemblyLine(facade.getAssemblyLineAsString(), "current");		
 	}
 }

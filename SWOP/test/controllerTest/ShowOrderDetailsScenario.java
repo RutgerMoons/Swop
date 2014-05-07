@@ -18,7 +18,7 @@ import view.ClientCommunication;
 import view.IClientCommunication;
 import controller.OrderFlowController;
 import controller.ShowOrderDetailsFlowController;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -89,7 +89,7 @@ public class ShowOrderDetailsScenario {
 	}
 
 	@Test
-	public void showOrderDetails() throws IllegalArgumentException, ImmutableException{
+	public void showOrderDetails() throws IllegalArgumentException, UnmodifiableException{
 		//placement of an order
 		facade.createAndAddUser("Mario", "garageholder");
 		String s = System.lineSeparator();

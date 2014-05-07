@@ -20,7 +20,7 @@ import domain.assembly.AssemblyLine;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.facade.Facade;
@@ -221,7 +221,7 @@ public class SchedulerAlgorithmTest {
 		StandardOrder order = new StandardOrder("Luigi", this.model, 5, c.getUnmodifiableClock());
 		try {
 			line.convertStandardOrderToJob(order);
-		} catch (ImmutableException e) { }
+		} catch (UnmodifiableException e) { }
 		
 		Set<Set<VehicleOption>> powerSet = line.getAllCarOptionsInPendingOrders();
 		assertEquals(127, powerSet.size());

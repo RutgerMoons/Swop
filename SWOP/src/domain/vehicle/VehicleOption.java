@@ -13,24 +13,13 @@ public class VehicleOption {
 		setType(type);
 	}
 
-	/**
-	 * 
-	 * @param description
-	 *            The type of this carpart.
-	 * @post the description of this object equals type, | unless type == null |
-	 *       or type is not one of the possible types for this CarPart
-	 * @throws IllegalArgumentException
-	 *             if description==null or isEmpty
-	 */
+
 	public void setDescription(String description) {
 		if (description == null || description.isEmpty())
 			throw new IllegalArgumentException();
 		this.description = description;
 	}
 
-	/**
-	 * Returns the description of this type.
-	 */
 	public String getDescription() {
 		return description;
 	}

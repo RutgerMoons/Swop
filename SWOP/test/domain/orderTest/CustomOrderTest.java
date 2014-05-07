@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.job.Action;
 import domain.order.CustomOrder;
@@ -26,7 +26,7 @@ public class CustomOrderTest {
 	private ImmutableClock orderTime;
 	private ImmutableClock deadline;
 	@Before
-	public void initializeModel() throws AlreadyInMapException, ImmutableException {
+	public void initializeModel() throws AlreadyInMapException, UnmodifiableException {
 		orderTime = new ImmutableClock(1, 10);
 		deadline = new ImmutableClock(5, 20);
 		Set<VehicleOption> parts = new HashSet<>();
@@ -74,7 +74,7 @@ public class CustomOrderTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testPendingCars2() throws ImmutableException {
+	public void testPendingCars2() throws UnmodifiableException {
 		CustomOrder order = new CustomOrder("Mario", model, 1, orderTime, deadline);
 		order.completeCar();
 		assertEquals(0, order.getPendingCars());
@@ -103,7 +103,7 @@ public class CustomOrderTest {
 	}
 
 	@Test
-	public void testCarCompleted() throws ImmutableException {
+	public void testCarCompleted() throws UnmodifiableException {
 		CustomOrder order = new CustomOrder("Mario", model, 3, orderTime, deadline);
 		assertEquals(3, order.getPendingCars());
 		order.completeCar();
@@ -112,7 +112,7 @@ public class CustomOrderTest {
 	}
 
 	@Test
-	public void TestEqualsAndHashcode() throws AlreadyInMapException, ImmutableException {
+	public void TestEqualsAndHashcode() throws AlreadyInMapException, UnmodifiableException {
 		CustomVehicle model2 = new CustomVehicle();
 		model2.addCarPart(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 
