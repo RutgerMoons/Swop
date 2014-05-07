@@ -9,7 +9,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import domain.clock.ImmutableClock;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.Action;
 import domain.job.IAction;
@@ -80,13 +80,13 @@ public class AssemblyLine {
 	 * @throws NoSuitableJobFoundException
 	 * 		Thrown when no job can be scheduled by the scheduler.
 	 *  
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		Thrown when an IOrder has no deadline yet.
 	 * 
 	 * @throws IllegalStateException
 	 * 		Thrown when the assemblyLine cannot advance.
 	 */
-	public void advance() throws ImmutableException, NoSuitableJobFoundException {
+	public void advance() throws UnmodifiableException, NoSuitableJobFoundException {
 		if (!canAdvance()) {
 			throw new IllegalStateException();
 		}
@@ -131,13 +131,13 @@ public class AssemblyLine {
 	 * @param order
 	 *            The order that needs to be converted to a list of jobs.
 	 * 
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		Thrown when an IOrder has no deadline yet.
 	 * 
 	 * @throws IllegalArgumentException
 	 *       Thrown when the given parameter is null
 	 */
-	private List<IJob> convertOrderToJob(IOrder order) throws ImmutableException {
+	private List<IJob> convertOrderToJob(IOrder order) throws UnmodifiableException {
 		IVehicle model = order.getDescription();
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
@@ -161,13 +161,13 @@ public class AssemblyLine {
 	 * @param order
 	 *            The order that needs to be converted to a list of jobs.
 	 *             
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		Thrown when an IOrder has no deadline yet.
 	 * 
 	 * @throws IllegalArgumentException
 	 *       Thrown when the given parameter is null
 	 */
-	public int convertCustomOrderToJob(CustomOrder order) throws ImmutableException{
+	public int convertCustomOrderToJob(CustomOrder order) throws UnmodifiableException{
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
@@ -183,13 +183,13 @@ public class AssemblyLine {
 	 * The method returns the estimated time of completion for the order.
 	 * 
 	 *             
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		Thrown when an IOrder has no deadline yet.
 	 * 
 	 * @throws IllegalArgumentException
 	 *       Thrown when the given parameter is null
 	 */
-	public int convertStandardOrderToJob(StandardOrder order) throws ImmutableException{
+	public int convertStandardOrderToJob(StandardOrder order) throws UnmodifiableException{
 		if (order == null) {
 			throw new IllegalArgumentException();
 		}
@@ -240,8 +240,8 @@ public class AssemblyLine {
 	/**
 	 * Returns the currently used Scheduling Algorithm Type as String
 	 */
-	public String getCurrentSchedulingAlgorithmAsString() {
-		return this.scheduler.getCurrentSchedulingAlgorithmAsString();
+	public Scheduler getCurrentSchedulingAlgorithm() {
+		return this.scheduler;
 	}
 	
 	/**

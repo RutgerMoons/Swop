@@ -17,7 +17,7 @@ import domain.assembly.UnmodifiableWorkBench;
 import domain.assembly.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.job.Action;
 import domain.job.IJob;
 import domain.job.Job;
@@ -42,7 +42,7 @@ public class ImmutableWorkBenchTest {
 		
 	}
 	@Test
-	public void test() throws AlreadyInMapException, ImmutableException {
+	public void test() throws AlreadyInMapException, UnmodifiableException {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
@@ -77,33 +77,33 @@ public class ImmutableWorkBenchTest {
 		new UnmodifiableWorkBench(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable1() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable1() throws UnmodifiableException{
 		immutable.setCurrentJob(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable2() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable2() throws UnmodifiableException{
 		immutable.setResponsibilities(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable3() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable3() throws UnmodifiableException{
 		immutable.addResponsibility(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable4() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable4() throws UnmodifiableException{
 		immutable.setCurrentTasks(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable5() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable5() throws UnmodifiableException{
 		immutable.chooseTasksOutOfJob();
 	}
 	
 	@Test
-	public void testNoOptional() throws ImmutableException{
+	public void testNoOptional() throws UnmodifiableException{
 		Optional<IJob> optional = Optional.absent();
 		bench.setCurrentJob(optional);
 		assertFalse(immutable.getCurrentJob().isPresent());

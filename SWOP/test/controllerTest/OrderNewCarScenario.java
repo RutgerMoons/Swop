@@ -19,7 +19,7 @@ import org.junit.runners.Parameterized;
 import view.ClientCommunication;
 import view.IClientCommunication;
 import controller.OrderFlowController;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -119,7 +119,7 @@ public class OrderNewCarScenario {
 		try {
 			controller.executeUseCase();
 		} catch (IllegalArgumentException e1) {
-		} catch (ImmutableException e1) {
+		} catch (UnmodifiableException e1) {
 		}		
 		String output = myout.toString();
 		assertTrue(output.contains("You have no pending Orders"));
@@ -199,7 +199,7 @@ public class OrderNewCarScenario {
 			controller.executeUseCase();
 		} catch (IllegalArgumentException e1) {
 			System.out.println("here");
-		} catch (ImmutableException e1) {
+		} catch (UnmodifiableException e1) {
 			System.out.println("here");
 		}		
 		String output = myout.toString();

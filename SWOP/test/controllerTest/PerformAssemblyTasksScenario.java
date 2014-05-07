@@ -21,7 +21,7 @@ import view.ClientCommunication;
 import view.IClientCommunication;
 import controller.AssembleFlowController;
 import controller.OrderFlowController;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
@@ -60,7 +60,7 @@ public class PerformAssemblyTasksScenario {
 	}
 	
 	@Test
-	public void PerformUseCase() throws ImmutableException, NoSuitableJobFoundException{
+	public void PerformUseCase() throws UnmodifiableException, NoSuitableJobFoundException{
 		//placement of an order
 		facade.createAndAddUser("Mario", "garageholder");
 		String s = System.lineSeparator();

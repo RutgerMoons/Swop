@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.VehicleOption;
@@ -21,25 +21,25 @@ public class CustomCarModelTest {
 	}
 
 	@Test
-	public void testAddCarPart() throws AlreadyInMapException, ImmutableException {
+	public void testAddCarPart() throws AlreadyInMapException, UnmodifiableException {
 		VehicleOption sportBody = new VehicleOption("sport", VehicleOptionCategory.BODY);
 		model.addCarPart(sportBody);
 		assertEquals(sportBody, model.getCarParts().get(VehicleOptionCategory.BODY));
 	}
 	
 	@Test(expected=AlreadyInMapException.class)
-	public void testAddInvalidCarparts() throws AlreadyInMapException, ImmutableException {
+	public void testAddInvalidCarparts() throws AlreadyInMapException, UnmodifiableException {
 		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		model.addCarPart(new VehicleOption("break", VehicleOptionCategory.BODY));
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testAddNullCarPart() throws AlreadyInMapException, ImmutableException{
+	public void testAddNullCarPart() throws AlreadyInMapException, UnmodifiableException{
 		model.addCarPart(null);
 	}
 	
 	@Test
-	public void testToString() throws AlreadyInMapException, ImmutableException{
+	public void testToString() throws AlreadyInMapException, UnmodifiableException{
 		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		String s = System.lineSeparator();
 		assertEquals("BODY: sport", model.toString());
@@ -51,7 +51,7 @@ public class CustomCarModelTest {
 	}
 	
 	@Test(expected=NotImplementedException.class)
-	public void testAddForcedOptionalTypes() throws ImmutableException, NotImplementedException{
+	public void testAddForcedOptionalTypes() throws UnmodifiableException, NotImplementedException{
 		model.addForcedOptionalType(new VehicleOption("sport", VehicleOptionCategory.BODY), false);
 	}
 	
@@ -61,7 +61,7 @@ public class CustomCarModelTest {
 	}
 	
 	@Test(expected=NotImplementedException.class)
-	public void testsetSpecification() throws ImmutableException, NotImplementedException{
+	public void testsetSpecification() throws UnmodifiableException, NotImplementedException{
 		model.setSpecification(null);
 	}
 }

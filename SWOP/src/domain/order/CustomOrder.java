@@ -1,7 +1,7 @@
 package domain.order;
 
 import domain.clock.ImmutableClock;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.IVehicle;
 
@@ -129,7 +129,7 @@ public class CustomOrder implements IOrder {
 	}
 
 	@Override
-	public void completeCar() throws ImmutableException {
+	public void completeCar() throws UnmodifiableException {
 		setPendingCars(--pendingCars);
 	}
 

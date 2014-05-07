@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.facade.Facade;
@@ -95,7 +95,7 @@ public class FacadeTest {
 	}
 	
 	@Test (expected = NullPointerException.class)
-	public void processOrdertest() throws IllegalStateException, ImmutableException, NotImplementedException {
+	public void processOrdertest() throws IllegalStateException, UnmodifiableException, NotImplementedException {
 		facade.processOrder(5);
 	}
 

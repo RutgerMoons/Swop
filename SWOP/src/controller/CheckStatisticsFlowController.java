@@ -1,7 +1,7 @@
 package controller;
 
 import view.IClientCommunication;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -25,7 +25,7 @@ public class CheckStatisticsFlowController extends UseCaseFlowController {
 	}
 
 	@Override
-	public void executeUseCase() throws IllegalArgumentException, ImmutableException {
+	public void executeUseCase() throws IllegalArgumentException, UnmodifiableException {
 		clientCommunication.showStatistics(facade.getStatistics());
 
 	}

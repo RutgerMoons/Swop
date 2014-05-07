@@ -1,6 +1,6 @@
 package domain.job;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 
 /**
  * Create an Immutable Action, only the getters are accessible.
@@ -35,12 +35,12 @@ public class UnmodifiableAction implements IAction {
 		return action.toString();
 	}
 	@Override
-	public void setCompleted(boolean isCompleted) throws ImmutableException {
-		throw new ImmutableException();
+	public void setCompleted(boolean isCompleted) throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 	@Override
-	public void setDescription(String description) throws ImmutableException {
-		throw new ImmutableException();
+	public void setDescription(String description) throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 
 }

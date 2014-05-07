@@ -1,41 +1,43 @@
 package domain.vehicle;
 
+import domain.exception.UnmodifiableException;
+
 public class UnmodifiableVehicleOption implements IVehicleOption{
 
+	private VehicleOption option;
+
+	public UnmodifiableVehicleOption(VehicleOption option){
+		this.option = option;
+	}
 	@Override
-	public void setDescription(String description) {
-		// TODO Auto-generated method stub
-		
+	public void setDescription(String description) throws UnmodifiableException{
+		throw new UnmodifiableException();
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return option.getDescription();
 	}
 
 	@Override
 	public VehicleOptionCategory getType() {
-		// TODO Auto-generated method stub
-		return null;
+		return option.getType();
 	}
 
 	@Override
-	public void setType(VehicleOptionCategory type) {
-		// TODO Auto-generated method stub
-		
+	public void setType(VehicleOptionCategory type) throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 
 	@Override
 	public String getTaskDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return option.getTaskDescription();
 	}
 
 	@Override
 	public String getActionDescription() {
 		// TODO Auto-generated method stub
-		return null;
+		return option.getActionDescription();
 	}
 
 	

@@ -1,6 +1,7 @@
 package domain.facade;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,6 +11,10 @@ import java.util.Set;
 import view.CustomVehicleCatalogueFiller;
 import view.VehicleSpecificationCatalogueFiller;
 
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableCollection.Builder;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 
 import domain.assembly.AssemblyLine;
@@ -17,7 +22,7 @@ import domain.assembly.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
@@ -34,12 +39,14 @@ import domain.order.StandardOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
+import domain.scheduling.Scheduler;
 import domain.users.AccessRight;
 import domain.users.User;
 import domain.users.UserBook;
 import domain.users.UserFactory;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.CustomVehicleCatalogue;
+import domain.vehicle.IVehicleOption;
 import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
@@ -118,11 +125,10 @@ public class Facade {
 	 * @param part
 	 * 			The part you want to add to the model.
 	 */
-	public void addPartToModel(VehicleOption part) {
-		
-		
+	public void addPartToModel(IVehicleOption part) {
+		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
 		try {
-			picker.getModel().addCarPart(part);
+			picker.getModel().addCarPart(option);
 		} catch (AlreadyInMapException e) {
 		}
 	}
@@ -130,12 +136,12 @@ public class Facade {
 	/**
 	 * Advance the assemblyline.
 	 * 
-	 * @throws ImmutableException
+	 * @throws UnmodifiableException
 	 *             If an order on one of the workbenches is an ImmutableOrder
 	 * @throws NoSuitableJobFoundException
 	 *             If there are no suitable jobs to be put on the assemblyline.
 	 */
-	public void advanceAssemblyLine() throws ImmutableException,
+	public void advanceAssemblyLine() throws UnmodifiableException,
 			NoSuitableJobFoundException {
 		assemblyLine.advance();
 	}
@@ -169,26 +175,14 @@ public class Facade {
 	 *            The index of the Task in the Job on the Workbench.
 	 * @param time
 	 *            The time the clock has to be advanced.
-	 * @throws ImmutableException
+	 * @throws UnmodifiableException
 	 *             If the Task in the job is an ImmutableTask.
 	 * @throws NoSuitableJobFoundException
 	 *             If there are no suitable jobs to be put on the assemblyline.
 	 */
-	public void completeChosenTaskAtChosenWorkBench(int workBenchIndex,
-			int taskIndex, int time) throws ImmutableException,
+	public void completeChosenTaskAtChosenWorkBench(ITask task, int time) throws UnmodifiableException,
 			NoSuitableJobFoundException {
-		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(
-				workBenchIndex);
 
-		List<ITask> allTasks = workbench.getCurrentTasks();
-		Iterator<ITask> iter = allTasks.iterator();
-		while (iter.hasNext()) {
-			ITask task = iter.next();
-			if (task.isCompleted())
-				iter.remove();
-		}
-
-		ITask task = allTasks.get(taskIndex);
 		for (IAction action : task.getActions()) {
 			action.setCompleted(true);
 		}
@@ -229,8 +223,8 @@ public class Facade {
 	 *            The specification the PartPicker has to take into account when
 	 *            creating the CarModel
 	 */
-	public void createNewModel(String realModel) {
-		picker.setNewModel(vehicleSpecificationCatalogue.getCatalogue().get(realModel));
+	public void createNewModel(VehicleSpecification realModel) {
+		picker.setNewModel(realModel);
 	}
 
 	/**
@@ -252,7 +246,7 @@ public class Facade {
 	 * @return
 	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
 	 */
-	public ArrayList<Integer> getBlockingWorkBenches() {
+	public List<Integer> getBlockingWorkBenches() {
 		return assemblyLine.getBlockingWorkBenches();
 	}
 
@@ -263,14 +257,8 @@ public class Facade {
 	 * @throws IllegalArgumentException
 	 * 			If no CarModelSpecification is found with the given name.
 	 */
-	public String getCarModelSpecificationFromCatalogue(String specificationName)
-			throws IllegalArgumentException {
-		for (String model : this.vehicleSpecificationCatalogue.getCatalogue().keySet()) {
-			if (model.equalsIgnoreCase(specificationName)) {
-				return model;
-			}
-		}
-		throw new IllegalArgumentException();
+	public VehicleSpecification getCarModelSpecificationFromCatalogue(String specificationName) {
+		return vehicleSpecificationCatalogue.getCatalogue().get(specificationName);
 	}
 
 	/**
@@ -283,47 +271,30 @@ public class Facade {
 	/**
 	 * Get a set off all the CarPartTypes that are available.
 	 */
-	public Set<String> getCarPartTypes() {
-		Set<String> types = new HashSet<>();
-		for (VehicleOptionCategory type : VehicleOptionCategory.values()) {
-			types.add(type.toString());
-
-		}
-		return types;
+	public List<VehicleOptionCategory> getCarPartTypes() {
+		return Arrays.asList(VehicleOptionCategory.values());
 	}
 
 	/**
 	 * Get a list of the completed orders of the user that is currently logged in. 
 	 */
-	public ArrayList<String> getCompletedOrders() {
-		ArrayList<String> completedOrders = new ArrayList<String>();
-		if (this.orderBook.getCompletedOrders().containsKey(
-				userBook.getCurrentUser().getName())) {
-			for (IOrder order : orderBook.getCompletedOrders().get(
-					userBook.getCurrentUser().getName())) {
-				completedOrders.add(order.toString());
-			}
-		}
-		return completedOrders;
+	public List<IOrder> getCompletedOrders() {
+		return ImmutableList.copyOf(orderBook.getCompletedOrders().get(userBook.getCurrentUser().getName()));
 	}
 
 	/**
 	 * Returns the currently used Scheduling Algorithm Type as String
 	 */
-	public String getCurrentSchedulingAlgorithmAsString() {
-		return this.assemblyLine.getCurrentSchedulingAlgorithmAsString();
+	public Scheduler getCurrentSchedulingAlgorithmAsString() {
+		return this.assemblyLine.getCurrentSchedulingAlgorithm();
 	}
 
 	/**
 	 * Get a list of available CustomTasks from the catalogue. 
 	 * @return
 	 */
-	public List<String> getCustomTasks() {
-		List<String> tasks = new ArrayList<>();
-		for (String model : customVehicleCatalogue.getCatalogue().keySet()) {
-			tasks.add(model);
-		}
-		return tasks;
+	public Set<String> getCustomTasks() {
+		return customVehicleCatalogue.getCatalogue().keySet();
 	}
 
 	/**
@@ -377,19 +348,8 @@ public class Facade {
 	 * @param type
 	 * 			The type of the parts that has to be selected. 
 	 */
-	public Set<String> getParts(String type) {
-		Set<String> parts = new HashSet<>();
-		VehicleOptionCategory category = VehicleOptionCategory.valueOf(type);
-		for (VehicleOption part : picker.getStillAvailableCarParts(category)) {
-			if (category.isOptional()
-					|| (picker.getModel().getForcedOptionalTypes()
-							.get(category) != null && picker.getModel()
-							.getForcedOptionalTypes().get(category))) {
-				parts.add("Select nothing");
-			}
-			parts.add(part.toString());
-		}
-		return parts;
+	public Set<VehicleOption> getParts(VehicleOptionCategory type) {
+		return ImmutableSet.copyOf(picker.getStillAvailableCarParts(type));
 	}
 	
 	/**
@@ -555,7 +515,7 @@ public class Facade {
 				clock.getUnmodifiableClock(), deadlineClock);
 		try {
 			orderBook.addOrder(order, clock.getUnmodifiableClock());
-		} catch (ImmutableException | NotImplementedException e) {
+		} catch (UnmodifiableException | NotImplementedException e) {
 		}
 		return order.getEstimatedTime().toString();
 	}
@@ -564,14 +524,14 @@ public class Facade {
 	 * Create and schedule a standard order.
 	 * @param quantity
 	 * 			The amount of cars you want to order.
-	 * @throws ImmutableException
+	 * @throws UnmodifiableException
 	 * 			This is never thrown here.
 	 * @throws IllegalStateException
 	 * 			If the CarModel isn't a valid model.
 	 * @throws NotImplementedException
 	 * 			This is never thrown here.
 	 */
-	public String processOrder(int quantity) throws ImmutableException,
+	public String processOrder(int quantity) throws UnmodifiableException,
 			IllegalStateException, NotImplementedException {
 		Vehicle vehicle = picker.getModel();
 

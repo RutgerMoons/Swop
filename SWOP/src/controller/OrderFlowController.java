@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import view.IClientCommunication;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.facade.Facade;
@@ -32,11 +32,11 @@ public class OrderFlowController extends UseCaseFlowController {
 	/**
 	 * Execute the use case.
 	 * 
-	 * @throws ImmutableException
+	 * @throws UnmodifiableException
 	 */
 	@Override
 	public void executeUseCase() throws IllegalArgumentException,
-			ImmutableException {
+			UnmodifiableException {
 		this.showOrders();
 		placeNewOrder();
 	}
@@ -57,9 +57,9 @@ public class OrderFlowController extends UseCaseFlowController {
 	 * Retrieves all the needed input of the user for processing an order. All
 	 * this information it gives to the iFacade.
 	 * 
-	 * @throws ImmutableException
+	 * @throws UnmodifiableException
 	 */
-	public void placeNewOrder() throws ImmutableException {
+	public void placeNewOrder() throws UnmodifiableException {
 		if (!this.clientCommunication.askContinue()) {
 			return;
 		} else {

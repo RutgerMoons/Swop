@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
 
@@ -60,26 +60,26 @@ public class UnmodifiableJob implements IJob {
 	}
 
 	@Override
-	public void setOrder(IOrder order) throws ImmutableException {
-		throw new ImmutableException();
+	public void setOrder(IOrder order) throws UnmodifiableException {
+		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void setTasks(List<ITask> tasks) throws ImmutableException {
-		throw new ImmutableException();
+	public void setTasks(List<ITask> tasks) throws UnmodifiableException {
+		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void addTask(ITask task) throws ImmutableException {
-		throw new ImmutableException();
+	public void addTask(ITask task) throws UnmodifiableException {
+		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void setMinimalIndex(int index) throws ImmutableException {
-		throw new ImmutableException();
+	public void setMinimalIndex(int index) throws UnmodifiableException {
+		throw new UnmodifiableException();
 		
 	}
 

@@ -1,7 +1,7 @@
 package controller;
 
 import view.IClientCommunication;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -41,7 +41,7 @@ public abstract class UseCaseFlowController {
 	 * @param user
 	 * 			primary actor in this use case
 	 */
-	public abstract void executeUseCase() throws IllegalArgumentException, ImmutableException;
+	public abstract void executeUseCase() throws IllegalArgumentException, UnmodifiableException;
 
 	public AccessRight getAccessRight() {
 		return accessRight;

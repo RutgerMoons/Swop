@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 
 
 /**
@@ -46,15 +46,15 @@ public class UnmodifiableTask implements ITask{
 		return task.toString();
 	}
 	@Override
-	public void setActions(List<IAction> actions) throws ImmutableException {
-		throw new ImmutableException();
+	public void setActions(List<IAction> actions) throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 	@Override
-	public void addAction(IAction action) throws ImmutableException {
-		throw new ImmutableException();
+	public void addAction(IAction action) throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 	@Override
-	public void setTaskDescription(String taskDescription) throws ImmutableException {
-		throw new ImmutableException();
+	public void setTaskDescription(String taskDescription) throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 }

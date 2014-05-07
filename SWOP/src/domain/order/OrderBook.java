@@ -8,7 +8,7 @@ import com.google.common.collect.Multimap;
 
 import domain.assembly.AssemblyLine;
 import domain.clock.ImmutableClock;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 
 /**
@@ -91,11 +91,11 @@ public class OrderBook {
 	 * The estimated time of completion is automatically set to the order.
 	 * @param order
 	 * 			The StandardOrder you want to add.
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 			If the order is an ImmutableOrder.
 	 * 			
 	 */
-	public void addOrder(StandardOrder order, ImmutableClock currentTime) throws ImmutableException {
+	public void addOrder(StandardOrder order, ImmutableClock currentTime) throws UnmodifiableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertStandardOrderToJob(order)));
 	}
@@ -110,11 +110,11 @@ public class OrderBook {
 	 * The estimated time of completion is automatically set to the order.
 	 * @param order
 	 * 			The CustomOrder you want to add.
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 			If the order is an ImmutableOrder.
 	 * 			
 	 */
-	public void addOrder(CustomOrder order, ImmutableClock currentTime) throws ImmutableException, NotImplementedException {
+	public void addOrder(CustomOrder order, ImmutableClock currentTime) throws UnmodifiableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
 	}

@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
@@ -31,7 +31,7 @@ public class CustomVehicleCatalogueFiller {
 		CustomVehicle customSeats = new CustomVehicle();
 		try {
 			customSeats.addCarPart(new VehicleOption("custom", VehicleOptionCategory.SEATS));
-		} catch (AlreadyInMapException | ImmutableException e) {
+		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		models.put("installing custom seats", customSeats);
 		return models;
@@ -43,37 +43,37 @@ public class CustomVehicleCatalogueFiller {
 		CustomVehicle black = new CustomVehicle();
 		try {
 			black.addCarPart(new VehicleOption("black", VehicleOptionCategory.COLOR));
-		} catch (AlreadyInMapException | ImmutableException e) {
+		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle red = new CustomVehicle();
 		try {
 			red.addCarPart(new VehicleOption("red", VehicleOptionCategory.COLOR));
-		} catch (AlreadyInMapException | ImmutableException e) {
+		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle blue = new CustomVehicle();
 		try {
 			blue.addCarPart(new VehicleOption("blue", VehicleOptionCategory.COLOR));
-		} catch (AlreadyInMapException | ImmutableException e) {
+		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle white = new CustomVehicle();
 		try {
 			white.addCarPart(new VehicleOption("white", VehicleOptionCategory.COLOR));
-		} catch (AlreadyInMapException | ImmutableException e) {
+		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle green = new CustomVehicle();
 		try {
 			green.addCarPart(new VehicleOption("green", VehicleOptionCategory.COLOR));
-		} catch (AlreadyInMapException | ImmutableException e) {
+		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle yellow = new CustomVehicle();
 		try {
 			yellow.addCarPart(new VehicleOption("yellow", VehicleOptionCategory.COLOR));
-		} catch (AlreadyInMapException | ImmutableException e) {
+		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		models.put("spraying car bodies",yellow);

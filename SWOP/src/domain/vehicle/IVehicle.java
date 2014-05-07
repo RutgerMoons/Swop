@@ -3,7 +3,7 @@ package domain.vehicle;
 import java.util.Map;
 
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 
 /**
@@ -21,7 +21,7 @@ public interface IVehicle {
 	 * @throws AlreadyInMapException
 	 * 			If the model already has a CarOption of this Category.
 	 */
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException, ImmutableException;
+	public void addCarPart(VehicleOption part) throws AlreadyInMapException, UnmodifiableException;
 	
 	/**
 	 * Get the CarOptions that need to be forced into the CarModel.
@@ -31,7 +31,7 @@ public interface IVehicle {
 	/**
 	 * Add a forced Optional type, so it has to be in the model.
 	 */
-	public void addForcedOptionalType(VehicleOption type, boolean bool) throws ImmutableException, NotImplementedException;
+	public void addForcedOptionalType(VehicleOption type, boolean bool) throws UnmodifiableException, NotImplementedException;
 	
 	/**
 	 * Get the specification where the CarModel is built from.
@@ -41,7 +41,7 @@ public interface IVehicle {
 	/**
 	 * Set a new specification from which the CarModel has to be build.
 	 */
-	public void setSpecification(VehicleSpecification template) throws ImmutableException, NotImplementedException;
+	public void setSpecification(VehicleSpecification template) throws UnmodifiableException, NotImplementedException;
 
 	/**
 	 * Get the time at the workbench of this CarModel.

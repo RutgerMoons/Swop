@@ -16,7 +16,7 @@ import com.google.common.base.Optional;
 import domain.assembly.AssemblyLine;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.IJob;
@@ -86,7 +86,7 @@ public class SchedulingAlgorithmFifoTest {
 	}
 
 	@Test
-	public void getEstimatedTimeInMinutesTest1() throws ImmutableException, NotImplementedException{
+	public void getEstimatedTimeInMinutesTest1() throws UnmodifiableException, NotImplementedException{
 		ClockObserver obs = new ClockObserver();
 		AssemblyLine ass = new AssemblyLine(obs, new ImmutableClock(2, 360));
 		ass.switchToFifo();
@@ -180,7 +180,7 @@ public class SchedulingAlgorithmFifoTest {
 	}
 	
 	@Test
-	public void startNewDayTest() throws NotImplementedException, ImmutableException{
+	public void startNewDayTest() throws NotImplementedException, UnmodifiableException{
 		ClockObserver obs = new ClockObserver();
 		AssemblyLine ass = new AssemblyLine(obs, new ImmutableClock(2, 360));
 		ass.switchToFifo();

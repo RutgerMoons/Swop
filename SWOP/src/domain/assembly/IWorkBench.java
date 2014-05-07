@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.job.IJob;
 import domain.job.ITask;
 
@@ -34,12 +34,12 @@ public interface IWorkBench {
 	 * 
 	 * @param optional
 	 *            The job you want to allocate to the WorkBench.
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 			  If the IWorkBench is an ImmutableWorkBench.
 	 * @throws IllegalArgumentException
 	 *             if currentJob == null
 	 */
-	public void setCurrentJob(Optional<IJob> optional) throws ImmutableException;
+	public void setCurrentJob(Optional<IJob> optional) throws UnmodifiableException;
 	
 	/**
 	 * Get the list of responsibilities of this WorkBench. So the types of Tasks
@@ -54,24 +54,24 @@ public interface IWorkBench {
 	 * 
 	 * @param responsibilities
 	 *            A list of responsibilities.
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 			  If the IWorkBench is an ImmutableWorkBench.
 	 * @throws IllegalArgumentException
 	 *             If responsibilities==null
 	 */
-	public void setResponsibilities(Set<String> responsibilities) throws ImmutableException;
+	public void setResponsibilities(Set<String> responsibilities) throws UnmodifiableException;
 	
 	/**
 	 * Add a responsibility to this WorkBench.
 	 * 
 	 * @param responibility
 	 *            The responsibility you want to add.
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 			  If the IWorkBench is an ImmutableWorkBench.
 	 * @throws IllegalArgumentException
 	 *             If responsibility==null or isEmpty.
 	 */
-	public void addResponsibility(String responibility) throws ImmutableException;
+	public void addResponsibility(String responibility) throws UnmodifiableException;
 	
 	/**
 	 * Get the current tasks that have to be completed by this WorkBench.
@@ -85,20 +85,20 @@ public interface IWorkBench {
 	 * 
 	 * @param list
 	 *            A list of tasks.
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 			  If the IWorkBench is an ImmutableWorkBench.
 	 * @throws IllegalArgumentException
 	 *             If currentTasks==null
 	 */
-	public void setCurrentTasks(List<ITask> list) throws ImmutableException;
+	public void setCurrentTasks(List<ITask> list) throws UnmodifiableException;
 	
 	/**
 	 * Selects the Tasks that are valid for this Workbench. The taskDescription
 	 * is checked against the responsibilities from the Workbench.
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 			  If the IWorkBench is an ImmutableWorkBench.
 	 */
-	public void chooseTasksOutOfJob() throws ImmutableException;
+	public void chooseTasksOutOfJob() throws UnmodifiableException;
 	
 	/**
 	 * Check if the WorkBench has completed all of his Tasks.

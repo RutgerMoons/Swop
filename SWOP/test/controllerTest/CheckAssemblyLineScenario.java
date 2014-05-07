@@ -8,7 +8,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -71,7 +71,7 @@ public class CheckAssemblyLineScenario {
 	}
 
 	@Test
-	public void showAssemblyLine() throws IllegalArgumentException, ImmutableException{
+	public void showAssemblyLine() throws IllegalArgumentException, UnmodifiableException{
 		assertTrue("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories"
 				.equalsIgnoreCase(facade.getAssemblyLineAsString()));
 		

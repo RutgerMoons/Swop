@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.job.IJob;
 import domain.job.ITask;
 import domain.job.UnmodifiableJob;
@@ -69,24 +69,24 @@ public class UnmodifiableWorkBench implements IWorkBench {
 		return bench.toString();
 	}
 	@Override
-	public void setCurrentJob(Optional<IJob> optional) throws ImmutableException {
-		throw new ImmutableException();		
+	public void setCurrentJob(Optional<IJob> optional) throws UnmodifiableException {
+		throw new UnmodifiableException();		
 	}
 	@Override
-	public void setResponsibilities(Set<String> responsibilities) throws ImmutableException {
-		throw new ImmutableException();		
+	public void setResponsibilities(Set<String> responsibilities) throws UnmodifiableException {
+		throw new UnmodifiableException();		
 	}
 	@Override
-	public void addResponsibility(String responibility) throws ImmutableException {
-		throw new ImmutableException();		
+	public void addResponsibility(String responibility) throws UnmodifiableException {
+		throw new UnmodifiableException();		
 	}
 	@Override
-	public void setCurrentTasks(List<ITask> list) throws ImmutableException {
-		throw new ImmutableException();		
+	public void setCurrentTasks(List<ITask> list) throws UnmodifiableException {
+		throw new UnmodifiableException();		
 	}
 	@Override
-	public void chooseTasksOutOfJob() throws ImmutableException {
-		throw new ImmutableException();		
+	public void chooseTasksOutOfJob() throws UnmodifiableException {
+		throw new UnmodifiableException();		
 	}
 
 }

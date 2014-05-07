@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.job.IJob;
 import domain.job.ITask;
 import domain.job.UnmodifiableJob;
@@ -48,7 +48,7 @@ public class ImmutableJobTest {
 	}
 	
 	@Test
-	public void test() throws ImmutableException {
+	public void test() throws UnmodifiableException {
 		
 		assertEquals(immutable.getOrder().getDescription(), model);
 		List<ITask> tasks = new ArrayList<>();
@@ -67,29 +67,29 @@ public class ImmutableJobTest {
 		new UnmodifiableJob(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable1() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable1() throws UnmodifiableException{
 		immutable.setOrder(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable2() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable2() throws UnmodifiableException{
 		immutable.setTasks(null);
 	}
 	
-	@Test(expected=ImmutableException.class)
-	public void testImmutable3() throws ImmutableException{
+	@Test(expected=UnmodifiableException.class)
+	public void testImmutable3() throws UnmodifiableException{
 		immutable.addTask(null);
 	}
 	
 	@Test
-	public void testGetIndex() throws ImmutableException{
+	public void testGetIndex() throws UnmodifiableException{
 		job.setMinimalIndex(10);
 		assertEquals(10, immutable.getMinimalIndex());
 	}
 	
-	@Test(expected = ImmutableException.class)
-	public void testSetIndex() throws ImmutableException{
+	@Test(expected = UnmodifiableException.class)
+	public void testSetIndex() throws UnmodifiableException{
 		immutable.setMinimalIndex(10);
 	}
 }

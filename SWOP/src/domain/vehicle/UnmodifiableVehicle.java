@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import domain.exception.AlreadyInMapException;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 
 /**
@@ -47,8 +47,8 @@ public class UnmodifiableVehicle implements IVehicle {
 	}
 	@Override
 	public void addCarPart(VehicleOption part) throws AlreadyInMapException,
-			ImmutableException {
-		throw new ImmutableException();
+			UnmodifiableException {
+		throw new UnmodifiableException();
 		
 	}
 	@Override
@@ -57,8 +57,8 @@ public class UnmodifiableVehicle implements IVehicle {
 	}
 	@Override
 	public void addForcedOptionalType(VehicleOption type, boolean bool)
-			throws ImmutableException {
-		throw new ImmutableException();
+			throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 	@Override
 	public VehicleSpecification getSpecification() throws NotImplementedException {
@@ -66,8 +66,8 @@ public class UnmodifiableVehicle implements IVehicle {
 	}
 	@Override
 	public void setSpecification(VehicleSpecification template)
-			throws ImmutableException {
-		throw new ImmutableException();
+			throws UnmodifiableException {
+		throw new UnmodifiableException();
 	}
 	@Override
 	public int getTimeAtWorkBench() {

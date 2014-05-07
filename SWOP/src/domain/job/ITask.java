@@ -2,7 +2,7 @@ package domain.job;
 
 import java.util.List;
 
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 
 /**
  * Interface for limiting access to standard Tasks.
@@ -19,22 +19,22 @@ public interface ITask {
 	/**
 	 * Set the list of Actions that this Task contains.
 	 * 
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		 	  If the ITask is an ImmutableTask.
 	 * @throws IllegalArgumentException
 	 *             If actions==null
 	 */
-	public void setActions(List<IAction> actions) throws ImmutableException;
+	public void setActions(List<IAction> actions) throws UnmodifiableException;
 	
 	/**
 	 * Add an Action to this Task.
 	 * 
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		 	  If the ITask is an ImmutableTask.
 	 * @throws IllegalArgumentException
 	 *             if action==null
 	 */
-	public void addAction(IAction action) throws ImmutableException;
+	public void addAction(IAction action) throws UnmodifiableException;
 	
 	/**
 	 * Checks if the Task is completed.
@@ -52,12 +52,12 @@ public interface ITask {
 	/**
 	 * Set the description of this Task.
 	 * .
-	 * @throws ImmutableException 
+	 * @throws UnmodifiableException 
 	 * 		 	  If the ITask is an ImmutableTask.
 	 * @throws IllegalArgumentException
 	 *             if taskDescription==null or isEmpty
 	 */
-	public void setTaskDescription(String taskDescription) throws ImmutableException;
+	public void setTaskDescription(String taskDescription) throws UnmodifiableException;
 	
 	
 }

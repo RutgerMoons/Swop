@@ -7,7 +7,7 @@ import java.util.Set;
 import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
-import domain.exception.ImmutableException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -62,7 +62,7 @@ public class AssemAssist {
 			userFlowController.login();
 			try {
 				userFlowController.performDuties();
-			} catch (IllegalArgumentException | ImmutableException e) {
+			} catch (IllegalArgumentException | UnmodifiableException e) {
 			}
 			userFlowController.logout();
 		} while (true);
