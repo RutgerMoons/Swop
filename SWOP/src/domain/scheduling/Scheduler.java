@@ -28,6 +28,7 @@ public class Scheduler implements LogsClock {
 	private ArrayList<Shift> shifts;
 	private ImmutableClock clock;
 	private SchedulingAlgorithmFactory schedulingAlgorithmFactory;
+	private SchedulingAlgorithmType currentAlgorithm;
 
 	/**
 	 * Constructs a scheduler and initializes the shifts.
@@ -88,6 +89,7 @@ public class Scheduler implements LogsClock {
 			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createFifo();
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
+		this.currentAlgorithm = SchedulingAlgorithmType.FIFO;
 	}
 
 	/**
@@ -106,6 +108,7 @@ public class Scheduler implements LogsClock {
 			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(vehicleOptions);
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
+		this.currentAlgorithm = SchedulingAlgorithmType.BATCH;
 	}
 
 	/**
@@ -162,10 +165,10 @@ public class Scheduler implements LogsClock {
 	}
 	
 	/**
-	 * Returns the currently used Scheduling Algorithm Type as String
+	 * Returns the currently used Scheduling Algorithm Type
 	 */
-	public String getCurrentSchedulingAlgorithmAsString() {
-		return this.schedulingAlgorithm.getSchedulingAlgorithmType().toString();
+	public SchedulingAlgorithmType getCurrentSchedulingAlgorithm() {
+		return this.currentAlgorithm;
 	}
 	
 	/**

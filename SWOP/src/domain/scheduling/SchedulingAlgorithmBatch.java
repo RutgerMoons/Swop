@@ -30,8 +30,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
 	private PriorityQueue<IJob> standardJobs;
 
-	public SchedulingAlgorithmBatch(SchedulingAlgorithmType type, List<VehicleOption> carParts, int amountOfWorkBenches) {
-		super(type);
+	public SchedulingAlgorithmBatch(List<VehicleOption> carParts, int amountOfWorkBenches) {
 		if (carParts == null) {
 			throw new IllegalArgumentException();
 		}

@@ -21,14 +21,14 @@ public class SchedulingAlgorithmFactory {
 	 * Returns a new Fifo Scheduling Algorithm
 	 */
 	public SchedulingAlgorithm createFifo() {
-		return new SchedulingAlgorithmFifo(SchedulingAlgorithmType.FIFO, amountOfWorkBenches);
+		return new SchedulingAlgorithmFifo(amountOfWorkBenches);
 	}
 	
 	/**
 	 * Returns a new Batch Scheduling Algorithm
 	 */
 	public SchedulingAlgorithmBatch createBatch(List<VehicleOption> carParts) {
-		return new SchedulingAlgorithmBatch(SchedulingAlgorithmType.BATCH, carParts, amountOfWorkBenches);
+		return new SchedulingAlgorithmBatch(carParts, amountOfWorkBenches);
 	}
 	
 	/**
