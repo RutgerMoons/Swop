@@ -129,17 +129,8 @@ public class Facade {
 	 * @throws NoSuitableJobFoundException
 	 *             If there are no suitable jobs to be put on the assemblyline.
 	 */
-	public void completeChosenTaskAtChosenWorkBench(ITask task, int time) throws UnmodifiableException,
-			NoSuitableJobFoundException {
-
-		for (IAction action : task.getActions()) {
-			action.setCompleted(true);
-		}
-
-		if (this.canAssemblyLineAdvance()) {
-			this.advanceAssemblyLine();
-		}
-		clock.advanceTime(time);
+	public void completeChosenTaskAtChosenWorkBench(ITask task, int time) {
+		this.company.completeChosenTaskAtChosenWorkBench(task, time);
 	}
 
 	/**
