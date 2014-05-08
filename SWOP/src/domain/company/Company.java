@@ -162,4 +162,12 @@ public class Company {
 	public void logout(){
 		this.userbook.logout();
 	}
+	
+	public void startNewDay(){
+		this.clock.startNewDay();
+	}
+	
+	public void switchToDifferentAlgoritm(SchedulingAlgorithmCreator creator){
+		
+	}
 }

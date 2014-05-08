@@ -448,28 +448,21 @@ public class Facade {
 	 * Advance the clock to the next day.
 	 */
 	public void startNewDay() {
-		clock.startNewDay();
+		this.company.startNewDay();
 	}
 
 	/**
-	 * Switches the scheduling algorithm to use Fifo.
+	 * Switches the scheduling algorithm based on the information
+	 * given in the ScedulingAlgoritmeCreator object.
 	 */
-	public void switchToFifo() {
-		this.assemblyLine.switchToFifo();
+	public void switchToDifferentAlgorithm(SchedulingAlgorithmsCreator creator) {
+		this.company.switchToDifferentAlgorithm(creator);
 	}
 
-	/**
-	 * Switches the scheduling algorithm to use Batch with the given List of
-	 * CarOptions.
-	 */
-	public void switchToBatch(List<VehicleOption> batch) {
-		this.assemblyLine.switchToBatch(batch);
-	}
-	
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
-		return this.assemblyLine.getAllCarOptionsInPendingOrders();
+		return this.company.getAllCarOptionsInPendingOrders();
 	}
 }
