@@ -14,6 +14,8 @@ import domain.exception.NoSuitableJobFoundException;
 import domain.job.IJob;
 import domain.observer.ClockObserver;
 import domain.observer.LogsClock;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleOption;
 /**
  * This object is responsible for maintaining a scheduling algorithm, a certain amount of workbenches and shifts.
@@ -24,10 +26,8 @@ import domain.vehicle.VehicleOption;
 public class Scheduler implements LogsClock {
 
 	private SchedulingAlgorithm schedulingAlgorithm;
-	//private final int amountOfWorkBenches;
 	private ArrayList<Shift> shifts;
 	private ImmutableClock clock;
-	private SchedulingAlgorithmFactory schedulingAlgorithmFactory;
 
 	/**
 	 * Constructs a scheduler and initializes the shifts.
@@ -54,8 +54,6 @@ public class Scheduler implements LogsClock {
 		Shift shift2 = new Shift(840, 1320, 0);	//shift van 14:00 tot 22:00
 		shifts.add(shift1);
 		shifts.add(shift2);
-		this.schedulingAlgorithmFactory = new SchedulingAlgorithmFactory(amountOfWorkBenches);
-		switchToFifo();
 	}
 
 	/**
@@ -72,38 +70,14 @@ public class Scheduler implements LogsClock {
 		this.schedulingAlgorithm.AddStandardJob(standardJob);
 	}
 
-	/**
-	 * Method for switching to the Fifo algorithm.
-	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
-	 * the fifo algorithm created by the factory.
-	 */
-	public void switchToFifo()  {
+	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, int amountOfWorkbenches) {
 		if (this.schedulingAlgorithm == null) {
-			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createFifo();
-		}
-		else {
+			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(amountOfWorkbenches);
+		} else {
 			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
 			ArrayList<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
 			ArrayList<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
-			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createFifo();
-			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
-		}
-	}
-
-	/**
-	 * Method for switching to the Batch algorithm.
-	 * All the different kinds of jobs are retrieved from the current scheduling algorithm and given to
-	 * the Batch algorithm created by the factory.
-	 */
-	public void switchToBatch(List<VehicleOption> vehicleOptions) {
-		if (this.schedulingAlgorithm == null) {
-			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(vehicleOptions); 
-		}
-		else {
-			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
-			ArrayList<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
-			ArrayList<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
-			this.schedulingAlgorithm = this.schedulingAlgorithmFactory.createBatch(vehicleOptions);
+			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(amountOfWorkbenches);
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}
@@ -162,17 +136,10 @@ public class Scheduler implements LogsClock {
 	}
 	
 	/**
-	 * Returns the currently used Scheduling Algorithm Type as String
+	 * Returns the currently used Scheduling Algorithm Type
 	 */
-	public String getCurrentSchedulingAlgorithmAsString() {
-		return this.schedulingAlgorithm.getSchedulingAlgorithmType().toString();
-	}
-	
-	/**
-	 * Returns a list of all the possible scheduling algorithms as Strings.
-	 */
-	public ArrayList<String> getPossibleSchedulingAlgorithms() {
-		return this.schedulingAlgorithmFactory.getPossibleAlgorithmTypes();
+	public String getCurrentSchedulingAlgorithm() {
+		return this.schedulingAlgorithm.toString();
 	}
 	
 	/**

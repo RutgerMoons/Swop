@@ -1,4 +1,4 @@
-package domain.scheduling;
+package domain.scheduling.schedulingAlgorithm;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -14,16 +14,6 @@ import domain.job.IJob;
  * scheduling Jobs on an AssemblyLine
  */
 public abstract class SchedulingAlgorithm {
-	
-	protected final SchedulingAlgorithmType schedulingAlgorithmType;
-	
-	public SchedulingAlgorithm(SchedulingAlgorithmType type) {
-		this.schedulingAlgorithmType = type;
-	}
-	
-	public SchedulingAlgorithmType getSchedulingAlgorithmType() {
-		return this.schedulingAlgorithmType;
-	}
 	
 	/**
 	 * The scheduling algorithm gets all the internal data used to schedule jobs and will initialize its
@@ -100,5 +90,10 @@ public abstract class SchedulingAlgorithm {
 	 * The oldest Job in the list will be removed.
 	 */
 	protected abstract void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list);
+	
+	/**
+	 * Returns the name.
+	 */
+	public abstract String toString();
 	
 }

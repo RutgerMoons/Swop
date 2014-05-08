@@ -1,4 +1,4 @@
-package domain.scheduling;
+package domain.scheduling.schedulingAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,8 +30,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
 	private PriorityQueue<IJob> standardJobs;
 
-	public SchedulingAlgorithmBatch(SchedulingAlgorithmType type, List<VehicleOption> carParts, int amountOfWorkBenches) {
-		super(type);
+	public SchedulingAlgorithmBatch(List<VehicleOption> carParts, int amountOfWorkBenches) {
 		if (carParts == null) {
 			throw new IllegalArgumentException();
 		}
@@ -317,6 +316,10 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 				// this error can't occur
 			}
 		}
+	}
+	
+	public String toString() {
+		return "Batch";
 	}
 
 }

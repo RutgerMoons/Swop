@@ -1,4 +1,4 @@
-package domain.scheduling;
+package domain.scheduling.schedulingAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,8 +25,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
 	private PriorityQueue<IJob> standardJobs;
 
-	public SchedulingAlgorithmFifo(SchedulingAlgorithmType type, int amountOfWorkBenches) {
-		super(type);
+	public SchedulingAlgorithmFifo(int amountOfWorkBenches) {
 		customJobs = new PriorityQueue<IJob>(10, new JobComparatorDeadLine());
 		standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
 		this.amountOfWorkBenches = amountOfWorkBenches;
@@ -268,6 +267,10 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		this.customJobs = customJobs;
 		this.history = history;
 		this.standardJobs.addAll(standardJobs);
+	}
+	
+	public String toString() {
+		return "Fifo";
 	}
 
 }

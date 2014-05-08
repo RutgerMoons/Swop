@@ -15,3 +15,6 @@ o2kdg1st.zyx.txt
 *.synctex.gz
 *.classpath
 *.classpath
+*.html
+*.gif
+*.css
