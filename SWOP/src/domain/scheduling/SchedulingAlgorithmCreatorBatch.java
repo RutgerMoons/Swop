@@ -1,6 +1,6 @@
 package domain.scheduling;
 
-public class SchedulingAlgorithmFifoCreator extends SchedulingAlgorithmCreator {
+public class SchedulingAlgorithmCreatorBatch extends SchedulingAlgorithmCreator {
 
 	@Override
 	public SchedulingAlgorithm createSchedulingAlgorithm() {
