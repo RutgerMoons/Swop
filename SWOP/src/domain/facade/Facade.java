@@ -3,16 +3,12 @@ package domain.facade;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import view.CustomVehicleCatalogueFiller;
 import view.VehicleSpecificationCatalogueFiller;
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableCollection.Builder;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
@@ -21,11 +17,12 @@ import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
+import domain.company.Company;
 import domain.exception.AlreadyInMapException;
-import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
+import domain.exception.UnmodifiableException;
 import domain.job.IAction;
 import domain.job.ITask;
 import domain.log.Logger;
@@ -36,8 +33,6 @@ import domain.order.Delay;
 import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
-import domain.restriction.BindingRestriction;
-import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.scheduling.Scheduler;
 import domain.users.AccessRight;
@@ -60,19 +55,7 @@ import domain.vehicle.VehicleSpecificationCatalogue;
  */
 public class Facade {
 
-	private AssemblyLine assemblyLine;
-	private AssemblyLineObserver assemblyLineObserver;
-	private VehicleSpecificationCatalogue vehicleSpecificationCatalogue;
-	private Clock clock;
-	private ClockObserver clockObserver;
-	private CustomVehicleCatalogue customVehicleCatalogue;
-	private Logger logger;
-
-	private OrderBook orderBook;
-	private PartPicker picker;
-
-	private UserBook userBook;
-	private UserFactory userFactory;
+	private Company company;
 
 	/**
 	 * Create a new Facade. This initializes automatically all the necessary
@@ -83,40 +66,8 @@ public class Facade {
 	 * @param optionalRestrictions
 	 *            The list of OptionalRestrictions the facade has to deal with.
 	 * */
-	public Facade(Set<BindingRestriction> bindingRestrictions,
-			Set<OptionalRestriction> optionalRestrictions) {
-		this.clock = new Clock();
-
-		this.clockObserver = new ClockObserver();
-		this.clock.attachObserver(clockObserver);
-
-		this.assemblyLine = new AssemblyLine(clockObserver,
-				clock.getUnmodifiableClock());
-		this.assemblyLineObserver = new AssemblyLineObserver();
-		this.assemblyLine.attachObserver(assemblyLineObserver);
-
-		this.logger = new Logger(2);
-
-		this.vehicleSpecificationCatalogue = new VehicleSpecificationCatalogue();
-		this.customVehicleCatalogue = new CustomVehicleCatalogue();
-		this.orderBook = new OrderBook(assemblyLine);
-		this.userBook = new UserBook();
-		this.userFactory = new UserFactory();
-		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
-
-		VehicleSpecificationCatalogueFiller carModelFiller = new VehicleSpecificationCatalogueFiller();
-		for (VehicleSpecification model : carModelFiller.getInitialModels()) {
-			vehicleSpecificationCatalogue.addModel(model);
-		}
-
-		CustomVehicleCatalogueFiller customCarModelFiller = new CustomVehicleCatalogueFiller();
-		Multimap<String, CustomVehicle> customModels = customCarModelFiller
-				.getInitialModels();
-		for (String model : customModels.keySet()) {
-			for (CustomVehicle customModel : customModels.get(model)) {
-				customVehicleCatalogue.addModel(model, customModel);
-			}
-		}
+	public Facade(Company company) {
+		this.company = company;
 	}
 
 	/**
@@ -126,11 +77,7 @@ public class Facade {
 	 * 			The part you want to add to the model.
 	 */
 	public void addPartToModel(IVehicleOption part) {
-		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
-		try {
-			picker.getModel().addCarPart(option);
-		} catch (AlreadyInMapException e) {
-		}
+		company.addPartToModel(part);
 	}
 
 	/**
@@ -139,7 +86,8 @@ public class Facade {
 	 * @throws UnmodifiableException
 	 *             If an order on one of the workbenches is an ImmutableOrder
 	 * @throws NoSuitableJobFoundException
-	 *             If there are no suitable jobs to be put on the assemblyline.
+	 * 			If there are no suitable jobs to be put on the assemblyline.
+	 * TODO : zetten in workloadDivider
 	 */
 	public void advanceAssemblyLine() throws UnmodifiableException,
 			NoSuitableJobFoundException {
@@ -153,12 +101,12 @@ public class Facade {
 	 *            How much time the clock has to be advanced.
 	 */
 	public void advanceClock(int time) {
-		clock.advanceTime(time);
-
+		this.company.advanceClock(time);
 	}
 
 	/**
 	 * Check if the assemblyline can advance.
+	 * TODO naar workloaddivider
 	 */
 	public boolean canAssemblyLineAdvance() {
 		return assemblyLine.canAdvance();

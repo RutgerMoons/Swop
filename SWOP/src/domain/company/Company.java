@@ -13,8 +13,8 @@ import domain.restriction.PartPicker;
 import domain.scheduling.WorkloadDivider;
 import domain.users.UserBook;
 import domain.vehicle.CustomVehicleCatalogue;
+import domain.vehicle.IVehicleOption;
 import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 
 /**
  * 
@@ -33,7 +33,10 @@ public class Company {
 	private Set<BindingRestriction> bindingRestrictions;
 	private Set<OptionalRestriction> optionalRestrictions;
 
-	public Company(){
+	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, CustomVehicleCatalogue customCatalogue){
+		if (bindingRestrictions == null || optionalRestrictions == null || customCatalogue == null){
+			throw new IllegalArgumentException();
+		}
 		this.userbook = new UserBook();
 		this.orderbook = new OrderBook();
 		int amountOfDetailedHistory = 2;
@@ -45,21 +48,19 @@ public class Company {
 		ClockObserver clockObserver = new ClockObserver();
 		this.clock.attachObserver(clockObserver);
 		clockObserver.attachLogger(log);
-		this.initializeRestrictions();
+		this.bindingRestrictions = bindingRestrictions;
+		this.optionalRestrictions = optionalRestrictions;
+		this.customCatalogue = customCatalogue;
 		this.partpicker = new PartPicker(this.bindingRestrictions, this.optionalRestrictions);
-		this.initializeCustom
+		
+	}
+	
+	public void addPartToModel(IVehicleOption part){
+		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
+		this.partpicker.getModel().addCarPart(option);
 	}
 
-	private void initializeRestrictions() {
-		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
-
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
-
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
-
+	public void advanceClock(int time){
+		this.clock.advanceTime(time);
 	}
-
-
-
 }

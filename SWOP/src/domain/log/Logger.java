@@ -3,8 +3,6 @@ package domain.log;
 import java.util.List;
 
 import domain.clock.ImmutableClock;
-import domain.observer.AssemblyLineObserver;
-import domain.observer.ClockObserver;
 import domain.observer.LogsAssemblyLine;
 import domain.observer.LogsClock;
 import domain.order.Delay;
