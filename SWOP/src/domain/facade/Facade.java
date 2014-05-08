@@ -124,10 +124,6 @@ public class Facade {
 	 *            The index of the Task in the Job on the Workbench.
 	 * @param time
 	 *            The time the clock has to be advanced.
-	 * @throws UnmodifiableException
-	 *             If the Task in the job is an ImmutableTask.
-	 * @throws NoSuitableJobFoundException
-	 *             If there are no suitable jobs to be put on the assemblyline.
 	 */
 	public void completeChosenTaskAtChosenWorkBench(ITask task, int time) {
 		this.company.completeChosenTaskAtChosenWorkBench(task, time);
@@ -141,19 +137,9 @@ public class Facade {
 	 *            The newly chosen userName.
 	 * @param role
 	 *            The role of the User.
-	 * @throws IllegalArgumentException
-	 *             If an illegal username or role has been inserted.
 	 */
-	public void createAndAddUser(String userName, String role)
-			throws IllegalArgumentException {
-		User currentUser = userFactory.createUser(userName, role);
-		this.userBook.addUser(currentUser);
-		try {
-			this.userBook.login(userName);
-		} catch (RoleNotYetAssignedException r) {
-			System.err
-					.println("Something went wrong at login, this shouldn't happen.");
-		}
+	public void createAndAddUser(String userName, String role) {
+		this.company.createAndAddUser(userName, role);
 	}
 
 	/**
@@ -162,23 +148,24 @@ public class Facade {
 	 * @param realModel
 	 *            The specification the PartPicker has to take into account when
 	 *            creating the CarModel
+	 *TODO Wrm vehicleSpeciication en niet IVehicleSpecification?
 	 */
 	public void createNewModel(VehicleSpecification realModel) {
-		picker.setNewModel(realModel);
+		this.company.createNewModel(realModel);
 	}
 
 	/**
 	 * Get the accessrights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
-		return ImmutableList.copyOf(this.userBook.getCurrentUser().getAccessRights());
+		return this.company.getAccessRights();
 	}
 
 	/**
 	 * Get the AssemblyLine as a String.
 	 */
-	public String getAssemblyLineAsString() {
-		return assemblyLine.toString();
+	public String getAssemblyLinesStatus() {
+		return this.company.getAssemblyLinesStatus();
 	}
 
 	/**
