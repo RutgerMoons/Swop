@@ -2,52 +2,34 @@ package domain.facade;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import view.CustomVehicleCatalogueFiller;
-import view.VehicleSpecificationCatalogueFiller;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimap;
 
-import domain.assembly.AssemblyLine;
 import domain.assembly.IWorkBench;
-import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.company.Company;
-import domain.exception.AlreadyInMapException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.exception.UnmodifiableException;
-import domain.job.IAction;
 import domain.job.ITask;
-import domain.log.Logger;
-import domain.observer.AssemblyLineObserver;
-import domain.observer.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.Delay;
 import domain.order.IOrder;
-import domain.order.OrderBook;
 import domain.order.StandardOrder;
-import domain.restriction.PartPicker;
 import domain.scheduling.Scheduler;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.users.AccessRight;
-import domain.users.User;
-import domain.users.UserBook;
-import domain.users.UserFactory;
 import domain.vehicle.CustomVehicle;
-import domain.vehicle.CustomVehicleCatalogue;
 import domain.vehicle.IVehicle;
 import domain.vehicle.IVehicleOption;
 import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.VehicleSpecificationCatalogue;
 
 /**
  * This class is the layer between the Domain model and the UI. The UI can only
@@ -455,8 +437,8 @@ public class Facade {
 	 * Switches the scheduling algorithm based on the information
 	 * given in the ScedulingAlgoritmeCreator object.
 	 */
-	public void switchToDifferentAlgorithm(SchedulingAlgorithmsCreator creator) {
-		this.company.switchToDifferentAlgorithm(creator);
+	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
+		this.company.switchToSchedulingAlgorithm(creator);
 	}
 
 	/**
