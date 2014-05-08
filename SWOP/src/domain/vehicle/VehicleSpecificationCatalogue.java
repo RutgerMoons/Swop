@@ -28,8 +28,7 @@ public class VehicleSpecificationCatalogue {
 	 * Returns an immutable Map of CarModelSpecifications with their names.
 	 */
 	public Map<String, VehicleSpecification> getCatalogue() {
-		return new ImmutableMap.Builder<String, VehicleSpecification>()
-				.putAll(data).build();
+		return data;
 	}
 
 	/**

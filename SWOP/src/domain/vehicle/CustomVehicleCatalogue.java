@@ -27,7 +27,7 @@ public class CustomVehicleCatalogue {
 		 * Returns an immutable Map of carmodels with their names.
 		 */
 		public Multimap<String, CustomVehicle> getCatalogue() {
-			return new ImmutableMultimap.Builder<String,CustomVehicle>().putAll(data).build();
+			return data;
 		}
 
 

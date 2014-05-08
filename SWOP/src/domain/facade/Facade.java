@@ -41,6 +41,7 @@ import domain.users.UserBook;
 import domain.users.UserFactory;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.CustomVehicleCatalogue;
+import domain.vehicle.IVehicle;
 import domain.vehicle.IVehicleOption;
 import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
@@ -179,7 +180,7 @@ public class Facade {
 	 * Get the accessrights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
-		return this.userBook.getCurrentUser().getAccessRights();
+		return ImmutableList.copyOf(this.userBook.getCurrentUser().getAccessRights());
 	}
 
 	/**
@@ -195,7 +196,7 @@ public class Facade {
 	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
 	 */
 	public List<Integer> getBlockingWorkBenches() {
-		return assemblyLine.getBlockingWorkBenches();
+		return ImmutableList.copyOf(assemblyLine.getBlockingWorkBenches());
 	}
 
 	/**
@@ -213,14 +214,14 @@ public class Facade {
 	 * Get a set of all the CarModelSpecifications that the Catalogue has.
 	 */
 	public Set<String> getCarModelSpecifications() {
-		return this.vehicleSpecificationCatalogue.getCatalogue().keySet();
+		return ImmutableSet.copyOf(this.vehicleSpecificationCatalogue.getCatalogue().keySet());
 	}
 
 	/**
 	 * Get a set off all the CarPartTypes that are available.
 	 */
 	public List<VehicleOptionCategory> getCarPartTypes() {
-		return Arrays.asList(VehicleOptionCategory.values());
+		return ImmutableList.copyOf(Arrays.asList(VehicleOptionCategory.values()));
 	}
 
 	/**
@@ -233,7 +234,7 @@ public class Facade {
 	/**
 	 * Returns the currently used Scheduling Algorithm Type as String
 	 */
-	public Scheduler getCurrentSchedulingAlgorithmAsString() {
+	public Scheduler getCurrentSchedulingAlgorithm() {
 		return this.assemblyLine.getCurrentSchedulingAlgorithm();
 	}
 
@@ -242,7 +243,7 @@ public class Facade {
 	 * @return
 	 */
 	public Set<String> getCustomTasks() {
-		return customVehicleCatalogue.getCatalogue().keySet();
+		return ImmutableSet.copyOf(customVehicleCatalogue.getCatalogue().keySet());
 	}
 
 	/**
@@ -288,7 +289,7 @@ public class Facade {
 						+ chosenOrder.getEstimatedTime().toString());
 			}
 		}
-		return orderDetails;
+		return ImmutableList.copyOf(orderDetails);
 	}
 
 	/**
@@ -303,27 +304,16 @@ public class Facade {
 	/**
 	 * Get a list of pending orders of the user that is currently logged in.
 	 */
-	public ArrayList<String> getPendingOrders() {
-		ArrayList<String> pendingOrders = new ArrayList<String>();
-		Collection<IOrder> orders = orderBook.getPendingOrders().get(
-				userBook.getCurrentUser().getName());
-		if (this.orderBook.getPendingOrders().containsKey(
-				userBook.getCurrentUser().getName())
-				&& !this.orderBook.getPendingOrders()
-						.get(userBook.getCurrentUser().getName()).isEmpty()) {
-			for (IOrder order : orders) {
-				pendingOrders.add(order.toString());
-			}
-		}
-		return pendingOrders;
+	public List<IOrder> getPendingOrders() {
+		return ImmutableList.copyOf(orderBook.getPendingOrders().get(userBook.getCurrentUser().getName()));
 
 	}
 
 	/**
 	 * Returns a list of all the possible scheduling algorithms as Strings.
 	 */
-	public ArrayList<String> getPossibleSchedulingAlgorithms() {
-		return this.assemblyLine.getPossibleSchedulingAlgorithms();
+	public List<String> getPossibleSchedulingAlgorithms() {
+		return ImmutableList.copyOf(this.assemblyLine.getPossibleSchedulingAlgorithms());
 	}
 
 	/**
@@ -331,13 +321,13 @@ public class Facade {
 	 * The taskDescription is like "spraying car bodies" or "installing custom seats"
 	 * 
 	 */
-	public List<String> getSpecificCustomTasks(String taskDescription) {
-		List<String> tasks = new ArrayList<>();
+	public List<IVehicle> getSpecificCustomTasks(String taskDescription) {
+		List<IVehicle> tasks = new ArrayList<>();
 		for (CustomVehicle model : customVehicleCatalogue.getCatalogue().get(
 				taskDescription)) {
-			tasks.add(model.toString());
+			tasks.add(model);
 		}
-		return tasks;
+		return ImmutableList.copyOf(tasks);
 	}
 
 	/**
@@ -386,33 +376,33 @@ public class Facade {
 			}
 		}
 
-		return statistics;
+		return ImmutableList.copyOf(statistics);
 	}
 
 	/**
 	 * Get a list of tasks of a Workbench, specified by the workBenchIndex.
 	 */
-	public ArrayList<String> getTasksOfChosenWorkBench(int workBenchIndex) {
+	public List<ITask> getTasksOfChosenWorkBench(int workBenchIndex) {
 		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(
 				workBenchIndex);
-		ArrayList<String> tasks = new ArrayList<String>();
+		List<ITask> tasks = new ArrayList<ITask>();
 		for (ITask task : workbench.getCurrentTasks()) {
 			if (!task.isCompleted()) {
-				tasks.add(task.toString());
+				tasks.add(task);
 			}
 		}
-		return tasks;
+		return ImmutableList.copyOf(tasks);
 	}
 
 	/**
 	 * Get the names of the WorkBenches.
 	 */
-	public ArrayList<String> getWorkBenchNames() {
+	public List<String> getWorkBenchNames() {
 		ArrayList<String> workbenches = new ArrayList<String>();
 		for (IWorkBench w : this.assemblyLine.getWorkbenches()) {
 			workbenches.add(w.getWorkbenchName());
 		}
-		return workbenches;
+		return ImmutableList.copyOf(workbenches);
 	}
 	
 	/**
@@ -441,31 +431,15 @@ public class Facade {
 	 * @param deadline
 	 * 			The deadline of the CustomOrder
 	 */
-	public String processCustomOrder(String model, String deadline) throws IllegalArgumentException{
-		CustomVehicle customModel = null;
-		for (CustomVehicle custom : customVehicleCatalogue.getCatalogue()
-				.values()) {
-			if (custom.toString().equals(model)) {
-				customModel = custom;
-			}
-		}
-		if(customModel==null){
-			throw new IllegalArgumentException();
-		}
-		String[] split = deadline.split(",");
-		int days = Integer.parseInt(split[0]);
-		int hours = Integer.parseInt(split[1]);
-		int minutes = Integer.parseInt(split[2]);
-		minutes += hours * 60;
-		ImmutableClock deadlineClock = new ImmutableClock(days, minutes);
+	public ImmutableClock processCustomOrder(CustomVehicle model, ImmutableClock deadline) throws IllegalArgumentException{
 		CustomOrder order = new CustomOrder(
-				userBook.getCurrentUser().getName(), customModel, 1,
-				clock.getUnmodifiableClock(), deadlineClock);
+				userBook.getCurrentUser().getName(), model, 1,
+				clock.getUnmodifiableClock(), deadline);
 		try {
 			orderBook.addOrder(order, clock.getUnmodifiableClock());
 		} catch (UnmodifiableException | NotImplementedException e) {
 		}
-		return order.getEstimatedTime().toString();
+		return order.getEstimatedTime();
 	}
 
 	/**
@@ -479,7 +453,7 @@ public class Facade {
 	 * @throws NotImplementedException
 	 * 			This is never thrown here.
 	 */
-	public String processOrder(int quantity) throws UnmodifiableException,
+	public ImmutableClock processOrder(int quantity) throws UnmodifiableException,
 			IllegalStateException, NotImplementedException {
 		Vehicle vehicle = picker.getModel();
 
@@ -488,7 +462,7 @@ public class Facade {
 		StandardOrder order = new StandardOrder(userBook.getCurrentUser()
 				.getName(), vehicle, quantity, clock.getUnmodifiableClock());
 		this.orderBook.addOrder(order, clock.getUnmodifiableClock());
-		return order.getEstimatedTime().toString();
+		return order.getEstimatedTime();
 	}
 
 	/**

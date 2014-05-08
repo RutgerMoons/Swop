@@ -1,6 +1,6 @@
 package controller;
 
-import view.IClientCommunication;
+import view.ClientCommunication;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -21,7 +21,7 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 	 * 			The Facade this Flowcontroller uses to access the domain logic.
 	 */
 	public ShowOrderDetailsFlowController(AccessRight accessRight,
-			IClientCommunication clientCommunication, Facade facade) {
+			ClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 

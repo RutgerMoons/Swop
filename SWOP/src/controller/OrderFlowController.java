@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import view.IClientCommunication;
-import domain.exception.UnmodifiableException;
+import view.ClientCommunication;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -25,7 +25,7 @@ public class OrderFlowController extends UseCaseFlowController {
 	 *            the user.
 	 */
 	public OrderFlowController(AccessRight accessRight,
-			IClientCommunication iClientCommunication, Facade facade) {
+			ClientCommunication iClientCommunication, Facade facade) {
 		super(accessRight, iClientCommunication, facade);
 	}
 
