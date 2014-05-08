@@ -162,9 +162,10 @@ public class Facade {
 	}
 
 	/**
-	 * Get the AssemblyLine as a String.
+	 * Get the status of each assemlyLine.
+	 * TODO states van workbenches zijn dus niet meer meegegeven...
 	 */
-	public String getAssemblyLinesStatus() {
+	public List<AssemblyLineState> getAssemblyLinesStatus() {
 		return this.company.getAssemblyLinesStatus();
 	}
 
@@ -391,14 +392,14 @@ public class Facade {
 	 * 			If it's the first time that this user logs in.
 	 */
 	public void login(String userName) throws RoleNotYetAssignedException {
-		userBook.login(userName);
+		this.company.login(userName);
 	}
 
 	/**
 	 * Log the current user out.
 	 */
 	public void logout() {
-		userBook.logout();
+		this.company.logout();
 	}
 
 	/**

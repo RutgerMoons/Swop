@@ -6,6 +6,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 
 import domain.clock.Clock;
+import domain.exception.RoleNotYetAssignedException;
 import domain.job.IAction;
 import domain.job.ITask;
 import domain.log.Logger;
@@ -152,5 +153,13 @@ public class Company {
 	 */
 	public VehicleSpecification getCarModelSpecificationFromCatalogue(String specificationName) {
 		return this.partpicker.getCatalogue().get(specificationName);
+	}
+	
+	public void login(String userName) throws RoleNotYetAssignedException{
+		this.userbook.login(userName);
+	}
+	
+	public void logout(){
+		this.userbook.logout();
 	}
 }

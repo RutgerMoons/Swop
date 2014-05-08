@@ -39,7 +39,7 @@ public class Vehicle implements IVehicle {
 
 	
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException {
+	public void addCarPart(VehicleOption part) {
 		if (part == null)
 			throw new IllegalArgumentException();
 		if (vehicleOptions.containsKey(part.getType())

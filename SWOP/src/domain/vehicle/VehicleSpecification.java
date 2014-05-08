@@ -59,7 +59,7 @@ public class VehicleSpecification {
 	/**
 	 * Set the time the specification has to spend on a workbench.
 	 */
-	public void setTimeAtWorkBench(int timeAtWorkBench) {
+	private void setTimeAtWorkBench(int timeAtWorkBench) {
 		this.timeAtWorkBench = timeAtWorkBench;
 	}
 
