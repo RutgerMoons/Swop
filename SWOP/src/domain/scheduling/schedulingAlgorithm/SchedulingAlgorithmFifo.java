@@ -1,4 +1,4 @@
-package domain.scheduling;
+package domain.scheduling.schedulingAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -267,6 +267,10 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		this.customJobs = customJobs;
 		this.history = history;
 		this.standardJobs.addAll(standardJobs);
+	}
+	
+	public String toString() {
+		return "Fifo";
 	}
 
 }

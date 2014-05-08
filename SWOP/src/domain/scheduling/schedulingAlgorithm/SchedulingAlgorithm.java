@@ -1,4 +1,4 @@
-package domain.scheduling;
+package domain.scheduling.schedulingAlgorithm;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -90,5 +90,10 @@ public abstract class SchedulingAlgorithm {
 	 * The oldest Job in the list will be removed.
 	 */
 	protected abstract void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list);
+	
+	/**
+	 * Returns the name.
+	 */
+	public abstract String toString();
 	
 }

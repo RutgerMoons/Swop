@@ -1,4 +1,4 @@
-package domain.scheduling;
+package domain.scheduling.schedulingAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -316,6 +316,10 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 				// this error can't occur
 			}
 		}
+	}
+	
+	public String toString() {
+		return "Batch";
 	}
 
 }
