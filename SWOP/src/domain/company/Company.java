@@ -157,7 +157,7 @@ public class Company {
 	 * 			If no CarModelSpecification is found with the given name.
 	 */
 	public VehicleSpecification getCarModelSpecificationFromCatalogue(String specificationName) {
-		return this.partpicker.getCatalogue().get(specificationName);
+		return this.partpicker.getCatalogue().getCatalogue().get(specificationName);
 	}
 	
 	public void login(String userName) throws RoleNotYetAssignedException{
