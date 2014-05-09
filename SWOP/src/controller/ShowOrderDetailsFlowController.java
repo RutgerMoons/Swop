@@ -3,7 +3,6 @@ package controller;
 import com.google.common.base.Optional;
 
 import view.ClientCommunication;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.order.IOrder;
 import domain.users.AccessRight;
