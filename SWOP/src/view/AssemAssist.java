@@ -18,6 +18,7 @@ import domain.vehicle.CustomVehicle;
 import domain.vehicle.CustomVehicleCatalogue;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecificationCatalogue;
 
 
 /**
@@ -55,7 +56,13 @@ public class AssemAssist {
 			}
 		}
 		
-		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue);
+		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
+		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
+		
+		catalogue.initializeCatalogue(filler.getInitialModels());
+		
+		
+		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue);
 		clientCommunication = new ClientCommunication();
 		facade = new Facade(company);
 		FlowControllerFactory flowControllerFactory = new FlowControllerFactory(clientCommunication, facade);
