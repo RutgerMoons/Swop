@@ -267,6 +267,7 @@ public class Facade {
 	 * Get a list of pending orders of the user that is currently logged in.
 	 */
 	public List<IOrder> getPendingOrders() {
+		
 		return ImmutableList.copyOf(orderBook.getPendingOrders().get(userBook.getCurrentUser().getName()));
 
 	}

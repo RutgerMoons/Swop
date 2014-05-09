@@ -13,7 +13,10 @@ import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.job.IAction;
 import domain.job.ITask;
+import domain.order.IOrder;
 import domain.vehicle.IVehicle;
+import domain.vehicle.IVehicleOption;
+import domain.vehicle.VehicleSpecification;
 
 /**
  * A text-based user interface to interact with the system.
@@ -66,7 +69,7 @@ public class ClientCommunication{
 			invalidAnswerPrompt();
 			minutes = askNumber("How many minutes on that day untill the deadline is reached?");
 		}
-		
+
 		return days*Clock.MINUTESINADAY + minutes;
 	}
 
@@ -539,10 +542,14 @@ public class ClientCommunication{
 	 * 			It contains the quantity and the name of the model, separated by comma's.
 	 */
 
-	public void showCompletedOrders(ArrayList<String> completedOrders) {
+	public void showCompletedOrders(List<IOrder> completedOrders) {
+		List<String> completedOrdersList = new ArrayList<String>();
 		if (!completedOrders.isEmpty()) {
-			completedOrders.add(0, "Your completed orders:");
-			show(completedOrders);
+			completedOrdersList.add(0, "Your completed orders:" + LINESEPARATOR);
+			for(IOrder order : completedOrders){
+				completedOrdersList.add(order.toString() + LINESEPARATOR);
+				completedOrdersList.add("\tcompletion time: " + order.getEstimatedTime().toString() + LINESEPARATOR );
+			}
 		} else
 			show(new ArrayList<String>(
 					Arrays.asList("You have no completed Orders")));
@@ -569,8 +576,8 @@ public class ClientCommunication{
 			i++;
 		}
 		show(customString);
-		
-		
+
+
 		int customNumber = askNumber("Which Task do you choose?")-1;
 		if (customNumber >= 0 && customNumber < vehicles.size()) {
 			return vehicles.get(customNumber);
@@ -602,29 +609,28 @@ public class ClientCommunication{
 	 * 			An integer representing the quantity of cars the user is about to order.
 	 * @param realModel 
 	 * @param chosenParts
-	 * 			A String representing the name of the carmodel the user is about to order.
+	 * 			A String representing the name of the vehicleModel the user is about to order.
 	 * @param estimatedTime
 	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
 
-	public void showOrder(int quantity, String model, List<String> chosenParts,
-			String estimatedTime) {
-		if (model == null || estimatedTime == null) {
-			throw new IllegalArgumentException();
+	public void showOrder(int quantity, VehicleSpecification model, List<IVehicleOption> chosenParts,
+			ImmutableClock estimatedTime) {
+
+		showOrder(quantity, model, chosenParts);
+		show(Arrays.asList("Estimated time of completion :" + estimatedTime.toString() + LINESEPARATOR));
+	}
+	
+	public void showOrder(int quantity, VehicleSpecification realModel, List<IVehicleOption> chosenParts){
+		show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
+				+ realModel.toString() + LINESEPARATOR )));
+		show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
+		List<String> chosenPartsInString = new ArrayList<String>();
+		for(IVehicleOption option : chosenParts){
+			chosenPartsInString.add(option.toString() + LINESEPARATOR);
 		}
-		if(estimatedTime == ""){
-			show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
-					+ model )));
-			show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
-			show(chosenParts);
-		}
-		else{
-			show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
-					+ model + " Estimated completion time: " + estimatedTime)));
-			show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
-			show(chosenParts);
-		}
+		show(chosenPartsInString);
 	}
 	/**
 	 * Show the details of the given order.
@@ -642,10 +648,14 @@ public class ClientCommunication{
 	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
 	 */
 
-	public void showPendingOrders(ArrayList<String> pendingOrders) {
+	public void showPendingOrders(List<IOrder> pendingOrders) {
+		List<String> pendingOrdersList = new ArrayList<String>();
 		if (!pendingOrders.isEmpty()) {
-			pendingOrders.add(0, "Your pending orders:");
-			show(pendingOrders);
+			pendingOrdersList.add(0, "Your pending orders:" + LINESEPARATOR);
+			for(IOrder order : pendingOrders){
+				pendingOrdersList.add(order.toString() + LINESEPARATOR);
+				pendingOrdersList.add("\tEstimated completion time: " + order.getEstimatedTime().toString() + LINESEPARATOR );
+			}
 		} else
 			show(new ArrayList<String>(
 					Arrays.asList("You have no pending Orders")));

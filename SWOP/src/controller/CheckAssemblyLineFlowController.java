@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import view.ClientCommunication;
 import domain.assembly.IAssemblyLine;

@@ -5,8 +5,6 @@ import java.util.List;
 import view.ClientCommunication;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 import domain.vehicle.IVehicle;

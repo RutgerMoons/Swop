@@ -26,7 +26,7 @@ public class OrderFlowController extends UseCaseFlowController {
 	 * Construct a new OrderFlowController
 	 * 
 	 * @param iClientCommunication
-	 *            The UIfacade this OrderFlowController has to use to communicate with
+	 *            The CLI this OrderFlowController has to use to communicate with
 	 *            the user.
 	 */
 	public OrderFlowController(AccessRight accessRight,
@@ -35,13 +35,11 @@ public class OrderFlowController extends UseCaseFlowController {
 	}
 
 	/**
-	 * Execute the use case.
-	 * 
-	 * @throws UnmodifiableException
+	 * Execute the use case. This means showing the pending and completed orders of the
+	 * user and possibly obtaining a new order.
 	 */
 	@Override
-	public void executeUseCase() throws IllegalArgumentException,
-			UnmodifiableException {
+	public void executeUseCase() {
 		this.showOrders();
 		placeNewOrder();
 	}
@@ -60,11 +58,9 @@ public class OrderFlowController extends UseCaseFlowController {
 
 	/**
 	 * Retrieves all the needed input of the user for processing an order. All
-	 * this information it gives to the iFacade.
-	 * 
-	 * @throws UnmodifiableException
+	 * this information it gives to the facade.
 	 */
-	public void placeNewOrder() throws UnmodifiableException {
+	public void placeNewOrder(){
 		if (!this.clientCommunication.askContinue()) {
 			return;
 		} else {
@@ -76,28 +72,19 @@ public class OrderFlowController extends UseCaseFlowController {
 			List<IVehicleOption> chosenParts = createModel();
 
 			int quantity = clientCommunication.getQuantity();
-			String estimatedTime = "";
-			clientCommunication.showOrder(quantity, realModel, chosenParts,
-					estimatedTime);
+			clientCommunication.showOrder(quantity, realModel, chosenParts);
 			if (!this.clientCommunication.askContinue()) {
 				return;
 			} else {
 				ImmutableClock time = null;
 				try {
 					time = facade.processOrder(quantity);
-				} catch (IllegalStateException | NotImplementedException e) {
+				} catch (IllegalStateException e) {
 					clientCommunication.showInvalidModel();
 					placeNewOrder();
 				}
 				clientCommunication.showOrder(quantity, realModel, chosenParts,
 						time);
-				if (facade.canAssemblyLineAdvance()) {
-					try {
-						facade.advanceAssemblyLine();
-					} catch (NoSuitableJobFoundException n) {
-						//no problem :)
-					}
-				}
 			}
 		}
 	}
