@@ -1,11 +1,15 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import view.ClientCommunication;
+import domain.assembly.IWorkBench;
+import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
+import domain.job.ITask;
 import domain.users.AccessRight;
 
 
@@ -41,35 +45,39 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * Get the workbench at which the user wants to perform tasks.
 	 */
 	public void chooseWorkBench(){
-		ArrayList<String> workbenches = facade.getWorkBenchNames();
-		int workbenchIndex = this.clientCommunication.chooseWorkBench(workbenches.size(), workbenches) - 1;
-		chooseTask(workbenchIndex);
+		//choose assembly Line
+		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
+		//naar clientcommunication
+		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
+		//choose workbench from assemblyLine
+		IWorkBench chosenWorkbench = clientCommunication.chooseWorkBench(chosenAssemblyLine.getWorkbenches());
+		//choose task
+		chooseTask(chosenWorkbench);
 	}
 
 	/**
 	 * Let the user choose and perform a task from the tasks at the workbench he has previously chosen.
 	 * 
 	 */
-	public void chooseTask(int workbenchIndex){
-		ArrayList<String> tasksAtWorkbench = facade.getTasksOfChosenWorkBench(workbenchIndex);
+	public void chooseTask(IWorkBench workBench){
+		List<ITask> tasksAtWorkbench = workBench.getCurrentTasks();
 		if(tasksAtWorkbench.isEmpty()){
 			clientCommunication.showWorkBenchCompleted();
 			if(clientCommunication.askContinue())
 				executeUseCase();
 		}
 		else{	
-			int chosenTaskNumber = this.clientCommunication.chooseTask(tasksAtWorkbench)-1;
-			this.clientCommunication.showChosenTask(tasksAtWorkbench.get(chosenTaskNumber).toString());
+			//choose ITask, not the index of the task
+			ITask chosenTask = this.clientCommunication.chooseTask(tasksAtWorkbench);
+			this.clientCommunication.showChosenTask(tasksAtWorkbench.get(chosenTask));
 			if(this.clientCommunication.askContinue()){
 				try {
-					int time = clientCommunication.getElapsedTime();
-					facade.completeChosenTaskAtChosenWorkBench(workbenchIndex, chosenTaskNumber, time);
-				} catch (UnmodifiableException e) {
-				}
+					ImmutableClock time = clientCommunication.getElapsedTime();
+					facade.completeChosenTaskAtChosenWorkBench(chosenTask, time);
 				catch ( NoSuitableJobFoundException e ){
-					chooseTask(workbenchIndex);
+					chooseTask(workBench);
 				}
-				chooseTask(workbenchIndex);
+				chooseTask(workBench);
 			}
 		}
 	}

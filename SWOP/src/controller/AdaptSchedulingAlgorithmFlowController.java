@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import view.ClientCommunication;
@@ -43,13 +44,13 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 	private void showAlgorithms() {
 		// show current algorithm
 		// show possible algorithms
-		ArrayList<String> possible = facade.getPossibleSchedulingAlgorithms();
+		List<String> possible = facade.getPossibleSchedulingAlgorithms();
 		ArrayList<String> algorithms = new ArrayList<String>();
 		algorithms.add(0, "Possible Algorithms:");
 		for (int i = 0; i < possible.size(); i++) {
 			algorithms.add(i+1, Integer.toString(i + 1) + ". " + possible.get(i));
 		}
-		this.clientCommunication.showAlgorithms(facade.getCurrentSchedulingAlgorithmAsString(), algorithms);
+		this.clientCommunication.showAlgorithms(facade.getCurrentSchedulingAlgorithm(), algorithms);
 		
 		chooseAlgorithm(possible);
 	}
@@ -58,7 +59,7 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 	 * Lets the user pick the next Scheduling Algorithm and based on the choice
 	 * alters the flow.
 	 */
-	private void chooseAlgorithm(ArrayList<String> possible) {
+	private void chooseAlgorithm(List<String> possible) {
 		int index = clientCommunication.getIndex(possible.size()) - 1;
 		
 		if (possible.get(index).equalsIgnoreCase("batch")) {

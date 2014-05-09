@@ -86,9 +86,9 @@ public class PerformAssemblyTasksScenario {
 		// working at a workbench
 		facade.createAndAddUser("Luigi", "worker");
 		
-		assertTrue("car body".equalsIgnoreCase(facade.getWorkBenchNames().get(0)));
-		assertTrue("drivetrain".equalsIgnoreCase(facade.getWorkBenchNames().get(1)));
-		assertTrue("accessories".equalsIgnoreCase(facade.getWorkBenchNames().get(2)));
+		assertTrue("car body".equalsIgnoreCase(facade.getWorkbenches().get(0)));
+		assertTrue("drivetrain".equalsIgnoreCase(facade.getWorkbenches().get(1)));
+		assertTrue("accessories".equalsIgnoreCase(facade.getWorkbenches().get(2)));
 		// Worker wants to work at the first workbench
 		assertTrue(facade.getTasksOfChosenWorkBench(0).contains(
 				"Paint,Required actions: 1.Put on black color"));
