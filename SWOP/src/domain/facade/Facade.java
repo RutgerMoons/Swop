@@ -204,13 +204,6 @@ public class Facade {
 	}
 
 	/**
-	 * Returns a list of all the possible scheduling algorithms as Strings.
-	 */
-	public List<String> getPossibleSchedulingAlgorithms() {
-		return ImmutableList.copyOf(this.assemblyLine.getPossibleSchedulingAlgorithms());
-	}
-
-	/**
 	 * Get a list of specific Custom Tasks on the basis of the taskDescription.
 	 * The taskDescription is like "spraying car bodies" or "installing custom seats"
 	 * 
@@ -322,6 +315,7 @@ public class Facade {
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		//TODO vragen aan rutger, moet dit in facade?
+		//ja :) Nodig voor Batch
 		return this.company.getAllCarOptionsInPendingOrders();
 	}
 

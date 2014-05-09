@@ -87,5 +87,10 @@ public interface IJob {
 	 */
 	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm);
 	
+	/**
+	 * Get the time the specification has to spend on a workbench.
+	 */
+	public int getTimeAtWorkBench();
+	
 
 }

@@ -118,4 +118,9 @@ public class UnmodifiableOrder implements IOrder {
 		}
 		this.order.addToSchedulingAlgorithm(schedulingAlgorithm, job);
 	}
+	
+	@Override
+	public int getTimeAtWorkBench() {
+		return this.order.getTimeAtWorkBench();
+	}
 }

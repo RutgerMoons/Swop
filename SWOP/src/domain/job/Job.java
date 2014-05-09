@@ -123,5 +123,10 @@ public class Job implements IJob {
 		this.order.addToSchedulingAlgorithm(schedulingAlgorithm, this);
 		
 	}
+	
+	@Override
+	public int getTimeAtWorkBench() {
+		return this.order.getTimeAtWorkBench();
+	}
 
 }

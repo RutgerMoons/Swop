@@ -46,7 +46,6 @@ public class Scheduler implements LogsClock {
 		if (clockObserver == null || clock==null) {
 			throw new IllegalArgumentException();
 		}
-		// this observer should stay referenced in the facade to avoid garbage collection
 		clockObserver.attachLogger(this);
 		this.clock = clock;
 		//this.amountOfWorkBenches = amountOfWorkBenches;

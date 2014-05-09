@@ -101,4 +101,9 @@ public interface IOrder {
 	 */
 	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm, IJob job);
 	
+	/**
+	 * Get the time the specification has to spend on a workbench.
+	 */
+	public int getTimeAtWorkBench();
+	
 }

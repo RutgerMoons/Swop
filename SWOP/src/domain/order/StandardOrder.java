@@ -207,4 +207,9 @@ public class StandardOrder implements IOrder {
 		}
 		schedulingAlgorithm.addStandardJob(job);
 	}
+	
+	@Override
+	public int getTimeAtWorkBench() {
+		return this.getDescription().getTimeAtWorkBench();
+	}
 }

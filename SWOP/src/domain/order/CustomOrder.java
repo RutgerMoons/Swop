@@ -235,4 +235,8 @@ public class CustomOrder implements IOrder {
 		schedulingAlgorithm.addCustomJob(job);
 	}
 	
+	@Override
+	public int getTimeAtWorkBench() {
+		return this.getDescription().getTimeAtWorkBench();
+	}
 }

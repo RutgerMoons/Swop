@@ -102,6 +102,10 @@ public class UnmodifiableJob implements IJob {
 			throw new IllegalArgumentException();
 		}
 		this.job.addToSchedulingAlgorithm(schedulingAlgorithm);
-		
+	}
+	
+	@Override
+	public int getTimeAtWorkBench() {
+		return this.job.getTimeAtWorkBench();
 	}
 }

@@ -23,24 +23,16 @@ import domain.vehicle.VehicleOption;
 public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	private PriorityQueue<IJob> batchJobs;
-	private List<VehicleOption> vehicleOption;
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
+	private List<VehicleOption> vehicleOptions;
 
 	public SchedulingAlgorithmBatch(List<VehicleOption> carParts, int amountOfWorkBenches) {
 		super(amountOfWorkBenches);
 		if (carParts == null) {
 			throw new IllegalArgumentException();
 		}
-		this.vehicleOption = carParts;
+		this.vehicleOptions = carParts;
 		batchJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
-	}
-
-	@Override
-	public void addCustomJob(IJob customJob) {
-		if (customJob == null) {
-			throw new IllegalArgumentException();
-		}
-		this.customJobs.add(customJob);
 	}
 
 	@Override
@@ -49,34 +41,13 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			throw new IllegalArgumentException();
 		}
 		try {
-			if (standardJob.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.vehicleOption)) {
+			if (standardJob.getVehicleOptions().containsAll(this.vehicleOptions)) {
 				this.batchJobs.add(standardJob);
 			}
 			else{
 				this.standardJobs.add(standardJob);
 			}
 		} catch (NotImplementedException e) {}
-	}
-
-	@Override
-	protected void addToHistory(Optional<IJob> job) {
-		this.addToList(job, history);
-	}
-
-	@Override
-	protected void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list) {
-		list.add(job);
-		if (list.size() > this.amountOfWorkBenches) {
-			list.remove(0);
-		}
-
-	}
-
-	private boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay) {
-		if(job == null){
-			return false;
-		}
-		return job.getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 
 	private int getCurrentTotalProductionTime() {
@@ -91,15 +62,6 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			historyCopy.remove(0);
 		}
 		return time;
-	}
-
-
-
-	@Override
-	public PriorityQueue<IJob> getCustomJobs() {
-		PriorityQueue<IJob> pq = new PriorityQueue<>(1, new JobComparatorDeadLine());
-		pq.addAll(this.customJobs);
-		return pq;
 	}
 
 	@Override
@@ -151,41 +113,6 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			}
 		}
 		return totalProductionTime;
-	}
-
-	@Override
-	public ArrayList<Optional<IJob>> getHistory() {
-		ArrayList<Optional<IJob>> historyCopy = new ArrayList<>();
-		historyCopy.addAll(this.history);
-		return historyCopy;
-	}
-
-	private IJob getJobWithHighestWorkBenchIndex() {
-		int index = this.amountOfWorkBenches - 1;
-		while (index >= 0) {
-			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
-				IJob job = (IJob) iterator.next();
-				if (job.getMinimalIndex() == index) {
-					return job;
-				}
-			}
-
-			index--;
-		}
-		return null;
-	}
-
-	private int getMaximum(ArrayList<Optional<IJob>> list) {
-		int biggest = 0;
-		for(Optional<IJob> job : list){
-			if(job.isPresent()){
-				int currentTimeAtWorkbenchForThisJob = job.get().getOrder().getDescription().getTimeAtWorkBench();
-				if(currentTimeAtWorkbenchForThisJob >= biggest){
-					biggest = currentTimeAtWorkbenchForThisJob;
-				}
-			}
-		}
-		return biggest;
 	}
 
 	@Override
@@ -286,6 +213,10 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	}
 
+	public String toString() {
+		return "Batch";
+	}
+	
 	@Override
 	public void transform(PriorityQueue<IJob> customJobs, ArrayList<IJob> standardJobs, ArrayList<Optional<IJob>> history) {
 		if(customJobs == null || standardJobs == null || history == null){
@@ -297,7 +228,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 		for(IJob job : standardJobs){
 			try {
-				if(job.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.vehicleOption)){
+				if(job.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.vehicleOptions)){
 					this.batchJobs.add(job);
 				}
 				else{
@@ -308,10 +239,6 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 				// this error can't occur
 			}
 		}
-	}
-	
-	public String toString() {
-		return "Batch";
 	}
 
 }
