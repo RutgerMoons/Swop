@@ -1,11 +1,13 @@
 package domain.company;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 
 import domain.assembly.IAssemblyLine;
+import domain.assembly.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.RoleNotYetAssignedException;
@@ -14,6 +16,7 @@ import domain.job.ITask;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -21,9 +24,11 @@ import domain.restriction.PartPicker;
 import domain.scheduling.WorkloadDivider;
 import domain.users.AccessRight;
 import domain.users.UserBook;
+import domain.vehicle.CustomVehicle;
 import domain.vehicle.CustomVehicleCatalogue;
 import domain.vehicle.IVehicleOption;
 import domain.vehicle.VehicleOption;
+import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
 
 /**
@@ -169,5 +174,42 @@ public class Company {
 
 	public List<IAssemblyLine> getAssemblyLines() {
 		return workloadDivider.getAssemblyLines();
+	}
+
+	public List<IWorkBench> getBlockingWorkBenches() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public VehicleSpecification getVehicleSpecification(String specificationName) {
+		return partpicker.getSpecification(specificationName);
+	}
+
+	public Set<String> getVehicleSpecifications() {
+		return partpicker.getVehicleSpecifications();
+	}
+
+	public String getCurrentUser() {
+		return userbook.getCurrentUser().getName();
+	}
+
+	public Collection<IOrder> getCompletedOrders(String name) {
+		return orderbook.getCompletedOrders().get(name);
+	}
+
+	public Set<String> getCustomTasksDescription() {
+		return customCatalogue.getCatalogue().keySet();
+	}
+
+	public List<IVehicleOption> getStillAvailableCarParts(VehicleOptionCategory type) {
+		return partpicker.getStillAvailableCarParts(type);
+	}
+
+	public Collection<IOrder> getPendingOrders(String name) {
+		return orderbook.getPendingOrders().get(name);
+	}
+
+	public Collection<CustomVehicle> getSpecificCustomTasks(String taskDescription) {
+		return customCatalogue.getCatalogue().get(taskDescription);
 	}
 }

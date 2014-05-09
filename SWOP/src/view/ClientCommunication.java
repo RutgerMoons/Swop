@@ -13,11 +13,13 @@ import domain.assembly.IAssemblyLine;
 import domain.assembly.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
+import domain.exception.NotImplementedException;
 import domain.job.IAction;
 import domain.job.ITask;
 import domain.order.IOrder;
 import domain.vehicle.IVehicle;
 import domain.vehicle.IVehicleOption;
+import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
 
 /**
@@ -642,7 +644,30 @@ public class ClientCommunication{
 	 * Show the details of the given order.
 	 */
 
-	public void showOrderDetails(List<String> orderDetails) {
+	public void showOrderDetails(IOrder order) {
+		List<String> orderDetails = new ArrayList<>();
+		orderDetails.add("Orderdetails:");
+		orderDetails.add(order.getQuantity() + " "
+				+ order.getDescription());
+
+		String carDetails = "Chosen carOptions: ";
+		for (VehicleOptionCategory category : order.getDescription()
+				.getCarParts().keySet()) {
+			carDetails += order.getDescription().getCarParts()
+					.get(category)
+					+ " ";
+		}
+		orderDetails.add(carDetails);
+
+		orderDetails.add("Order Time: "
+				+ order.getOrderTime().toString());
+		try {
+			orderDetails.add("(Expected) Completion Time: "
+					+ order.getDeadline().toString());
+		} catch (NotImplementedException e) {
+			orderDetails.add("(Expected) Completion Time: "
+					+ order.getEstimatedTime().toString());
+		}
 		show(orderDetails);
 	}
 

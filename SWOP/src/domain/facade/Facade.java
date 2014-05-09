@@ -9,6 +9,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
+import domain.assembly.AssemblyLineState;
 import domain.assembly.IAssemblyLine;
 import domain.assembly.IWorkBench;
 import domain.clock.ImmutableClock;
@@ -18,6 +19,7 @@ import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.exception.UnmodifiableException;
 import domain.job.ITask;
+import domain.job.Task;
 import domain.order.CustomOrder;
 import domain.order.Delay;
 import domain.order.IOrder;
@@ -62,20 +64,8 @@ public class Facade {
 	 * 			The part you want to add to the model.
 	 */
 	public void addPartToModel(IVehicleOption part) {
-		company.addPartToModel(part);
-	}
-
-	/**
-	 * Advance the assemblyline.
-	 * 
-	 * @throws UnmodifiableException
-	 *             If an order on one of the workbenches is an ImmutableOrder
-	 * @throws NoSuitableJobFoundException
-	 * 			If there are no suitable jobs to be put on the assemblyline.
-	 * TODO : zetten in workloadDivider
-	 */
-	public void advanceAssemblyLine(IAssemblyLine assemblyLine) throws NoSuitableJobFoundException {
-		company.advanceAssemblyLine(assemblyLine);
+		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
+		company.addPartToModel(option);
 	}
 
 	/**
@@ -86,14 +76,6 @@ public class Facade {
 	 */
 	public void advanceClock(int time) {
 		this.company.advanceClock(time);
-	}
-
-	/**
-	 * Check if the assemblyline can advance.
-	 * TODO naar workloaddivider
-	 */
-	public boolean canAssemblyLineAdvance() {
-		return assemblyLine.canAdvance();
 	}
 
 	/**
@@ -109,7 +91,9 @@ public class Facade {
 	 *            The time the clock has to be advanced.
 	 */
 	public void completeChosenTaskAtChosenWorkBench(ITask task, ImmutableClock time) {
-		this.company.completeChosenTaskAtChosenWorkBench(task, time);
+		Task modifiableTask = new Task(task.getTaskDescription());
+		modifiableTask.setActions(task.getActions());
+		this.company.completeChosenTaskAtChosenWorkBench(modifiableTask, time);
 	}
 
 	/**
@@ -145,20 +129,12 @@ public class Facade {
 	}
 
 	/**
-	 * Get the status of each assemlyLine.
-	 * TODO states van workbenches zijn dus niet meer meegegeven...
-	 */
-	public List<AssemblyLineState> getAssemblyLinesStatus() {
-		return this.company.getAssemblyLinesStatus();
-	}
-
-	/**
 	 * Get the workbenches which are blocking the AssemblyLine from advancing.
 	 * @return
 	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
 	 */
-	public List<Integer> getBlockingWorkBenches() {
-		return ImmutableList.copyOf(assemblyLine.getBlockingWorkBenches());
+	public List<IWorkBench> getBlockingWorkBenches() {
+		return ImmutableList.copyOf(company.getBlockingWorkBenches());
 	}
 
 	/**
@@ -169,14 +145,14 @@ public class Facade {
 	 * 			If no CarModelSpecification is found with the given name.
 	 */
 	public VehicleSpecification getCarModelSpecificationFromCatalogue(String specificationName) {
-		return vehicleSpecificationCatalogue.getCatalogue().get(specificationName);
+		return company.getVehicleSpecification(specificationName);
 	}
 
 	/**
 	 * Get a set of all the CarModelSpecifications that the Catalogue has.
 	 */
 	public Set<String> getCarModelSpecifications() {
-		return ImmutableSet.copyOf(this.vehicleSpecificationCatalogue.getCatalogue().keySet());
+		return ImmutableSet.copyOf(company.getVehicleSpecifications());
 	}
 
 	/**
@@ -190,13 +166,15 @@ public class Facade {
 	 * Get a list of the completed orders of the user that is currently logged in. 
 	 */
 	public List<IOrder> getCompletedOrders() {
-		return ImmutableList.copyOf(orderBook.getCompletedOrders().get(userBook.getCurrentUser().getName()));
+		String name = company.getCurrentUser();
+		return ImmutableList.copyOf(company.getCompletedOrders(name));
 	}
 
 	/**
 	 * Returns the currently used Scheduling Algorithm Type as String
 	 */
 	public Scheduler getCurrentSchedulingAlgorithm() {
+		//TODO updaten na Rutger
 		return this.assemblyLine.getCurrentSchedulingAlgorithm();
 	}
 
@@ -205,53 +183,7 @@ public class Facade {
 	 * @return
 	 */
 	public Set<String> getCustomTasks() {
-		return ImmutableSet.copyOf(customVehicleCatalogue.getCatalogue().keySet());
-	}
-
-	/**
-	 * Get a list of details of an order.
-	 * @param order2
-	 * 			The string representing the order.
-	 */
-	public List<String> getOrderDetails(IOrder order2) {
-		IOrder chosenOrder = null;
-		for (IOrder order : orderBook.getPendingOrders().values()) {
-			if (order.toString().equals(order2)) {
-				chosenOrder = order;
-			}
-		}
-		for (IOrder order : orderBook.getCompletedOrders().values()) {
-			if (order.toString().equals(order2)) {
-				chosenOrder = order;
-			}
-		}
-
-		List<String> orderDetails = new ArrayList<>();
-		if (chosenOrder != null) {
-			orderDetails.add("Orderdetails:");
-			orderDetails.add(chosenOrder.getQuantity() + " "
-					+ chosenOrder.getDescription());
-
-			String carDetails = "Chosen carOptions: ";
-			for (VehicleOptionCategory category : chosenOrder.getDescription()
-					.getCarParts().keySet()) {
-				carDetails += chosenOrder.getDescription().getCarParts()
-						.get(category)
-						+ " ";
-			}
-			orderDetails.add(carDetails);
-
-			orderDetails.add("Order Time: "
-					+ chosenOrder.getOrderTime().toString());
-			try {
-				orderDetails.add("(Expected) Completion Time: "
-						+ chosenOrder.getDeadline().toString());
-			} catch (NotImplementedException e) {
-				orderDetails.add("(Expected) Completion Time: "
-						+ chosenOrder.getEstimatedTime().toString());
-			}
-		}
-		return ImmutableList.copyOf(orderDetails);
+		return ImmutableSet.copyOf(company.getCustomTasksDescription());
 	}
 
 	/**
@@ -260,16 +192,15 @@ public class Facade {
 	 * 			The type of the parts that has to be selected. 
 	 */
 	public List<IVehicleOption> getParts(VehicleOptionCategory type) {
-		return ImmutableSet.copyOf(picker.getStillAvailableCarParts(type));
+		return ImmutableList.copyOf(company.getStillAvailableCarParts(type));
 	}
 	
 	/**
 	 * Get a list of pending orders of the user that is currently logged in.
 	 */
 	public List<IOrder> getPendingOrders() {
-		
-		return ImmutableList.copyOf(orderBook.getPendingOrders().get(userBook.getCurrentUser().getName()));
-
+		String name = company.getCurrentUser();
+		return ImmutableList.copyOf(company.getPendingOrders(name));
 	}
 
 	/**
@@ -286,8 +217,7 @@ public class Facade {
 	 */
 	public List<IVehicle> getSpecificCustomTasks(String taskDescription) {
 		List<IVehicle> tasks = new ArrayList<>();
-		for (CustomVehicle model : customVehicleCatalogue.getCatalogue().get(
-				taskDescription)) {
+		for (CustomVehicle model : company.getSpecificCustomTasks(taskDescription)) {
 			tasks.add(model);
 		}
 		return ImmutableList.copyOf(tasks);

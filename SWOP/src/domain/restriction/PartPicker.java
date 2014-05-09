@@ -1,8 +1,10 @@
 package domain.restriction;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +12,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.exception.AlreadyInMapException;
+import domain.vehicle.IVehicleOption;
 import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
@@ -66,7 +69,7 @@ public class PartPicker {
 	 * @return
 	 * 		A Collection that contains the still available CarOptions of the given CarOptionCategory.
 	 */
-	public Collection<VehicleOption> getStillAvailableCarParts(
+	public List<IVehicleOption> getStillAvailableCarParts(
 			VehicleOptionCategory type) {
 		Collection<VehicleOption> availableParts = new HashSet<>();
 
@@ -74,7 +77,9 @@ public class PartPicker {
 		availableParts = removeConflictingBindingParts(type, availableParts);
 		availableParts = checkOptionalRestrictions(type, availableParts);
 
-		return Collections.unmodifiableCollection(availableParts);
+		List<IVehicleOption> options = new ArrayList<>();
+		options.addAll(availableParts);
+		return options;
 	}
 
 	/**
@@ -221,6 +226,16 @@ public class PartPicker {
 	public void setOptionalRestrictions(
 			Set<OptionalRestriction> optionalRestrictions) {
 		this.optionalRestrictions = optionalRestrictions;
+	}
+
+	public VehicleSpecification getSpecification(String specificationName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<String> getVehicleSpecifications() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -32,7 +32,7 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 		Optional<IOrder> order = clientCommunication.chooseOrder(facade.getPendingOrders(), facade.getCompletedOrders());
 
 		if(order.isPresent()){
-			clientCommunication.showOrderDetails(facade.getOrderDetails(order.get()));
+			clientCommunication.showOrderDetails(order.get());
 		}
 		if(clientCommunication.askContinue()){
 			executeUseCase();
