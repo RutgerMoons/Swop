@@ -27,7 +27,7 @@ public class UnmodifiableVehicle implements IVehicle {
 		this.model = model;
 	}
 	@Override
-	public Map<VehicleOptionCategory, VehicleOption> getCarParts() {
+	public Map<VehicleOptionCategory, IVehicleOption> getCarParts() {
 		return Collections.unmodifiableMap(model.getCarParts());
 	}
 
@@ -46,17 +46,17 @@ public class UnmodifiableVehicle implements IVehicle {
 		return model.toString();
 	}
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException,
+	public void addCarPart(IVehicleOption part) throws AlreadyInMapException,
 			UnmodifiableException {
 		throw new UnmodifiableException();
 		
 	}
 	@Override
-	public Map<VehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
+	public Map<IVehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
 		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
 	}
 	@Override
-	public void addForcedOptionalType(VehicleOption type, boolean bool)
+	public void addForcedOptionalType(IVehicleOption type, boolean bool)
 			throws UnmodifiableException {
 		throw new UnmodifiableException();
 	}

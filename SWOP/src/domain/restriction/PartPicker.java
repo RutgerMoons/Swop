@@ -17,6 +17,7 @@ import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.VehicleSpecificationCatalogue;
 
 /**
  * A PartPicker has all the tools to compose a CarModel.
@@ -25,6 +26,7 @@ public class PartPicker {
 	private Set<BindingRestriction> bindingRestrictions;
 	private Set<OptionalRestriction> optionalRestrictions;
 	private Vehicle model;
+	private VehicleSpecificationCatalogue catalogue;
 
 	/**
 	 * Creates a new PartPicker.
@@ -33,8 +35,9 @@ public class PartPicker {
 	 * @param optionalRestrictions
 	 * 			The OptionalRestrictions which this PartPicker takes into account.
 	 */
-	public PartPicker(Set<BindingRestriction> bindingRestrictions,
+	public PartPicker(VehicleSpecificationCatalogue catalogue, Set<BindingRestriction> bindingRestrictions,
 			Set<OptionalRestriction> optionalRestrictions) {
+		this.setCatalogue(catalogue);
 		setBindingRestrictions(bindingRestrictions);
 		setOptionalRestrictions(optionalRestrictions);
 	}
@@ -90,7 +93,7 @@ public class PartPicker {
 			VehicleOptionCategory type, Collection<VehicleOption> availableParts) {
 
 		for (OptionalRestriction restriction : optionalRestrictions) {
-			Map<VehicleOptionCategory, VehicleOption> parts = model.getCarParts();
+			Map<VehicleOptionCategory, IVehicleOption> parts = model.getCarParts();
 			if (restriction.getCarPart().getType().equals(type)) {				
 				if (!restriction.getRestrictedPartAlreadyChosen()) {
 					model.addForcedOptionalType(restriction.getCarPart(),
@@ -165,7 +168,7 @@ public class PartPicker {
 
 		for (VehicleOption option1 : options.keySet()) {
 			for (VehicleOption option2 : options.get(option1)) {
-				VehicleOption inModel = model.getCarParts().get(option2.getType());
+				IVehicleOption inModel = model.getCarParts().get(option2.getType());
 				if (inModel != null && !options.get(option1).contains(inModel)) {
 					availableParts.remove(option1);
 				}
@@ -229,13 +232,19 @@ public class PartPicker {
 	}
 
 	public VehicleSpecification getSpecification(String specificationName) {
-		// TODO Auto-generated method stub
-		return null;
+		return getCatalogue().getCatalogue().get(specificationName);
 	}
 
 	public Set<String> getVehicleSpecifications() {
-		// TODO Auto-generated method stub
-		return null;
+		return getCatalogue().getCatalogue().keySet();
+	}
+
+	public VehicleSpecificationCatalogue getCatalogue() {
+		return catalogue;
+	}
+
+	public void setCatalogue(VehicleSpecificationCatalogue catalogue) {
+		this.catalogue = catalogue;
 	}
 
 }

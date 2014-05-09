@@ -12,19 +12,19 @@ import domain.exception.NotImplementedException;
  */
 public class CustomVehicle implements IVehicle {
 
-	private HashMap<VehicleOptionCategory, VehicleOption> vehicleOptions;
+	private HashMap<VehicleOptionCategory, IVehicleOption> vehicleOptions;
 	
 	public CustomVehicle(){
 		vehicleOptions = new HashMap<>();
 	}
 	
 	@Override
-	public Map<VehicleOptionCategory, VehicleOption> getCarParts() {
+	public Map<VehicleOptionCategory, IVehicleOption> getCarParts() {
 		return vehicleOptions;
 	}
 
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException,
+	public void addCarPart(IVehicleOption part) throws AlreadyInMapException,
 			UnmodifiableException {
 		if(part==null){
 			throw new IllegalArgumentException();
@@ -36,12 +36,12 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public Map<VehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
+	public Map<IVehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void addForcedOptionalType(VehicleOption type, boolean bool)
+	public void addForcedOptionalType(IVehicleOption type, boolean bool)
 			throws UnmodifiableException, NotImplementedException {
 		throw new NotImplementedException();
 	}
@@ -62,7 +62,7 @@ public class CustomVehicle implements IVehicle {
 		String line = System.lineSeparator();
 		String result = "";
 		for(VehicleOptionCategory type: vehicleOptions.keySet()){
-			VehicleOption option = vehicleOptions.get(type);
+			IVehicleOption option = vehicleOptions.get(type);
 			result+= line + type.toString() + ": " +option.getDescription();
 		}
 		result = result.replaceFirst(line, "");

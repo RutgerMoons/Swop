@@ -194,7 +194,7 @@ public class Facade {
 	public List<IVehicleOption> getParts(VehicleOptionCategory type) {
 		return ImmutableList.copyOf(company.getStillAvailableCarParts(type));
 	}
-	
+
 	/**
 	 * Get a list of pending orders of the user that is currently logged in.
 	 */
@@ -247,28 +247,7 @@ public class Facade {
 		return company.getDetailedDelays();
 	}
 
-	/**
-	 * Get a list of tasks of a Workbench, specified by the workBenchIndex.
-	 */
-	public List<ITask> getTasksOfChosenWorkBench(int workBenchIndex) {
-		IWorkBench workbench = this.assemblyLine.getWorkbenches().get(
-				workBenchIndex);
-		List<ITask> tasks = new ArrayList<ITask>();
-		for (ITask task : workbench.getCurrentTasks()) {
-			if (!task.isCompleted()) {
-				tasks.add(task);
-			}
-		}
-		return ImmutableList.copyOf(tasks);
-	}
 
-	/**
-	 * Get the names of the WorkBenches.
-	 */
-	public List<String> getWorkbenches(IAssemblyLine assemblyLine) {
-		assemblyLine.getWorkbenches();
-	}
-	
 	/**
 	 * Login with a userName.
 	 * @param userName
@@ -296,13 +275,15 @@ public class Facade {
 	 * 			The deadline of the CustomOrder
 	 */
 	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline) throws IllegalArgumentException{
-		CustomOrder order = new CustomOrder(
-				userBook.getCurrentUser().getName(), model, 1,
-				clock.getUnmodifiableClock(), deadline);
-		try {
-			orderBook.addOrder(order, clock.getUnmodifiableClock());
-		} catch (UnmodifiableException | NotImplementedException e) {
+		CustomVehicle vehicle = new CustomVehicle();
+		for(IVehicleOption option: model.getCarParts().values()){
+			vehicle.addCarPart(option);
 		}
+
+		CustomOrder order = new CustomOrder(
+				company.getCurrentUser(), vehicle, 1,
+				company.getUnmodifiableClock(), deadline);
+		company.addOrder(order);
 		return order.getEstimatedTime();
 	}
 
@@ -318,14 +299,7 @@ public class Facade {
 	 * 			This is never thrown here.
 	 */
 	public ImmutableClock processOrder(int quantity) throws	IllegalStateException{
-		Vehicle vehicle = picker.getModel();
-
-		if (!vehicle.isValid())
-			throw new IllegalStateException();
-		StandardOrder order = new StandardOrder(userBook.getCurrentUser()
-				.getName(), vehicle, quantity, clock.getUnmodifiableClock());
-		this.orderBook.addOrder(order, clock.getUnmodifiableClock());
-		return order.getEstimatedTime();
+		return company.processOrder(quantity);
 	}
 
 	/**
@@ -347,6 +321,7 @@ public class Facade {
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+		//TODO vragen aan rutger, moet dit in facade?
 		return this.company.getAllCarOptionsInPendingOrders();
 	}
 
