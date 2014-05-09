@@ -1,5 +1,6 @@
 package domain.order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -8,8 +9,9 @@ import com.google.common.collect.Multimap;
 
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
-import domain.exception.NotImplementedException;
 import domain.observer.LogsAssemblyLine;
+import domain.observer.ObservableOrderBook;
+import domain.observer.OrderBookObserver;
 
 /**
  * this class will be used to keep record of two kinds of orders. these two
@@ -18,12 +20,13 @@ import domain.observer.LogsAssemblyLine;
  * 
  * 
  */
-public class OrderBook implements LogsAssemblyLine{
+public class OrderBook implements LogsAssemblyLine, ObservableOrderBook {
 
 	// private HashMap<String, ArrayList<Order>> pendingOrders;
 	// private HashMap<String, ArrayList<Order>> completedOrders;
 	private Multimap<String, IOrder> pendingOrders;
 	private Multimap<String, IOrder> completedOrders;
+	private List<OrderBookObserver> observers;
 	//TODO assemblyLineObserver zodat assembly genotified wordt wanneer een nieuw order binnenkomt
 	/**
 	 * Create a new OrderBook.
@@ -75,6 +78,7 @@ public class OrderBook implements LogsAssemblyLine{
 	public void initializeBook() {
 		pendingOrders =  ArrayListMultimap.create();
 		completedOrders = ArrayListMultimap.create();
+		this.observers = new ArrayList<>();
 	}
 
 	/**
@@ -84,40 +88,43 @@ public class OrderBook implements LogsAssemblyLine{
 	 * as a key to the hashmap and the order is added to a new arraylist and
 	 * this arraylist is added to pendingOrders.
 	 * 
-	 * The estimated time of completion is automatically set to the order.
 	 * @param order
 	 * 			The StandardOrder you want to add.
+	 * 
 	 * @throws UnmodifiableException 
 	 * 			If the order is an ImmutableOrder.
 	 * 			
 	 */
-	public void addOrder(StandardOrder order, ImmutableClock currentTime) throws UnmodifiableException {
+	public void addOrder(IOrder order, ImmutableClock currentTime) throws UnmodifiableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		order.setEstimatedTime(currentTime.getImmutableClockPlusExtraMinutes(assemblyLine.convertStandardOrderToJob(order)));
+		updatePlacedOrder(order);
 	}
 	
-	/**
-	 * Method for adding an order to the pending orders list. It checks if the
-	 * garageholder already has pending orders. If so the order is simply added
-	 * to the corresponding arraylist. If not, the garageholders name is added
-	 * as a key to the hashmap and the order is added to a new arraylist and
-	 * this arraylist is added to pendingOrders.
-	 * 
-	 * The estimated time of completion is automatically set to the order.
-	 * @param order
-	 * 			The CustomOrder you want to add.
-	 * @throws UnmodifiableException 
-	 * 			If the order is an ImmutableOrder.
-	 * 			
-	 */
-	public void addOrder(CustomOrder order, ImmutableClock currentTime) throws UnmodifiableException {
-		this.pendingOrders.put(order.getGarageHolder(), order);
-		order.setEstimatedTime(currentTime.getImmutableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
+	@Override
+	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder) {
+		//TODO
 	}
 
 	@Override
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder) {
-		// TODO Auto-generated method stub
-		
+	public void attachObserver(OrderBookObserver observer) {
+		if (observer == null) {
+			throw new IllegalArgumentException();
+		}
+		observers.add(observer);
+	}
+
+	@Override
+	public void detachObserver(OrderBookObserver observer) {
+		if (observer == null) {
+			throw new IllegalArgumentException();
+		}
+		observers.remove(observer);			
+	}
+
+	@Override
+	public void updatePlacedOrder(IOrder order) {
+		for (OrderBookObserver observer : this.observers) {
+			observer.notifyNewOrder(order);
+		}
 	}
 }

@@ -3,11 +3,12 @@ package domain.clock;
 import java.util.ArrayList;
 
 import domain.observer.ClockObserver;
+import domain.observer.ObservableClock;
 
 /**
  * Represents a clock that stores the current time (in minutes) and the current day.
  */
-public class Clock {
+public class Clock implements ObservableClock {
 	
 	public static final int MINUTESINADAY = 1440;
 	private final int MINUTESSTARTOFDAY= 360;
@@ -87,6 +88,7 @@ public class Clock {
 	/**
 	 * Add an observer to this clock's observers
 	 */
+	@Override
 	public void attachObserver(ClockObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -97,6 +99,7 @@ public class Clock {
 	/**
 	 * Remove an observer from this clock's observers.
 	 */
+	@Override
 	public void detachObserver(ClockObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -107,6 +110,7 @@ public class Clock {
 	/**
 	 * Notify the observers that the time has advanced.
 	 */
+	@Override
 	public void notifyObserversAdvanceTime() {
 		ImmutableClock currentTime = getUnmodifiableClock();
 		for (ClockObserver observer : observers) {
@@ -117,6 +121,7 @@ public class Clock {
 	/**
 	 * Notify the observers that a new day has started.
 	 */
+	@Override
 	public void notifyObserversStartNewDay() {
 		for (ClockObserver observer : observers) {
 			observer.startNewDay(getUnmodifiableClock());

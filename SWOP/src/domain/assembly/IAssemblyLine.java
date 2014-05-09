@@ -4,17 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.UnmodifiableException;
 import domain.job.IJob;
-import domain.observer.AssemblyLineObserver;
 import domain.order.CustomOrder;
 import domain.order.StandardOrder;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.IVehicleOption;
-import domain.vehicle.VehicleOption;
 
 public interface IAssemblyLine {
 
@@ -101,30 +98,6 @@ public interface IAssemblyLine {
 	 * @return A list of IWorkBenches.
 	 */
 	public List<IWorkBench> getWorkbenches();
-	
-	
-	/**
-	 * The observer will be added to the notify list and is subscribed for
-	 * every notification.
-	 * 
-	 * @throws IllegalArgumentException
-	 * 		Thrown when the parameter is null.
-	 */
-	public void attachObserver(AssemblyLineObserver observer);
-	
-	/**
-	 * The observer will be no longer subscribed and will not be notified for future notifications.
-	 * 
-	 * @throws IllegalArgumentException
-	 * 		Thrown when the parameter is null.
-	 */
-	public void detachObserver(AssemblyLineObserver observer);
-	
-	/**
-	 * Method that notifies all the subscribers when an order is completed and sends the current
-	 * time to every subscriber.
-	 */
-	public void notifyObserverCompleteOrder(ImmutableClock aClock);
 	
 	/**
 	 * Method for asking the scheduler to switch to the algorithm the given creator can create.

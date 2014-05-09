@@ -19,6 +19,7 @@ import domain.job.Job;
 import domain.job.Task;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+import domain.observer.ObservableAssemblyLine;
 import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.StandardOrder;
@@ -31,7 +32,7 @@ import domain.vehicle.IVehicleOption;
  * It notifies the attached observers when an order is completed. Each assemblyLine has a scheduler.
  * 
  */
-public class AssemblyLine implements IAssemblyLine{
+public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 
 	private List<IJob> currentJobs;
 	private List<IWorkBench> workbenches;
@@ -87,7 +88,7 @@ public class AssemblyLine implements IAssemblyLine{
 		if (lastJob.isPresent()	&& lastJob.get().isCompleted()) {
 			currentJobs.remove(lastJob.get());
 			lastJob.get().getOrder().completeCar();
-			notifyObserverCompleteOrder(lastJob.get().getOrder().getEstimatedTime());
+			updateCompletedOrder(lastJob.get().getOrder().getEstimatedTime());
 		}
 	}
 
@@ -262,7 +263,8 @@ public class AssemblyLine implements IAssemblyLine{
 		observers.remove(observer);
 	}
 
-	public void notifyObserverCompleteOrder(ImmutableClock aClock) {
+	@Override
+	public void updateCompletedOrder(ImmutableClock aClock) {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}
