@@ -16,11 +16,8 @@ import domain.job.ITask;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
-<<<<<<< HEAD
 import domain.order.Delay;
-=======
 import domain.order.CustomOrder;
->>>>>>> 897c3250e6a6838cb1aa9e44bd073dcaa47296e8
 import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
@@ -39,6 +36,7 @@ import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.VehicleSpecificationCatalogue;
 
 /**
  * 
@@ -58,7 +56,7 @@ public class Company {
 	private Set<OptionalRestriction> optionalRestrictions;
 	private int amountOfDetailedHistory;
 
-	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, CustomVehicleCatalogue customCatalogue){
+	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, CustomVehicleCatalogue customCatalogue, VehicleSpecificationCatalogue vehicleSpecificationCatalogue){
 		if (bindingRestrictions == null || optionalRestrictions == null || customCatalogue == null){
 			throw new IllegalArgumentException();
 		}
@@ -76,7 +74,7 @@ public class Company {
 		this.bindingRestrictions = bindingRestrictions;
 		this.optionalRestrictions = optionalRestrictions;
 		this.customCatalogue = customCatalogue;
-		this.partpicker = new PartPicker(this.bindingRestrictions, this.optionalRestrictions);
+		this.partpicker = new PartPicker(vehicleSpecificationCatalogue, this.bindingRestrictions, this.optionalRestrictions);
 
 	}
 
@@ -153,7 +151,7 @@ public class Company {
 	}
 
 
-	//TODO getBlockingWorkbenches() nog toevoegen
+	
 
 	/**
 	 * Get the CarModelSpecification from the catalogue.
@@ -187,7 +185,7 @@ public class Company {
 	}
 
 	public List<IWorkBench> getBlockingWorkBenches() {
-		// TODO Auto-generated method stub
+		//TODO getBlockingWorkbenches() nog toevoegen
 		return null;
 	}
 
