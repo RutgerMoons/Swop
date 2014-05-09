@@ -222,54 +222,29 @@ public class Facade {
 		}
 		return ImmutableList.copyOf(tasks);
 	}
-
-	/**
-	 * Get all of the available statistics.
-	 * 
-	 * @return A List containing following statistics (in that order): average
-	 *         #cars produced / day median #cars produced / day #cars produced 2
-	 *         days ago #cars produced 1 day ago average delay median delay
-	 *         second last delay last delay
-	 */
-	public List<String> getStatistics() {
-		int detail = 2; // aantal dagen waarvan gedetailleerde/exacte numbers
-						// voor moeten worden weeregegeven
-
-		List<String> statistics = new ArrayList<String>();
-
-		statistics.add("" + logger.averageDays());
-		statistics.add("" + logger.medianDays());
-
-		List<Integer> detailedDays = new ArrayList<Integer>(
-				logger.getDetailedDays());
-		while (detailedDays.size() < detail) { // als er geen statistics van
-												// genoeg dagen terug zijn: voeg
-												// 0 toe voor die dag(en)
-			detailedDays.add(0, 0);
-		}
-		for (int i = 0; i < detail; i++) {
-			statistics.add("" + detailedDays.get(i));
-		}
-
-		statistics.add("" + logger.averageDelays());
-		statistics.add("" + logger.medianDelays());
-
-		List<Delay> detailedDelays = new ArrayList<Delay>(
-				logger.getDetailedDelays());
-		while (detailedDelays.size() < detail) { // als er niet genoeg delays
-													// zijn: voeg null toe voor
-													// die dag(en)
-			detailedDelays.add(null);
-		}
-		for (int i = 0; i < detail; i++) {
-			if (detailedDelays.get(i) == null) {
-				statistics.add("none");
-			} else {
-				statistics.add(detailedDelays.get(i).toString());
-			}
-		}
-
-		return ImmutableList.copyOf(statistics);
+	
+	public int getAverageDays(){
+		return company.getAverageDays();
+	}
+	
+	public int getMedianDays(){
+		return company.getMedianDays();
+	}
+	
+	public List<Integer> getDetailedDays(){
+		return company.getDetailedDays();
+	}
+	
+	public int getAverageDelays(){
+		return company.getAverageDelays();
+	}
+	
+	public int getMedianDelays(){
+		return company.getMedianDelays();
+	}
+	
+	public List<Delay> getDetailedDelays(){
+		return company.getDetailedDelays();
 	}
 
 	/**

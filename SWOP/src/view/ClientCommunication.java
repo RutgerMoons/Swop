@@ -2,7 +2,6 @@ package view;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -16,6 +15,7 @@ import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.job.IAction;
 import domain.job.ITask;
+import domain.order.Delay;
 import domain.order.IOrder;
 import domain.vehicle.IVehicle;
 import domain.vehicle.IVehicleOption;
@@ -393,22 +393,6 @@ public class ClientCommunication{
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
 
-	private boolean isValidDeadline(String answer) {
-		String[] split = answer.split(",");
-		if(split.length!=3){
-			return false;
-		}
-		try{
-			Integer.parseInt(split[0]);
-			Integer.parseInt(split[1]);
-			Integer.parseInt(split[2]);
-		}catch(NumberFormatException e){
-			return false;
-		}
-
-		return true;
-	}
-
 	/**
 	 * log the current user out
 	 */
@@ -770,5 +754,42 @@ public class ClientCommunication{
 			invalidAnswerPrompt();
 			return showCustomTasks(customTasks);
 		}
+	}
+
+	public void showAverageDays(int averageDays) {
+		show(Arrays.asList("Average vehicles produced: " + averageDays));
+	}
+
+	public void showMedianDays(int medianDays) {
+		show(Arrays.asList("Median vehicles produced: " + medianDays));
+	}
+
+	public void showDetailsDays(List<Integer> detailedDays) {
+		List<String> details = new ArrayList<>();
+		details.add("Details of the last " + detailedDays.size() + " days:");
+		for(Integer day : detailedDays){
+			details.add(day + LINESEPARATOR);
+		}
+		show(details);
+		
+	}
+
+	public void showAverageDelays(int averageDelays) {
+		show(Arrays.asList("Average delays: " + averageDelays));
+		
+	}
+
+	public void showMedianDelays(int medianDelays) {
+		show(Arrays.asList("Median delays: " + medianDelays));
+		
+	}
+
+	public void showDetailedDelays(List<Delay> detailedDelays) {
+		List<String> details = new ArrayList<>();
+		details.add("Details of the last " + detailedDelays.size() + " delays:");
+		for(Delay delay : detailedDelays){
+			details.add(delay.toString() + LINESEPARATOR);
+		}
+		show(details);
 	}
 }

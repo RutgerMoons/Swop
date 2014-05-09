@@ -16,12 +16,14 @@ import domain.job.ITask;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+import domain.order.Delay;
 import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.scheduling.WorkloadDivider;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.users.AccessRight;
 import domain.users.UserBook;
 import domain.vehicle.CustomVehicle;
@@ -47,6 +49,7 @@ public class Company {
 	private WorkloadDivider workloadDivider;
 	private Set<BindingRestriction> bindingRestrictions;
 	private Set<OptionalRestriction> optionalRestrictions;
+	private int amountOfDetailedHistory;
 
 	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, CustomVehicleCatalogue customCatalogue){
 		if (bindingRestrictions == null || optionalRestrictions == null || customCatalogue == null){
@@ -54,7 +57,7 @@ public class Company {
 		}
 		this.userbook = new UserBook();
 		this.orderbook = new OrderBook();
-		int amountOfDetailedHistory = 2;
+		amountOfDetailedHistory = 2;
 		this.log = new Logger(amountOfDetailedHistory);
 		AssemblyLineObserver assemblyLineObserver = new AssemblyLineObserver();
 		assemblyLineObserver.attachLogger(log);
@@ -211,5 +214,41 @@ public class Company {
 
 	public Collection<CustomVehicle> getSpecificCustomTasks(String taskDescription) {
 		return customCatalogue.getCatalogue().get(taskDescription);
+	}
+
+	public int getAverageDays() {
+		return log.averageDays();
+	}
+	
+	public int getMedianDays(){
+		return log.medianDays();
+	}
+	
+	public List<Integer> getDetailedDays(){
+		List<Integer> detailedList = log.getDetailedDays();
+		if(detailedList.size() < this.amountOfDetailedHistory){
+			for(int i = detailedList.size();i<this.amountOfDetailedHistory; i++){
+				detailedList.add(0);
+			}
+		}
+		return detailedList;
+	}
+	
+	public int getAverageDelays(){
+		return log.averageDelays();
+	}
+	
+	public int getMedianDelays(){
+		return log.medianDelays();
+	}
+	
+	public List<Delay> getDetailedDelays(){
+		List<Delay> detailedList = log.getDetailedDelays();
+		if(detailedList.size() < this.amountOfDetailedHistory){
+			for(int i = detailedList.size();i<this.amountOfDetailedHistory; i++){
+				detailedList.add(new Delay(new ImmutableClock(0,0), new ImmutableClock(0,0)));
+			}
+		}
+		return detailedList;
 	}
 }
