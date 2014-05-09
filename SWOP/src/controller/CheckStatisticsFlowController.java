@@ -1,8 +1,11 @@
 package controller;
 
+import java.util.List;
+
 import view.ClientCommunication;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
+import domain.order.Delay;
 import domain.users.AccessRight;
 
 /**
@@ -26,8 +29,21 @@ public class CheckStatisticsFlowController extends UseCaseFlowController {
 
 	@Override
 	public void executeUseCase() throws IllegalArgumentException, UnmodifiableException {
-		clientCommunication.showStatistics(facade.getStatistics());
-
+		//clientCommunication.showStatistics(facade.getStatistics());
+		// Show average amount of vehicles produced in a day
+		int averageDays = facade.getAverageDays();
+		clientCommunication.showAverageDays(averageDays);
+		int medianDays = facade.getMedianDays();
+		clientCommunication.showMedianDays(medianDays);
+		List<Integer> detailedDays = facade.getDetailedDays();
+		clientCommunication.showDetailsDays(detailedDays);
+		int averageDelays = facade.getAverageDelays();
+		clientCommunication.showAverageDelays(averageDelays);
+		int medianDelays = facade.getMedianDelays();
+		clientCommunication.showMedianDelays(medianDelays);
+		List<Delay> detailedDelays = facade.getDetailedDelays();
+		clientCommunication.showDetailedDelays(detailedDelays);
+		
 	}
 
 }

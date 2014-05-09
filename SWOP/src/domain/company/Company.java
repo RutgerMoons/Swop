@@ -16,7 +16,11 @@ import domain.job.ITask;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+<<<<<<< HEAD
+import domain.order.Delay;
+=======
 import domain.order.CustomOrder;
+>>>>>>> 897c3250e6a6838cb1aa9e44bd073dcaa47296e8
 import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
@@ -24,6 +28,7 @@ import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.scheduling.WorkloadDivider;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.users.AccessRight;
 import domain.users.UserBook;
 import domain.vehicle.CustomVehicle;
@@ -51,6 +56,7 @@ public class Company {
 	private WorkloadDivider workloadDivider;
 	private Set<BindingRestriction> bindingRestrictions;
 	private Set<OptionalRestriction> optionalRestrictions;
+	private int amountOfDetailedHistory;
 
 	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, CustomVehicleCatalogue customCatalogue){
 		if (bindingRestrictions == null || optionalRestrictions == null || customCatalogue == null){
@@ -58,7 +64,7 @@ public class Company {
 		}
 		this.userbook = new UserBook();
 		this.orderbook = new OrderBook();
-		int amountOfDetailedHistory = 2;
+		amountOfDetailedHistory = 2;
 		this.log = new Logger(amountOfDetailedHistory);
 		AssemblyLineObserver assemblyLineObserver = new AssemblyLineObserver();
 		assemblyLineObserver.attachLogger(log);
@@ -71,9 +77,9 @@ public class Company {
 		this.optionalRestrictions = optionalRestrictions;
 		this.customCatalogue = customCatalogue;
 		this.partpicker = new PartPicker(this.bindingRestrictions, this.optionalRestrictions);
-		
+
 	}
-	
+
 	/**
 	 * Add a Part to the CarModel that is being built.
 	 * 
@@ -94,7 +100,7 @@ public class Company {
 	public void advanceClock(int time){
 		this.clock.advanceTime(time);
 	}
-	
+
 	/**
 	 * Complete the task the user has chosen to complete. The method
 	 * automatically advances the AssemblyLine if it can advance.
@@ -114,7 +120,7 @@ public class Company {
 		this.workloadDivider.checkIfCanAdvanceOneAssemblyLine()
 		clock.advanceTime(time.getTotalInMinutes());
 	}
-	
+
 	/**
 	 * Create a new User and put it in the UserBook. The method automatically
 	 * logs the newly created user in.
@@ -127,7 +133,7 @@ public class Company {
 	public void createAndAddUser(String userName, String role){
 		this.userbook.createUser(userName, role);
 	}
-	
+
 	/**
 	 * Create a new CarModel that has to be created from scratch.
 	 * 
@@ -138,17 +144,17 @@ public class Company {
 	public void createNewModel(VehicleSpecification realModel) {
 		this.partpicker.setNewModel(realModel);
 	}
-	
+
 	/**
 	 * Get the accessrights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
 		return ImmutableList.copyOf(this.userbook.getCurrentUser().getAccessRights());
 	}
-	
-	
+
+
 	//TODO getBlockingWorkbenches() nog toevoegen
-	
+
 	/**
 	 * Get the CarModelSpecification from the catalogue.
 	 * @param specificationName
@@ -159,21 +165,21 @@ public class Company {
 	public VehicleSpecification getCarModelSpecificationFromCatalogue(String specificationName) {
 		return this.partpicker.getCatalogue().getCatalogue().get(specificationName);
 	}
-	
+
 	public void login(String userName) throws RoleNotYetAssignedException{
 		this.userbook.login(userName);
 	}
-	
+
 	public void logout(){
 		this.userbook.logout();
 	}
-	
+
 	public void startNewDay(){
 		this.clock.startNewDay();
 	}
-	
+
 	public void switchToDifferentAlgoritm(SchedulingAlgorithmCreator creator){
-		
+
 	}
 
 	public List<IAssemblyLine> getAssemblyLines() {
@@ -217,6 +223,42 @@ public class Company {
 		return customCatalogue.getCatalogue().get(taskDescription);
 	}
 
+	public int getAverageDays() {
+		return log.averageDays();
+	}
+
+	public int getMedianDays(){
+		return log.medianDays();
+	}
+
+	public List<Integer> getDetailedDays(){
+		List<Integer> detailedList = log.getDetailedDays();
+		if(detailedList.size() < this.amountOfDetailedHistory){
+			for(int i = detailedList.size();i<this.amountOfDetailedHistory; i++){
+				detailedList.add(0);
+			}
+		}
+		return detailedList;
+	}
+
+	public int getAverageDelays(){
+		return log.averageDelays();
+	}
+
+	public int getMedianDelays(){
+		return log.medianDelays();
+	}
+
+	public List<Delay> getDetailedDelays(){
+		List<Delay> detailedList = log.getDetailedDelays();
+		if(detailedList.size() < this.amountOfDetailedHistory){
+			for(int i = detailedList.size();i<this.amountOfDetailedHistory; i++){
+				detailedList.add(new Delay(new ImmutableClock(0,0), new ImmutableClock(0,0)));
+			}
+		}
+		return detailedList;
+	}
+	
 	public ImmutableClock getUnmodifiableClock() {
 		return clock.getUnmodifiableClock();
 	}
@@ -229,10 +271,10 @@ public class Company {
 		Vehicle vehicle = partpicker.getModel();
 		if (!vehicle.isValid())
 			throw new IllegalStateException();
-		
+
 		StandardOrder order = new StandardOrder(userbook.getCurrentUser()
 				.getName(), vehicle, quantity, clock.getUnmodifiableClock());
-		
+
 		orderbook.addOrder(order, clock.getUnmodifiableClock());
 		return order.getEstimatedTime();
 	}
