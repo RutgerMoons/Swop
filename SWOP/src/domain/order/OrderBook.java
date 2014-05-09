@@ -110,7 +110,7 @@ public class OrderBook implements LogsAssemblyLine{
 	 * 			If the order is an ImmutableOrder.
 	 * 			
 	 */
-	public void addOrder(CustomOrder order, ImmutableClock currentTime) throws UnmodifiableException, NotImplementedException {
+	public void addOrder(CustomOrder order, ImmutableClock currentTime) throws UnmodifiableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		order.setEstimatedTime(currentTime.getImmutableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
 	}

@@ -16,8 +16,10 @@ import domain.job.ITask;
 import domain.log.Logger;
 import domain.observer.AssemblyLineObserver;
 import domain.observer.ClockObserver;
+import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.OrderBook;
+import domain.order.StandardOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
@@ -26,7 +28,9 @@ import domain.users.AccessRight;
 import domain.users.UserBook;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.CustomVehicleCatalogue;
+import domain.vehicle.IVehicle;
 import domain.vehicle.IVehicleOption;
+import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
@@ -108,7 +112,7 @@ public class Company {
 			action.setCompleted(true);
 		}
 		this.workloadDivider.checkIfCanAdvanceOneAssemblyLine()
-		clock.advanceTime();
+		clock.advanceTime(time.getTotalInMinutes());
 	}
 	
 	/**
@@ -211,5 +215,25 @@ public class Company {
 
 	public Collection<CustomVehicle> getSpecificCustomTasks(String taskDescription) {
 		return customCatalogue.getCatalogue().get(taskDescription);
+	}
+
+	public ImmutableClock getUnmodifiableClock() {
+		return clock.getUnmodifiableClock();
+	}
+
+	public void addOrder(CustomOrder order) {
+		orderbook.addOrder(order, getUnmodifiableClock());
+	}
+
+	public ImmutableClock processOrder(int quantity) {
+		Vehicle vehicle = partpicker.getModel();
+		if (!vehicle.isValid())
+			throw new IllegalStateException();
+		
+		StandardOrder order = new StandardOrder(userbook.getCurrentUser()
+				.getName(), vehicle, quantity, clock.getUnmodifiableClock());
+		
+		orderbook.addOrder(order, clock.getUnmodifiableClock());
+		return order.getEstimatedTime();
 	}
 }
