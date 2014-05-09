@@ -636,8 +636,8 @@ public class ClientCommunication{
 
 		String carDetails = "Chosen carOptions: ";
 		for (VehicleOptionCategory category : order.getDescription()
-				.getCarParts().keySet()) {
-			carDetails += order.getDescription().getCarParts()
+				.getVehicleOptions().keySet()) {
+			carDetails += order.getDescription().getVehicleOptions()
 					.get(category)
 					+ " ";
 		}

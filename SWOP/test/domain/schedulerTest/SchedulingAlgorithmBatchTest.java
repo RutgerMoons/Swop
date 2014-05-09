@@ -91,7 +91,7 @@ public class SchedulingAlgorithmBatchTest {
 		assertEquals(1, template.getCarParts().size());
 		model = new Vehicle(template);
 		assertEquals(1, model.getSpecification().getCarParts().size());
-		assertEquals(0, model.getCarParts().size());
+		assertEquals(0, model.getVehicleOptions().size());
 		ImmutableClock ordertime = new ImmutableClock(2, 30);
 		IOrder order = new StandardOrder("mario", model, 3, ordertime);
 		IJob job = new Job(order);

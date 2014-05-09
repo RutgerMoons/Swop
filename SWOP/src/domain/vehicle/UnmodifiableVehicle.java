@@ -27,8 +27,8 @@ public class UnmodifiableVehicle implements IVehicle {
 		this.model = model;
 	}
 	@Override
-	public Map<VehicleOptionCategory, IVehicleOption> getCarParts() {
-		return Collections.unmodifiableMap(model.getCarParts());
+	public Map<VehicleOptionCategory, IVehicleOption> getVehicleOptions() {
+		return Collections.unmodifiableMap(model.getVehicleOptions());
 	}
 
 	@Override

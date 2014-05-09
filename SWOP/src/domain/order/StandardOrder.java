@@ -1,8 +1,12 @@
 package domain.order;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.vehicle.IVehicle;
+import domain.vehicle.IVehicleOption;
 import domain.vehicle.Vehicle;
 
 /**
@@ -187,5 +191,10 @@ public class StandardOrder implements IOrder {
 		} catch (NotImplementedException e) {
 			return 0;
 		}
+	}
+
+	@Override
+	public Collection<IVehicleOption> getVehicleOptions() {
+		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
 	}
 }

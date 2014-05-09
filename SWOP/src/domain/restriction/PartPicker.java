@@ -93,7 +93,7 @@ public class PartPicker {
 			VehicleOptionCategory type, Collection<VehicleOption> availableParts) {
 
 		for (OptionalRestriction restriction : optionalRestrictions) {
-			Map<VehicleOptionCategory, IVehicleOption> parts = model.getCarParts();
+			Map<VehicleOptionCategory, IVehicleOption> parts = model.getVehicleOptions();
 			if (restriction.getCarPart().getType().equals(type)) {				
 				if (!restriction.getRestrictedPartAlreadyChosen()) {
 					model.addForcedOptionalType(restriction.getCarPart(),
@@ -126,7 +126,7 @@ public class PartPicker {
 		Set<VehicleOption> availableParts = new HashSet<>();
 
 		for (BindingRestriction restriction : bindingRestrictions) {
-			if (model.getCarParts().values()
+			if (model.getVehicleOptions().values()
 					.contains(restriction.getChosenCarPart())
 					&& restriction.getRestrictedCarPart().getType().equals(type)
 					&& model.getSpecification().getCarParts().values()
@@ -168,7 +168,7 @@ public class PartPicker {
 
 		for (VehicleOption option1 : options.keySet()) {
 			for (VehicleOption option2 : options.get(option1)) {
-				IVehicleOption inModel = model.getCarParts().get(option2.getType());
+				IVehicleOption inModel = model.getVehicleOptions().get(option2.getType());
 				if (inModel != null && !options.get(option1).contains(inModel)) {
 					availableParts.remove(option1);
 				}

@@ -5,19 +5,15 @@ package domain.vehicle;
  */
 public class VehicleOption implements IVehicleOption{
 
-	private String description;
-	private VehicleOptionCategory type;
+	private final String description;
+	private final VehicleOptionCategory type;
 
 	public VehicleOption(String description, VehicleOptionCategory type) {
-		this.setDescription(description);
-		this.setType(type);
-	}
-
-	@Override
-	public void setDescription(String description) {
-		if (description == null || description.isEmpty())
+		if (description == null || type == null) {
 			throw new IllegalArgumentException();
+		}
 		this.description = description;
+		this.type = type;
 	}
 
 	@Override
@@ -33,13 +29,6 @@ public class VehicleOption implements IVehicleOption{
 	@Override
 	public VehicleOptionCategory getType() {
 		return this.type;
-	}
-
-	@Override
-	public void setType(VehicleOptionCategory type) {
-		if (type == null)
-			throw new IllegalArgumentException();
-		this.type = type;
 	}
 
 	@Override

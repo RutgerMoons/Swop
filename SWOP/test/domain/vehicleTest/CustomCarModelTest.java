@@ -24,7 +24,7 @@ public class CustomCarModelTest {
 	public void testAddCarPart() throws AlreadyInMapException, UnmodifiableException {
 		VehicleOption sportBody = new VehicleOption("sport", VehicleOptionCategory.BODY);
 		model.addCarPart(sportBody);
-		assertEquals(sportBody, model.getCarParts().get(VehicleOptionCategory.BODY));
+		assertEquals(sportBody, model.getVehicleOptions().get(VehicleOptionCategory.BODY));
 	}
 	
 	@Test(expected=AlreadyInMapException.class)

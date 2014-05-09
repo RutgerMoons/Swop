@@ -1,9 +1,12 @@
 package domain.order;
 
+import java.util.Collection;
+
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.vehicle.IVehicle;
+import domain.vehicle.IVehicleOption;
 
 /**
  * Interface for limiting access to standard Orders.
@@ -81,5 +84,10 @@ public interface IOrder {
 	 * 			If the IOrder is an ImmutableOrder
 	 */
 	public void completeCar() throws UnmodifiableException;
+	
+	/**
+	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
+	 */
+	public Collection<IVehicleOption> getVehicleOptions();
 	
 }

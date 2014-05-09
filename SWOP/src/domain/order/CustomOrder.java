@@ -1,9 +1,13 @@
 package domain.order;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.IVehicle;
+import domain.vehicle.IVehicleOption;
 
 /**
  * Class representing an order from a Custom Car Shop Manager.
@@ -214,6 +218,11 @@ public class CustomOrder implements IOrder {
 					+ this.getEstimatedTime().getMinutes() % 60 + " minutes";
 		}
 		return orderInString;
+	}
+	
+	@Override
+	public Collection<IVehicleOption> getVehicleOptions() {
+		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
 	}
 	
 }

@@ -14,7 +14,7 @@ public interface IVehicle {
 	/**
 	 * Returns all the CarOptions of which this model currently consists.
 	 */
-	public Map<VehicleOptionCategory, IVehicleOption> getCarParts();
+	public Map<VehicleOptionCategory, IVehicleOption> getVehicleOptions();
 	
 	/**
 	 * Adds a CarOption to this CarModel. 

@@ -276,7 +276,7 @@ public class Facade {
 	 */
 	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline) throws IllegalArgumentException{
 		CustomVehicle vehicle = new CustomVehicle();
-		for(IVehicleOption option: model.getCarParts().values()){
+		for(IVehicleOption option: model.getVehicleOptions().values()){
 			vehicle.addCarPart(option);
 		}
 

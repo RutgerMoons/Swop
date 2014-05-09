@@ -53,7 +53,7 @@ public class CarModelTest {
 	public void testConstructor() {
 		Vehicle model = new Vehicle(template);
 		assertEquals(template, model.getSpecification());
-		assertNotNull(model.getCarParts());
+		assertNotNull(model.getVehicleOptions());
 		assertNotNull(model.getForcedOptionalTypes());
 	}
 
@@ -67,7 +67,7 @@ public class CarModelTest {
 		Vehicle car = new Vehicle(template);
 		VehicleOption part = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
 		car.addCarPart(part);
-		assertEquals(part, car.getCarParts().get(part.getType()));
+		assertEquals(part, car.getVehicleOptions().get(part.getType()));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

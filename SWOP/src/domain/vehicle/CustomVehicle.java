@@ -19,7 +19,7 @@ public class CustomVehicle implements IVehicle {
 	}
 	
 	@Override
-	public Map<VehicleOptionCategory, IVehicleOption> getCarParts() {
+	public Map<VehicleOptionCategory, IVehicleOption> getVehicleOptions() {
 		return vehicleOptions;
 	}
 

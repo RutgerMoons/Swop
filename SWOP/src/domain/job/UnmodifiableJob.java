@@ -1,5 +1,6 @@
 package domain.job;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -7,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import domain.exception.UnmodifiableException;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
+import domain.vehicle.IVehicleOption;
 
 
 /**
@@ -86,5 +88,10 @@ public class UnmodifiableJob implements IJob {
 	@Override
 	public int getMinimalIndex() {
 		return job.getMinimalIndex();
+	}
+	
+	@Override
+	public Collection<IVehicleOption> getVehicleOptions() {
+		return job.getVehicleOptions();
 	}
 }

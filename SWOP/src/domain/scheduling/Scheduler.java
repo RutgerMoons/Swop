@@ -16,6 +16,7 @@ import domain.observer.ClockObserver;
 import domain.observer.LogsClock;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
+import domain.vehicle.IVehicleOption;
 import domain.vehicle.VehicleOption;
 /**
  * This object is responsible for maintaining a scheduling algorithm, a certain amount of workbenches and shifts.
@@ -145,23 +146,23 @@ public class Scheduler implements LogsClock {
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
-		HashSet<VehicleOption> set = new HashSet<VehicleOption>();
+	public Set<Set<IVehicleOption>> getAllCarOptionsInPendingOrders() {
+		HashSet<IVehicleOption> set = new HashSet<>();
 		ArrayList<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
 		
 		// get all the CarOptions that occur in the pending orders
 		for (IJob job : jobs) {
-			for (VehicleOption o : job.getOrder().getDescription().getCarParts().values()) {
+			for (IVehicleOption o : job.getVehicleOptions()) {
 				set.add(o);
 			}
 		}
 		
 		// get all the CarOptions that occur in the pending orders 3 or more times
-		HashSet<VehicleOption> threeOrMoreTimes = new HashSet<>();
-		for (VehicleOption option : set) {
+		HashSet<IVehicleOption> threeOrMoreTimes = new HashSet<>();
+		for (IVehicleOption option : set) {
 			int counter = 0;
 			for (IJob job : jobs) {
-				if (job.getOrder().getDescription().getCarParts().values().contains(option)) {
+				if (job.getOrder().getDescription().getVehicleOptions().values().contains(option)) {
 					counter++;
 				}
 			}
@@ -171,15 +172,15 @@ public class Scheduler implements LogsClock {
 		} 
 
 		// get all the sets of CarOptions that occur in the pending orders 3 or more times
-		Set<Set<VehicleOption>> toReturn = new HashSet<Set<VehicleOption>>();
-	    Set<Set<VehicleOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
-	    for (Set<VehicleOption> subset : powerSet) {
+		Set<Set<IVehicleOption>> toReturn = new HashSet<Set<IVehicleOption>>();
+	    Set<Set<IVehicleOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
+	    for (Set<IVehicleOption> subset : powerSet) {
       		if (subset.size() <= 0) {
       			continue;
       		}
       		int counter = 0;
       		for (IJob job : jobs) {
-				if (job.getOrder().getDescription().getCarParts().values().containsAll(subset)) {
+				if (job.getOrder().getDescription().getVehicleOptions().values().containsAll(subset)) {
 					counter++;
 				}
 			}

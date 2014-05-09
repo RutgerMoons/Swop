@@ -1,9 +1,11 @@
 package domain.job;
 
+import java.util.Collection;
 import java.util.List;
 
 import domain.exception.UnmodifiableException;
 import domain.order.IOrder;
+import domain.vehicle.IVehicleOption;
 
 /**
  * Interface for limiting access to standard Jobs.
@@ -71,5 +73,11 @@ public interface IJob {
 	 * 		An integer that represents the index of the first workbench at which some Tasks of this Job will need to be completed.
 	 */
 	public int getMinimalIndex();
+	
+	/**
+	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
+	 */
+	public Collection<IVehicleOption> getVehicleOptions();
+	
 
 }

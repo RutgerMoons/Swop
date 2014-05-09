@@ -117,7 +117,7 @@ public class AssemblyLine implements IAssemblyLine{
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
 			IJob job = new Job(order);
-			for (VehicleOption part : model.getCarParts().values()) {
+			for (VehicleOption part : model.getVehicleOptions().values()) {
 				ITask task = new Task(part.getTaskDescription());
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);

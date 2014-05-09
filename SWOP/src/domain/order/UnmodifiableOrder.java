@@ -1,9 +1,12 @@
 package domain.order;
 
+import java.util.Collection;
+
 import domain.clock.ImmutableClock;
-import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
+import domain.exception.UnmodifiableException;
 import domain.vehicle.IVehicle;
+import domain.vehicle.IVehicleOption;
 import domain.vehicle.UnmodifiableVehicle;
 
 /**
@@ -99,5 +102,10 @@ public class UnmodifiableOrder implements IOrder {
 	@Override
 	public int getProductionTime() {
 		return order.getProductionTime();
+	}
+	
+	@Override
+	public Collection<IVehicleOption> getVehicleOptions() {
+		return this.order.getVehicleOptions();
 	}
 }

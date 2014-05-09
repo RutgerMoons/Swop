@@ -1,9 +1,11 @@
 package domain.job;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import domain.order.IOrder;
+import domain.vehicle.IVehicleOption;
 
 
 /**
@@ -105,6 +107,11 @@ public class Job implements IJob {
 	@Override
 	public int getMinimalIndex() {
 		return this.minimalIndex;
+	}
+
+	@Override
+	public Collection<IVehicleOption> getVehicleOptions() {
+		return this.order.getVehicleOptions();
 	}
 
 }

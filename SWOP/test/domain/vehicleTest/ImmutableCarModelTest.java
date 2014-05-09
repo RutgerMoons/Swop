@@ -41,7 +41,7 @@ public class ImmutableCarModelTest {
 		
 		car.addForcedOptionalType(new VehicleOption("sport", VehicleOptionCategory.BODY), false);
 		
-		assertEquals(car.getCarParts(), immutable.getCarParts());
+		assertEquals(car.getVehicleOptions(), immutable.getVehicleOptions());
 		assertEquals(car.toString(), immutable.toString());
 		assertTrue(immutable.equals(car));
 		assertEquals(car.hashCode(), immutable.hashCode());
