@@ -2,15 +2,11 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.google.common.base.Optional;
 
 import view.ClientCommunication;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.order.IOrder;
 import domain.users.AccessRight;
