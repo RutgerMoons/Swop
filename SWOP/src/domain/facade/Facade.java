@@ -173,9 +173,9 @@ public class Facade {
 	/**
 	 * Returns the currently used Scheduling Algorithm Type as String
 	 */
-	public Scheduler getCurrentSchedulingAlgorithm() {
+	public String getCurrentSchedulingAlgorithm() {
 		//TODO updaten na Rutger
-		return this.assemblyLine.getCurrentSchedulingAlgorithm();
+		return this.assemblyLine.;
 	}
 
 	/**

@@ -1,9 +1,9 @@
 package domain.schedulerTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,17 +12,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import view.ClientCommunication;
-import view.IClientCommunication;
 
 import com.google.common.base.Optional;
 
 import domain.assembly.AssemblyLine;
+import domain.assembly.AssemblyLineState;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.job.IJob;
 import domain.job.Job;
@@ -33,16 +33,22 @@ import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.scheduling.Scheduler;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.CustomVehicle;
+import domain.vehicle.IVehicleOption;
 import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.VehicleSpecificationCatalogue;
 
 public class SchedulerAlgorithmTest {
 
 	private Facade facade;
-	private IClientCommunication clientCommunication;
+	private ClientCommunication clientCommunication;
 	private Scheduler scheduler;
 	private ClockObserver clock;
 	private Vehicle model;
@@ -53,11 +59,13 @@ public class SchedulerAlgorithmTest {
 	
 	@Before
 	public void initialize() {
-		facade = new Facade(bindingRestrictions, optionalRestrictions);
-		clientCommunication = new ClientCommunication();
+		//facade = new Facade(bindingRestrictions, optionalRestrictions);
+		//clientCommunication = new ClientCommunication();
 		int amount = 3;
 		clock = new ClockObserver();
 		scheduler = new Scheduler(amount,clock, new ImmutableClock(0,600));
+		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();
+		scheduler.switchToAlgorithm(fifo, 3);
 	}
 	
 	public void initializeRestrictions(){
@@ -70,8 +78,7 @@ public class SchedulerAlgorithmTest {
 		
 		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
-		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
-		
+		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		
@@ -94,8 +101,11 @@ public class SchedulerAlgorithmTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		
 		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
-		picker.setNewModel(template);
+		catalogue.addModel(template);
+		
+		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
 	}
 	
 	@Test
@@ -120,7 +130,7 @@ public class SchedulerAlgorithmTest {
 		ImmutableClock deadline = new ImmutableClock(10, 800);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob job = new Job(customOrder);
-		scheduler.addCustomJob(job);
+		scheduler.addJobToAlgorithm(job);;
 	}
 	
 	@Test
@@ -132,19 +142,21 @@ public class SchedulerAlgorithmTest {
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
-		scheduler.addStandardJob(job);
+		scheduler.addJobToAlgorithm(job);
 	}
 	
 	@Test
 	public void switchToFifoTest(){
-		scheduler.switchToFifo();
+		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();
+		scheduler.switchToAlgorithm(fifo, 3);
 	}
 	
 	@Test
 	public void switchToBatchTest(){
 		List<VehicleOption> options = new ArrayList<VehicleOption>();
 		options.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		scheduler.switchToBatch(options);
+		SchedulingAlgorithmCreatorBatch batch = new SchedulingAlgorithmCreatorBatch(options);
+		scheduler.switchToAlgorithm(batch, 3);
 	}
 	
 	@Test
@@ -176,7 +188,7 @@ public class SchedulerAlgorithmTest {
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
-		scheduler.addStandardJob(job);
+		scheduler.addJobToAlgorithm(job);
 		int time = scheduler.getEstimatedTimeInMinutes(job);
 		assertEquals(180, time);
 	}
@@ -193,8 +205,8 @@ public class SchedulerAlgorithmTest {
 		IJob job1 = new Job(order1);
 		IJob job2 = new Job(order1);
 		try {
-			scheduler.addStandardJob(job1);
-			scheduler.addStandardJob(job2);
+			scheduler.addJobToAlgorithm(job1);
+			scheduler.addJobToAlgorithm(job2);
 			Optional<IJob> job = scheduler.retrieveNextJob();
 			assertEquals(job1, job.get());
 		} catch (NoSuitableJobFoundException e1) {}
@@ -217,23 +229,26 @@ public class SchedulerAlgorithmTest {
 			model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		} catch (AlreadyInMapException e) {}
 		Clock c = new Clock();
-		AssemblyLine line = new AssemblyLine(clock, c.getUnmodifiableClock());
+		AssemblyLine line = new AssemblyLine(clock, c.getUnmodifiableClock(), AssemblyLineState.OPERATIONAL);
+		line.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+			
 		StandardOrder order = new StandardOrder("Luigi", this.model, 5, c.getUnmodifiableClock());
 		try {
 			line.convertStandardOrderToJob(order);
 		} catch (UnmodifiableException e) { }
 		
-		Set<Set<VehicleOption>> powerSet = line.getAllCarOptionsInPendingOrders();
+		Set<Set<IVehicleOption>> powerSet = line.getAllCarOptionsInPendingOrders();
 		assertEquals(127, powerSet.size());
 	}
 	
-	@Test
+	/*@Test
 	public void getCurrentSchedulingAlgorithmAsStringTest() {
-		assertTrue(facade.getCurrentSchedulingAlgorithmAsString().equalsIgnoreCase("fifo"));
+		assertTrue(scheduler.getCurrentSchedulingAlgorithm()("fifo"));
 		this.facade.switchToBatch(Collections.EMPTY_LIST);
 		assertTrue(facade.getCurrentSchedulingAlgorithmAsString().equalsIgnoreCase("batch"));
 		assertEquals(2, facade.getPossibleSchedulingAlgorithms().size());
 		assertTrue(facade.getPossibleSchedulingAlgorithms().contains("Fifo"));
 		assertTrue(facade.getPossibleSchedulingAlgorithms().contains("Batch"));
 	}
+	*/
 } 

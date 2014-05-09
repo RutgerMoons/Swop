@@ -15,11 +15,12 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 
 import domain.assembly.AssemblyLine;
+import domain.assembly.AssemblyLineState;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
+import domain.exception.UnmodifiableException;
 import domain.job.IJob;
 import domain.job.Job;
 import domain.job.JobComparatorDeadLine;
@@ -28,8 +29,8 @@ import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
-import domain.scheduling.SchedulingAlgorithmType;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmBatch;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.Vehicle;
 import domain.vehicle.VehicleOption;
@@ -48,7 +49,7 @@ public class SchedulingAlgorithmBatchTest {
 		int amount = 3;
 		list = new ArrayList<VehicleOption>();
 		list.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		scheduling = new SchedulingAlgorithmBatch(SchedulingAlgorithmType.BATCH, list, amount);
+		scheduling = new SchedulingAlgorithmBatch(list, amount);
 	}
 
 	@Test
@@ -61,7 +62,7 @@ public class SchedulingAlgorithmBatchTest {
 
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorTestError(){
-		scheduling = new SchedulingAlgorithmBatch(SchedulingAlgorithmType.BATCH, null, 3);
+		scheduling = new SchedulingAlgorithmBatch(null, 3);
 	}
 
 	@Test
@@ -116,8 +117,8 @@ public class SchedulingAlgorithmBatchTest {
 	@Test
 	public void getEstimatedTimeInMinutesTest1() throws UnmodifiableException, NotImplementedException{
 		ClockObserver obs = new ClockObserver();
-		AssemblyLine ass = new AssemblyLine(obs, new ImmutableClock(2, 360));
-		ass.switchToBatch(list);
+		AssemblyLine ass = new AssemblyLine(obs, new ImmutableClock(2, 360), AssemblyLineState.OPERATIONAL);
+		ass.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		// Standard job not containing necessary parts of list.
 		Set<VehicleOption> parts = new HashSet<>();
 		template = new VehicleSpecification("model", parts, 60);
@@ -125,7 +126,7 @@ public class SchedulingAlgorithmBatchTest {
 		ImmutableClock ordertime1 = new ImmutableClock(2, 360); // om 6 uur op dag 2
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); // 420 minuten op de band
-		OrderBook orderbook = new OrderBook(ass);
+		OrderBook orderbook = new OrderBook();
 		orderbook.addOrder(order1, ordertime1);
 		// Custom job
 		CustomVehicle customModel = new CustomVehicle();

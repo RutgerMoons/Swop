@@ -12,6 +12,8 @@ import domain.observer.AssemblyLineObserver;
 import domain.order.CustomOrder;
 import domain.order.StandardOrder;
 import domain.scheduling.Scheduler;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
+import domain.vehicle.IVehicleOption;
 import domain.vehicle.VehicleOption;
 
 public interface IAssemblyLine {
@@ -91,12 +93,7 @@ public interface IAssemblyLine {
 	/**
 	 * Returns the currently used Scheduling Algorithm Type as String
 	 */
-	public Scheduler getCurrentSchedulingAlgorithm();
-	
-	/**
-	 * Returns a list of all the possible scheduling algorithms as Strings.
-	 */
-	public ArrayList<String> getPossibleSchedulingAlgorithms();
+	public Scheduler getCurrentScheduler();
 	
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
@@ -130,20 +127,16 @@ public interface IAssemblyLine {
 	public void notifyObserverCompleteOrder(ImmutableClock aClock);
 	
 	/**
-	 * Method for asking the scheduler to switch to Fifo algorithm.
+	 * Method for asking the scheduler to switch to the algorithm the given creator can create.
+	 * 
+	 * @param	creator is responsible for creating the correct SchedulingAlgorithm
 	 */
-	public void switchToFifo();
-	
-	/**
-	 * Method for asking the scheduler to switch to batch algorithm with as key
-	 * the given list of CarOptions.
-	 */
-	public void switchToBatch(List<VehicleOption> vehicleOptions);
+	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator);
 	
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders();
+	public Set<Set<IVehicleOption>> getAllCarOptionsInPendingOrders();
 
 	public AssemblyLineState getState();
 }

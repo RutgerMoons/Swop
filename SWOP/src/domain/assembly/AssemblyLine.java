@@ -9,8 +9,8 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import domain.clock.ImmutableClock;
-import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
+import domain.exception.UnmodifiableException;
 import domain.job.Action;
 import domain.job.IAction;
 import domain.job.IJob;
@@ -23,8 +23,8 @@ import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.StandardOrder;
 import domain.scheduling.Scheduler;
-import domain.vehicle.IVehicle;
-import domain.vehicle.VehicleOption;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
+import domain.vehicle.IVehicleOption;
 
 /**
  * Represents an AssemblyLine. It contains the workbenches and the current jobs on these workbenches.
@@ -37,6 +37,7 @@ public class AssemblyLine implements IAssemblyLine{
 	private List<IWorkBench> workbenches;
 	private List<AssemblyLineObserver> observers;
 	private Scheduler scheduler;
+	private AssemblyLineState assemblyLineState;
 
 	/**
 	 * Construct a new AssemblyLine. Initializes a scheduler and an amount of workbenches.
@@ -47,8 +48,8 @@ public class AssemblyLine implements IAssemblyLine{
 	 * @throws IllegalArgumentException
 	 *             Thrown when one or both of the parameters are null.
 	 */
-	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock) {
-		if (clockObserver == null || clock == null) {
+	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock, AssemblyLineState assemblyLineState) {
+		if (clockObserver == null || clock == null || assemblyLineState == null) {
 			throw new IllegalArgumentException();
 		}
 		workbenches = new ArrayList<IWorkBench>();
@@ -56,6 +57,7 @@ public class AssemblyLine implements IAssemblyLine{
 		initializeWorkbenches();
 		observers = new ArrayList<>();
 		this.scheduler = new Scheduler(workbenches.size(), clockObserver, clock);
+		this.assemblyLineState = assemblyLineState;
 	}
 
 	public void addWorkBench(IWorkBench bench) {
@@ -113,11 +115,10 @@ public class AssemblyLine implements IAssemblyLine{
 	 *       Thrown when the given parameter is null
 	 */
 	private List<IJob> convertOrderToJob(IOrder order) throws UnmodifiableException {
-		IVehicle model = order.getDescription();
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
 			IJob job = new Job(order);
-			for (VehicleOption part : model.getVehicleOptions().values()) {
+			for (IVehicleOption part : order.getVehicleOptions()) {
 				ITask task = new Task(part.getTaskDescription());
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);
@@ -136,7 +137,7 @@ public class AssemblyLine implements IAssemblyLine{
 		}
 		List<IJob> jobs = convertOrderToJob(order);
 		for (IJob job : jobs) {
-			this.scheduler.addCustomJob(job);
+			this.scheduler.addJobToAlgorithm(job);
 		}
 		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
 	}
@@ -148,7 +149,7 @@ public class AssemblyLine implements IAssemblyLine{
 		}
 		List<IJob> jobs = convertOrderToJob(order);
 		for (IJob job : jobs) {
-			this.scheduler.addStandardJob(job);
+			this.scheduler.addJobToAlgorithm(job);
 		}
 
 		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
@@ -182,12 +183,12 @@ public class AssemblyLine implements IAssemblyLine{
 		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
 	}
 	
-	public Scheduler getCurrentSchedulingAlgorithm() {
+	public Scheduler getCurrentScheduler() {
 		return this.scheduler;
 	}
 	
-	public ArrayList<String> getPossibleSchedulingAlgorithms() {
-		return this.scheduler.getPossibleSchedulingAlgorithms();
+	public String getCurrentSchedulingAlgorithm() {
+		return this.scheduler.getCurrentSchedulingAlgorithm();
 	}
 
 	/**
@@ -266,17 +267,19 @@ public class AssemblyLine implements IAssemblyLine{
 			observer.updateCompletedOrder(aClock);
 		}
 	}
-
-	public void switchToFifo(){
-		this.scheduler.switchToFifo();
-	}
-
-	public void switchToBatch(List<VehicleOption> vehicleOptions){
-		this.scheduler.switchToBatch(vehicleOptions);
-	}
 	
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<IVehicleOption>> getAllCarOptionsInPendingOrders() {
 		return this.scheduler.getAllCarOptionsInPendingOrders();
+	}
+
+	@Override
+	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
+		this.scheduler.switchToAlgorithm(creator, this.workbenches.size());
+	}
+
+	@Override
+	public AssemblyLineState getState() {
+		return assemblyLineState;
 	}
 
 }
