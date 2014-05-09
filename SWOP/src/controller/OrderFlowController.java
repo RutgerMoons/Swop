@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.base.Optional;
+
 import view.ClientCommunication;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
@@ -92,12 +94,12 @@ public class OrderFlowController extends UseCaseFlowController {
 	private List<IVehicleOption> createModel() {
 		List<IVehicleOption> chosenParts = new ArrayList<>();
 		for (VehicleOptionCategory type : facade.getCarPartTypes()) {
-			Set<IVehicleOption> parts = facade.getParts(type);
+			List<IVehicleOption> parts = facade.getParts(type);
+			
 			if (!parts.isEmpty()) {
-				IVehicleOption part = clientCommunication.choosePart(parts);
-				facade.addPartToModel(part);
-				if (!part.equals("Select nothing")) {
-					chosenParts.add(part);
+				Optional<IVehicleOption> part = clientCommunication.choosePart(parts);
+				if (part.isPresent()) {
+					facade.addPartToModel(part.get());
 				}
 			}
 		}

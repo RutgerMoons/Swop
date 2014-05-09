@@ -259,7 +259,7 @@ public class Facade {
 	 * @param type
 	 * 			The type of the parts that has to be selected. 
 	 */
-	public Set<IVehicleOption> getParts(VehicleOptionCategory type) {
+	public List<IVehicleOption> getParts(VehicleOptionCategory type) {
 		return ImmutableSet.copyOf(picker.getStillAvailableCarParts(type));
 	}
 	
@@ -412,8 +412,7 @@ public class Facade {
 	 * @throws NotImplementedException
 	 * 			This is never thrown here.
 	 */
-	public ImmutableClock processOrder(int quantity) throws UnmodifiableException,
-			IllegalStateException, NotImplementedException {
+	public ImmutableClock processOrder(int quantity) throws	IllegalStateException{
 		Vehicle vehicle = picker.getModel();
 
 		if (!vehicle.isValid())

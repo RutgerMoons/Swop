@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import com.google.common.base.Optional;
+
 import domain.assembly.IAssemblyLine;
 import domain.assembly.IWorkBench;
 import domain.clock.Clock;
@@ -199,21 +201,29 @@ public class ClientCommunication{
 	 * Lets the user choose a CarOption when he is putting his model together.
 	 */
 
-	public String choosePart(Set<String> parts) {
+	public Optional<IVehicleOption> choosePart(List<IVehicleOption> parts) {
 		ArrayList<String> partsString = new ArrayList<String>();
 		partsString.add(0, "Possible parts:");
+		
 		int i = 1;
-		for (String part : parts) {
-			partsString.add(i + "." + part);
+		for (IVehicleOption part : parts) {
+			partsString.add(i + "." + part.toString() + LINESEPARATOR);
 			i++;
+			if(i==parts.size() && part.getType().isOptional()){
+				partsString.add(i + ". Select Nothing" + LINESEPARATOR);
+			}
 		}
+		
+		
 		show(partsString);
-
-		int partNumber = askNumber("Which Part Number do you choose?");
-		if (partNumber >= 1 && partNumber <= parts.size()) {
-			return partsString.get(partNumber).substring(
-					partsString.get(partNumber).indexOf(".") + 1);
-		} else {
+		
+		
+		int partNumber = askNumber("Which Part Number do you choose?")-1;
+		if (partNumber >=0  && partNumber < parts.size()) {
+			return Optional.fromNullable(parts.get(partNumber));
+		}else if(partNumber == parts.size()){
+			return Optional.absent();
+		}else {
 			invalidAnswerPrompt();
 			return choosePart(parts);
 		}
