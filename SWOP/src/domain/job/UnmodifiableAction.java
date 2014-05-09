@@ -20,6 +20,7 @@ public class UnmodifiableAction implements IAction {
 			throw new IllegalArgumentException();
 		this.action = action;
 	}
+	
 	@Override
 	public boolean isCompleted() {
 		return action.isCompleted();
@@ -34,10 +35,12 @@ public class UnmodifiableAction implements IAction {
 	public String toString(){
 		return action.toString();
 	}
+	
 	@Override
 	public void setCompleted(boolean isCompleted) throws UnmodifiableException {
 		throw new UnmodifiableException();
 	}
+	
 	@Override
 	public void setDescription(String description) throws UnmodifiableException {
 		throw new UnmodifiableException();

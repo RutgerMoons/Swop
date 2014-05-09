@@ -27,7 +27,7 @@ public class Task implements ITask {
 
 	@Override
 	public List<IAction> getActions() {
-		return actionList;
+		return this.actionList;
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class Task implements ITask {
 	
 	@Override
 	public String getTaskDescription() {
-		return taskDescription;
+		return this.taskDescription;
 	}
 
 	@Override
@@ -70,6 +70,6 @@ public class Task implements ITask {
 
 	@Override
 	public String toString() {
-		return taskDescription;
+		return this.taskDescription;
 	}
 }

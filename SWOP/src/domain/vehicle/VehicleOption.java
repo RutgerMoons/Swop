@@ -9,10 +9,9 @@ public class VehicleOption implements IVehicleOption{
 	private VehicleOptionCategory type;
 
 	public VehicleOption(String description, VehicleOptionCategory type) {
-		setDescription(description);
-		setType(type);
+		this.setDescription(description);
+		this.setType(type);
 	}
-
 
 	@Override
 	public void setDescription(String description) {
@@ -28,12 +27,12 @@ public class VehicleOption implements IVehicleOption{
 
 	@Override
 	public String toString() {
-		return getType().toString() + ": " + getDescription();
+		return this.getType().toString() + ": " + getDescription();
 	}
 
 	@Override
 	public VehicleOptionCategory getType() {
-		return type;
+		return this.type;
 	}
 
 	@Override
@@ -45,31 +44,12 @@ public class VehicleOption implements IVehicleOption{
 
 	@Override
 	public String getTaskDescription() {
-		switch (getType()) {
-		case AIRCO:
-			return "Airco";
-		case BODY:
-			return "Assembly";
-		case COLOR:
-			return "Paint";
-		case ENGINE:
-			return "Engine";
-		case GEARBOX:
-			return "Gearbox";
-		case SEATS:
-			return "Seats";
-		case SPOILER:
-			return "Spoiler";
-		case WHEEL:
-			return "Wheels";
-		default:
-			return "";
-		}
+		return this.getType().toString();
 	}
 	
 	@Override
 	public String getActionDescription() {
-		return "Put on " + getDescription() + " " + getType().toString().toLowerCase();
+		return "Put on " + this.getDescription() + " " + this.getType().toString().toLowerCase();
 	}
 
 	@Override

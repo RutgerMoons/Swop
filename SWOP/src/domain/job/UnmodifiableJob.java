@@ -85,7 +85,6 @@ public class UnmodifiableJob implements IJob {
 
 	@Override
 	public int getMinimalIndex() {
-		// TODO Auto-generated method stub
 		return job.getMinimalIndex();
 	}
 }

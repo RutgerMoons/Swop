@@ -26,6 +26,7 @@ public class UnmodifiableTask implements ITask{
 			throw new IllegalArgumentException();
 		this.task = task;
 	}
+	
 	@Override
 	public List<IAction> getActions() {
 		return new ImmutableList.Builder<IAction>().addAll(task.getActions()).build();
@@ -45,14 +46,17 @@ public class UnmodifiableTask implements ITask{
 	public String toString(){
 		return task.toString();
 	}
+	
 	@Override
 	public void setActions(List<IAction> actions) throws UnmodifiableException {
 		throw new UnmodifiableException();
 	}
+	
 	@Override
 	public void addAction(IAction action) throws UnmodifiableException {
 		throw new UnmodifiableException();
 	}
+	
 	@Override
 	public void setTaskDescription(String taskDescription) throws UnmodifiableException {
 		throw new UnmodifiableException();

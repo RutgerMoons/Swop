@@ -1,4 +1,4 @@
-package domain.carTest;
+package domain.vehicleTest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -41,7 +41,6 @@ public class CustomCarModelTest {
 	@Test
 	public void testToString() throws AlreadyInMapException, UnmodifiableException{
 		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		String s = System.lineSeparator();
 		assertEquals("BODY: sport", model.toString());
 	}
 	

@@ -23,7 +23,7 @@ public class Action implements IAction {
 
 	@Override
 	public boolean isCompleted() {
-		return isCompleted;
+		return this.isCompleted;
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class Action implements IAction {
 	
 	@Override
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class Action implements IAction {
 
 	@Override
 	public String toString() {
-		return getDescription();
+		return this.getDescription();
 	}
 
 }

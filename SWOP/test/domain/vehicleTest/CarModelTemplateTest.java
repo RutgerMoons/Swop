@@ -1,4 +1,4 @@
-package domain.carTest;
+package domain.vehicleTest;
 
 import static org.junit.Assert.assertEquals;
 
