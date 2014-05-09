@@ -258,7 +258,7 @@ public class Facade {
 	 * @param type
 	 * 			The type of the parts that has to be selected. 
 	 */
-	public Set<VehicleOption> getParts(VehicleOptionCategory type) {
+	public Set<IVehicleOption> getParts(VehicleOptionCategory type) {
 		return ImmutableSet.copyOf(picker.getStillAvailableCarParts(type));
 	}
 	
@@ -358,12 +358,8 @@ public class Facade {
 	/**
 	 * Get the names of the WorkBenches.
 	 */
-	public List<String> getWorkBenchNames() {
-		ArrayList<String> workbenches = new ArrayList<String>();
-		for (IWorkBench w : this.assemblyLine.getWorkbenches()) {
-			workbenches.add(w.getWorkbenchName());
-		}
-		return ImmutableList.copyOf(workbenches);
+	public List<String> getWorkbenches(IAssemblyLine assemblyLine) {
+		assemblyLine.getWorkbenches();
 	}
 	
 	/**

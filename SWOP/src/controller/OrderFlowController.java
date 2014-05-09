@@ -5,11 +5,16 @@ import java.util.List;
 import java.util.Set;
 
 import view.ClientCommunication;
+import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
+import domain.order.IOrder;
 import domain.users.AccessRight;
+import domain.vehicle.IVehicleOption;
+import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.VehicleSpecification;
 
 /**
  * Defines the program flow for the 'Order New Car' use case.
@@ -46,9 +51,9 @@ public class OrderFlowController extends UseCaseFlowController {
 	 * completed orders.
 	 */
 	public void showOrders() {
-		ArrayList<String> pendingOrders = facade.getPendingOrders();
+		List<IOrder> pendingOrders = facade.getPendingOrders();
 		this.clientCommunication.showPendingOrders(pendingOrders);
-		ArrayList<String> completedOrders = facade.getCompletedOrders();
+		List<IOrder> completedOrders = facade.getCompletedOrders();
 		this.clientCommunication.showCompletedOrders(completedOrders);
 
 	}
@@ -65,10 +70,10 @@ public class OrderFlowController extends UseCaseFlowController {
 		} else {
 			String model = clientCommunication.chooseModel(facade
 					.getCarModelSpecifications());
-			String realModel = facade.getCarModelSpecificationFromCatalogue(model);
+			VehicleSpecification realModel = facade.getCarModelSpecificationFromCatalogue(model);
 			facade.createNewModel(realModel);
 
-			List<String> chosenParts = createModel();
+			List<IVehicleOption> chosenParts = createModel();
 
 			int quantity = clientCommunication.getQuantity();
 			String estimatedTime = "";
@@ -77,7 +82,7 @@ public class OrderFlowController extends UseCaseFlowController {
 			if (!this.clientCommunication.askContinue()) {
 				return;
 			} else {
-				String time = "";
+				ImmutableClock time = null;
 				try {
 					time = facade.processOrder(quantity);
 				} catch (IllegalStateException | NotImplementedException e) {
@@ -97,13 +102,13 @@ public class OrderFlowController extends UseCaseFlowController {
 		}
 	}
 
-	private List<String> createModel() {
-		List<String> chosenParts = new ArrayList<>();
-		for (String type : facade.getCarPartTypes()) {
-			Set<String> parts = facade.getParts(type);
+	private List<IVehicleOption> createModel() {
+		List<IVehicleOption> chosenParts = new ArrayList<>();
+		for (VehicleOptionCategory type : facade.getCarPartTypes()) {
+			Set<IVehicleOption> parts = facade.getParts(type);
 			if (!parts.isEmpty()) {
-				String part = clientCommunication.choosePart(parts);
-				facade.addPartToModel(type, part);
+				IVehicleOption part = clientCommunication.choosePart(parts);
+				facade.addPartToModel(part);
 				if (!part.equals("Select nothing")) {
 					chosenParts.add(part);
 				}

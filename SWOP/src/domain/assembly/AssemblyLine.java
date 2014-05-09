@@ -31,7 +31,7 @@ import domain.vehicle.VehicleOption;
  * It notifies the attached observers when an order is completed. Each assemblyLine has a scheduler.
  * 
  */
-public class AssemblyLine {
+public class AssemblyLine implements IAssemblyLine{
 
 	private List<IJob> currentJobs;
 	private List<IWorkBench> workbenches;
@@ -58,34 +58,12 @@ public class AssemblyLine {
 		this.scheduler = new Scheduler(workbenches.size(), clockObserver, clock);
 	}
 
-	/**
-	 * Add a workbench to the assemblyLine.
-	 * 
-	 * @param bench
-	 *            The workbench you want to add.
-	 * @throws IllegalArgumentException
-	 *             Thrown when the parameter is null.
-	 */
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
 			throw new IllegalArgumentException();
 		workbenches.add(bench);
 	}
 
-	/**
-	 * This method advances the workbenches if all the workbenches are
-	 * completed. It shifts the jobs to it's next workstation.
-	 * It notifies its observers when an order is completed.
-	 * 
-	 * @throws NoSuitableJobFoundException
-	 * 		Thrown when no job can be scheduled by the scheduler.
-	 *  
-	 * @throws UnmodifiableException 
-	 * 		Thrown when an IOrder has no deadline yet.
-	 * 
-	 * @throws IllegalStateException
-	 * 		Thrown when the assemblyLine cannot advance.
-	 */
 	public void advance() throws UnmodifiableException, NoSuitableJobFoundException {
 		if (!canAdvance()) {
 			throw new IllegalStateException();
@@ -111,10 +89,7 @@ public class AssemblyLine {
 		}
 	}
 
-	/**
-	 * Method for checking if the assemblyLine can advance or certain tasks
-	 * have to be finished first.
-	 */
+	
 	public boolean canAdvance() {
 		List<IWorkBench> workBenches = getWorkbenches();
 		for (int i = 0; i < workBenches.size(); i++)
@@ -154,19 +129,7 @@ public class AssemblyLine {
 		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
 	}
 
-	/**
-	 * This method converts an CustomOrder to a list of Jobs, 1 for each car. 
-	 * The method returns the estimated time of completion for the order.
-	 * 
-	 * @param order
-	 *            The order that needs to be converted to a list of jobs.
-	 *             
-	 * @throws UnmodifiableException 
-	 * 		Thrown when an IOrder has no deadline yet.
-	 * 
-	 * @throws IllegalArgumentException
-	 *       Thrown when the given parameter is null
-	 */
+
 	public int convertCustomOrderToJob(CustomOrder order) throws UnmodifiableException{
 		if (order == null) {
 			throw new IllegalArgumentException();
@@ -178,17 +141,7 @@ public class AssemblyLine {
 		return scheduler.getEstimatedTimeInMinutes(jobs.get(jobs.size() - 1));
 	}
 
-	/**
-	 * This method converts an StandardOrder to a list of Jobs, 1 for each car.
-	 * The method returns the estimated time of completion for the order.
-	 * 
-	 *             
-	 * @throws UnmodifiableException 
-	 * 		Thrown when an IOrder has no deadline yet.
-	 * 
-	 * @throws IllegalArgumentException
-	 *       Thrown when the given parameter is null
-	 */
+
 	public int convertStandardOrderToJob(StandardOrder order) throws UnmodifiableException{
 		if (order == null) {
 			throw new IllegalArgumentException();
@@ -216,9 +169,6 @@ public class AssemblyLine {
 		return -1;
 	}
 
-	/**
-	 * Method for retrieving the workbenches with unfinished tasks.
-	 */
 	public ArrayList<Integer> getBlockingWorkBenches() {
 		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
 		List<IWorkBench> workBenches = getWorkbenches();
@@ -228,25 +178,14 @@ public class AssemblyLine {
 		return notCompletedBenches;
 	}
 
-	/**
-	 * Get all the pending jobs for this AssemblyLine.
-	 * 
-	 * @return A list representing the current jobs.
-	 */
 	public List<IJob> getCurrentJobs() {
 		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
 	}
 	
-	/**
-	 * Returns the currently used Scheduling Algorithm Type as String
-	 */
 	public Scheduler getCurrentSchedulingAlgorithm() {
 		return this.scheduler;
 	}
 	
-	/**
-	 * Returns a list of all the possible scheduling algorithms as Strings.
-	 */
 	public ArrayList<String> getPossibleSchedulingAlgorithms() {
 		return this.scheduler.getPossibleSchedulingAlgorithms();
 	}
@@ -257,8 +196,7 @@ public class AssemblyLine {
 	 * @return A list of IWorkBenches.
 	 */
 	public List<IWorkBench> getWorkbenches() {
-		return new ImmutableList.Builder<IWorkBench>().addAll(workbenches)
-				.build();
+		return workbenches;
 	}
 
 	/**
@@ -309,13 +247,6 @@ public class AssemblyLine {
 		return assemblyLineString.replaceFirst(",", "");
 	}
 
-	/**
-	 * The observer will be added to the notify list and is subscribed for
-	 * every notification.
-	 * 
-	 * @throws IllegalArgumentException
-	 * 		Thrown when the parameter is null.
-	 */
 	public void attachObserver(AssemblyLineObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -323,12 +254,6 @@ public class AssemblyLine {
 		observers.add(observer);
 	}
 
-	/**
-	 * The observer will be no longer subscribed and will not be notified for future notifications.
-	 * 
-	 * @throws IllegalArgumentException
-	 * 		Thrown when the parameter is null.
-	 */
 	public void detachObserver(AssemblyLineObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -336,34 +261,20 @@ public class AssemblyLine {
 		observers.remove(observer);
 	}
 
-	/**
-	 * Method that notifies all the subscribers when an order is completed and sends the current
-	 * time to every subscriber.
-	 */
 	public void notifyObserverCompleteOrder(ImmutableClock aClock) {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(aClock);
 		}
 	}
 
-	/**
-	 * Method for asking the scheduler to switch to Fifo algorithm.
-	 */
 	public void switchToFifo(){
 		this.scheduler.switchToFifo();
 	}
 
-	/**
-	 * Method for asking the scheduler to switch to batch algorithm with as key
-	 * the given list of CarOptions.
-	 */
 	public void switchToBatch(List<VehicleOption> vehicleOptions){
 		this.scheduler.switchToBatch(vehicleOptions);
 	}
 	
-	/**
-	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
-	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		return this.scheduler.getAllCarOptionsInPendingOrders();
 	}
