@@ -29,21 +29,24 @@ public class CheckStatisticsFlowController extends UseCaseFlowController {
 
 	@Override
 	public void executeUseCase() throws IllegalArgumentException, UnmodifiableException {
-		//clientCommunication.showStatistics(facade.getStatistics());
 		// Show average amount of vehicles produced in a day
 		int averageDays = facade.getAverageDays();
 		clientCommunication.showAverageDays(averageDays);
+		// Show median amount of vehicles produced in a day
 		int medianDays = facade.getMedianDays();
 		clientCommunication.showMedianDays(medianDays);
+		// The amount of cars produced for a number amount of days
 		List<Integer> detailedDays = facade.getDetailedDays();
 		clientCommunication.showDetailsDays(detailedDays);
+		// The average delay on an order
 		int averageDelays = facade.getAverageDelays();
 		clientCommunication.showAverageDelays(averageDelays);
+		// The median delay on an order
 		int medianDelays = facade.getMedianDelays();
 		clientCommunication.showMedianDelays(medianDelays);
+		// The details of the latest delays.
 		List<Delay> detailedDelays = facade.getDetailedDelays();
 		clientCommunication.showDetailedDelays(detailedDelays);
-		
 	}
 
 }
