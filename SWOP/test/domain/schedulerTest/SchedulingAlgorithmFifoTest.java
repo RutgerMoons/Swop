@@ -48,7 +48,7 @@ public class SchedulingAlgorithmFifoTest {
 		ImmutableClock deadline = new ImmutableClock(5, 30);
 		CustomOrder order = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob job = new Job(order);
-		algorithm.AddCustomJob(job);
+		algorithm.addCustomJob(job);
 		assertEquals(1, algorithm.getCustomJobs().size());
 		assertEquals(0, algorithm.getStandardJobs().size());
 
@@ -56,7 +56,7 @@ public class SchedulingAlgorithmFifoTest {
 
 	@Test (expected = IllegalArgumentException.class)
 	public void addCustomOrderTest2(){
-		algorithm.AddCustomJob(null);
+		algorithm.addCustomJob(null);
 	}
 
 	@Test
@@ -67,13 +67,13 @@ public class SchedulingAlgorithmFifoTest {
 		ImmutableClock ordertime = new ImmutableClock(2, 30);
 		IOrder order = new StandardOrder("mario", model, 3, ordertime);
 		IJob job = new Job(order);
-		algorithm.AddStandardJob(job);
+		algorithm.addStandardJob(job);
 		assertEquals(1,algorithm.getStandardJobs().size());
 	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void addStandardJobTest2(){
-		algorithm.AddStandardJob(null);
+		algorithm.addStandardJob(null);
 	}
 
 	@Before
@@ -139,14 +139,14 @@ public class SchedulingAlgorithmFifoTest {
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); 
 		IJob sJob1 = new Job(order1);
 		IJob sJob2 = new Job(order1);
-		algorithm.AddStandardJob(sJob1);
-		algorithm.AddStandardJob(sJob2);
+		algorithm.addStandardJob(sJob1);
+		algorithm.addStandardJob(sJob2);
 		CustomVehicle customModel = new CustomVehicle();
 		ImmutableClock ordertime = new ImmutableClock(0, 360);
 		ImmutableClock deadline = new ImmutableClock(10, 800);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob job2 = new Job(customOrder);
-		algorithm.AddCustomJob(job2);
+		algorithm.addCustomJob(job2);
 		// Stel algoritme zit op tijdstip dag 0 360 minuten
 		algorithm.startNewDay();
 		int minTillEndOfDay = 1320;
@@ -159,7 +159,7 @@ public class SchedulingAlgorithmFifoTest {
 		ImmutableClock deadline2 = new ImmutableClock(1, 540);
 		CustomOrder customOrder2 = new CustomOrder("Mario", customModel2, 1, ordertime2, deadline2);
 		IJob job4 = new Job(customOrder2);
-		algorithm.AddCustomJob(job4);
+		algorithm.addCustomJob(job4);
 		Optional<IJob> newJob2 = algorithm.retrieveNext(1220, new ImmutableClock(1,480));
 		assertEquals(job4, newJob2.get());
 		Optional<IJob> newJob3 = algorithm.retrieveNext(1160, new ImmutableClock(1,520));
@@ -169,7 +169,7 @@ public class SchedulingAlgorithmFifoTest {
 		ImmutableClock deadline3 = new ImmutableClock(2, 540);
 		CustomOrder customOrder3 = new CustomOrder("Mario", customModel3, 3, ordertime3, deadline3);
 		IJob job5= new Job(customOrder3);
-		algorithm.AddCustomJob(job5);
+		algorithm.addCustomJob(job5);
 		Optional<IJob> newJob4 = algorithm.retrieveNext(1080, new ImmutableClock(1,580));
 		assertEquals(job5, newJob4.get());
 	}
@@ -194,8 +194,8 @@ public class SchedulingAlgorithmFifoTest {
 		IJob job1 = new Job(customOrder);
 		IJob job2 = new Job(customOrder2);
 		job2.setMinimalIndex(2);
-		algorithm.AddCustomJob(job1);
-		algorithm.AddCustomJob(job2);
+		algorithm.addCustomJob(job1);
+		algorithm.addCustomJob(job2);
 		assertEquals(2,algorithm.getCustomJobs().size());
 		algorithm.startNewDay();
 	}

@@ -71,7 +71,7 @@ public class SchedulingAlgorithmBatchTest {
 		ImmutableClock deadline = new ImmutableClock(5, 30);
 		CustomOrder order = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob job = new Job(order);
-		scheduling.AddCustomJob(job);
+		scheduling.addCustomJob(job);
 		assertEquals(1, scheduling.getCustomJobs().size());
 		assertEquals(0, scheduling.getStandardJobs().size());
 
@@ -79,7 +79,7 @@ public class SchedulingAlgorithmBatchTest {
 
 	@Test (expected = IllegalArgumentException.class)
 	public void addCustomOrderTest2(){
-		scheduling.AddCustomJob(null);
+		scheduling.addCustomJob(null);
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class SchedulingAlgorithmBatchTest {
 		ImmutableClock ordertime = new ImmutableClock(2, 30);
 		IOrder order = new StandardOrder("mario", model, 3, ordertime);
 		IJob job = new Job(order);
-		scheduling.AddStandardJob(job);
+		scheduling.addStandardJob(job);
 		assertEquals(1,scheduling.getStandardJobs().size());
 
 		Set<VehicleOption> parts2 = new HashSet<>();
@@ -104,13 +104,13 @@ public class SchedulingAlgorithmBatchTest {
 		ImmutableClock ordertime2 = new ImmutableClock(2, 30);
 		IOrder order2 = new StandardOrder("mario", model, 3, ordertime2);
 		IJob job2 = new Job(order2);
-		scheduling.AddStandardJob(job2);
+		scheduling.addStandardJob(job2);
 		assertEquals(2,scheduling.getStandardJobs().size());
 	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void addStandardJobTest2() throws NotImplementedException{
-		scheduling.AddStandardJob(null);
+		scheduling.addStandardJob(null);
 	}
 
 	@Test
@@ -175,14 +175,14 @@ public class SchedulingAlgorithmBatchTest {
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); 
 		IJob sJob1 = new Job(order1);
 		IJob sJob2 = new Job(order1);
-		scheduling.AddStandardJob(sJob1);
-		scheduling.AddStandardJob(sJob2);
+		scheduling.addStandardJob(sJob1);
+		scheduling.addStandardJob(sJob2);
 		CustomVehicle customModel = new CustomVehicle();
 		ImmutableClock ordertime = new ImmutableClock(0, 360);
 		ImmutableClock deadline = new ImmutableClock(10, 800);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob job2 = new Job(customOrder);
-		scheduling.AddCustomJob(job2);
+		scheduling.addCustomJob(job2);
 		// Stel algoritme zit op tijdstip dag 0 360 minuten
 		scheduling.startNewDay();
 		int minTillEndOfDay = 1320;
@@ -195,7 +195,7 @@ public class SchedulingAlgorithmBatchTest {
 		ImmutableClock deadline2 = new ImmutableClock(1, 540);
 		CustomOrder customOrder2 = new CustomOrder("Mario", customModel2, 1, ordertime2, deadline2);
 		IJob job4 = new Job(customOrder2);
-		scheduling.AddCustomJob(job4);
+		scheduling.addCustomJob(job4);
 		Optional<IJob> newJob2 = scheduling.retrieveNext(1220, new ImmutableClock(1,480));
 		assertEquals(job4, newJob2.get());
 		Optional<IJob> newJob3 = scheduling.retrieveNext(1160, new ImmutableClock(1,520));
@@ -205,7 +205,7 @@ public class SchedulingAlgorithmBatchTest {
 		ImmutableClock deadline3 = new ImmutableClock(2, 540);
 		CustomOrder customOrder3 = new CustomOrder("Mario", customModel3, 3, ordertime3, deadline3);
 		IJob job5= new Job(customOrder3);
-		scheduling.AddCustomJob(job5);
+		scheduling.addCustomJob(job5);
 		Optional<IJob> newJob4 = scheduling.retrieveNext(1080, new ImmutableClock(1,580));
 		assertEquals(job5, newJob4.get());
 		Set<VehicleOption> parts2 = new HashSet<>();
@@ -216,7 +216,7 @@ public class SchedulingAlgorithmBatchTest {
 		int quantity2 =5;
 		StandardOrder order4 = new StandardOrder("Luigi", model, quantity2, ordertime4);
 		IJob job6 = new Job(order4);
-		scheduling.AddStandardJob(job6);
+		scheduling.addStandardJob(job6);
 		Optional<IJob> newJob5 = scheduling.retrieveNext(1020, new ImmutableClock(1,640));
 		assertEquals(job6,newJob5.get());
 	}
@@ -241,8 +241,8 @@ public class SchedulingAlgorithmBatchTest {
 		IJob job1 = new Job(customOrder);
 		IJob job2 = new Job(customOrder2);
 		job2.setMinimalIndex(2);
-		scheduling.AddCustomJob(job1);
-		scheduling.AddCustomJob(job2);
+		scheduling.addCustomJob(job1);
+		scheduling.addCustomJob(job2);
 		assertEquals(2,scheduling.getCustomJobs().size());
 		scheduling.startNewDay();
 	}

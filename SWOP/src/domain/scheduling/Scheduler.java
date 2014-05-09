@@ -56,19 +56,20 @@ public class Scheduler implements LogsClock {
 		shifts.add(shift1);
 		shifts.add(shift2);
 	}
-
+	
 	/**
-	 * Passes the custom job to the current scheduling algorithm.
+	 * Adds the job to the currently used SchedulingAlgorithm
+	 * 
+	 * @param	job to be added to the currently used SchedulingAlgorithm
 	 */
-	public void addCustomJob(IJob customJob) {
-		this.schedulingAlgorithm.AddCustomJob(customJob);
-	}
-
-	/**
-	 * Passes the standard job to the current scheduling algorithm.
-	 */
-	public void addStandardJob(IJob standardJob){
-		this.schedulingAlgorithm.AddStandardJob(standardJob);
+	public void addJobToAlgorithm(IJob job) {
+		if (this.schedulingAlgorithm == null) {
+			throw new IllegalStateException();
+		}
+		if (job == null) {
+			throw new IllegalArgumentException();
+		}
+		job.addToSchedulingAlgorithm(this.schedulingAlgorithm);
 	}
 
 	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, int amountOfWorkbenches) {

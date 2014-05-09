@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import domain.order.IOrder;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.IVehicleOption;
 
 
@@ -112,6 +113,15 @@ public class Job implements IJob {
 	@Override
 	public Collection<IVehicleOption> getVehicleOptions() {
 		return this.order.getVehicleOptions();
+	}
+
+	@Override
+	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm) {
+		if (schedulingAlgorithm == null) {
+			throw new IllegalArgumentException();
+		}
+		this.order.addToSchedulingAlgorithm(schedulingAlgorithm, this);
+		
 	}
 
 }

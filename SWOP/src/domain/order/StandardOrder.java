@@ -5,6 +5,8 @@ import java.util.Collections;
 
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
+import domain.job.IJob;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.IVehicle;
 import domain.vehicle.IVehicleOption;
 import domain.vehicle.Vehicle;
@@ -196,5 +198,13 @@ public class StandardOrder implements IOrder {
 	@Override
 	public Collection<IVehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
+	}
+
+	@Override
+	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm, IJob job) {
+		if (schedulingAlgorithm == null || job == null) {
+			throw new IllegalArgumentException();
+		}
+		schedulingAlgorithm.addStandardJob(job);
 	}
 }

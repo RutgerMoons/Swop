@@ -19,22 +19,12 @@ import domain.job.JobComparatorOrderTime;
  */
 public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
-	private final int amountOfWorkBenches;
-	private PriorityQueue<IJob> customJobs;
-	private ArrayList<Optional<IJob>> history;
-	private ArrayList<Optional<IJob>> jobsStartOfDay;
-	private PriorityQueue<IJob> standardJobs;
-
 	public SchedulingAlgorithmFifo(int amountOfWorkBenches) {
-		customJobs = new PriorityQueue<IJob>(10, new JobComparatorDeadLine());
-		standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
-		this.amountOfWorkBenches = amountOfWorkBenches;
-		this.jobsStartOfDay = new ArrayList<>();
-		history = new ArrayList<Optional<IJob>>();
+		super(amountOfWorkBenches);
 	}
 
 	@Override
-	public void AddCustomJob(IJob customJob) {
+	public void addCustomJob(IJob customJob) {
 		if (customJob == null) {
 			throw new IllegalArgumentException();
 		}
@@ -42,7 +32,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public void AddStandardJob(IJob standardJob) {
+	public void addStandardJob(IJob standardJob) {
 		if (standardJob == null) {
 			throw new IllegalArgumentException();
 		}

@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import domain.exception.UnmodifiableException;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.IVehicleOption;
 
 
@@ -93,5 +94,14 @@ public class UnmodifiableJob implements IJob {
 	@Override
 	public Collection<IVehicleOption> getVehicleOptions() {
 		return job.getVehicleOptions();
+	}
+	
+	@Override
+	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm) {
+		if (schedulingAlgorithm == null) {
+			throw new IllegalArgumentException();
+		}
+		this.job.addToSchedulingAlgorithm(schedulingAlgorithm);
+		
 	}
 }

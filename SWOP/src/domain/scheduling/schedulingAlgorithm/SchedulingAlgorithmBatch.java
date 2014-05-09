@@ -22,29 +22,21 @@ import domain.vehicle.VehicleOption;
  */
 public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
-	private final int amountOfWorkBenches;
 	private PriorityQueue<IJob> batchJobs;
 	private List<VehicleOption> vehicleOption;
-	private PriorityQueue<IJob> customJobs;
-	private ArrayList<Optional<IJob>> history;
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
-	private PriorityQueue<IJob> standardJobs;
 
 	public SchedulingAlgorithmBatch(List<VehicleOption> carParts, int amountOfWorkBenches) {
+		super(amountOfWorkBenches);
 		if (carParts == null) {
 			throw new IllegalArgumentException();
 		}
 		this.vehicleOption = carParts;
-		this.amountOfWorkBenches = amountOfWorkBenches;
-		customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
-		standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
 		batchJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
-		jobsStartOfDay = new ArrayList<>();
-		history = new ArrayList<Optional<IJob>>();
 	}
 
 	@Override
-	public void AddCustomJob(IJob customJob) {
+	public void addCustomJob(IJob customJob) {
 		if (customJob == null) {
 			throw new IllegalArgumentException();
 		}
@@ -52,7 +44,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public void AddStandardJob(IJob standardJob){
+	public void addStandardJob(IJob standardJob){
 		if (standardJob == null) {
 			throw new IllegalArgumentException();
 		}

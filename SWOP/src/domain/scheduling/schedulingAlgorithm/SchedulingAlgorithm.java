@@ -8,12 +8,28 @@ import com.google.common.base.Optional;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.IJob;
+import domain.job.JobComparatorDeadLine;
+import domain.job.JobComparatorOrderTime;
 
 /**
  * Abstract class that represents a possible scheduling algorithm used for 
  * scheduling Jobs on an AssemblyLine
  */
 public abstract class SchedulingAlgorithm {
+	
+	protected final int amountOfWorkBenches;
+	protected ArrayList<Optional<IJob>> history;
+	protected PriorityQueue<IJob> customJobs;
+	protected PriorityQueue<IJob> standardJobs;
+	protected ArrayList<Optional<IJob>> jobsStartOfDay;
+	
+	public SchedulingAlgorithm(int amountOfWorkBenches) {
+		this.amountOfWorkBenches = amountOfWorkBenches;
+		this.history = new ArrayList<>();
+		this.customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
+		this.standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
+		this.jobsStartOfDay = new ArrayList<>();
+	}
 	
 	/**
 	 * The scheduling algorithm gets all the internal data used to schedule jobs and will initialize its
@@ -56,7 +72,7 @@ public abstract class SchedulingAlgorithm {
 	 * @throws IllegalArgumentException
 	 * 			thrown when the job is null
 	 */
-	public abstract void AddCustomJob(IJob customjob);
+	public abstract void addCustomJob(IJob customjob);
 	
 	/**
 	 * The scheduling algorithm will add the given standard job to it's internal data structure
@@ -64,7 +80,7 @@ public abstract class SchedulingAlgorithm {
 	 * @throws IllegalArgumentException
 	 * 			thrown when the job is null
 	 */
-	public abstract void AddStandardJob(IJob standardjob) ;
+	public abstract void addStandardJob(IJob standardjob) ;
 	
 	/**
 	 * The scheduling algorithm will look for custom jobs that can be placed in a time saving way.

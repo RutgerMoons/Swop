@@ -5,6 +5,8 @@ import java.util.Collections;
 
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
+import domain.job.IJob;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.CustomVehicle;
 import domain.vehicle.IVehicle;
 import domain.vehicle.IVehicleOption;
@@ -223,6 +225,14 @@ public class CustomOrder implements IOrder {
 	@Override
 	public Collection<IVehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
+	}
+
+	@Override
+	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm, IJob job) {
+		if (schedulingAlgorithm == null || job == null) {
+			throw new IllegalArgumentException();
+		}
+		schedulingAlgorithm.addCustomJob(job);
 	}
 	
 }

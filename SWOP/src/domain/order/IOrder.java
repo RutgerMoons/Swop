@@ -3,8 +3,10 @@ package domain.order;
 import java.util.Collection;
 
 import domain.clock.ImmutableClock;
-import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
+import domain.exception.UnmodifiableException;
+import domain.job.IJob;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.IVehicle;
 import domain.vehicle.IVehicleOption;
 
@@ -89,5 +91,14 @@ public interface IOrder {
 	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
 	 */
 	public Collection<IVehicleOption> getVehicleOptions();
+	
+	/**
+	 * Let this decide how it should be added
+	 * 
+	 * @param	schedulingAlgorithm job needs to be added to
+	 * 
+	 * @param	job that needs to be added
+	 */
+	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm, IJob job);
 	
 }

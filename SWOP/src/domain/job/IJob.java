@@ -5,6 +5,7 @@ import java.util.List;
 
 import domain.exception.UnmodifiableException;
 import domain.order.IOrder;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.IVehicleOption;
 
 /**
@@ -78,6 +79,13 @@ public interface IJob {
 	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
 	 */
 	public Collection<IVehicleOption> getVehicleOptions();
+	
+	/**
+	 * Passes request to the order and let it decide how it should be added
+	 * 
+	 * @param	schedulingAlgorithm this needs to be added to
+	 */
+	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm);
 	
 
 }
