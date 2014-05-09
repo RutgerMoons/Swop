@@ -144,4 +144,6 @@ public interface IAssemblyLine {
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders();
+
+	public AssemblyLineState getState();
 }

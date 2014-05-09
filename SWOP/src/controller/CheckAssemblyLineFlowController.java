@@ -1,6 +1,10 @@
 package controller;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import view.ClientCommunication;
+import domain.assembly.IAssemblyLine;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -27,6 +31,8 @@ public class CheckAssemblyLineFlowController extends UseCaseFlowController{
 	
 	@Override
 	public void executeUseCase() throws IllegalArgumentException,UnmodifiableException {
-		this.clientCommunication.showAssemblyLine(facade.getAssemblyLineAsString(), "current");		
+		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
+		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
+		this.clientCommunication.showAssemblyLine(chosenAssemblyLine);		
 	}
 }

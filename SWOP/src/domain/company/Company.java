@@ -137,12 +137,6 @@ public class Company {
 		return ImmutableList.copyOf(this.userbook.getCurrentUser().getAccessRights());
 	}
 	
-	/**
-	 * Get the status of each assemblyLine. 
-	 */
-	public List<AssemblyLineState> getAssemblyLinesStatus() {
-		return this.workloadDivider.getAssemblyLinesStatus();
-	}
 	
 	//TODO getBlockingWorkbenches() nog toevoegen
 	

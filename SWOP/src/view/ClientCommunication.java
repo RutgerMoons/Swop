@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class ClientCommunication{
 	 * @return
 	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	
+
 	public boolean askAdvance() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want advance the assemblyLine? Y/N",
@@ -41,7 +42,7 @@ public class ClientCommunication{
 	 * @return
 	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	
+
 	public boolean askContinue() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want to continue? Y/N", expected)
@@ -51,7 +52,7 @@ public class ClientCommunication{
 	/**
 	 * Ask the user for a deadline.
 	 */
-	
+
 	public String askDeadline() {
 		while (true) {
 			show(new ArrayList<String>(Arrays.asList("What is the deadline? (Days,Hours,Minutes   untill completion)")));
@@ -68,7 +69,7 @@ public class ClientCommunication{
 	 * @return
 	 * 			A String that equals either "Y" (for yes) or "N" (for no).
 	 */
-	
+
 	public String askFinished() {
 		return askQuestion("Press enter when you're finished");
 	}
@@ -128,7 +129,7 @@ public class ClientCommunication{
 	 * 			A Set which contains Strings that represent the names of all possible car models that can be ordered.
 	 * @return
 	 */
-	
+
 	public String chooseModel(Set<String> catalogue) {
 		ArrayList<String> catalogueInString = new ArrayList<String>();
 
@@ -145,7 +146,7 @@ public class ClientCommunication{
 	/**
 	 * Lets the user choose an order out of all his pending/completed orders.
 	 */
-	
+
 	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders) {
 		ArrayList<String> orderString = new ArrayList<String>();
 		orderString.add(0, "Pending Orders:");
@@ -188,7 +189,7 @@ public class ClientCommunication{
 	/**
 	 * Lets the user choose a CarOption when he is putting his model together.
 	 */
-	
+
 	public String choosePart(Set<String> parts) {
 		ArrayList<String> partsString = new ArrayList<String>();
 		partsString.add(0, "Possible parts:");
@@ -215,7 +216,7 @@ public class ClientCommunication{
 	 * @return
 	 * 			A String that represents which role the user fulfills.
 	 */
-	
+
 	public String chooseRole() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("manager",
 				"garageholder", "worker", "custom car shop manager"));
@@ -231,7 +232,7 @@ public class ClientCommunication{
 	 * 			A strictly positive integer.
 	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
 	 */
-	
+
 	public ITask chooseTask(List<ITask> tasksAtWorkbench) {
 		ArrayList<String> tasksString = new ArrayList<String>();
 		tasksString.add(0, "Tasks:");
@@ -249,10 +250,10 @@ public class ClientCommunication{
 			invalidAnswerPrompt();
 			return chooseTask(tasksAtWorkbench);
 		}
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Let the user indicate which workbench he's working at.
 	 * @param numberOfWorkbenches
@@ -263,7 +264,7 @@ public class ClientCommunication{
 	 * 			A strictly positive integer. 
 	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
 	 */
-	
+
 	public int chooseWorkBench(int numberOfWorkBenches,
 			ArrayList<String> workbenches) {
 		ArrayList<String> workBenchNames = new ArrayList<>();
@@ -288,7 +289,7 @@ public class ClientCommunication{
 	 * @return
 	 * 			An integer representing the elapsed time (in minutes).
 	 */
-	
+
 	public int getElapsedTime() {
 		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)");
 	}
@@ -297,7 +298,7 @@ public class ClientCommunication{
 	 * presents the user with all of his possible use cases 
 	 * and the user indicates which use case to perform
 	 */
-	
+
 	public int getFlowControllerIndex(List<String> accessRights) {
 		System.out.println("Options:");
 		int i = 1;
@@ -333,7 +334,7 @@ public class ClientCommunication{
 	 * @return
 	 * 			A String that represents the user's name.
 	 */
-	
+
 	public String getName() {
 		String answer = "";
 		while ((answer = askQuestion("Hello user, what's your name?")) == null
@@ -348,7 +349,7 @@ public class ClientCommunication{
 	 * @return
 	 * 			a positive integer representing the quantity
 	 */
-	
+
 	public int getQuantity() {
 		int quantity = askNumber("How many cars do you want to order?");
 		while (quantity <= 0) {
@@ -361,7 +362,7 @@ public class ClientCommunication{
 	/**
 	 * Notify the user that the answer he has given is not a valid answer.
 	 */
-	
+
 	public void invalidAnswerPrompt() {
 		show(new ArrayList<String>(
 				Arrays.asList("Sorry, that's not a valid response")));
@@ -370,11 +371,11 @@ public class ClientCommunication{
 	/**
 	 * Notify the user that the answer he has given is not a valid user.
 	 */
-	
+
 	public void invalidUserPrompt() {
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
-	
+
 	private boolean isValidDeadline(String answer) {
 		String[] split = answer.split(",");
 		if(split.length!=3){
@@ -390,15 +391,15 @@ public class ClientCommunication{
 
 		return true;
 	}
-	
+
 	/**
 	 * log the current user out
 	 */
-	
+
 	public void logout() {
 		System.out.println("Session finished correctly.");
 	}
-	
+
 	/**
 	 * Show message to the users.
 	 * 
@@ -430,7 +431,7 @@ public class ClientCommunication{
 	 */
 	public void showAlgorithmSwitched(String type, String batch) {
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type + 
-							" with batch: " + batch));
+				" with batch: " + batch));
 	}
 
 	/**
@@ -443,12 +444,44 @@ public class ClientCommunication{
 	 * @param tense
 	 * 			String that indicates whether the other parameter is a current or future assemblyline.
 	 */
-	
-	public void showAssemblyLine(String assemblyline, String tense) {
-		ArrayList<String> assemblyLineStrings = new ArrayList<String>(
-				Arrays.asList(assemblyline.split(",")));
-		assemblyLineStrings.add(0, tense + " assemblyline:");
+
+	public void showAssemblyLine(IAssemblyLine assemblyLine) {
+		ArrayList<String> assemblyLineStrings = new ArrayList<String>();
+		assemblyLineStrings.add("STATE: " + assemblyLine.getState() + LINESEPARATOR);
+
+		assemblyLineStrings.add(0, "current assemblyline:");
+
+		List<IWorkBench> allWorkbenches = assemblyLine.getWorkbenches();
+
+		for(IWorkBench workbench: allWorkbenches){
+			assemblyLineStrings.addAll(getPendingTasks(workbench));
+			assemblyLineStrings.addAll(getCompletedTasks(workbench));
+		}
 		show(assemblyLineStrings);
+	}
+
+	private List<String> getCompletedTasks(IWorkBench workbench) {
+		List<String> completedTaskList = new ArrayList<>();
+
+		for(ITask task: workbench.getCurrentTasks()){
+			if(task.isCompleted()){
+				completedTaskList.add(task.toString() + ": completed" + LINESEPARATOR);
+			}
+		}
+
+		return completedTaskList;
+	}
+
+	private List<String> getPendingTasks(IWorkBench workbench) {
+		List<String> pendingTaskList = new ArrayList<>();
+
+		for(ITask task: workbench.getCurrentTasks()){
+			if(!task.isCompleted()){
+				pendingTaskList.add(task.toString() + ": pending" + LINESEPARATOR);
+			}
+		}
+
+		return pendingTaskList;
 	}
 
 	/**
@@ -463,7 +496,7 @@ public class ClientCommunication{
 	 * @param notCompletedBenches
 	 * 			A list of integers. Each integer represents the number of a workbench that is blocking the assemblyline.
 	 */
-	
+
 	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches) {
 		show(new ArrayList<String>(
 				Arrays.asList("AssemblyLine can't be advanced because of workbench "
@@ -477,7 +510,7 @@ public class ClientCommunication{
 	 * 			This String contains the task description, "Required actions:", and all the actions required.
 	 * 			Each of these elements are separated by a comma.
 	 */
-	
+
 	public void showChosenTask(ITask chosenTask) {
 		ArrayList<String> taskStrings = new ArrayList<String>();
 		taskStrings.add("Your task: ");
@@ -499,7 +532,7 @@ public class ClientCommunication{
 	 * 			Each String in this ArrayList represents an order. 
 	 * 			It contains the quantity and the name of the model, separated by comma's.
 	 */
-	
+
 	public void showCompletedOrders(ArrayList<String> completedOrders) {
 		if (!completedOrders.isEmpty()) {
 			completedOrders.add(0, "Your completed orders:");
@@ -512,7 +545,7 @@ public class ClientCommunication{
 	/**
 	 * Show a custom order with the given estimated completion time.
 	 */
-	
+
 	public void showCustomOrder(String time) {
 		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
 	}
@@ -520,7 +553,7 @@ public class ClientCommunication{
 	/**
 	 * Show the given custom tasks and let the user choose one.
 	 */
-	
+
 	public String showCustomTasks(List<String> tasks) {
 		ArrayList<String> customString = new ArrayList<String>();
 		customString.add(0, "Possible tasks:");
@@ -544,7 +577,7 @@ public class ClientCommunication{
 	/**
 	 * Notify the user that the carModel he has put togehther is not a valid model.
 	 */
-	
+
 	public void showInvalidModel() {
 		show(new ArrayList<String>(
 				Arrays.asList("You created an invalid model, try again!")));
@@ -568,7 +601,7 @@ public class ClientCommunication{
 	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
-	
+
 	public void showOrder(int quantity, String model, List<String> chosenParts,
 			String estimatedTime) {
 		if (model == null || estimatedTime == null) {
@@ -590,7 +623,7 @@ public class ClientCommunication{
 	/**
 	 * Show the details of the given order.
 	 */
-	
+
 	public void showOrderDetails(List<String> orderDetails) {
 		show(orderDetails);
 	}
@@ -602,7 +635,7 @@ public class ClientCommunication{
 	 * 			Each String in this ArrayList represents an order. 
 	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
 	 */
-	
+
 	public void showPendingOrders(ArrayList<String> pendingOrders) {
 		if (!pendingOrders.isEmpty()) {
 			pendingOrders.add(0, "Your pending orders:");
@@ -611,11 +644,11 @@ public class ClientCommunication{
 			show(new ArrayList<String>(
 					Arrays.asList("You have no pending Orders")));
 	}
-	
+
 	/**
 	 * Show the given statistics to the user.
 	 */
-	
+
 	public void showStatistics(List<String> statistics){
 		List<String> statisticsToShow = new ArrayList<String>();
 		statisticsToShow.add("Statistics:");
@@ -631,7 +664,7 @@ public class ClientCommunication{
 	/**
 	 * Notify the user that all the tasks at the workbench he's working on are completed.
 	 */
-	
+
 	public void showWorkBenchCompleted() {
 		show(new ArrayList<String>(
 				Arrays.asList("All the tasks at this workbench are completed")));
@@ -639,11 +672,11 @@ public class ClientCommunication{
 
 	public IAssemblyLine chooseAssemblyLine(List<IAssemblyLine> allAssemblyLines) {
 		List<String> strings = new ArrayList<>();
-		
+
 		for(IAssemblyLine assemblyLine: allAssemblyLines){
 			strings.add(assemblyLine.toString() + LINESEPARATOR);
 		}
-		
+
 		show(strings);
 		int index = askNumber("Which AssemblyLine do you choose?") -1;
 		if(index>=0 && index<allAssemblyLines.size()){
@@ -652,16 +685,16 @@ public class ClientCommunication{
 			invalidAnswerPrompt();
 			return chooseAssemblyLine(allAssemblyLines);
 		}
-		
+
 	}
 
 	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches) {
 		List<String> strings = new ArrayList<>();
-		
+
 		for(IWorkBench workbench: workbenches){
 			strings.add(workbench.toString() + LINESEPARATOR);
 		}
-		
+
 		show(strings);
 		int index = askNumber("Which WorkBench do you choose?") -1;
 		if(index>=0 && index<workbenches.size()){
