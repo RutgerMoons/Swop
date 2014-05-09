@@ -14,12 +14,14 @@ public class VehicleOption implements IVehicleOption{
 	}
 
 
+	@Override
 	public void setDescription(String description) {
 		if (description == null || description.isEmpty())
 			throw new IllegalArgumentException();
 		this.description = description;
 	}
 
+	@Override
 	public String getDescription() {
 		return description;
 	}
@@ -29,16 +31,19 @@ public class VehicleOption implements IVehicleOption{
 		return getType().toString() + ": " + getDescription();
 	}
 
+	@Override
 	public VehicleOptionCategory getType() {
 		return type;
 	}
 
+	@Override
 	public void setType(VehicleOptionCategory type) {
 		if (type == null)
 			throw new IllegalArgumentException();
 		this.type = type;
 	}
 
+	@Override
 	public String getTaskDescription() {
 		switch (getType()) {
 		case AIRCO:
@@ -62,6 +67,7 @@ public class VehicleOption implements IVehicleOption{
 		}
 	}
 	
+	@Override
 	public String getActionDescription() {
 		return "Put on " + getDescription() + " " + getType().toString().toLowerCase();
 	}
