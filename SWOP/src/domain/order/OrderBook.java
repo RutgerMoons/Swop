@@ -93,7 +93,7 @@ public class OrderBook implements LogsAssemblyLine{
 	 */
 	public void addOrder(StandardOrder order, ImmutableClock currentTime) throws UnmodifiableException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertStandardOrderToJob(order)));
+		order.setEstimatedTime(currentTime.getImmutableClockPlusExtraMinutes(assemblyLine.convertStandardOrderToJob(order)));
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class OrderBook implements LogsAssemblyLine{
 	 */
 	public void addOrder(CustomOrder order, ImmutableClock currentTime) throws UnmodifiableException, NotImplementedException {
 		this.pendingOrders.put(order.getGarageHolder(), order);
-		order.setEstimatedTime(currentTime.getUnmodifiableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
+		order.setEstimatedTime(currentTime.getImmutableClockPlusExtraMinutes(assemblyLine.convertCustomOrderToJob(order)));
 	}
 
 	@Override

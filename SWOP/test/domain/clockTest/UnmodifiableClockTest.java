@@ -74,7 +74,7 @@ public class UnmodifiableClockTest {
 	
 	@Test
 	public void plusTest1(){
-		ImmutableClock result = clock.getUnmodifiableClockPlusExtraMinutes(300);
+		ImmutableClock result = clock.getImmutableClockPlusExtraMinutes(300);
 		assertEquals(1, result.getDays());
 		assertEquals(800, result.getMinutes());
 	}
