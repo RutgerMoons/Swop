@@ -1,7 +1,6 @@
 package domain.vehicle;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 /**

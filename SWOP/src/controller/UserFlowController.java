@@ -92,6 +92,7 @@ public class UserFlowController {
 		ArrayList<String> accessRightsAsStrings = new ArrayList<String>();
 		for (AccessRight a : accessRights) {
 			accessRightsAsStrings.add(a.toString());
+			//TODO eventueel niet een lijst van strings doorgeven maar in clientcommunication shizzle in string zetten
 		}
 		int index = ClientCommunication.getFlowControllerIndex(accessRightsAsStrings);
 	

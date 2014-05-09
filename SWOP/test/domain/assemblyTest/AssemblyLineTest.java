@@ -228,7 +228,7 @@ public class AssemblyLineTest{
 		StandardOrder order = new StandardOrder("Luigi", this.model, 10, clock);
 		try {
 			int minutes = line.convertStandardOrderToJob(order);
-			order.setEstimatedTime(clock.getUnmodifiableClockPlusExtraMinutes(minutes));
+			order.setEstimatedTime(clock.getImmutableClockPlusExtraMinutes(minutes));
 		} catch (UnmodifiableException e) {}
 		line.advance();
 

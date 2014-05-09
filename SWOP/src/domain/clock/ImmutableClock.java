@@ -67,10 +67,14 @@ public class ImmutableClock implements Comparable<ImmutableClock> {
 		return 1;
 	}
 	
-	public ImmutableClock getUnmodifiableClockPlusExtraMinutes(int extra) {
+	public ImmutableClock getImmutableClockPlusExtraMinutes(int extra) {
 		int days = getDays() + ((getMinutes() + extra) / MINUTESINADAY);
 		int minutes = (getMinutes() + extra) % MINUTESINADAY;
 		return new ImmutableClock(days, minutes);
+	}
+	
+	public int getTotalInMinutes(){
+		return this.getDays()*this.MINUTESINADAY + this.getMinutes();
 	}
 
 	@Override
