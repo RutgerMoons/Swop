@@ -3,7 +3,7 @@ package domain.vehicle;
 /**
  * Abstract class representing a part of a car.
  */
-public class VehicleOption {
+public class VehicleOption implements IVehicleOption{
 
 	private String description;
 	private VehicleOptionCategory type;
