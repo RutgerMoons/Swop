@@ -1,8 +1,11 @@
 package controller;
 
+import com.google.common.base.Optional;
+
 import view.ClientCommunication;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
+import domain.order.IOrder;
 import domain.users.AccessRight;
 
 /**
@@ -26,22 +29,16 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 	}
 
 	@Override
-	public void executeUseCase() throws IllegalArgumentException,UnmodifiableException {
-		checkOrderDetails();
-	}
+	public void executeUseCase() {
+		Optional<IOrder> order = clientCommunication.chooseOrder(facade.getPendingOrders(), facade.getCompletedOrders());
 
-	/**
-	 * Get the details of the order the user chose and show them to the user.
-	 */
-	public void checkOrderDetails() throws IllegalArgumentException, UnmodifiableException {
-		String order = clientCommunication.chooseOrder(facade.getPendingOrders(), facade.getCompletedOrders());
-		if(!order.equals("No Order")){
-			clientCommunication.showOrderDetails(facade.getOrderDetails(order));
-
-			if(clientCommunication.askContinue()){
-				executeUseCase();
-			}
+		if(order.isPresent()){
+			clientCommunication.showOrderDetails(facade.getOrderDetails(order.get()));
 		}
+		if(clientCommunication.askContinue()){
+			executeUseCase();
+		}
+
 	}
 
 

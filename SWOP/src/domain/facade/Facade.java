@@ -210,18 +210,18 @@ public class Facade {
 
 	/**
 	 * Get a list of details of an order.
-	 * @param orderString
+	 * @param order2
 	 * 			The string representing the order.
 	 */
-	public List<String> getOrderDetails(String orderString) {
+	public List<String> getOrderDetails(IOrder order2) {
 		IOrder chosenOrder = null;
 		for (IOrder order : orderBook.getPendingOrders().values()) {
-			if (order.toString().equals(orderString)) {
+			if (order.toString().equals(order2)) {
 				chosenOrder = order;
 			}
 		}
 		for (IOrder order : orderBook.getCompletedOrders().values()) {
-			if (order.toString().equals(orderString)) {
+			if (order.toString().equals(order2)) {
 				chosenOrder = order;
 			}
 		}

@@ -158,43 +158,39 @@ public class ClientCommunication{
 	 * Lets the user choose an order out of all his pending/completed orders.
 	 */
 
-	public String chooseOrder(List<String> pendingOrders, List<String> completedOrders) {
+	public Optional<IOrder> chooseOrder(List<IOrder> pendingOrders, List<IOrder> completedOrders) {
 		ArrayList<String> orderString = new ArrayList<String>();
-		orderString.add(0, "Pending Orders:");
+		orderString.add(0, "Pending Orders:" + LINESEPARATOR);
 		int i = 1;
-		for (String order : pendingOrders) {
-			orderString.add(i + "." + order);
+		for (IOrder order : pendingOrders) {
+			orderString.add(i + "." + order.toString() + LINESEPARATOR);
 			i++;
 		}
 
 		orderString.add("Completed Orders:");
-		for (String order : completedOrders) {
-			orderString.add(i + "." + order);
+		for (IOrder order : completedOrders) {
+			orderString.add(i + "." + order.toString() + LINESEPARATOR);
 			i++;
 		}
 		if(!pendingOrders.isEmpty() || !completedOrders.isEmpty()){
 			show(orderString);
-			if(!askContinue()){
-				return "No Order";
-			}
-			int partNumber = askNumber("Which Order do you choose?");
-			if (partNumber >= 1 && partNumber <= (orderString.size() - 2)) { //de -2 zijn de lijnen Pending Orders: en Completed Orders:
-				int indexOfCompletedOrders = orderString.indexOf("Completed Orders:");
-				if (partNumber == indexOfCompletedOrders) {
-					partNumber++;
+			if(askContinue()){
+
+				int partNumber = askNumber("Which Order do you choose?")-1;
+				if (partNumber >0  && partNumber < (orderString.size() - 2)) { 
+					if(partNumber<pendingOrders.size()){
+						return Optional.fromNullable(pendingOrders.get(partNumber));
+					}else {
+						partNumber = partNumber - pendingOrders.size();
+						return Optional.fromNullable(completedOrders.get(partNumber));
+					}
+				} else {
+					invalidAnswerPrompt();
+					return chooseOrder(pendingOrders, completedOrders);
 				}
-				System.out.println("HERE");
-				System.out.println(orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1));
-				return orderString.get(partNumber).substring(orderString.get(partNumber).indexOf(".") + 1);
-			} else {
-				invalidAnswerPrompt();
-				return chooseOrder(pendingOrders, completedOrders);
 			}
-		}else{
-			orderString.add("There are no pending or completed orders, so you can't choose an order");
-			show(orderString);
-			return "No Order";
 		}
+		return Optional.absent();
 	}
 
 	/**
@@ -204,7 +200,7 @@ public class ClientCommunication{
 	public Optional<IVehicleOption> choosePart(List<IVehicleOption> parts) {
 		ArrayList<String> partsString = new ArrayList<String>();
 		partsString.add(0, "Possible parts:");
-		
+
 		int i = 1;
 		for (IVehicleOption part : parts) {
 			partsString.add(i + "." + part.toString() + LINESEPARATOR);
@@ -213,11 +209,11 @@ public class ClientCommunication{
 				partsString.add(i + ". Select Nothing" + LINESEPARATOR);
 			}
 		}
-		
-		
+
+
 		show(partsString);
-		
-		
+
+
 		int partNumber = askNumber("Which Part Number do you choose?")-1;
 		if (partNumber >=0  && partNumber < parts.size()) {
 			return Optional.fromNullable(parts.get(partNumber));
@@ -631,7 +627,7 @@ public class ClientCommunication{
 		showOrder(quantity, model, chosenParts);
 		show(Arrays.asList("Estimated time of completion :" + estimatedTime.toString() + LINESEPARATOR));
 	}
-	
+
 	public void showOrder(int quantity, VehicleSpecification realModel, List<IVehicleOption> chosenParts){
 		show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
 				+ realModel.toString() + LINESEPARATOR )));
