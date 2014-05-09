@@ -9,7 +9,7 @@ import domain.observer.ClockObserver;
  */
 public class Clock {
 	
-	private final int MINUTESINADAY = 1440;
+	public static final int MINUTESINADAY = 1440;
 	private final int MINUTESSTARTOFDAY= 360;
 	private int minutes;
 	private int days;

@@ -5,7 +5,9 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 
+import domain.assembly.IAssemblyLine;
 import domain.clock.Clock;
+import domain.clock.ImmutableClock;
 import domain.exception.RoleNotYetAssignedException;
 import domain.job.IAction;
 import domain.job.ITask;
@@ -96,12 +98,12 @@ public class Company {
 	 * @param time
 	 *            The time the clock has to be advanced.
 	 */
-	public void completeChosenTaskAtChosenWorkBench(ITask task, int time){
+	public void completeChosenTaskAtChosenWorkBench(ITask task, ImmutableClock time){
 		for (IAction action : task.getActions()) {
 			action.setCompleted(true);
 		}
 		this.workloadDivider.checkIfCanAdvanceOneAssemblyLine()
-		clock.advanceTime(time);
+		clock.advanceTime();
 	}
 	
 	/**
@@ -169,5 +171,9 @@ public class Company {
 	
 	public void switchToDifferentAlgoritm(SchedulingAlgorithmCreator creator){
 		
+	}
+
+	public List<IAssemblyLine> getAssemblyLines() {
+		return workloadDivider.getAssemblyLines();
 	}
 }

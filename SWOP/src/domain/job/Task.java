@@ -70,14 +70,6 @@ public class Task implements ITask {
 
 	@Override
 	public String toString() {
-		String taskString = this.getTaskDescription() + ","
-				+ "Required actions:";
-		for (int i = 0; i < this.getActions().size(); i++) {
-			taskString += " " + (i + 1) + "."
-					+ this.getActions().get(i).getDescription() + ",";
-		}
-		if (getActions().size() != 0)
-			taskString = taskString.substring(0, taskString.length() - 1);
-		return taskString;
+		return taskDescription;
 	}
 }

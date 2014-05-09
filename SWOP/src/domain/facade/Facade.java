@@ -2,12 +2,14 @@ package domain.facade;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
+import domain.assembly.IAssemblyLine;
 import domain.assembly.IWorkBench;
 import domain.clock.ImmutableClock;
 import domain.company.Company;
@@ -107,7 +109,7 @@ public class Facade {
 	 * @param time
 	 *            The time the clock has to be advanced.
 	 */
-	public void completeChosenTaskAtChosenWorkBench(ITask task, int time) {
+	public void completeChosenTaskAtChosenWorkBench(ITask task, ImmutableClock time) {
 		this.company.completeChosenTaskAtChosenWorkBench(task, time);
 	}
 
@@ -442,5 +444,9 @@ public class Facade {
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		return this.company.getAllCarOptionsInPendingOrders();
+	}
+
+	public List<IAssemblyLine> getAssemblyLines() {
+		return Collections.unmodifiableList(company.getAssemblyLines());
 	}
 }

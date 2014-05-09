@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import domain.assembly.IAssemblyLine;
+import domain.assembly.IWorkBench;
+import domain.clock.ImmutableClock;
+import domain.job.IAction;
+import domain.job.ITask;
+
 /**
  * A text-based user interface to interact with the system.
  * 
@@ -13,7 +19,7 @@ import java.util.Set;
 public class ClientCommunication{
 
 	private Scanner inputReader;
-
+	private final String LINESEPARATOR = System.lineSeparator();
 	public ClientCommunication() {
 		this.inputReader = new Scanner(System.in);
 	}
@@ -219,30 +225,32 @@ public class ClientCommunication{
 
 	/**
 	 * Let the user indicate which task he wants to perform.
-	 * @param tasks
+	 * @param tasksAtWorkbench
 	 * 			ArrayList that contains Strings. Each String represents the description of one of the tasks.
 	 * @return
 	 * 			A strictly positive integer.
 	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
 	 */
 	
-	public int chooseTask(ArrayList<String> tasks) {
+	public ITask chooseTask(List<ITask> tasksAtWorkbench) {
 		ArrayList<String> tasksString = new ArrayList<String>();
 		tasksString.add(0, "Tasks:");
 		int i = 1;
-		for (String task : tasks) {
-			tasksString.add(i + "." + task);
+		for (ITask task : tasksAtWorkbench) {
+			tasksString.add(i + "." + task.toString() + LINESEPARATOR);
 			i++;
 		}
 		show(tasksString);
 
-		int taskNumber = askNumber("Which taskNumber do you choose?");
-		if (taskNumber >= 1 && taskNumber <= tasks.size()) {
-			return taskNumber;
+		int taskNumber = askNumber("Which taskNumber do you choose?") -1;
+		if (taskNumber >= 0 && taskNumber < tasksAtWorkbench.size()) {
+			return tasksAtWorkbench.get(taskNumber);
 		} else {
 			invalidAnswerPrompt();
-			return chooseTask(tasks);
+			return chooseTask(tasksAtWorkbench);
 		}
+		
+		
 	}
 	
 	/**
@@ -401,7 +409,6 @@ public class ClientCommunication{
 		for (int i = 0; i < message.size(); i++) {
 			System.out.println(message.get(i));
 		}
-		System.out.println("");
 	}
 	/**
 	 * Show the user the currently used Scheduling Algorithm and all the possible Scheduling Algorithms
@@ -465,16 +472,23 @@ public class ClientCommunication{
 
 	/**
 	 * Show the user the task he has chosen.
-	 * @param task
+	 * @param chosenTask
 	 * 			A String that represents the task. 
 	 * 			This String contains the task description, "Required actions:", and all the actions required.
 	 * 			Each of these elements are separated by a comma.
 	 */
 	
-	public void showChosenTask(String task) {
-		ArrayList<String> taskStrings = new ArrayList<String>(
-				Arrays.asList(task.split(",")));
-		taskStrings.add(0, "Your task: ");
+	public void showChosenTask(ITask chosenTask) {
+		ArrayList<String> taskStrings = new ArrayList<String>();
+		taskStrings.add("Your task: ");
+		taskStrings.add(chosenTask.toString() + LINESEPARATOR);
+		taskStrings.add("Required actions: "+ LINESEPARATOR);
+		int i = 1;
+		for(IAction action: chosenTask.getActions()){
+			taskStrings.add(i + ". " + action.toString() + LINESEPARATOR);
+			i++;
+		}
+
 		show(taskStrings);
 	}
 
@@ -621,5 +635,40 @@ public class ClientCommunication{
 	public void showWorkBenchCompleted() {
 		show(new ArrayList<String>(
 				Arrays.asList("All the tasks at this workbench are completed")));
+	}
+
+	public IAssemblyLine chooseAssemblyLine(List<IAssemblyLine> allAssemblyLines) {
+		List<String> strings = new ArrayList<>();
+		
+		for(IAssemblyLine assemblyLine: allAssemblyLines){
+			strings.add(assemblyLine.toString() + LINESEPARATOR);
+		}
+		
+		show(strings);
+		int index = askNumber("Which AssemblyLine do you choose?") -1;
+		if(index>=0 && index<allAssemblyLines.size()){
+			return allAssemblyLines.get(index);
+		}else{
+			invalidAnswerPrompt();
+			return chooseAssemblyLine(allAssemblyLines);
+		}
+		
+	}
+
+	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches) {
+		List<String> strings = new ArrayList<>();
+		
+		for(IWorkBench workbench: workbenches){
+			strings.add(workbench.toString() + LINESEPARATOR);
+		}
+		
+		show(strings);
+		int index = askNumber("Which WorkBench do you choose?") -1;
+		if(index>=0 && index<workbenches.size()){
+			return workbenches.get(index);
+		}else{
+			invalidAnswerPrompt();
+			return chooseWorkBench(workbenches);
+		}
 	}
 }

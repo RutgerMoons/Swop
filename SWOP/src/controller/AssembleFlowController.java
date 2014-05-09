@@ -1,13 +1,12 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import view.ClientCommunication;
+import domain.assembly.IAssemblyLine;
 import domain.assembly.IWorkBench;
+import domain.clock.Clock;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.job.ITask;
 import domain.users.AccessRight;
@@ -38,21 +37,23 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 */
 	@Override
 	public void executeUseCase(){
-		chooseWorkBench();
+		IWorkBench bench = chooseWorkBench();
+		chooseTask(bench);
 	} 
 
 	/**
 	 * Get the workbench at which the user wants to perform tasks.
 	 */
-	public void chooseWorkBench(){
+	public IWorkBench chooseWorkBench(){
 		//choose assembly Line
 		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
 		//naar clientcommunication
 		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
 		//choose workbench from assemblyLine
 		IWorkBench chosenWorkbench = clientCommunication.chooseWorkBench(chosenAssemblyLine.getWorkbenches());
-		//choose task
-		chooseTask(chosenWorkbench);
+
+
+		return chosenWorkbench;
 	}
 
 	/**
@@ -69,14 +70,13 @@ public class AssembleFlowController extends UseCaseFlowController {
 		else{	
 			//choose ITask, not the index of the task
 			ITask chosenTask = this.clientCommunication.chooseTask(tasksAtWorkbench);
-			this.clientCommunication.showChosenTask(tasksAtWorkbench.get(chosenTask));
+			this.clientCommunication.showChosenTask(chosenTask);
 			if(this.clientCommunication.askContinue()){
-				try {
-					ImmutableClock time = clientCommunication.getElapsedTime();
-					facade.completeChosenTaskAtChosenWorkBench(chosenTask, time);
-				catch ( NoSuitableJobFoundException e ){
-					chooseTask(workBench);
-				}
+				int time = clientCommunication.getElapsedTime();
+				int days = time/Clock.MINUTESINADAY;
+				int minutes = time%Clock.MINUTESINADAY;
+				ImmutableClock clock = new ImmutableClock(days, minutes);
+				facade.completeChosenTaskAtChosenWorkBench(chosenTask, clock);
 				chooseTask(workBench);
 			}
 		}
