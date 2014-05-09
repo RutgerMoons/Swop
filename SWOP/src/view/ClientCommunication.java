@@ -9,9 +9,11 @@ import java.util.Set;
 
 import domain.assembly.IAssemblyLine;
 import domain.assembly.IWorkBench;
+import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.job.IAction;
 import domain.job.ITask;
+import domain.vehicle.IVehicle;
 
 /**
  * A text-based user interface to interact with the system.
@@ -53,15 +55,19 @@ public class ClientCommunication{
 	 * Ask the user for a deadline.
 	 */
 
-	public String askDeadline() {
-		while (true) {
-			show(new ArrayList<String>(Arrays.asList("What is the deadline? (Days,Hours,Minutes   untill completion)")));
-			String answer = inputReader.nextLine();
-			if (answer != null && isValidDeadline(answer)) {
-				return answer;
-			}
+	public int askDeadline() {
+		int days = askNumber("How many days until the deadline is reached?");
+		while(days<0){
 			invalidAnswerPrompt();
+			days = askNumber("How many days until the deadline is reached?");
 		}
+		int minutes = askNumber("How many minutes on that day untill the deadline is reached?");
+		while(minutes<0){
+			invalidAnswerPrompt();
+			minutes = askNumber("How many minutes on that day untill the deadline is reached?");
+		}
+		
+		return days*Clock.MINUTESINADAY + minutes;
 	}
 
 	/**
@@ -546,7 +552,7 @@ public class ClientCommunication{
 	 * Show a custom order with the given estimated completion time.
 	 */
 
-	public void showCustomOrder(String time) {
+	public void showCustomOrder(ImmutableClock time) {
 		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
 	}
 
@@ -554,23 +560,23 @@ public class ClientCommunication{
 	 * Show the given custom tasks and let the user choose one.
 	 */
 
-	public String showCustomTasks(List<String> tasks) {
+	public IVehicle showSpecificCustomTasks(List<IVehicle> vehicles) {
 		ArrayList<String> customString = new ArrayList<String>();
 		customString.add(0, "Possible tasks:");
 		int i = 1;
-		for (String customTask : tasks) {
-			customString.add(i + "." + customTask);
+		for (IVehicle customTask : vehicles) {
+			customString.add(i + "." + customTask.toString() + LINESEPARATOR);
 			i++;
 		}
 		show(customString);
-
-		int customNumber = askNumber("Which Task do you choose?");
-		if (customNumber >= 1 && customNumber <= tasks.size()) {
-			return customString.get(customNumber).substring(
-					customString.get(customNumber).indexOf(".") + 1);
+		
+		
+		int customNumber = askNumber("Which Task do you choose?")-1;
+		if (customNumber >= 0 && customNumber < vehicles.size()) {
+			return vehicles.get(customNumber);
 		} else {
 			invalidAnswerPrompt();
-			return showCustomTasks(tasks);
+			return showSpecificCustomTasks(vehicles);
 		}
 	}
 
@@ -702,6 +708,26 @@ public class ClientCommunication{
 		}else{
 			invalidAnswerPrompt();
 			return chooseWorkBench(workbenches);
+		}
+	}
+
+	public String showCustomTasks(Set<String> customTasks) {
+		ArrayList<String> customString = new ArrayList<String>();
+		customString.add(0, "Possible tasks:");
+		int i = 1;
+		for (String customTask : customTasks) {
+			customString.add(i + "." + customTask);
+			i++;
+		}
+		show(customString);
+
+		int customNumber = askNumber("Which Task do you choose?") -1;
+		if (customNumber >0 && customNumber < customTasks.size()) {
+			return customString.get(customNumber).substring(	//TODO check of het werkt
+					customString.get(customNumber).indexOf(".") + 1);
+		} else {
+			invalidAnswerPrompt();
+			return showCustomTasks(customTasks);
 		}
 	}
 }

@@ -103,5 +103,4 @@ public class ImmutableClock implements Comparable<ImmutableClock> {
 			return false;
 		return true;
 	}
-	
 }

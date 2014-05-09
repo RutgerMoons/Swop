@@ -74,9 +74,8 @@ public class Facade {
 	 * 			If there are no suitable jobs to be put on the assemblyline.
 	 * TODO : zetten in workloadDivider
 	 */
-	public void advanceAssemblyLine() throws UnmodifiableException,
-			NoSuitableJobFoundException {
-		assemblyLine.advance();
+	public void advanceAssemblyLine(IAssemblyLine assemblyLine) throws NoSuitableJobFoundException {
+		company.advanceAssemblyLine(assemblyLine);
 	}
 
 	/**
@@ -390,7 +389,7 @@ public class Facade {
 	 * @param deadline
 	 * 			The deadline of the CustomOrder
 	 */
-	public ImmutableClock processCustomOrder(CustomVehicle model, ImmutableClock deadline) throws IllegalArgumentException{
+	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline) throws IllegalArgumentException{
 		CustomOrder order = new CustomOrder(
 				userBook.getCurrentUser().getName(), model, 1,
 				clock.getUnmodifiableClock(), deadline);

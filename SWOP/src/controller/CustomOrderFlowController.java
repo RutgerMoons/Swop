@@ -1,10 +1,15 @@
 package controller;
 
+import java.util.List;
+
 import view.ClientCommunication;
+import domain.clock.Clock;
+import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
+import domain.vehicle.IVehicle;
 
 /**
  * Defines the program flow for the 'Order single task' use case.
@@ -27,33 +32,19 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 	}
 
 	@Override
-	public void executeUseCase() throws IllegalArgumentException,
-	UnmodifiableException {
-		customOrder();
-	}
-
-	/**
-	 * Place a new CustomOrder, as described by the user.
-	 */
-	private void customOrder() throws IllegalArgumentException, UnmodifiableException {
+	public void executeUseCase() {
 		String customTaskDescription = clientCommunication.showCustomTasks(facade.getCustomTasks());
+		List<IVehicle> vehicles = facade.getSpecificCustomTasks(customTaskDescription);
+		IVehicle model = clientCommunication.showSpecificCustomTasks(vehicles);
 
-		String model = clientCommunication.showCustomTasks(facade.getSpecificCustomTasks(customTaskDescription));
-
-		String deadline = clientCommunication.askDeadline();
-
+		int deadlineInMinutes = clientCommunication.askDeadline();
+		int days = deadlineInMinutes/Clock.MINUTESINADAY;
+		int minutes = deadlineInMinutes%Clock.MINUTESINADAY;
+		ImmutableClock deadline = new ImmutableClock(days, minutes);
+		
 		if(clientCommunication.askContinue()){
-			String time = facade.processCustomOrder(model, deadline);
+			ImmutableClock time = facade.processCustomOrder(model, deadline);
 			clientCommunication.showCustomOrder(time);
-			if (facade.canAssemblyLineAdvance()) {
-				try {
-					facade.advanceAssemblyLine();
-				} catch (NoSuitableJobFoundException n) {
-					//no problem :)
-				} catch (IllegalArgumentException e){
-					executeUseCase();
-				}
-			}
 		}else{
 			executeUseCase();
 		}
