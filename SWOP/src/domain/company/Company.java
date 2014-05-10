@@ -115,7 +115,7 @@ public class Company {
 		for (IAction action : task.getActions()) {
 			action.setCompleted(true);
 		}
-		this.workloadDivider.checkIfCanAdvanceOneAssemblyLine()
+		this.workloadDivider.checkIfCanAdvanceOneAssemblyLine();
 		clock.advanceTime(time.getTotalInMinutes());
 	}
 
@@ -163,6 +163,10 @@ public class Company {
 	public VehicleSpecification getCarModelSpecificationFromCatalogue(String specificationName) {
 		return this.partpicker.getCatalogue().getCatalogue().get(specificationName);
 	}
+	
+	public String getCurrentSchedulingAlgorithm() {
+		return this.workloadDivider.getCurrentSchedulingAlgorithm();
+	}
 
 	public void login(String userName) throws RoleNotYetAssignedException{
 		this.userbook.login(userName);
@@ -176,8 +180,8 @@ public class Company {
 		this.clock.startNewDay();
 	}
 
-	public void switchToDifferentAlgoritm(SchedulingAlgorithmCreator creator){
-
+	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
+		this.workloadDivider.switchToSchedulingAlgorithm(creator);
 	}
 
 	public List<IAssemblyLine> getAssemblyLines() {

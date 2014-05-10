@@ -54,6 +54,9 @@ public class Facade {
 	 *            The list of OptionalRestrictions the facade has to deal with.
 	 * */
 	public Facade(Company company) {
+		if (company == null) {
+			throw new IllegalArgumentException();
+		}
 		this.company = company;
 	}
 
@@ -175,7 +178,7 @@ public class Facade {
 	 */
 	public String getCurrentSchedulingAlgorithm() {
 		//TODO updaten na Rutger
-		return this.assemblyLine.;
+		return this.company.getCurrentSchedulingAlgorithm();
 	}
 
 	/**
