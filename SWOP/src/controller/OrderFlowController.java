@@ -10,9 +10,9 @@ import domain.clock.ImmutableClock;
 import domain.facade.Facade;
 import domain.order.IOrder;
 import domain.users.AccessRight;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * Defines the program flow for the 'Order New Car' use case.

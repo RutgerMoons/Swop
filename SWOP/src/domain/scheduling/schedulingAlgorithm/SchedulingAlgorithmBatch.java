@@ -10,10 +10,10 @@ import com.google.common.base.Optional;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
-import domain.job.IJob;
-import domain.job.JobComparatorDeadLine;
-import domain.job.JobComparatorOrderTime;
-import domain.vehicle.VehicleOption;
+import domain.job.job.IJob;
+import domain.job.jobComparator.JobComparatorDeadLine;
+import domain.job.jobComparator.JobComparatorOrderTime;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Represents a scheduling algorithm used for scheduling Jobs on an AssemblyLine.

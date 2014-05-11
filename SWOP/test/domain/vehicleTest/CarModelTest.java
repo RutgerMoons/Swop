@@ -13,11 +13,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.exception.AlreadyInMapException;
-import domain.job.Action;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
+import domain.job.action.Action;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class CarModelTest {
 	VehicleSpecification template;

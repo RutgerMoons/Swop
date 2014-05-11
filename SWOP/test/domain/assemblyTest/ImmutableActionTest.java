@@ -7,9 +7,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import domain.exception.UnmodifiableException;
-import domain.job.Action;
-import domain.job.IAction;
-import domain.job.UnmodifiableAction;
+import domain.job.action.Action;
+import domain.job.action.IAction;
+import domain.job.action.UnmodifiableAction;
 
 
 public class ImmutableActionTest {

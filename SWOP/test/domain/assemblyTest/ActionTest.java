@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.job.Action;
+import domain.job.action.Action;
 
 
 public class ActionTest {

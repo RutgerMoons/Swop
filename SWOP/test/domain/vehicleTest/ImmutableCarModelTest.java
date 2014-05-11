@@ -13,12 +13,12 @@ import org.junit.Test;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
-import domain.vehicle.IVehicle;
-import domain.vehicle.UnmodifiableVehicle;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicle.UnmodifiableVehicle;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class ImmutableCarModelTest {
 

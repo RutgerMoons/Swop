@@ -5,11 +5,11 @@ import java.util.Collections;
 
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
-import domain.job.IJob;
+import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.IVehicle;
-import domain.vehicle.IVehicleOption;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
 
 /**
  * Class representing an order from a Custom Car Shop Manager.

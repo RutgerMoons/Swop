@@ -5,11 +5,11 @@ import java.util.Collections;
 
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
-import domain.job.IJob;
+import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.vehicle.IVehicle;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.Vehicle;
+import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes

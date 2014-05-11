@@ -13,26 +13,26 @@ import org.junit.Test;
 
 import com.google.common.base.Optional;
 
-import domain.assembly.AssemblyLine;
+import domain.assembly.assemblyLine.AssemblyLine;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
-import domain.job.IJob;
-import domain.job.Job;
-import domain.job.JobComparatorDeadLine;
-import domain.observer.ClockObserver;
+import domain.job.job.IJob;
+import domain.job.job.Job;
+import domain.job.jobComparator.JobComparatorDeadLine;
+import domain.observer.observers.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
 import domain.scheduling.SchedulingAlgorithmType;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 
 public class SchedulingAlgorithmFifoTest {

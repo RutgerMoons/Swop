@@ -11,7 +11,7 @@ import org.junit.Test;
 import view.VehicleSpecificationCatalogueFiller;
 import domain.exception.AlreadyInMapException;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.VehicleSpecificationCatalogue;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 
 public class CatalogueTest {
 

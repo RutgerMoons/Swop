@@ -8,19 +8,19 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
-import domain.assembly.IAssemblyLine;
-import domain.assembly.IWorkBench;
+import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
-import domain.job.IAction;
-import domain.job.ITask;
+import domain.job.action.IAction;
+import domain.job.task.ITask;
 import domain.order.Delay;
 import domain.order.IOrder;
-import domain.vehicle.IVehicle;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * A text-based user interface to interact with the system.

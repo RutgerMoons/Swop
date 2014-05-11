@@ -12,8 +12,8 @@ import org.junit.Test;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class CustomOrderScenario {
 

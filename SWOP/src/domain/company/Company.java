@@ -6,16 +6,16 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 
-import domain.assembly.IAssemblyLine;
-import domain.assembly.IWorkBench;
+import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.RoleNotYetAssignedException;
-import domain.job.IAction;
-import domain.job.ITask;
+import domain.job.action.IAction;
+import domain.job.task.ITask;
 import domain.log.Logger;
-import domain.observer.AssemblyLineObserver;
-import domain.observer.ClockObserver;
+import domain.observer.observers.AssemblyLineObserver;
+import domain.observer.observers.ClockObserver;
 import domain.order.Delay;
 import domain.order.CustomOrder;
 import domain.order.IOrder;
@@ -28,15 +28,15 @@ import domain.scheduling.WorkloadDivider;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.users.AccessRight;
 import domain.users.UserBook;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.CustomVehicleCatalogue;
-import domain.vehicle.IVehicle;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.VehicleSpecificationCatalogue;
+import domain.vehicle.catalogue.CustomVehicleCatalogue;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * 
@@ -150,9 +150,6 @@ public class Company {
 		return ImmutableList.copyOf(this.userbook.getCurrentUser().getAccessRights());
 	}
 
-
-	
-
 	/**
 	 * Get the CarModelSpecification from the catalogue.
 	 * @param specificationName
@@ -262,7 +259,7 @@ public class Company {
 	}
 	
 	public ImmutableClock getUnmodifiableClock() {
-		return clock.getUnmodifiableClock();
+		return clock.getImmutableClock();
 	}
 
 	public void addOrder(CustomOrder order) {
@@ -275,9 +272,9 @@ public class Company {
 			throw new IllegalStateException();
 
 		StandardOrder order = new StandardOrder(userbook.getCurrentUser()
-				.getName(), vehicle, quantity, clock.getUnmodifiableClock());
+				.getName(), vehicle, quantity, clock.getImmutableClock());
 
-		orderbook.addOrder(order, clock.getUnmodifiableClock());
+		orderbook.addOrder(order, clock.getImmutableClock());
 		return order.getEstimatedTime();
 	}
 }

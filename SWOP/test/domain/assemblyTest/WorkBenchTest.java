@@ -15,19 +15,19 @@ import org.junit.Test;
 
 import com.google.common.base.Optional;
 
-import domain.assembly.WorkBench;
+import domain.assembly.workBench.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.job.Action;
-import domain.job.IJob;
-import domain.job.ITask;
-import domain.job.Job;
-import domain.job.Task;
+import domain.job.action.Action;
+import domain.job.job.IJob;
+import domain.job.job.Job;
+import domain.job.task.ITask;
+import domain.job.task.Task;
 import domain.order.StandardOrder;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 public class WorkBenchTest {

@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.clock.ImmutableClock;
-import domain.observer.AssemblyLineObserver;
-import domain.observer.ClockObserver;
+import domain.observer.observers.AssemblyLineObserver;
+import domain.observer.observers.ClockObserver;
 
 public class LoggerTest {
 

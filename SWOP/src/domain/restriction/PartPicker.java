@@ -12,12 +12,12 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.exception.AlreadyInMapException;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.VehicleSpecificationCatalogue;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * A PartPicker has all the tools to compose a CarModel.

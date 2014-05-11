@@ -4,7 +4,7 @@ import java.util.List;
 
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmBatch;
-import domain.vehicle.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 public class SchedulingAlgorithmCreatorBatch extends SchedulingAlgorithmCreator {
 	

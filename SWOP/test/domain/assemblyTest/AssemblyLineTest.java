@@ -15,30 +15,30 @@ import org.junit.Test;
 
 import com.google.common.base.Optional;
 
-import domain.assembly.AssemblyLine;
-import domain.assembly.IWorkBench;
-import domain.assembly.WorkBench;
+import domain.assembly.assemblyLine.AssemblyLine;
+import domain.assembly.workBench.IWorkBench;
+import domain.assembly.workBench.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
-import domain.job.Action;
-import domain.job.IAction;
-import domain.job.IJob;
-import domain.job.ITask;
-import domain.job.Job;
-import domain.job.Task;
+import domain.job.action.Action;
+import domain.job.action.IAction;
+import domain.job.job.IJob;
+import domain.job.job.Job;
+import domain.job.task.ITask;
+import domain.job.task.Task;
 import domain.log.Logger;
-import domain.observer.AssemblyLineObserver;
-import domain.observer.ClockObserver;
+import domain.observer.observers.AssemblyLineObserver;
+import domain.observer.observers.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.StandardOrder;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 public class AssemblyLineTest{

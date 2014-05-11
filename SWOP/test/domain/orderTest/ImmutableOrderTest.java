@@ -16,10 +16,10 @@ import domain.exception.NotImplementedException;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
 import domain.order.StandardOrder;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class ImmutableOrderTest {
 	Vehicle model;

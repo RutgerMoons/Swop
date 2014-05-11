@@ -9,7 +9,7 @@ import view.ClientCommunication;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
-import domain.vehicle.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Defines the program flow for the 'Adapt scheduling algorithm' use case.

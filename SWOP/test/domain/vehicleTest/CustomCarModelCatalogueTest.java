@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.CustomVehicleCatalogue;
+import domain.vehicle.catalogue.CustomVehicleCatalogue;
+import domain.vehicle.vehicle.CustomVehicle;
 
 public class CustomCarModelCatalogueTest {
 

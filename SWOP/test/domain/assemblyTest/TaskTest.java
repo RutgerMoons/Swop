@@ -11,9 +11,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.job.Action;
-import domain.job.IAction;
-import domain.job.Task;
+import domain.job.action.Action;
+import domain.job.action.IAction;
+import domain.job.task.Task;
 
 
 public class TaskTest {

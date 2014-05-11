@@ -9,9 +9,9 @@ import com.google.common.collect.Multimap;
 
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
-import domain.observer.LogsAssemblyLine;
-import domain.observer.ObservableOrderBook;
-import domain.observer.OrderBookObserver;
+import domain.observer.observable.ObservableOrderBook;
+import domain.observer.observers.OrderBookObserver;
+import domain.observer.observes.ObservesAssemblyLine;
 
 /**
  * this class will be used to keep record of two kinds of orders. these two
@@ -20,7 +20,7 @@ import domain.observer.OrderBookObserver;
  * 
  * 
  */
-public class OrderBook implements LogsAssemblyLine, ObservableOrderBook {
+public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 
 	// private HashMap<String, ArrayList<Order>> pendingOrders;
 	// private HashMap<String, ArrayList<Order>> completedOrders;

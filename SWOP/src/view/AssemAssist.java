@@ -14,11 +14,11 @@ import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.CustomVehicleCatalogue;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
-import domain.vehicle.VehicleSpecificationCatalogue;
+import domain.vehicle.catalogue.CustomVehicleCatalogue;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 /**

@@ -3,8 +3,8 @@ package domain.log;
 import java.util.List;
 
 import domain.clock.ImmutableClock;
-import domain.observer.LogsAssemblyLine;
-import domain.observer.LogsClock;
+import domain.observer.observes.ObservesAssemblyLine;
+import domain.observer.observes.ObservesClock;
 import domain.order.Delay;
 
 /**
@@ -12,7 +12,7 @@ import domain.order.Delay;
  * of the amount of completed orders per day and provides the methods to calculate the mean and median
  * of all the accumulated data.
  */
-public class Logger implements LogsClock, LogsAssemblyLine {
+public class Logger implements ObservesClock, ObservesAssemblyLine {
 
 	private LogHistoryDays logHistoryDays;
 	private LogHistoryDelays logHistoryDelays;

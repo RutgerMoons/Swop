@@ -5,10 +5,10 @@ import java.util.Collection;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
-import domain.job.IJob;
+import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.vehicle.IVehicle;
-import domain.vehicle.IVehicleOption;
+import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
 
 /**
  * Interface for limiting access to standard Orders.

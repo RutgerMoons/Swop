@@ -15,8 +15,8 @@ import view.ClientCommunication;
 
 import com.google.common.base.Optional;
 
-import domain.assembly.AssemblyLine;
-import domain.assembly.AssemblyLineState;
+import domain.assembly.assemblyLine.AssemblyLine;
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
@@ -24,9 +24,9 @@ import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
-import domain.job.IJob;
-import domain.job.Job;
-import domain.observer.ClockObserver;
+import domain.job.job.IJob;
+import domain.job.job.Job;
+import domain.observer.observers.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.StandardOrder;
 import domain.restriction.BindingRestriction;
@@ -37,13 +37,13 @@ import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.VehicleSpecificationCatalogue;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class SchedulerAlgorithmTest {
 
@@ -229,10 +229,10 @@ public class SchedulerAlgorithmTest {
 			model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		} catch (AlreadyInMapException e) {}
 		Clock c = new Clock();
-		AssemblyLine line = new AssemblyLine(clock, c.getUnmodifiableClock(), AssemblyLineState.OPERATIONAL);
+		AssemblyLine line = new AssemblyLine(clock, c.getImmutableClock(), AssemblyLineState.OPERATIONAL);
 		line.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 			
-		StandardOrder order = new StandardOrder("Luigi", this.model, 5, c.getUnmodifiableClock());
+		StandardOrder order = new StandardOrder("Luigi", this.model, 5, c.getImmutableClock());
 		try {
 			line.convertStandardOrderToJob(order);
 		} catch (UnmodifiableException e) { }

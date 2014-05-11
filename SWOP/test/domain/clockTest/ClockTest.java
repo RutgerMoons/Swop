@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.clock.Clock;
-import domain.observer.ClockObserver;
+import domain.observer.observers.ClockObserver;
 
 public class ClockTest {
 

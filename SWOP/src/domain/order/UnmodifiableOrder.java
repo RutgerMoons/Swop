@@ -5,11 +5,11 @@ import java.util.Collection;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
-import domain.job.IJob;
+import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.vehicle.IVehicle;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.UnmodifiableVehicle;
+import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicle.UnmodifiableVehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
 
 /**
  * Create an Immutable Order, only the getters are accessible.

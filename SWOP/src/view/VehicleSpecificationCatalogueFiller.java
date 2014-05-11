@@ -5,9 +5,9 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 /**

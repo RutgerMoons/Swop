@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import domain.job.Action;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
+import domain.job.action.Action;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class CarPartTest {
 

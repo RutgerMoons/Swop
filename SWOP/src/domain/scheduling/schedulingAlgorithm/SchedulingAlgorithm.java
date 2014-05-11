@@ -8,9 +8,9 @@ import com.google.common.base.Optional;
 
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
-import domain.job.IJob;
-import domain.job.JobComparatorDeadLine;
-import domain.job.JobComparatorOrderTime;
+import domain.job.job.IJob;
+import domain.job.jobComparator.JobComparatorDeadLine;
+import domain.job.jobComparator.JobComparatorOrderTime;
 
 /**
  * Abstract class that represents a possible scheduling algorithm used for 

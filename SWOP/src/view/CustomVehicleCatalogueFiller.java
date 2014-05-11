@@ -6,9 +6,9 @@ import com.google.common.collect.Multimap;
 
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * This class is used to fill the CustomCarModelCatalogue.  

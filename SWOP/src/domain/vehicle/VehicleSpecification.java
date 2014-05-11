@@ -6,6 +6,9 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
+
 /**
  * Class representing a CarModelSpecification.
  * Objects of this class represent a template according to which CarModels can be put together.

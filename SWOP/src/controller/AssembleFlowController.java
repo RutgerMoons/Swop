@@ -3,12 +3,12 @@ package controller;
 import java.util.List;
 
 import view.ClientCommunication;
-import domain.assembly.IAssemblyLine;
-import domain.assembly.IWorkBench;
+import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.facade.Facade;
-import domain.job.ITask;
+import domain.job.task.ITask;
 import domain.users.AccessRight;
 
 

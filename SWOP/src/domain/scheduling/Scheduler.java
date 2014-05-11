@@ -2,7 +2,6 @@ package domain.scheduling;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -11,20 +10,19 @@ import com.google.common.collect.Sets;
 
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
-import domain.job.IJob;
-import domain.observer.ClockObserver;
-import domain.observer.LogsClock;
+import domain.job.job.IJob;
+import domain.observer.observers.ClockObserver;
+import domain.observer.observes.ObservesClock;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.VehicleOption;
+import domain.vehicle.vehicleOption.IVehicleOption;
 /**
  * This object is responsible for maintaining a scheduling algorithm, a certain amount of workbenches and shifts.
  * It also keeps track of current time by using a ClockObserver.
  * It's responsible for shifting between scheduling algorithms and decouples the assemblyLine and the used scheduling
  * algorithm.
  */
-public class Scheduler implements LogsClock {
+public class Scheduler implements ObservesClock {
 
 	private SchedulingAlgorithm schedulingAlgorithm;
 	private ArrayList<Shift> shifts;
@@ -140,6 +138,9 @@ public class Scheduler implements LogsClock {
 	 * Returns the currently used Scheduling Algorithm Type
 	 */
 	public String getCurrentSchedulingAlgorithm() {
+		if (this.schedulingAlgorithm == null) {
+			return "No scheduling algorithm used at the moment.";
+		}
 		return this.schedulingAlgorithm.toString();
 	}
 	

@@ -7,10 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.exception.UnmodifiableException;
-import domain.job.Action;
-import domain.job.ITask;
-import domain.job.UnmodifiableTask;
-import domain.job.Task;
+import domain.job.action.Action;
+import domain.job.task.ITask;
+import domain.job.task.Task;
+import domain.job.task.UnmodifiableTask;
 
 
 public class ImmutableTaskTest {

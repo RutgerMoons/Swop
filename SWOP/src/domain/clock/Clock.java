@@ -2,8 +2,8 @@ package domain.clock;
 
 import java.util.ArrayList;
 
-import domain.observer.ClockObserver;
-import domain.observer.ObservableClock;
+import domain.observer.observable.ObservableClock;
+import domain.observer.observers.ClockObserver;
 
 /**
  * Represents a clock that stores the current time (in minutes) and the current day.
@@ -81,7 +81,7 @@ public class Clock implements ObservableClock {
 		notifyObserversStartNewDay();
 	}
 	
-	public ImmutableClock getUnmodifiableClock() {
+	public ImmutableClock getImmutableClock() {
 		return new ImmutableClock(getDays(), getMinutes());
 	}
 	
@@ -112,7 +112,7 @@ public class Clock implements ObservableClock {
 	 */
 	@Override
 	public void notifyObserversAdvanceTime() {
-		ImmutableClock currentTime = getUnmodifiableClock();
+		ImmutableClock currentTime = getImmutableClock();
 		for (ClockObserver observer : observers) {
 			observer.advanceTime(currentTime);
 		}
@@ -124,7 +124,7 @@ public class Clock implements ObservableClock {
 	@Override
 	public void notifyObserversStartNewDay() {
 		for (ClockObserver observer : observers) {
-			observer.startNewDay(getUnmodifiableClock());
+			observer.startNewDay(getImmutableClock());
 		}
 	}
 

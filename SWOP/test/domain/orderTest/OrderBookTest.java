@@ -10,20 +10,20 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.AssemblyLine;
+import domain.assembly.assemblyLine.AssemblyLine;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
-import domain.observer.ClockObserver;
+import domain.observer.observers.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 /*

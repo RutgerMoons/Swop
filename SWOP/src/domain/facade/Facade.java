@@ -9,17 +9,17 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import domain.assembly.AssemblyLineState;
-import domain.assembly.IAssemblyLine;
-import domain.assembly.IWorkBench;
+import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
 import domain.clock.ImmutableClock;
 import domain.company.Company;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.exception.UnmodifiableException;
-import domain.job.ITask;
-import domain.job.Task;
+import domain.job.task.ITask;
+import domain.job.task.Task;
 import domain.order.CustomOrder;
 import domain.order.Delay;
 import domain.order.IOrder;
@@ -27,13 +27,13 @@ import domain.order.StandardOrder;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.users.AccessRight;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.IVehicle;
-import domain.vehicle.IVehicleOption;
-import domain.vehicle.Vehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * This class is the layer between the Domain model and the UI. The UI can only

@@ -3,7 +3,7 @@ package controller;
 import java.util.List;
 
 import view.ClientCommunication;
-import domain.assembly.IAssemblyLine;
+import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;

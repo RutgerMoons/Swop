@@ -15,11 +15,11 @@ import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
-import domain.job.Action;
+import domain.job.action.Action;
 import domain.order.CustomOrder;
-import domain.vehicle.CustomVehicle;
-import domain.vehicle.VehicleOption;
-import domain.vehicle.VehicleOptionCategory;
+import domain.vehicle.vehicle.CustomVehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class CustomOrderTest {
 	private CustomVehicle model;

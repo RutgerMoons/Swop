@@ -7,7 +7,7 @@ import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.facade.Facade;
 import domain.users.AccessRight;
-import domain.vehicle.IVehicle;
+import domain.vehicle.vehicle.IVehicle;
 
 /**
  * Defines the program flow for the 'Order single task' use case.
