@@ -427,16 +427,21 @@ public class ClientCommunication{
 	/**
 	 * Notify the user that the scheduling algorithm was successfully switched.
 	 */
-	public void showAlgorithmSwitched(String type) {
-		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type));
+	public void showAlgorithmSwitched(String schedulingAlgorithmType) {
+		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + schedulingAlgorithmType));
 	}
 
 	/**
 	 * Notify the user that the scheduling algorithm was successfully switched using the given batch.
 	 */
-	public void showAlgorithmSwitched(String type, String batch) {
-		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type + 
-				" with batch: " + batch));
+	public void showAlgorithmSwitched(String schedulingAlgorithmType, List<VehicleOption> vehicleOptionsChosenForBatch) {
+		String batchToString = "";
+		for (VehicleOption o : vehicleOptionsChosenForBatch) {
+			batchToString += o.toString() + ", ";
+		}
+		batchToString = batchToString.substring(0, batchToString.length() - 2);
+		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + schedulingAlgorithmType + 
+				" with batch: " + batchToString));
 	}
 
 	/**

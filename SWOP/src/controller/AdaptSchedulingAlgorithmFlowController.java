@@ -1,14 +1,13 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import view.ClientCommunication;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmBatch;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.users.AccessRight;
@@ -100,33 +99,12 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		}
 		clientCommunication.showBatches(batches);
 	    ArrayList<Set<VehicleOption>> batchList = new ArrayList<>(batches);
-//	    ArrayList<String> sets = new ArrayList<String>();
-//		sets.add(0, "Possible Batches:");
-//		int i = 1;
-//		for (Iterator<Set<VehicleOption>> iterator = batches.iterator(); iterator.hasNext();) {
-//			Set<VehicleOption> s = (Set<VehicleOption>) iterator.next();
-//			String tmp = "";
-//			for (VehicleOption o : s) {
-//				tmp += o.toString() + ", ";
-//			}
-//			tmp = tmp.substring(0, tmp.length() - 2);
-//			sets.add(i, Integer.toString(i) + ". " + tmp);
-//			i++;
-//		}
-//		
-//		clientCommunication.showBatches(sets);
 		int index = clientCommunication.getIndex(batches.size()) - 1;
 
 		ArrayList<VehicleOption> toSet = new ArrayList<VehicleOption>(batchList.get(index));
+		List<VehicleOption> unModifiableToSet = Collections.unmodifiableList(toSet);
 		facade.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorBatch(toSet));
-		
-		String tmp = "";
-		for (VehicleOption o : batchList.get(index)) {
-			tmp += o.toString() + ", ";
-		}
-		tmp = tmp.substring(0, tmp.length() - 2);
-		
-		clientCommunication.showAlgorithmSwitched("Batch", tmp);
+		clientCommunication.showAlgorithmSwitched("Batch", unModifiableToSet);
 	}
 	
 	
