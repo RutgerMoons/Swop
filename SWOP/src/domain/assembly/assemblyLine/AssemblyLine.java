@@ -1,6 +1,7 @@
 package domain.assembly.assemblyLine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,7 @@ import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Represents an AssemblyLine. It contains the workbenches and the current jobs on these workbenches.
@@ -52,7 +53,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		currentJobs = new ArrayList<IJob>();
 		initializeWorkbenches();
 		observers = new ArrayList<>();
-		this.scheduler = new Scheduler(workbenches.size(), clockObserver, clock);
+		this.scheduler = new Scheduler(clockObserver, clock);
 		this.assemblyLineState = assemblyLineState;
 	}
 
@@ -84,7 +85,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * @throws IllegalStateException
 	 * 		Thrown when the assemblyLine cannot advance.
 	 */
-	public void advance() throws UnmodifiableException, NoSuitableJobFoundException {
+	public void advance() throws NoSuitableJobFoundException {
 		if (!canAdvance()) {
 			throw new IllegalStateException();
 		}
@@ -256,7 +257,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	}
 	
 	@Override
-	public Set<Set<IVehicleOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		return this.scheduler.getAllCarOptionsInPendingOrders();
 	}
 
@@ -273,5 +274,29 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	public AssemblyLineState getState() {
 		return assemblyLineState;
 	}
-
+	
+	//TODO: equals..
+	
+	/**
+	 * Matches the given workbench to one of its own. If a match is found, 
+	 * the request is passed on.
+	 * 
+	 * @param	workbench to be matched
+	 */
+	public void completeChosenTaskAtChosenWorkBench(IWorkBench workbench, ITask task){
+		for (IWorkBench wb : this.workbenches) {
+			if (wb.equals(workbench)) {
+				wb.completeChosenTaskAtChosenWorkBench(task);
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * returns a list containing all the pending standard jobs (no specific order)
+	 */
+	public List<IJob> getStandardJobs() {
+		return this.scheduler.getStandardJobs();
+	}
+	
 }

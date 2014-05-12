@@ -12,6 +12,7 @@ import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBa
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.users.AccessRight;
 import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Defines the program flow for the 'Adapt scheduling algorithm' use case.
@@ -97,8 +98,9 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 			clientCommunication.showNoBatchesAvailable();
 			return;
 		}
-		clientCommunication.showBatches(batches);
+		
 	    ArrayList<Set<VehicleOption>> batchList = new ArrayList<>(batches);
+	    clientCommunication.showBatches(batches);
 		int index = clientCommunication.getIndex(batches.size()) - 1;
 
 		ArrayList<VehicleOption> toSet = new ArrayList<VehicleOption>(batchList.get(index));

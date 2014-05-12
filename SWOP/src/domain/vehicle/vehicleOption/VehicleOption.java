@@ -4,7 +4,7 @@ package domain.vehicle.vehicleOption;
 /**
  * Abstract class representing a part of a car.
  */
-public class VehicleOption implements IVehicleOption{
+public class VehicleOption {
 
 	private final String description;
 	private final VehicleOptionCategory type;
@@ -17,7 +17,9 @@ public class VehicleOption implements IVehicleOption{
 		this.type = type;
 	}
 
-	@Override
+	/**
+	 * Returns the description of this type.
+	 */
 	public String getDescription() {
 		return description;
 	}
@@ -27,17 +29,25 @@ public class VehicleOption implements IVehicleOption{
 		return this.getType().toString() + ": " + getDescription();
 	}
 
-	@Override
+	/**
+	 * Get the type of part this option represents.
+	 */
 	public VehicleOptionCategory getType() {
 		return this.type;
 	}
 
-	@Override
+	/**
+	 * Get the string representation of what the description of the task looks like.
+	 * @return
+	 */
 	public String getTaskDescription() {
 		return this.getType().toString();
 	}
 	
-	@Override
+	/**
+	 * Get the string representation of what the description of the task looks like.
+	 * @return
+	 */
 	public String getActionDescription() {
 		return "Put on " + this.getDescription() + " " + this.getType().toString().toLowerCase();
 	}

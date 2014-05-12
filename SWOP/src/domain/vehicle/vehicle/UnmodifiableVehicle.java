@@ -7,7 +7,7 @@ import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
@@ -30,7 +30,7 @@ public class UnmodifiableVehicle implements IVehicle {
 		this.model = model;
 	}
 	@Override
-	public Map<VehicleOptionCategory, IVehicleOption> getVehicleOptions() {
+	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableMap(model.getVehicleOptions());
 	}
 
@@ -49,17 +49,17 @@ public class UnmodifiableVehicle implements IVehicle {
 		return model.toString();
 	}
 	@Override
-	public void addCarPart(IVehicleOption part) throws AlreadyInMapException,
+	public void addCarPart(VehicleOption part) throws AlreadyInMapException,
 			UnmodifiableException {
 		throw new UnmodifiableException();
 		
 	}
 	@Override
-	public Map<IVehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
+	public Map<VehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
 		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
 	}
 	@Override
-	public void addForcedOptionalType(IVehicleOption type, boolean bool)
+	public void addForcedOptionalType(VehicleOption type, boolean bool)
 			throws UnmodifiableException {
 		throw new UnmodifiableException();
 	}

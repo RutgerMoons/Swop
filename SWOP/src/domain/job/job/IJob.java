@@ -7,7 +7,7 @@ import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Interface for limiting access to standard Jobs.
@@ -79,7 +79,7 @@ public interface IJob {
 	/**
 	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
 	 */
-	public Collection<IVehicleOption> getVehicleOptions();
+	public Collection<VehicleOption> getVehicleOptions();
 	
 	/**
 	 * Passes request to the order and let it decide how it should be added

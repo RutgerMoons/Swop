@@ -9,7 +9,7 @@ import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicle.UnmodifiableVehicle;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Create an Immutable Order, only the getters are accessible.
@@ -107,7 +107,7 @@ public class UnmodifiableOrder implements IOrder {
 	}
 	
 	@Override
-	public Collection<IVehicleOption> getVehicleOptions() {
+	public Collection<VehicleOption> getVehicleOptions() {
 		return this.order.getVehicleOptions();
 	}
 

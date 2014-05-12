@@ -11,7 +11,6 @@ import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.job.IJob;
-import domain.job.jobComparator.JobComparatorDeadLine;
 import domain.job.jobComparator.JobComparatorOrderTime;
 import domain.vehicle.vehicleOption.VehicleOption;
 

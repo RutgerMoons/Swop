@@ -5,7 +5,7 @@ import java.util.Map;
 
 import domain.exception.AlreadyInMapException;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
@@ -17,9 +17,9 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
  */
 public class Vehicle implements IVehicle {
 
-	private HashMap<VehicleOptionCategory, IVehicleOption> vehicleOptions;
+	private HashMap<VehicleOptionCategory, VehicleOption> vehicleOptions;
 	private VehicleSpecification specification;
-	private Map<IVehicleOption, Boolean> forcedOptionalTypes;
+	private Map<VehicleOption, Boolean> forcedOptionalTypes;
 	
 	/**
 	 * Creates a new CarModel, which consists of zero CarOptions at this point.
@@ -36,13 +36,13 @@ public class Vehicle implements IVehicle {
 
 	
 	@Override
-	public Map<VehicleOptionCategory, IVehicleOption> getVehicleOptions() {
+	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions() {
 		return vehicleOptions;
 	}
 
 	
 	@Override
-	public void addCarPart(IVehicleOption part) {
+	public void addCarPart(VehicleOption part) {
 		if (part == null)
 			throw new IllegalArgumentException();
 		if (vehicleOptions.containsKey(part.getType())
@@ -102,13 +102,13 @@ public class Vehicle implements IVehicle {
 
 	
 	@Override
-	public Map<IVehicleOption, Boolean> getForcedOptionalTypes() {
+	public Map<VehicleOption, Boolean> getForcedOptionalTypes() {
 		return forcedOptionalTypes;
 	}
 
 	
 	@Override
-	public void addForcedOptionalType(IVehicleOption type, boolean bool){
+	public void addForcedOptionalType(VehicleOption type, boolean bool){
 		forcedOptionalTypes.put(type, bool);
 	}
 

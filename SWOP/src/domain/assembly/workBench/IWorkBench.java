@@ -71,5 +71,13 @@ public interface IWorkBench {
 	 * 			  If the IWorkBench is an ImmutableWorkBench.
 	 */
 	public void chooseTasksOutOfJob();
+
+	/**
+	 * Matches the given task to one of its own. If a match is found, 
+	 * all the actions will be set to completed.
+	 * 
+	 * @param	task to be matched and set to completed
+	 */
+	void completeChosenTaskAtChosenWorkBench(ITask task);
 	
 }
