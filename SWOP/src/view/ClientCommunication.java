@@ -686,22 +686,6 @@ public class ClientCommunication{
 	}
 
 	/**
-	 * Show the given statistics to the user.
-	 */
-
-	public void showStatistics(List<String> statistics){
-		List<String> statisticsToShow = new ArrayList<String>();
-		statisticsToShow.add("Statistics:");
-		statisticsToShow.add("*average number of cars produced in a working day: " + statistics.get(0));
-		statisticsToShow.add("*median number of cars produced in a working day: " + statistics.get(1));
-		statisticsToShow.add("*number of cars produced in the last two days:     2 days ago:" + statistics.get(2) + "     1 day ago:" + statistics.get(3));
-		statisticsToShow.add("*average delay: " + statistics.get(4));
-		statisticsToShow.add("*median delay: " + statistics.get(5));
-		statisticsToShow.add("*two last delays:     second last:" + statistics.get(6) + "     last:" + statistics.get(7));
-		show(statisticsToShow);
-	}
-
-	/**
 	 * Notify the user that all the tasks at the workbench he's working on are completed.
 	 */
 
