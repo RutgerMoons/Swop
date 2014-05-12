@@ -170,6 +170,7 @@ public abstract class SchedulingAlgorithm {
 	/**
 	 * Returns the name.
 	 */
+	@Override
 	public abstract String toString();
 	
 	/**

@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -20,6 +21,7 @@ import domain.order.IOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
@@ -415,20 +417,22 @@ public class ClientCommunication{
 	/**
 	 * Show the user the currently used Scheduling Algorithm and all the possible Scheduling Algorithms
 	 */
-	public void showAlgorithms(String current, ArrayList<String> possible) {
-		possible.add(0, "current algorithm: " + current + "\n");
-		show(possible);
+	public void showAlgorithms(String current, List<String> possible) {
+		List<String> currentAlgorithm = new ArrayList<String>();
+		currentAlgorithm.add("Current algorithm: " + current + LINESEPARATOR);
+		this.show(currentAlgorithm);
+		this.showAlgorithms(possible);
 	}
 
 	/**
-	 * Notify the user that the scheduling algorithm was succesfully switched.
+	 * Notify the user that the scheduling algorithm was successfully switched.
 	 */
 	public void showAlgorithmSwitched(String type) {
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type));
 	}
 
 	/**
-	 * Notify the user that the scheduling algorithm was succesfully switched using the given batch.
+	 * Notify the user that the scheduling algorithm was successfully switched using the given batch.
 	 */
 	public void showAlgorithmSwitched(String type, String batch) {
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + type + 
@@ -488,8 +492,8 @@ public class ClientCommunication{
 	/**
 	 * Shows batches with index
 	 */
-	public void showBatches(ArrayList<String> batches) {
-		show(batches);
+	public void showBatches(List<String> sets) {
+		show(sets);
 	}
 
 	/**
@@ -791,5 +795,41 @@ public class ClientCommunication{
 			details.add(delay.toString() + LINESEPARATOR);
 		}
 		show(details);
+	}
+
+	public void showAlgorithms(List<String> possible) {
+		List<String> showAlgorithms = new ArrayList<String>();
+		List<String> modifiedList = this.indexList(possible);
+		showAlgorithms.add("All possible algorithms: " + LINESEPARATOR);
+		showAlgorithms.addAll(modifiedList);
+		this.show(showAlgorithms);
+		
+	}
+	
+	public List<String> indexList(List<String> listToBeIndexed){
+		List<String> finalResult = new ArrayList<String>();
+		int index  = 1;
+		for(String line: listToBeIndexed){
+			finalResult.add(index + ": " + line );
+			index++;
+		}
+		return finalResult;
+	}
+
+	public void showBatches(Set<Set<VehicleOption>> batches) {
+	    List<String> sets = new ArrayList<String>();
+		sets.add(0, "Possible Batches:");
+		int i = 1;
+		for (Iterator<Set<VehicleOption>> iterator = batches.iterator(); iterator.hasNext();) {
+			Set<VehicleOption> s = (Set<VehicleOption>) iterator.next();
+			String tmp = "";
+			for (VehicleOption o : s) {
+				tmp += o.toString() + ", ";
+			}
+			tmp = tmp.substring(0, tmp.length() - 2);
+			sets.add(i, Integer.toString(i) + ". " + tmp);
+			i++;
+		}
+		this.showBatches(sets);
 	}
 }
