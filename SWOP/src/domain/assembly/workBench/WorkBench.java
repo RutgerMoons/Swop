@@ -55,6 +55,7 @@ public class WorkBench implements IWorkBench {
 		return currentJob;
 	}
 
+	@Override
 	public void setCurrentJob(Optional<IJob> optional) {
 		if (optional == null)
 			throw new IllegalArgumentException();
@@ -121,6 +122,7 @@ public class WorkBench implements IWorkBench {
 		this.currentTasks = list;
 	}
 
+	@Override
 	public void chooseTasksOutOfJob() {
 		if (getCurrentJob() == null || !getCurrentJob().isPresent()) {
 			setCurrentTasks(new ArrayList<ITask>());

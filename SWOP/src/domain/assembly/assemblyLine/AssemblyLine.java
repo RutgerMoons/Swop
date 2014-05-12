@@ -13,18 +13,11 @@ import domain.assembly.workBench.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.UnmodifiableException;
-import domain.job.action.Action;
-import domain.job.action.IAction;
 import domain.job.job.IJob;
-import domain.job.job.Job;
 import domain.job.task.ITask;
-import domain.job.task.Task;
 import domain.observer.observable.ObservableAssemblyLine;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
-import domain.order.CustomOrder;
-import domain.order.IOrder;
-import domain.order.StandardOrder;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.vehicleOption.IVehicleOption;
@@ -117,6 +110,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	}
 
 	
+	@Override
 	public boolean canAdvance() {
 		List<IWorkBench> workBenches = getWorkbenches();
 		for (int i = 0; i < workBenches.size(); i++)
@@ -156,6 +150,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return -1;
 	}
 
+	@Override
 	public ArrayList<Integer> getBlockingWorkBenches() {
 		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
 		List<IWorkBench> workBenches = getWorkbenches();
@@ -165,10 +160,12 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return notCompletedBenches;
 	}
 
+	@Override
 	public List<IJob> getCurrentJobs() {
 		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
 	}
 	
+	@Override
 	public Scheduler getCurrentScheduler() {
 		return this.scheduler;
 	}
@@ -182,6 +179,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * 
 	 * @return A list of IWorkBenches.
 	 */
+	@Override
 	public List<IWorkBench> getWorkbenches() {
 		return workbenches;
 	}
@@ -234,6 +232,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return assemblyLineString.replaceFirst(",", "");
 	}
 
+	@Override
 	public void attachObserver(AssemblyLineObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -241,6 +240,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		observers.add(observer);
 	}
 
+	@Override
 	public void detachObserver(AssemblyLineObserver observer) {
 		if (observer == null) {
 			throw new IllegalArgumentException();
@@ -255,6 +255,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		}
 	}
 	
+	@Override
 	public Set<Set<IVehicleOption>> getAllCarOptionsInPendingOrders() {
 		return this.scheduler.getAllCarOptionsInPendingOrders();
 	}
