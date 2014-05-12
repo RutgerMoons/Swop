@@ -92,12 +92,11 @@ public class Job implements IJob {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (getClass() != obj.getClass())//&&obj.getClass != UnmodifiableJob
 			return false;
-		Job other = (Job) obj;
-		if (!order.equals(other.order))
+		Job other = (Job) obj; //IJob ipv Job
+		if (!order.equals(other.order))//other.getOrder()
 			return false;
-
 		return true;
 	}
 
