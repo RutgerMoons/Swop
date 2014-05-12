@@ -15,7 +15,7 @@ import domain.exception.AlreadyInMapException;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.Vehicle;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -72,7 +72,7 @@ public class PartPicker {
 	 * @return
 	 * 		A Collection that contains the still available CarOptions of the given CarOptionCategory.
 	 */
-	public List<IVehicleOption> getStillAvailableCarParts(
+	public List<VehicleOption> getStillAvailableCarParts(
 			VehicleOptionCategory type) {
 		Collection<VehicleOption> availableParts = new HashSet<>();
 
@@ -80,7 +80,7 @@ public class PartPicker {
 		availableParts = removeConflictingBindingParts(type, availableParts);
 		availableParts = checkOptionalRestrictions(type, availableParts);
 
-		List<IVehicleOption> options = new ArrayList<>();
+		List<VehicleOption> options = new ArrayList<>();
 		options.addAll(availableParts);
 		return options;
 	}
@@ -93,7 +93,7 @@ public class PartPicker {
 			VehicleOptionCategory type, Collection<VehicleOption> availableParts) {
 
 		for (OptionalRestriction restriction : optionalRestrictions) {
-			Map<VehicleOptionCategory, IVehicleOption> parts = model.getVehicleOptions();
+			Map<VehicleOptionCategory, VehicleOption> parts = model.getVehicleOptions();
 			if (restriction.getCarPart().getType().equals(type)) {				
 				if (!restriction.getRestrictedPartAlreadyChosen()) {
 					model.addForcedOptionalType(restriction.getCarPart(),
@@ -168,7 +168,7 @@ public class PartPicker {
 
 		for (VehicleOption option1 : options.keySet()) {
 			for (VehicleOption option2 : options.get(option1)) {
-				IVehicleOption inModel = model.getVehicleOptions().get(option2.getType());
+				VehicleOption inModel = model.getVehicleOptions().get(option2.getType());
 				if (inModel != null && !options.get(option1).contains(inModel)) {
 					availableParts.remove(option1);
 				}

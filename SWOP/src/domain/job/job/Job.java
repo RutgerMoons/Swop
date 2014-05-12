@@ -7,7 +7,7 @@ import java.util.List;
 import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 
 /**
@@ -111,7 +111,7 @@ public class Job implements IJob {
 	}
 
 	@Override
-	public Collection<IVehicleOption> getVehicleOptions() {
+	public Collection<VehicleOption> getVehicleOptions() {
 		return this.order.getVehicleOptions();
 	}
 

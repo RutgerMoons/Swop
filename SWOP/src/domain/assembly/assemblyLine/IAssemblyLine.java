@@ -7,7 +7,7 @@ import java.util.Set;
 import domain.assembly.workBench.IWorkBench;
 import domain.job.job.IJob;
 import domain.scheduling.Scheduler;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 public interface IAssemblyLine {
 
@@ -45,7 +45,7 @@ public interface IAssemblyLine {
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<IVehicleOption>> getAllCarOptionsInPendingOrders();
+	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders();
 
 	/**
 	 * 

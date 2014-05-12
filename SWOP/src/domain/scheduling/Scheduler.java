@@ -1,7 +1,9 @@
 package domain.scheduling;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -15,7 +17,7 @@ import domain.observer.observers.ClockObserver;
 import domain.observer.observes.ObservesClock;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 /**
  * This object is responsible for maintaining a scheduling algorithm, a certain amount of workbenches and shifts.
  * It also keeps track of current time by using a ClockObserver.
@@ -40,13 +42,12 @@ public class Scheduler implements ObservesClock {
 	 * @throws IllegalArgumentException
 	 * 		Thrown when the clockObserver or the clock is null.
 	 */
-	public Scheduler(int amountOfWorkBenches, ClockObserver clockObserver, ImmutableClock clock) {
+	public Scheduler(ClockObserver clockObserver, ImmutableClock clock) {
 		if (clockObserver == null || clock==null) {
 			throw new IllegalArgumentException();
 		}
 		clockObserver.attachLogger(this);
 		this.clock = clock;
-		//this.amountOfWorkBenches = amountOfWorkBenches;
 		shifts = new ArrayList<>();
 		Shift shift1 = new Shift(360, 840, 0); 	//shift van 06:00 tot 14:00
 		Shift shift2 = new Shift(840, 1320, 0);	//shift van 14:00 tot 22:00
@@ -147,20 +148,20 @@ public class Scheduler implements ObservesClock {
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<IVehicleOption>> getAllCarOptionsInPendingOrders() {
-		HashSet<IVehicleOption> set = new HashSet<>();
+	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+		HashSet<VehicleOption> set = new HashSet<>();
 		ArrayList<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
 		
 		// get all the CarOptions that occur in the pending orders
 		for (IJob job : jobs) {
-			for (IVehicleOption o : job.getVehicleOptions()) {
+			for (VehicleOption o : job.getVehicleOptions()) {
 				set.add(o);
 			}
 		}
 		
 		// get all the CarOptions that occur in the pending orders 3 or more times
-		HashSet<IVehicleOption> threeOrMoreTimes = new HashSet<>();
-		for (IVehicleOption option : set) {
+		HashSet<VehicleOption> threeOrMoreTimes = new HashSet<>();
+		for (VehicleOption option : set) {
 			int counter = 0;
 			for (IJob job : jobs) {
 				if (job.getOrder().getDescription().getVehicleOptions().values().contains(option)) {
@@ -173,9 +174,9 @@ public class Scheduler implements ObservesClock {
 		} 
 
 		// get all the sets of CarOptions that occur in the pending orders 3 or more times
-		Set<Set<IVehicleOption>> toReturn = new HashSet<Set<IVehicleOption>>();
-	    Set<Set<IVehicleOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
-	    for (Set<IVehicleOption> subset : powerSet) {
+		Set<Set<VehicleOption>> toReturn = new HashSet<Set<VehicleOption>>();
+	    Set<Set<VehicleOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
+	    for (Set<VehicleOption> subset : powerSet) {
       		if (subset.size() <= 0) {
       			continue;
       		}
@@ -190,5 +191,12 @@ public class Scheduler implements ObservesClock {
       		}
 	    }
 		return toReturn;
+	}
+	
+	/**
+	 * returns a list containing all the pending standard jobs (no specific order)
+	 */
+	public List<IJob> getStandardJobs() {
+		return Collections.unmodifiableList(this.schedulingAlgorithm.getStandardJobs());
 	}
 }

@@ -8,7 +8,7 @@ import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.vehicle.IVehicle;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Interface for limiting access to standard Orders.
@@ -90,7 +90,7 @@ public interface IOrder {
 	/**
 	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
 	 */
-	public Collection<IVehicleOption> getVehicleOptions();
+	public Collection<VehicleOption> getVehicleOptions();
 	
 	/**
 	 * Let this decide how it should be added

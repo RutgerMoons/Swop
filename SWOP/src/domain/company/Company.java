@@ -34,7 +34,7 @@ import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicle.Vehicle;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -84,7 +84,7 @@ public class Company {
 	 * @param part
 	 * 			The part you want to add to the model.
 	 */
-	public void addPartToModel(IVehicleOption part){
+	public void addPartToModel(VehicleOption part){
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
 		this.partpicker.getModel().addCarPart(option);
 	}
@@ -102,17 +102,17 @@ public class Company {
 	/**
 	 * Complete the task the user has chosen to complete. The method
 	 * automatically advances the AssemblyLine if it can advance.
-	 * 
-	 * @param workBenchIndex
-	 *            The index of the workbench the job from which the task has to
-	 *            be completed is on.
-	 * @param taskIndex
-	 *            The index of the Task in the Job on the Workbench.
+	 * @param assemblyLine
+	 * 			  The assemblyLine on which a certain task of a job is assembled
+	 * @param workBench
+	 *            The workbench on which a certain task of a job is assembled
+	 * @param task
+	 *            The Task in the Job on the Workbench.
 	 * @param time
 	 *            The time the clock has to be advanced.
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time){
-		this.workloadDivider.completeChosenTaskAtChosenWorkBench(assemblyLine, workbench, task, time);
+		this.workloadDivider.completeChosenTaskAtChosenWorkBench(assemblyLine, workbench, task);
 		
 		clock.advanceTime(time.getTotalInMinutes());
 	}
@@ -183,9 +183,9 @@ public class Company {
 		return workloadDivider.getAssemblyLines();
 	}
 
-	public List<IWorkBench> getBlockingWorkBenches() {
+	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
 		// workloadDivider returnt een lijst van UnmodifiableWorkbenches
-		return workloadDivider.getBlockingWorkBenches();
+		return workloadDivider.getBlockingWorkBenches(assemblyLine);
 	}
 
 	public VehicleSpecification getVehicleSpecification(String specificationName) {
@@ -208,7 +208,7 @@ public class Company {
 		return customCatalogue.getCatalogue().keySet();
 	}
 
-	public List<IVehicleOption> getStillAvailableCarParts(VehicleOptionCategory type) {
+	public List<VehicleOption> getStillAvailableCarParts(VehicleOptionCategory type) {
 		return partpicker.getStillAvailableCarParts(type);
 	}
 

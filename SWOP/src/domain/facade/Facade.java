@@ -26,7 +26,7 @@ import domain.users.AccessRight;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.IVehicle;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -61,7 +61,7 @@ public class Facade {
 	 * @param part
 	 * 			The part you want to add to the model.
 	 */
-	public void addPartToModel(IVehicleOption part) {
+	public void addPartToModel(VehicleOption part) {
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
 		company.addPartToModel(option);
 	}
@@ -131,8 +131,8 @@ public class Facade {
 	 * @return
 	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
 	 */
-	public List<IWorkBench> getBlockingWorkBenches() {
-		return ImmutableList.copyOf(company.getBlockingWorkBenches());
+	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
+		return ImmutableList.copyOf(company.getBlockingWorkBenches(assemblyLine));
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class Facade {
 	 * @param type
 	 * 			The type of the parts that has to be selected. 
 	 */
-	public List<IVehicleOption> getParts(VehicleOptionCategory type) {
+	public List<VehicleOption> getParts(VehicleOptionCategory type) {
 		return ImmutableList.copyOf(company.getStillAvailableCarParts(type));
 	}
 
@@ -266,7 +266,7 @@ public class Facade {
 	 */
 	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline) throws IllegalArgumentException{
 		CustomVehicle vehicle = new CustomVehicle();
-		for(IVehicleOption option: model.getVehicleOptions().values()){
+		for(VehicleOption option: model.getVehicleOptions().values()){
 			vehicle.addCarPart(option);
 		}
 

@@ -76,4 +76,8 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	public void chooseTasksOutOfJob() {
 		throw new UnmodifiableException();		
 	}
+	@Override
+	public void completeChosenTaskAtChosenWorkBench(ITask task) {
+		throw new UnmodifiableException();		
+	}
 }

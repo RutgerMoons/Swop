@@ -7,6 +7,7 @@ import java.util.Set;
 import com.google.common.base.Optional;
 
 import domain.exception.UnmodifiableException;
+import domain.job.action.IAction;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
 
@@ -149,5 +150,17 @@ public class WorkBench implements IWorkBench {
 	@Override
 	public String toString() {
 		return this.getWorkbenchName();
+	}
+	
+	@Override
+	public void completeChosenTaskAtChosenWorkBench(ITask task){
+		for (ITask t : this.currentTasks) {
+			if (t.equals(task)) {
+				for (IAction action : t.getActions()) {
+					action.setCompleted(true);
+				}
+				break;
+			}
+		}
 	}
 }

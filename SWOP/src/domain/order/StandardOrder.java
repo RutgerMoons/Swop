@@ -9,7 +9,7 @@ import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicle.Vehicle;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Class representing an order from a garageholder. There are 5 attributes
@@ -196,7 +196,7 @@ public class StandardOrder implements IOrder {
 	}
 
 	@Override
-	public Collection<IVehicleOption> getVehicleOptions() {
+	public Collection<VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
 	}
 
