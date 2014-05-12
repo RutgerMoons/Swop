@@ -6,18 +6,19 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 
+import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.RoleNotYetAssignedException;
-import domain.job.action.IAction;
 import domain.job.task.ITask;
 import domain.log.Logger;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
-import domain.order.Delay;
+import domain.observer.observers.OrderBookObserver;
 import domain.order.CustomOrder;
+import domain.order.Delay;
 import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
@@ -32,7 +33,6 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
-import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.IVehicleOption;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -56,8 +56,11 @@ public class Company {
 	private Set<OptionalRestriction> optionalRestrictions;
 	private int amountOfDetailedHistory;
 
-	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, CustomVehicleCatalogue customCatalogue, VehicleSpecificationCatalogue vehicleSpecificationCatalogue){
-		if (bindingRestrictions == null || optionalRestrictions == null || customCatalogue == null){
+	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, 
+			CustomVehicleCatalogue customCatalogue, VehicleSpecificationCatalogue vehicleSpecificationCatalogue, 
+			List<AssemblyLine> listOfAssemblyLines){
+		if (bindingRestrictions == null || optionalRestrictions == null || customCatalogue == null || 
+				vehicleSpecificationCatalogue == null || listOfAssemblyLines == null){
 			throw new IllegalArgumentException();
 		}
 		this.userbook = new UserBook();
@@ -75,7 +78,8 @@ public class Company {
 		this.optionalRestrictions = optionalRestrictions;
 		this.customCatalogue = customCatalogue;
 		this.partpicker = new PartPicker(vehicleSpecificationCatalogue, this.bindingRestrictions, this.optionalRestrictions);
-
+		OrderBookObserver orderBookObserver = new OrderBookObserver();
+		this.workloadDivider = new WorkLoadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver, clockObserver);
 	}
 
 	/**
