@@ -12,7 +12,9 @@ import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.UnmodifiableAssemblyLine;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
+import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
+import domain.observer.observers.OrderBookObserver;
 import domain.scheduling.WorkloadDivider;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
@@ -20,6 +22,8 @@ import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFi
 public class WorkloadDividerTest {
 
 	private WorkloadDivider workloadDivider;
+	private OrderBookObserver orderBookObserver;
+	private AssemblyLineObserver assemblyLineObserver;
 	
 	@Before
 	public void testConstructor2() {
@@ -30,25 +34,29 @@ public class WorkloadDividerTest {
 		AssemblyLine line1 = new AssemblyLine(clockObserver, currentTime, AssemblyLineState.OPERATIONAL);
 		ArrayList<AssemblyLine> lines = new ArrayList<>();
 		lines.add(line1);
+		orderBookObserver = new OrderBookObserver();
+		assemblyLineObserver = new AssemblyLineObserver();
 		
-		workloadDivider = new WorkloadDivider(lines);
+		workloadDivider = new WorkloadDivider(lines, orderBookObserver, assemblyLineObserver);
 		assertNotNull(workloadDivider);
 	}
 	
 	@Test
 	public void testConstructor1() {
-		WorkloadDivider w = new WorkloadDivider(new ArrayList<AssemblyLine>());
+		OrderBookObserver orderBookObserver = new OrderBookObserver();
+		AssemblyLineObserver assemblyLineObserver = new AssemblyLineObserver();
+		WorkloadDivider w = new WorkloadDivider(new ArrayList<AssemblyLine>(), orderBookObserver, assemblyLineObserver);
 		assertNotNull(w);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testConstructorException1() {
-		WorkloadDivider w = new WorkloadDivider(null);
+		WorkloadDivider w = new WorkloadDivider(null, null, null);
 	}
 	
 	@Test
 	public void testGetCurrentSchedulingAlgorithmNoAssemblyLines() {
-		WorkloadDivider w = new WorkloadDivider(new ArrayList<AssemblyLine>());
+		WorkloadDivider w = new WorkloadDivider(new ArrayList<AssemblyLine>(), orderBookObserver, assemblyLineObserver);
 		assertNotNull(w);
 		assertEquals("There are no assemblyLines at the moment.", w.getCurrentSchedulingAlgorithm());
 	} 
@@ -80,7 +88,7 @@ public class WorkloadDividerTest {
 		lines.add(line1);
 		lines.add(line2);
 		
-		WorkloadDivider w = new WorkloadDivider(lines);
+		WorkloadDivider w = new WorkloadDivider(lines, orderBookObserver, assemblyLineObserver);
 		assertEquals(2, w.getAssemblyLines().size());
 	}
 	
@@ -96,7 +104,7 @@ public class WorkloadDividerTest {
 		lines.add(line1);
 		lines.add(line2);
 		
-		WorkloadDivider w = new WorkloadDivider(lines);
+		WorkloadDivider w = new WorkloadDivider(lines, orderBookObserver, assemblyLineObserver);
 		assertEquals(2, w.getAssemblyLines().size());
 		assertEquals(1, w.getOperationalUnmodifiableAssemblyLines().size());
 		assertTrue(w.getOperationalUnmodifiableAssemblyLines().get(0).getState().equals(AssemblyLineState.OPERATIONAL));
@@ -114,7 +122,7 @@ public class WorkloadDividerTest {
 		lines.add(line1);
 		lines.add(line2);
 		
-		WorkloadDivider w = new WorkloadDivider(lines);
+		WorkloadDivider w = new WorkloadDivider(lines, orderBookObserver, assemblyLineObserver);
 		assertEquals(2, w.getAssemblyLines().size());
 		assertEquals(1, w.getBrokenUnmodifiableAssemblyLines().size());
 		assertTrue(w.getBrokenUnmodifiableAssemblyLines().get(0).getState().equals(AssemblyLineState.BROKEN));
@@ -132,7 +140,7 @@ public class WorkloadDividerTest {
 		lines.add(line1);
 		lines.add(line2);
 		
-		WorkloadDivider w = new WorkloadDivider(lines);
+		WorkloadDivider w = new WorkloadDivider(lines, orderBookObserver, assemblyLineObserver);
 		assertEquals(2, w.getAssemblyLines().size());
 		assertEquals(1, w.getMaintenanceUnmodifiableAssemblyLines().size());
 		assertTrue(w.getMaintenanceUnmodifiableAssemblyLines().get(0).getState().equals(AssemblyLineState.MAINTENANCE));

@@ -11,7 +11,7 @@ import domain.facade.Facade;
 import domain.order.IOrder;
 import domain.users.AccessRight;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
@@ -67,7 +67,7 @@ public class OrderFlowController extends UseCaseFlowController {
 			VehicleSpecification realModel = facade.getCarModelSpecificationFromCatalogue(model);
 			facade.createNewModel(realModel);
 
-			List<IVehicleOption> chosenParts = createModel();
+			List<VehicleOption> chosenParts = createModel();
 
 			int quantity = clientCommunication.getQuantity();
 			clientCommunication.showOrder(quantity, realModel, chosenParts);
@@ -87,13 +87,13 @@ public class OrderFlowController extends UseCaseFlowController {
 		}
 	}
 
-	private List<IVehicleOption> createModel() {
-		List<IVehicleOption> chosenParts = new ArrayList<>();
+	private List<VehicleOption> createModel() {
+		List<VehicleOption> chosenParts = new ArrayList<>();
 		for (VehicleOptionCategory type : facade.getCarPartTypes()) {
-			List<IVehicleOption> parts = facade.getParts(type);
+			List<VehicleOption> parts = facade.getParts(type);
 			
 			if (!parts.isEmpty()) {
-				Optional<IVehicleOption> part = clientCommunication.choosePart(parts);
+				Optional<VehicleOption> part = clientCommunication.choosePart(parts);
 				if (part.isPresent()) {
 					facade.addPartToModel(part.get());
 				}

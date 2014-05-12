@@ -20,7 +20,7 @@ import domain.order.Delay;
 import domain.order.IOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -201,12 +201,12 @@ public class ClientCommunication{
 	 * Lets the user choose a CarOption when he is putting his model together.
 	 */
 
-	public Optional<IVehicleOption> choosePart(List<IVehicleOption> parts) {
+	public Optional<VehicleOption> choosePart(List<VehicleOption> parts) {
 		ArrayList<String> partsString = new ArrayList<String>();
 		partsString.add(0, "Possible parts:");
 
 		int i = 1;
-		for (IVehicleOption part : parts) {
+		for (VehicleOption part : parts) {
 			partsString.add(i + "." + part.toString() + LINESEPARATOR);
 			i++;
 			if(i==parts.size() && part.getType().isOptional()){
@@ -495,13 +495,6 @@ public class ClientCommunication{
 	}
 
 	/**
-	 * Shows batches with index
-	 */
-	public void showBatches(List<String> sets) {
-		show(sets);
-	}
-
-	/**
 	 * Show the user which benches are keeping the assemblyline from advancing.
 	 * @param notCompletedBenches
 	 * 			A list of integers. Each integer represents the number of a workbench that is blocking the assemblyline.
@@ -616,19 +609,19 @@ public class ClientCommunication{
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
 
-	public void showOrder(int quantity, VehicleSpecification model, List<IVehicleOption> chosenParts,
+	public void showOrder(int quantity, VehicleSpecification model, List<VehicleOption> chosenParts,
 			ImmutableClock estimatedTime) {
 
 		showOrder(quantity, model, chosenParts);
 		show(Arrays.asList("Estimated time of completion :" + estimatedTime.toString() + LINESEPARATOR));
 	}
 
-	public void showOrder(int quantity, VehicleSpecification realModel, List<IVehicleOption> chosenParts){
+	public void showOrder(int quantity, VehicleSpecification realModel, List<VehicleOption> chosenParts){
 		show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
 				+ realModel.toString() + LINESEPARATOR )));
 		show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
 		List<String> chosenPartsInString = new ArrayList<String>();
-		for(IVehicleOption option : chosenParts){
+		for(VehicleOption option : chosenParts){
 			chosenPartsInString.add(option.toString() + LINESEPARATOR);
 		}
 		show(chosenPartsInString);
@@ -819,6 +812,6 @@ public class ClientCommunication{
 			sets.add(i, Integer.toString(i) + ". " + tmp);
 			i++;
 		}
-		this.showBatches(sets);
+		this.show(sets);
 	}
 }

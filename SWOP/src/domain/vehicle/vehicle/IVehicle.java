@@ -3,10 +3,10 @@ package domain.vehicle.vehicle;
 import java.util.Map;
 
 import domain.exception.AlreadyInMapException;
-import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
+import domain.exception.UnmodifiableException;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
@@ -17,24 +17,24 @@ public interface IVehicle {
 	/**
 	 * Returns all the CarOptions of which this model currently consists.
 	 */
-	public Map<VehicleOptionCategory, IVehicleOption> getVehicleOptions();
+	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions();
 	
 	/**
 	 * Adds a CarOption to this CarModel. 
 	 * @throws AlreadyInMapException
 	 * 			If the model already has a CarOption of this Category.
 	 */
-	public void addCarPart(IVehicleOption part) throws AlreadyInMapException, UnmodifiableException;
+	public void addCarPart(VehicleOption part) throws AlreadyInMapException, UnmodifiableException;
 	
 	/**
 	 * Get the CarOptions that need to be forced into the CarModel.
 	 */
-	public Map<IVehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException;
+	public Map<VehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException;
 	
 	/**
 	 * Add a forced Optional type, so it has to be in the model.
 	 */
-	public void addForcedOptionalType(IVehicleOption type, boolean bool) throws UnmodifiableException, NotImplementedException;
+	public void addForcedOptionalType(VehicleOption type, boolean bool) throws UnmodifiableException, NotImplementedException;
 	
 	/**
 	 * Get the specification where the CarModel is built from.

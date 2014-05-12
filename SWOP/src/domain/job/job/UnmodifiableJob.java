@@ -10,7 +10,7 @@ import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 
 /**
@@ -93,7 +93,7 @@ public class UnmodifiableJob implements IJob {
 	}
 	
 	@Override
-	public Collection<IVehicleOption> getVehicleOptions() {
+	public Collection<VehicleOption> getVehicleOptions() {
 		return job.getVehicleOptions();
 	}
 	

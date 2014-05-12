@@ -63,7 +63,7 @@ public class SchedulerAlgorithmTest {
 		//clientCommunication = new ClientCommunication();
 		int amount = 3;
 		clock = new ClockObserver();
-		scheduler = new Scheduler(amount,clock, new ImmutableClock(0,600));
+		scheduler = new Scheduler(clock, new ImmutableClock(0,600));
 		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();
 		scheduler.switchToAlgorithm(fifo, 3);
 	}
@@ -115,12 +115,12 @@ public class SchedulerAlgorithmTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorTest2(){
-		scheduler = new Scheduler(3,null, new ImmutableClock(0,100));
+		scheduler = new Scheduler(null, new ImmutableClock(0,100));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorTest3(){
-		scheduler = new Scheduler(3, clock,null);
+		scheduler = new Scheduler(clock,null);
 	}
 	
 	@Test

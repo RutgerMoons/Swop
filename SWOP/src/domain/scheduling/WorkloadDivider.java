@@ -1,14 +1,18 @@
 package domain.scheduling;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.assemblyLine.UnmodifiableAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
 import domain.exception.UnmodifiableException;
 import domain.job.action.Action;
 import domain.job.action.IAction;
@@ -16,20 +20,28 @@ import domain.job.job.IJob;
 import domain.job.job.Job;
 import domain.job.task.ITask;
 import domain.job.task.Task;
+import domain.observer.observers.AssemblyLineObserver;
+import domain.observer.observers.OrderBookObserver;
 import domain.observer.observes.ObservesOrderBook;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
-import domain.vehicle.vehicleOption.IVehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 public class WorkloadDivider implements ObservesOrderBook {
 
 	private ArrayList<AssemblyLine> assemblyLines;
 	
-	public WorkloadDivider(ArrayList<AssemblyLine> assemblyLines) {
-		if (assemblyLines == null) {
+	public WorkloadDivider(	ArrayList<AssemblyLine> assemblyLines, OrderBookObserver orderBookObserver, AssemblyLineObserver assemblyLineObserver) {
+		if (	assemblyLines == null || orderBookObserver == null || assemblyLineObserver == null) {
 			throw new IllegalArgumentException();
 		}
 		this.assemblyLines = assemblyLines;
+		orderBookObserver.attachLogger(this);
+		// attach the assemblyLineObserver to all assemblyLines
+		for (AssemblyLine assemblyLine : this.assemblyLines) {
+			assemblyLine.attachObserver(assemblyLineObserver);
+		}
 	}
 	
 	public String getCurrentSchedulingAlgorithm() {
@@ -109,7 +121,7 @@ public class WorkloadDivider implements ObservesOrderBook {
 		List<IJob> jobs = new ArrayList<>();
 		for (int i = 0; i < order.getQuantity(); i++) {
 			IJob job = new Job(order);
-			for (IVehicleOption part : order.getVehicleOptions()) {
+			for (VehicleOption part : order.getVehicleOptions()) {
 				ITask task = new Task(part.getTaskDescription());
 				IAction action = new Action(part.getActionDescription());
 				task.addAction(action);
@@ -139,11 +151,78 @@ public class WorkloadDivider implements ObservesOrderBook {
 	
 	private void divide(IJob job) {
 		//TODO:
-		//kies juiste assemblyLine
+		
+		//1: filter operational assemblyLines
+		//2: filter assemblyLines that can complete job
+		//3: kies assemblyLine met laagste workload
+		//4: schedule de job bij die assemblyLine
 		//assemblyLine.schedule(job)
 	}
 	
+	/**
+	 * Matches the given assemblyLine to one of its own. If a match is found, 
+	 * the request is passed on.
+	 * 
+	 * @param	assemblyLine to be matched
+	 */
+	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task){
+		for (AssemblyLine line : this.assemblyLines) {
+			if (line.equals(assemblyLine)) {
+				line.completeChosenTaskAtChosenWorkBench(workbench, task);
+				break;
+			}
+		}
+	}
 	
-	
+	/**
+	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
+	 */
+	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+		HashSet<VehicleOption> set = new HashSet<>();
+		ArrayList<IJob> jobs = new ArrayList<>();
+		for (AssemblyLine assemblyLine : this.assemblyLines) {
+			jobs.addAll(assemblyLine.getStandardJobs());
+		}
+		
+		// get all the CarOptions that occur in the pending orders
+		for (IJob job : jobs) {
+			for (VehicleOption o : job.getVehicleOptions()) {
+				set.add(o);
+			}
+		}
+		
+		// get all the CarOptions that occur in the pending orders 3 or more times
+		HashSet<VehicleOption> threeOrMoreTimes = new HashSet<>();
+		for (VehicleOption option : set) {
+			int counter = 0;
+			for (IJob job : jobs) {
+				if (job.getOrder().getDescription().getVehicleOptions().values().contains(option)) {
+					counter++;
+				}
+			}
+			if (counter >= 3) {
+				threeOrMoreTimes.add(option);
+			}
+		} 
+
+		// get all the sets of CarOptions that occur in the pending orders 3 or more times
+		Set<Set<VehicleOption>> toReturn = new HashSet<Set<VehicleOption>>();
+	    Set<Set<VehicleOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
+	    for (Set<VehicleOption> subset : powerSet) {
+      		if (subset.size() <= 0) {
+      			continue;
+      		}
+      		int counter = 0;
+      		for (IJob job : jobs) {
+				if (job.getOrder().getDescription().getVehicleOptions().values().containsAll(subset)) {
+					counter++;
+				}
+			}
+      		if (counter >= 3) {
+      			toReturn.add(subset);
+      		}
+	    }
+		return toReturn;
+	}
 	
 }

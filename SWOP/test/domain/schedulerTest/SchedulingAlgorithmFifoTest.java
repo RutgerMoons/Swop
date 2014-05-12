@@ -79,7 +79,7 @@ public class SchedulingAlgorithmFifoTest {
 	@Before
 	public void constructorTest() {
 		int amountOfWorkBenches = 3;
-		algorithm = new SchedulingAlgorithmFifo(SchedulingAlgorithmType.FIFO, amountOfWorkBenches);	
+		algorithm = new SchedulingAlgorithmFifo(amountOfWorkBenches);	
 		assertNotNull(algorithm.getCustomJobs());
 		assertNotNull(algorithm.getHistory());
 		assertNotNull(algorithm.getStandardJobs());
