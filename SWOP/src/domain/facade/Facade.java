@@ -9,12 +9,10 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.ImmutableClock;
 import domain.company.Company;
-import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.exception.UnmodifiableException;
@@ -23,21 +21,18 @@ import domain.job.task.Task;
 import domain.order.CustomOrder;
 import domain.order.Delay;
 import domain.order.IOrder;
-import domain.order.StandardOrder;
-import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.users.AccessRight;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.IVehicle;
-import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.IVehicleOption;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * This class is the layer between the Domain model and the UI. The UI can only
- * call methods on this class to do someting in the domain model.
+ * call methods on this class to do something in the domain model.
  * 
  */
 public class Facade {
@@ -93,10 +88,11 @@ public class Facade {
 	 * @param time
 	 *            The time the clock has to be advanced.
 	 */
-	public void completeChosenTaskAtChosenWorkBench(ITask task, ImmutableClock time) {
+	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time) {
 		Task modifiableTask = new Task(task.getTaskDescription());
 		modifiableTask.setActions(task.getActions());
-		this.company.completeChosenTaskAtChosenWorkBench(modifiableTask, time);
+		
+		this.company.completeChosenTaskAtChosenWorkBench(assemblyLine, workbench, modifiableTask, time);
 	}
 
 	/**
@@ -118,14 +114,13 @@ public class Facade {
 	 * @param realModel
 	 *            The specification the PartPicker has to take into account when
 	 *            creating the CarModel
-	 *TODO Wrm vehicleSpeciication en niet IVehicleSpecification?
 	 */
 	public void createNewModel(VehicleSpecification realModel) {
 		this.company.createNewModel(realModel);
 	}
 
 	/**
-	 * Get the accessrights of the User that is currently logged in.
+	 * Get the access rights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
 		return this.company.getAccessRights();
@@ -317,8 +312,6 @@ public class Facade {
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
-		//TODO vragen aan rutger, moet dit in facade?
-		//ja :) Nodig voor Batch
 		return this.company.getAllCarOptionsInPendingOrders();
 	}
 

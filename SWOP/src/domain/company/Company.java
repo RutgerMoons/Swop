@@ -111,11 +111,9 @@ public class Company {
 	 * @param time
 	 *            The time the clock has to be advanced.
 	 */
-	public void completeChosenTaskAtChosenWorkBench(ITask task, ImmutableClock time){
-		for (IAction action : task.getActions()) {
-			action.setCompleted(true);
-		}
-		this.workloadDivider.checkIfCanAdvanceOneAssemblyLine();
+	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time){
+		this.workloadDivider.completeChosenTaskAtChosenWorkBench(assemblyLine, workbench, task, time);
+		
 		clock.advanceTime(time.getTotalInMinutes());
 	}
 
@@ -186,8 +184,8 @@ public class Company {
 	}
 
 	public List<IWorkBench> getBlockingWorkBenches() {
-		//TODO getBlockingWorkbenches() nog toevoegen
-		return null;
+		// workloadDivider returnt een lijst van UnmodifiableWorkbenches
+		return workloadDivider.getBlockingWorkBenches();
 	}
 
 	public VehicleSpecification getVehicleSpecification(String specificationName) {
@@ -276,5 +274,9 @@ public class Company {
 
 		orderbook.addOrder(order, clock.getImmutableClock());
 		return order.getEstimatedTime();
+	}
+
+	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+		return this.workloadDivider.getAllCarOptionsInPendingOrders();
 	}
 }

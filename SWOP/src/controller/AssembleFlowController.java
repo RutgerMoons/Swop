@@ -2,6 +2,8 @@ package controller;
 
 import java.util.List;
 
+import com.google.common.base.Optional;
+
 import view.ClientCommunication;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
@@ -37,22 +39,29 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 */
 	@Override
 	public void executeUseCase(){
-		IWorkBench bench = chooseWorkBench();
-		chooseTask(bench);
+		//choose assembly Line
+		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
+		//naar clientcommunication
+		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
+		// choose workbench
+		IWorkBench bench = this.chooseWorkBench(chosenAssemblyLine);
+		// choose task
+		Optional<ITask> task = this.chooseTask(bench);
+		if (task.isPresent()){
+			ImmutableClock clock = this.retrieveElapsedTime();
+			facade.completeChosenTaskAtChosenWorkBench(chosenAssemblyLine, bench, task.get(), clock);
+			this.chooseTask(bench);
+		}
+		else {
+			this.executeUseCase();
+		}
 	} 
 
 	/**
 	 * Get the workbench at which the user wants to perform tasks.
 	 */
-	public IWorkBench chooseWorkBench(){
-		//choose assembly Line
-		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
-		//naar clientcommunication
-		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
-		//choose workbench from assemblyLine
+	public IWorkBench chooseWorkBench(IAssemblyLine chosenAssemblyLine){
 		IWorkBench chosenWorkbench = clientCommunication.chooseWorkBench(chosenAssemblyLine.getWorkbenches());
-
-
 		return chosenWorkbench;
 	}
 
@@ -60,25 +69,29 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * Let the user choose and perform a task from the tasks at the workbench he has previously chosen.
 	 * 
 	 */
-	public void chooseTask(IWorkBench workBench){
+	public Optional<ITask> chooseTask(IWorkBench workBench){
 		List<ITask> tasksAtWorkbench = workBench.getCurrentTasks();
 		if(tasksAtWorkbench.isEmpty()){
 			clientCommunication.showWorkBenchCompleted();
 			if(clientCommunication.askContinue())
-				executeUseCase();
+				//executeUseCase();
+				return Optional.absent();
 		}
 		else{	
 			//choose ITask, not the index of the task
 			ITask chosenTask = this.clientCommunication.chooseTask(tasksAtWorkbench);
 			this.clientCommunication.showChosenTask(chosenTask);
 			if(this.clientCommunication.askContinue()){
-				int time = clientCommunication.getElapsedTime();
-				int days = time/Clock.MINUTESINADAY;
-				int minutes = time%Clock.MINUTESINADAY;
-				ImmutableClock clock = new ImmutableClock(days, minutes);
-				facade.completeChosenTaskAtChosenWorkBench(chosenTask, clock);
-				chooseTask(workBench);
+				return Optional.fromNullable(chosenTask);
 			}
 		}
+		return Optional.absent();
+	}
+	
+	public ImmutableClock retrieveElapsedTime(){
+		int time = clientCommunication.getElapsedTime();
+		int days = time/Clock.MINUTESINADAY;
+		int minutes = time%Clock.MINUTESINADAY;
+		return new ImmutableClock(days, minutes);
 	}
 }
