@@ -743,9 +743,9 @@ public class ClientCommunication{
 		show(customString);
 
 		int customNumber = askNumber("Which Task do you choose?") -1;
-		if (customNumber >0 && customNumber < customTasks.size()) {
-			return customString.get(customNumber).substring(	//TODO check of het werkt
-					customString.get(customNumber).indexOf(".") + 1);
+		if (customNumber >=0 && customNumber < customTasks.size()) {
+			return customString.get(customNumber+1).substring(	//TODO check of het werkt
+					customString.get(customNumber+1).indexOf(".") + 1);
 		} else {
 			invalidAnswerPrompt();
 			return showCustomTasks(customTasks);
