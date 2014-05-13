@@ -86,7 +86,7 @@ public class FacadeTest {
 	
 	@Test
 	public void getAllCarOptionsInPendingOrdersTest() {
-		assertEquals(0, facade.getAllCarOptionsInPendingOrders().size());
+		assertEquals(0, facade.getAllVehicleOptionsInPendingOrders().size());
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
