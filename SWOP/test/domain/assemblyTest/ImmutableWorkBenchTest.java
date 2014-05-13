@@ -83,21 +83,6 @@ public class ImmutableWorkBenchTest {
 	}
 	
 	@Test(expected=UnmodifiableException.class)
-	public void testImmutable2() throws UnmodifiableException{
-		immutable.setResponsibilities(null);
-	}
-	
-	@Test(expected=UnmodifiableException.class)
-	public void testImmutable3() throws UnmodifiableException{
-		immutable.addResponsibility(null);
-	}
-	
-	@Test(expected=UnmodifiableException.class)
-	public void testImmutable4() throws UnmodifiableException{
-		immutable.setCurrentTasks(null);
-	}
-	
-	@Test(expected=UnmodifiableException.class)
 	public void testImmutable5() throws UnmodifiableException{
 		immutable.chooseTasksOutOfJob();
 	}

@@ -24,17 +24,14 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	 * 
 	 * @param 	numberOfDaysOfDetailedHistory
 	 * 				This number represents the degree of detail
-	 * 
-	 * @param 	clockObserver
-	 * 				The observer to which it subscribes for keeping track of time
-	 * 
-	 * @param 	assemblyLineObserver
-	 * 				The observer to which it subscribes for keeping track of completed orders
-	 * 
+	 *
 	 * @throws 	IllegalArgumentException
-	 * 				Exception is thrown when one of the observers is null
+	 * 				Exception is thrown when numbersOfDaysOfDetailedHistory is smaller than 1
 	 */
 	public Logger(int numberOfDaysOfDetailedHistory) {
+		if(numberOfDaysOfDetailedHistory < 1 ){
+			throw new IllegalArgumentException();
+		}
 		this.logHistoryDays = new LogHistoryDays(numberOfDaysOfDetailedHistory);
 		this.logHistoryDelays = new LogHistoryDelays(numberOfDaysOfDetailedHistory);
 	}
