@@ -74,10 +74,10 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	 */
 	@Override
 	public void updateCompletedOrder(IOrder order) {
-		ImmutableClock estimatedTimeOfCompletion = order.getEstimatedTime();
-		if (estimatedTimeOfCompletion == null) {
+		if (order == null) {
 			throw new IllegalArgumentException();
 		}
+		ImmutableClock estimatedTimeOfCompletion = order.getEstimatedTime();
 		Delay delay = new Delay(estimatedTimeOfCompletion, this.currentTime);
 		this.logHistoryDelays.addNewDelay(delay);
 		this.logHistoryDays.incrementAmountOfCarsProducedToday();

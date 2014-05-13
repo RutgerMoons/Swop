@@ -63,7 +63,7 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 		}
 
 		List<IOrder> pending = (List<IOrder>) this.pendingOrders.get(order.getGarageHolder());
-		if (pending.contains(order)) {
+		if (order.getPendingCars()<=0 && pending.contains(order)) {
 			pending.remove(order);
 			this.completedOrders.put(order.getGarageHolder(), order);
 		}
@@ -96,7 +96,7 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	
 	@Override
 	public void updateCompletedOrder(IOrder order) {
-		updateCompletedOrder(order);
+		updateOrderBook(order);
 	}
 
 	@Override

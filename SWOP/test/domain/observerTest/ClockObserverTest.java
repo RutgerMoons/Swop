@@ -1,6 +1,6 @@
 package domain.observerTest;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,8 +22,7 @@ public class ClockObserverTest {
 
 	@Test 
 	public void attachLoggerTest1(){
-		AssemblyLineObserver observer2 = new AssemblyLineObserver();
-		Logger logger = new Logger(3, observer, observer2);
+		Logger logger = new Logger(3);
 		observer.attachLogger(logger);
 	}
 	
@@ -34,8 +33,7 @@ public class ClockObserverTest {
 	
 	@Test 
 	public void detachLoggerTest1(){
-		AssemblyLineObserver observer2 = new AssemblyLineObserver();
-		Logger logger = new Logger(3, observer, observer2);
+		Logger logger = new Logger(3);
 		observer.attachLogger(logger);
 		observer.detachLogger(logger);
 	}
@@ -46,18 +44,19 @@ public class ClockObserverTest {
 	}	
 	@Test
 	public void advanceTimeTest(){
-		AssemblyLineObserver observer2 = new AssemblyLineObserver();
-		Logger logger = new Logger(3, observer, observer2);
+		Logger logger = new Logger(3);
 		observer.attachLogger(logger);
 		observer.advanceTime(new ImmutableClock(1,100));
+		assertEquals(new ImmutableClock(1, 100), logger.getCurrentTime());
 	}
 	
 	@Test
 	public void startNewDayTest(){
-		AssemblyLineObserver observer2 = new AssemblyLineObserver();
-		Logger logger = new Logger(3, observer, observer2);
+		Logger logger = new Logger(3);
 		observer.attachLogger(logger);
 		observer.startNewDay(new ImmutableClock(1,0));
+		assertEquals(new ImmutableClock(1, 0), logger.getCurrentTime());
+		assertNotNull(logger.getDetailedDays());
 	}
 
 }
