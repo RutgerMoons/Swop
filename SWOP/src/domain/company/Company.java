@@ -34,7 +34,10 @@ import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.Vehicle;
+<<<<<<< HEAD
 import domain.vehicle.vehicleOption.VehicleOption;
+=======
+>>>>>>> origin/Stef
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -79,7 +82,11 @@ public class Company {
 		this.customCatalogue = customCatalogue;
 		this.partpicker = new PartPicker(vehicleSpecificationCatalogue, this.bindingRestrictions, this.optionalRestrictions);
 		OrderBookObserver orderBookObserver = new OrderBookObserver();
+<<<<<<< HEAD
 		this.workloadDivider = new WorkLoadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver, clockObserver);
+=======
+		this.workloadDivider = new WorkloadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver);
+>>>>>>> origin/Stef
 	}
 
 	/**
