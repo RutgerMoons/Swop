@@ -1,7 +1,6 @@
 package domain.assembly.assemblyLine;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +9,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import domain.assembly.workBench.IWorkBench;
+import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
@@ -152,12 +152,12 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	}
 
 	@Override
-	public ArrayList<Integer> getBlockingWorkBenches() {
-		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
+	public ArrayList<IWorkBench> getBlockingWorkBenches() {
+		ArrayList<IWorkBench> notCompletedBenches = new ArrayList<>();
 		List<IWorkBench> workBenches = getWorkbenches();
 		for (int i = 0; i < workBenches.size(); i++)
 			if (!workBenches.get(i).isCompleted())
-				notCompletedBenches.add(i + 1);
+				notCompletedBenches.add(new UnmodifiableWorkBench(this.workbenches.get(i)));
 		return notCompletedBenches;
 	}
 

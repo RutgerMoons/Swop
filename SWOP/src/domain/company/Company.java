@@ -1,5 +1,6 @@
 package domain.company;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +36,6 @@ import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
@@ -58,7 +58,7 @@ public class Company {
 
 	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, 
 			CustomVehicleCatalogue customCatalogue, VehicleSpecificationCatalogue vehicleSpecificationCatalogue, 
-			List<AssemblyLine> listOfAssemblyLines){
+			ArrayList<AssemblyLine> listOfAssemblyLines){
 		if (bindingRestrictions == null || optionalRestrictions == null || customCatalogue == null || 
 				vehicleSpecificationCatalogue == null || listOfAssemblyLines == null){
 			throw new IllegalArgumentException();
@@ -79,7 +79,7 @@ public class Company {
 		this.customCatalogue = customCatalogue;
 		this.partpicker = new PartPicker(vehicleSpecificationCatalogue, this.bindingRestrictions, this.optionalRestrictions);
 		OrderBookObserver orderBookObserver = new OrderBookObserver();
-		this.workloadDivider = new WorkLoadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver, clockObserver);
+		this.workloadDivider = new WorkloadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver);
 	}
 
 	/**
@@ -187,6 +187,11 @@ public class Company {
 		return workloadDivider.getAssemblyLines();
 	}
 
+	/**
+	 * Get the workbenches which are blocking the AssemblyLine from advancing.
+	 * @return
+	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
+	 */
 	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
 		// workloadDivider returnt een lijst van UnmodifiableWorkbenches
 		return workloadDivider.getBlockingWorkBenches(assemblyLine);

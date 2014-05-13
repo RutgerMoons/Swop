@@ -27,7 +27,6 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**

@@ -26,7 +26,6 @@ import domain.observer.observes.ObservesOrderBook;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOption;
 
 public class WorkloadDivider implements ObservesOrderBook {
 
@@ -223,6 +222,20 @@ public class WorkloadDivider implements ObservesOrderBook {
       		}
 	    }
 		return toReturn;
+	}
+	
+	/**
+	 * Get the workbenches which are blocking the AssemblyLine from advancing.
+	 * @return
+	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
+	 */
+	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
+		for (AssemblyLine line : this.assemblyLines) {
+			if (line.equals(assemblyLine)) {
+				return line.getBlockingWorkBenches();
+			}
+		}
+		return null;
 	}
 	
 }
