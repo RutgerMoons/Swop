@@ -19,7 +19,7 @@ public class WorkBench implements IWorkBench {
 	private Set<String> responsibilities;
 	private Optional<IJob> currentJob;
 	private List<ITask> currentTasks;
-	private final String workbenchName;
+	private final WorkbenchType workbenchType;
 
 	/**
 	 * Construct a new Workbench.
@@ -27,16 +27,16 @@ public class WorkBench implements IWorkBench {
 	 * @param 	responsibilities
 	 *            A list of strings. The types of Tasks that have to be
 	 *            performed by this WorkBench.
-	 * @param 	workbenchName
+	 * @param 	workbenchType
 	 *            A name for this workbench
 	 * @throws 	IllegalArgumentException
 	 *            Thrown when workbenchName==null or isEmpty -if responsibilities==null
 	 */
-	public WorkBench(Set<String> responsibilities, String workbenchName) {
-		if (workbenchName == null || workbenchName.isEmpty()) {
+	public WorkBench(Set<String> responsibilities, WorkbenchType type) {
+		if (type == null || responsibilities==null) {
 			throw new IllegalArgumentException();
 		}
-		this.workbenchName = workbenchName;
+		this.workbenchType = type;
 		this.setResponsibilities(responsibilities);
 		setCurrentTasks(new ArrayList<ITask>());
 		Optional<IJob> nullJob = Optional.absent();
@@ -45,8 +45,8 @@ public class WorkBench implements IWorkBench {
 
 	
 	@Override
-	public String getWorkbenchName() {
-		return workbenchName;
+	public WorkbenchType getWorkbenchType() {
+		return workbenchType;
 	}
 
 
@@ -145,7 +145,7 @@ public class WorkBench implements IWorkBench {
 
 	@Override
 	public String toString() {
-		return this.getWorkbenchName();
+		return this.getWorkbenchType().toString();
 	}
 	
 	//TODO doc

@@ -17,7 +17,9 @@ import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
 import domain.order.IOrder;
 import domain.scheduling.Scheduler;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -129,6 +131,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		}
 		job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
 		this.scheduler.addJobToAlgorithm(job);
+		
+		
 	}
 
 	/**
@@ -202,7 +206,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		for (int i = 0; i < this.getWorkbenches().size(); i++) {
 			workbench = this.getWorkbenches().get(i);
 			assemblyLineString += "," + "-workbench " + (i + 1) + ": "
-					+ this.getWorkbenches().get(i).getWorkbenchName();
+					+ this.getWorkbenches().get(i).getWorkbenchType();
 			for (int j = 0; j < workbench.getCurrentTasks().size(); j++) {
 				if (workbench.getCurrentTasks().get(j).isCompleted()) {
 					completed = "completed";

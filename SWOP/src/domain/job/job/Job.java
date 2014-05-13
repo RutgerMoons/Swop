@@ -3,7 +3,9 @@ package domain.job.job;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
@@ -84,7 +86,7 @@ public class Job implements IJob {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + taskList.hashCode() + getTasks().hashCode() + getTimeAtWorkBench();
+		result = prime * result + taskList.hashCode() + getTasks().hashCode() + getTimeAtWorkBench().hashCode();
 		return result;
 	}
 
@@ -104,7 +106,7 @@ public class Job implements IJob {
 			return false;
 		if(!getTasks().equals(other.getTasks()))
 			return false;
-		if(getTimeAtWorkBench()!=other.getTimeAtWorkBench())
+		if(getTimeAtWorkBench().equals(other.getTimeAtWorkBench()))
 			return false;
 		return true;
 	}
@@ -134,7 +136,7 @@ public class Job implements IJob {
 	}
 	
 	@Override
-	public int getTimeAtWorkBench() {
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return this.order.getTimeAtWorkBench();
 	}
 

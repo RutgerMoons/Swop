@@ -2,7 +2,9 @@ package domain.job.job;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.IOrder;
@@ -96,7 +98,7 @@ public interface IJob {
 	/**
 	 * Get the time the specification has to spend on a workbench.
 	 */
-	public int getTimeAtWorkBench();
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
 
 	/**
 	 * Get the specification of the vehicle from the order

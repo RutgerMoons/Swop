@@ -116,7 +116,7 @@ public class SchedulingAlgorithmFifoTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void getEstimatedTimeInMinutesTest2(){
 		ImmutableClock clock = new ImmutableClock(0,500);
-		algorithm.getEstimatedTimeInMinutes(null, clock);
+		algorithm.setEstimatedTime(null, clock);
 	}
 
 	@Test (expected = IllegalArgumentException.class)
@@ -126,7 +126,7 @@ public class SchedulingAlgorithmFifoTest {
 		ImmutableClock deadline = new ImmutableClock(5, 30);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob customJob = new Job(customOrder);
-		algorithm.getEstimatedTimeInMinutes(customJob, null);
+		algorithm.setEstimatedTime(customJob, null);
 	}
 	
 	@Test

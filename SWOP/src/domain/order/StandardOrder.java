@@ -2,7 +2,9 @@ package domain.order;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.job.job.IJob;
@@ -188,11 +190,11 @@ public class StandardOrder implements IOrder {
 	
 	@Override
 	public int getProductionTime() {
-		try {
-			return this.getDescription().getSpecification().getTimeAtWorkBench();
-		} catch (NotImplementedException e) {
-			return 0;
+		int time = 0;
+		for(WorkbenchType type: WorkbenchType.values()){
+			time += getTimeAtWorkBench().get(type);
 		}
+		return time;
 	}
 
 	@Override
@@ -209,7 +211,7 @@ public class StandardOrder implements IOrder {
 	}
 	
 	@Override
-	public int getTimeAtWorkBench() {
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return this.getDescription().getTimeAtWorkBench();
 	}
 

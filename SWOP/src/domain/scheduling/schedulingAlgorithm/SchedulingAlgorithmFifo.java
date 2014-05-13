@@ -6,6 +6,7 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
+import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
@@ -36,14 +37,18 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(IJob job, ImmutableClock currentTime){
+	public void setEstimatedTime(IJob job, ImmutableClock currentTime){
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
 
 		if(customJobs.contains(job)) {
 			try {
-				return job.getOrder().getDeadline().minus(currentTime);
+				int total = job.getOrder().getDeadline().minus(currentTime);
+				int days = total/Clock.MINUTESINADAY;
+				int minutes = total%Clock.MINUTESINADAY;
+				
+				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 			} 
 			catch (NotImplementedException e) {	}
 		}
@@ -65,7 +70,9 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 				}
 			}
 		}
-		return totalProductionTime;
+		int days = totalProductionTime/Clock.MINUTESINADAY;
+		int minutes = totalProductionTime%Clock.MINUTESINADAY;
+		job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 	}
 
 	/**

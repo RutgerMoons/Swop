@@ -3,6 +3,7 @@ package domain.vehicle.vehicle;
 import java.util.Collections;
 import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
@@ -73,7 +74,7 @@ public class UnmodifiableVehicle implements IVehicle {
 		throw new UnmodifiableException();
 	}
 	@Override
-	public int getTimeAtWorkBench() {
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return model.getTimeAtWorkBench();
 	}
 }
