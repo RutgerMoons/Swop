@@ -825,17 +825,16 @@ public class ClientCommunication{
 		this.show(sets);
 	}
 
-	public AssemblyLineState chooseStatus(AssemblyLineState assemblyLineState) {
-		AssemblyLineState[] states = AssemblyLineState.values();
+	public AssemblyLineState chooseStatus(List<AssemblyLineState> states, AssemblyLineState assemblyLineState) {
 		showStatus(assemblyLineState);
 		
 		int customNumber = askNumber("Which operational state do you choose?") - 1;
 		
-		if (customNumber >0 && customNumber < states.length) {
-			return states[customNumber];
+		if (customNumber >0 && customNumber < states.size()) {
+			return states.get(customNumber);
 		} else {
 			invalidAnswerPrompt();
-			return chooseStatus(assemblyLineState);
+			return chooseStatus(states, assemblyLineState);
 		}
 		
 		

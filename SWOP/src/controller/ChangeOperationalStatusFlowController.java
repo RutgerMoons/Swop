@@ -6,6 +6,10 @@ import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
+/**
+ * Defines the program flow for the 'Change operational status' use case.
+ * 
+ */
 public class ChangeOperationalStatusFlowController extends
 UseCaseFlowController {
 
@@ -20,7 +24,7 @@ UseCaseFlowController {
 		IAssemblyLine assemblyLine = clientCommunication.chooseAssemblyLine(facade.getAssemblyLines());
 		clientCommunication.showStatus(assemblyLine.getState());
 		if(clientCommunication.askContinue()){
-			AssemblyLineState state = clientCommunication.chooseStatus(assemblyLine.getState());
+			AssemblyLineState state = clientCommunication.chooseStatus(facade.getAssemblyLineStates(), assemblyLine.getState());
 			facade.changeState(assemblyLine, state);
 		}
 

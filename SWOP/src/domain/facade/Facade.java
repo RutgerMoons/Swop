@@ -309,4 +309,8 @@ public class Facade {
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
 		company.changeState(assemblyLine, state);
 	}
+
+	public List<AssemblyLineState> getAssemblyLineStates() {
+		return Arrays.asList(AssemblyLineState.values());
+	}
 }
