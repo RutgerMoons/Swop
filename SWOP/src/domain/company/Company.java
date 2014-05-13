@@ -81,6 +81,8 @@ public class Company {
 		this.partpicker = new PartPicker(vehicleSpecificationCatalogue, this.bindingRestrictions, this.optionalRestrictions);
 		OrderBookObserver orderBookObserver = new OrderBookObserver();
 		this.workloadDivider = new WorkloadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver);
+		orderbook.attachObserver(orderBookObserver);
+		
 	}
 
 	/**
