@@ -94,6 +94,10 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 		updatePlacedOrder(order);
 	}
 	
+	@Override
+	public void updateCompletedOrder(IOrder order) {
+		updateCompletedOrder(order);
+	}
 
 	@Override
 	public void attachObserver(OrderBookObserver observer) {
@@ -116,10 +120,5 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 		for (OrderBookObserver observer : this.observers) {
 			observer.notifyNewOrder(order);
 		}
-	}
-
-	@Override
-	public void updateCompletedOrder(IOrder orderO) {
-		this.updateOrderBook(orderO);
 	}
 }

@@ -15,6 +15,7 @@ import domain.job.task.ITask;
 import domain.observer.observable.ObservableAssemblyLine;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
+import domain.order.IOrder;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleSpecification;
@@ -98,7 +99,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		if (lastJob.isPresent()	&& lastJob.get().isCompleted()) {
 			currentJobs.remove(lastJob.get());
 			lastJob.get().getOrder().completeCar();
-			updateCompletedOrder(lastJob.get().getOrder().getEstimatedTime());
+			updateCompletedOrder(lastJob.get().getOrder());
 		}
 	}
 
@@ -234,9 +235,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	}
 
 	@Override
-	public void updateCompletedOrder(ImmutableClock aClock) {
+	public void updateCompletedOrder(IOrder order) {
 		for (AssemblyLineObserver observer : observers) {
-			observer.updateCompletedOrder(aClock);
+			observer.updateCompletedOrder(order);
 		}
 	}
 	

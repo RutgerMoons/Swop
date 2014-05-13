@@ -37,7 +37,6 @@ public class WorkloadDivider implements ObservesOrderBook {
 			throw new IllegalArgumentException();
 		}
 		this.assemblyLines = listOfAssemblyLines;
-		orderBookObserver.attachLogger(this);
 		// attach the assemblyLineObserver to all assemblyLines
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
 			assemblyLine.attachObserver(assemblyLineObserver);
