@@ -226,8 +226,7 @@ public class WorkloadDivider implements ObservesOrderBook {
 	}
 
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
-		int index = assemblyLines.indexOf(assemblyLine);
-		assemblyLines.get(index).setState(state);
+		assemblyLine.setState(state);
 	}
 	
 }

@@ -19,7 +19,7 @@ UseCaseFlowController {
 
 		IAssemblyLine assemblyLine = clientCommunication.chooseAssemblyLine(facade.getAssemblyLines());
 		clientCommunication.showStatus(assemblyLine.getState());
-		if(clientCommunication.askAdvance()){
+		if(clientCommunication.askContinue()){
 			AssemblyLineState state = clientCommunication.chooseStatus(assemblyLine.getState());
 			facade.changeState(assemblyLine, state);
 		}

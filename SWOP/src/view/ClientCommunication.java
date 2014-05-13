@@ -841,7 +841,9 @@ public class ClientCommunication{
 		int i = 1;
 		for(AssemblyLineState state: states){
 			strings.add(i + ": " + state.toString());
+			i++;
 		}
+		strings.add("Current status: " + assemblyLineState.toString());
 		
 		show(strings);
 	}
