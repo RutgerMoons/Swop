@@ -38,8 +38,8 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	
 	//TODO doc
 	@Override
-	public String getWorkbenchName() {
-		return bench.getWorkbenchName();
+	public WorkbenchType getWorkbenchType() {
+		return bench.getWorkbenchType();
 	}
 
 	//TODO doc

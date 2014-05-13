@@ -1,10 +1,13 @@
 package view;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -53,7 +56,14 @@ public class VehicleSpecificationCatalogueFiller {
 		parts.add(new VehicleOption("standard", VehicleOptionCategory.WHEEL));
 		parts.add(new VehicleOption("heavy-duty", VehicleOptionCategory.WHEEL));
 		
-		return new VehicleSpecification("model Y", parts, 90);
+		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
+		timesAtWorkbench.put(WorkbenchType.BODY, 120);
+		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 120);
+		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 120);
+		timesAtWorkbench.put(WorkbenchType.CARGO, 45);
+		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 45);
+		
+		return new VehicleSpecification("model Y", parts, timesAtWorkbench);
 	}
 	
 	private VehicleSpecification getModelX(){
@@ -79,7 +89,14 @@ public class VehicleSpecificationCatalogueFiller {
 		parts.add(new VehicleOption("standard", VehicleOptionCategory.WHEEL));
 		parts.add(new VehicleOption("heavy-duty", VehicleOptionCategory.WHEEL));
 		
-		return new VehicleSpecification("model X", parts, 90);
+		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
+		timesAtWorkbench.put(WorkbenchType.BODY, 90);
+		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 90);
+		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 90);
+		timesAtWorkbench.put(WorkbenchType.CARGO, 30);
+		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 30);
+		
+		return new VehicleSpecification("model X", parts, timesAtWorkbench);
 	}
 	
 	
@@ -107,7 +124,15 @@ public class VehicleSpecificationCatalogueFiller {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		return new VehicleSpecification("model C", parts, 60);
+		
+		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
+		timesAtWorkbench.put(WorkbenchType.BODY, 60);
+		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 60);
+		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 60);
+		timesAtWorkbench.put(WorkbenchType.CARGO, 0);
+		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 0);
+		
+		return new VehicleSpecification("model C", parts, timesAtWorkbench);
 	}
 
 	private VehicleSpecification getModelB() {
@@ -140,7 +165,15 @@ public class VehicleSpecificationCatalogueFiller {
 		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
 		
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		return new VehicleSpecification("model B", parts, 70);
+		
+		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
+		timesAtWorkbench.put(WorkbenchType.BODY, 70);
+		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 70);
+		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 70);
+		timesAtWorkbench.put(WorkbenchType.CARGO, 0);
+		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 0);
+		
+		return new VehicleSpecification("model B", parts, timesAtWorkbench);
 	}
 
 	private VehicleSpecification getModelA() {
@@ -170,7 +203,14 @@ public class VehicleSpecificationCatalogueFiller {
 		parts.add(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
 		
-		return new VehicleSpecification("model A", parts, 50);
+		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
+		timesAtWorkbench.put(WorkbenchType.BODY, 50);
+		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 50);
+		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 50);
+		timesAtWorkbench.put(WorkbenchType.CARGO, 0);
+		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 0);
+		
+		return new VehicleSpecification("model A", parts, timesAtWorkbench);
 	}
 
 }

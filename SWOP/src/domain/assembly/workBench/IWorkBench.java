@@ -14,11 +14,9 @@ import domain.job.task.ITask;
 public interface IWorkBench {
 
 	/**
-	 * Get the name of the workbench
-	 * 
-	 * @return 	The name of the workbench
+	 * Get the type of the workbench.
 	 */
-	public String getWorkbenchName();
+	public WorkbenchType getWorkbenchType();
 	
 	/**
 	 * Get the current Job(Car) that is on this WorkBench.

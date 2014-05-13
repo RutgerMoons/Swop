@@ -55,7 +55,7 @@ public class ImmutableWorkBenchTest {
 		model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 		model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		
-		assertEquals("paintbooth", immutable.getWorkbenchName());
+		assertEquals("paintbooth", immutable.getWorkbenchType());
 		assertTrue(immutable.getResponsibilities().contains("paint"));
 		
 		IJob job = new Job(new StandardOrder("Stef", model, 1, new ImmutableClock(0,240)));

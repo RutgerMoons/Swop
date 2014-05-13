@@ -56,7 +56,7 @@ public class WorkBenchTest {
 	public void TestContstructor(){
 		assertNotNull(workBench);
 		assertNotNull(workBench.getResponsibilities());
-		assertEquals("name", workBench.getWorkbenchName());
+		assertEquals("name", workBench.getWorkbenchType());
 	}
 
 	@Test

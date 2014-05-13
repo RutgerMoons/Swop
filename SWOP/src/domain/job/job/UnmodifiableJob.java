@@ -2,9 +2,11 @@ package domain.job.job;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.IOrder;
@@ -107,7 +109,7 @@ public class UnmodifiableJob implements IJob {
 	}
 	
 	@Override
-	public int getTimeAtWorkBench() {
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return this.job.getTimeAtWorkBench();
 	}
 

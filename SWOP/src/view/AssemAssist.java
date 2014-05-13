@@ -13,6 +13,7 @@ import controller.UserFlowController;
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.workBench.WorkBench;
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.company.Company;
@@ -111,34 +112,34 @@ public class AssemAssist {
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("Body");
 		responsibilities.add("Color");
-		WorkBench body1 = new WorkBench(responsibilities, "Body");
-		WorkBench body2 = new WorkBench(responsibilities, "Body");
-		WorkBench body3 = new WorkBench(responsibilities, "Body");
+		WorkBench body1 = new WorkBench(responsibilities, WorkbenchType.BODY);
+		WorkBench body2 = new WorkBench(responsibilities, WorkbenchType.BODY);
+		WorkBench body3 = new WorkBench(responsibilities, WorkbenchType.BODY);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Engine");
 		responsibilities.add("Gearbox");
-		WorkBench drivetrain1 = new WorkBench(responsibilities, "Drivetrain");
-		WorkBench drivetrain2 = new WorkBench(responsibilities, "Drivetrain");
-		WorkBench drivetrain3 = new WorkBench(responsibilities, "Drivetrain");
+		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkbenchType.DRIVETRAIN);
+		WorkBench drivetrain2 = new WorkBench(responsibilities, WorkbenchType.DRIVETRAIN);
+		WorkBench drivetrain3 = new WorkBench(responsibilities, WorkbenchType.DRIVETRAIN);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Seat");
 		responsibilities.add("Airco");
 		responsibilities.add("Spoiler");
 		responsibilities.add("Wheel");
-		WorkBench accessories1 = new WorkBench(responsibilities, "Accessories");
-		WorkBench accessories2 = new WorkBench(responsibilities, "Accessories");
-		WorkBench accessories3 = new WorkBench(responsibilities, "Accessories");
+		WorkBench accessories1 = new WorkBench(responsibilities, WorkbenchType.ACCESSORIES);
+		WorkBench accessories2 = new WorkBench(responsibilities, WorkbenchType.ACCESSORIES);
+		WorkBench accessories3 = new WorkBench(responsibilities, WorkbenchType.ACCESSORIES);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Storage");
 		responsibilities.add("Protection");
-		WorkBench cargo = new WorkBench(responsibilities, "Cargo");
+		WorkBench cargo = new WorkBench(responsibilities, WorkbenchType.CARGO);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Certification");
-		WorkBench certificiation = new WorkBench(responsibilities, "Certification");
+		WorkBench certificiation = new WorkBench(responsibilities, WorkbenchType.CERTIFICATION);
 		
 		line1.addWorkBench(body1);
 		line1.addWorkBench(drivetrain1);

@@ -2,7 +2,9 @@ package domain.order;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
@@ -238,7 +240,7 @@ public class CustomOrder implements IOrder {
 	}
 	
 	@Override
-	public int getTimeAtWorkBench() {
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return this.getDescription().getTimeAtWorkBench();
 	}
 

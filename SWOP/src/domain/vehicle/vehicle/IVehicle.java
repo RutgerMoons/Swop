@@ -2,6 +2,7 @@ package domain.vehicle.vehicle;
 
 import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
@@ -49,5 +50,5 @@ public interface IVehicle {
 	/**
 	 * Get the time at the workbench of this CarModel.
 	 */
-	public int getTimeAtWorkBench();
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
 }

@@ -206,7 +206,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		for (int i = 0; i < this.getWorkbenches().size(); i++) {
 			workbench = this.getWorkbenches().get(i);
 			assemblyLineString += "," + "-workbench " + (i + 1) + ": "
-					+ this.getWorkbenches().get(i).getWorkbenchName();
+					+ this.getWorkbenches().get(i).getWorkbenchType();
 			for (int j = 0; j < workbench.getCurrentTasks().size(); j++) {
 				if (workbench.getCurrentTasks().get(j).isCompleted()) {
 					completed = "completed";

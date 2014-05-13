@@ -3,6 +3,7 @@ package domain.vehicle.vehicle;
 import java.util.HashMap;
 import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
@@ -16,9 +17,14 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 public class CustomVehicle implements IVehicle {
 
 	private HashMap<VehicleOptionCategory, VehicleOption> vehicleOptions;
-	
+	private Map<WorkbenchType, Integer> timeAtWorkbench;
 	public CustomVehicle(){
 		vehicleOptions = new HashMap<>();
+		timeAtWorkbench = new HashMap<>();
+		
+		for(WorkbenchType type: WorkbenchType.values()){
+			timeAtWorkbench.put(type, 60);
+		}
 	}
 	
 	@Override
@@ -73,8 +79,8 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public int getTimeAtWorkBench() {
-		return 60;
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+		return timeAtWorkbench;
 	}
 }
 
