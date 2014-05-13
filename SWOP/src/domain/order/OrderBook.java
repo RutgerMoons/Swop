@@ -101,8 +101,9 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	}
 	
 	@Override
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder) {
-		//TODO
+	public void updateCompletedOrder(IOrder order) {
+		pendingOrders.remove(order.getGarageHolder(), order);
+		completedOrders.put(order.getGarageHolder(), order);
 	}
 
 	@Override
