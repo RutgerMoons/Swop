@@ -68,6 +68,7 @@ public class Scheduler implements ObservesClock {
 			throw new IllegalArgumentException();
 		}
 		job.addToSchedulingAlgorithm(this.schedulingAlgorithm);
+		schedulingAlgorithm.setEstimatedTime(job, clock);
 	}
 
 	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, int amountOfWorkbenches) {
@@ -128,13 +129,6 @@ public class Scheduler implements ObservesClock {
 		this.schedulingAlgorithm.startNewDay();
 	}
 
-	/**
-	 * Returns the time in minutes the job will take (at this moment)
-	 */
-	public int getEstimatedTimeInMinutes(IJob job){
-		return this.schedulingAlgorithm.getEstimatedTimeInMinutes(job, this.clock);
-	}
-	
 	/**
 	 * Returns the currently used Scheduling Algorithm Type
 	 */

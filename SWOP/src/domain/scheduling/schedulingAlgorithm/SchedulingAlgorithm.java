@@ -104,7 +104,7 @@ public abstract class SchedulingAlgorithm {
 	 * @throws IllegalArgumentException
 	 * 			thrown when one or more of the parameters are null
 	 */
-	public abstract int getEstimatedTimeInMinutes(IJob job, ImmutableClock currentTime) ;
+	public abstract void setEstimatedTime(IJob job, ImmutableClock currentTime) ;
 	
 	/**
 	 * returns a list of all the jobs currently on the assembly line

@@ -129,6 +129,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		}
 		job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
 		this.scheduler.addJobToAlgorithm(job);
+		
+		
 	}
 
 	/**

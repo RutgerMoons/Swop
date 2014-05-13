@@ -64,14 +64,18 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public int getEstimatedTimeInMinutes(IJob job, ImmutableClock currentTime) {
+	public void setEstimatedTime(IJob job, ImmutableClock currentTime) {
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
 
 		if(customJobs.contains(job)) {
 			try {
-				return job.getOrder().getDeadline().minus(currentTime);
+				int total = job.getOrder().getDeadline().minus(currentTime);
+				int days = total/60;
+				int minutes = total%60;
+				
+				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 			} 
 			catch (NotImplementedException e) {	}
 		}
@@ -91,7 +95,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 					addToList(absentJob, previousJobs);
 					totalProductionTime += this.getMaximum(previousJobs);
 				}
-				return totalProductionTime;
+				int days = totalProductionTime/60;
+				int minutes = totalProductionTime%60;
+				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 			}
 		}
 
@@ -111,7 +117,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 				}
 			}
 		}
-		return totalProductionTime;
+		int days = totalProductionTime/60;
+		int minutes = totalProductionTime%60;
+		job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 	}
 
 	@Override
