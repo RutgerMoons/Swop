@@ -1,6 +1,5 @@
 package domain.assembly.assemblyLine;
 
-import java.lang.instrument.UnmodifiableClassException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
