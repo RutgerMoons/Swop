@@ -157,6 +157,22 @@ public class WorkloadDivider implements ObservesOrderBook {
 		//3: kies assemblyLine met laagste workload
 		//4: schedule de job bij die assemblyLine
 		//assemblyLine.schedule(job)
+		
+		AssemblyLine scheduleHere = null;
+		for(AssemblyLine line: assemblyLines){
+			//Checken: Operational && kan job verwerken.
+			if(line.getState().equals(AssemblyLineState.OPERATIONAL) 
+					&& line.getResponsibilities().contains(job.getVehicleSpecification())){
+				//kijken naar workload
+				if(scheduleHere!=null && scheduleHere.getCurrentJobs().size()<line.getCurrentJobs().size()){
+					scheduleHere = line;
+				}else if(scheduleHere==null){
+					scheduleHere = line;
+				}
+			}
+		}
+		
+		scheduleHere.schedule(job);
 	}
 	
 	/**

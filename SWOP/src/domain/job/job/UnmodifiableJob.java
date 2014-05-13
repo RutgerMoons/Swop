@@ -10,6 +10,7 @@ import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 
@@ -109,4 +110,10 @@ public class UnmodifiableJob implements IJob {
 	public int getTimeAtWorkBench() {
 		return this.job.getTimeAtWorkBench();
 	}
+
+	@Override
+	public VehicleSpecification getVehicleSpecification() {
+		return job.getVehicleSpecification();
+	}
 }
+

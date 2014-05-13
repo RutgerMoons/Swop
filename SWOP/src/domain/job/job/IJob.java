@@ -7,6 +7,7 @@ import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
@@ -92,6 +93,11 @@ public interface IJob {
 	 * Get the time the specification has to spend on a workbench.
 	 */
 	public int getTimeAtWorkBench();
+
+	/**
+	 * Get the specification of the vehicle from the order.
+	 */
+	public VehicleSpecification getVehicleSpecification();
 	
 
 }

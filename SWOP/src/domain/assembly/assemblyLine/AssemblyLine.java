@@ -19,6 +19,7 @@ import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
@@ -33,6 +34,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	private List<AssemblyLineObserver> observers;
 	private Scheduler scheduler;
 	private AssemblyLineState assemblyLineState;
+	private Set<VehicleSpecification> responsibilities;
 
 	/**
 	 * Construct a new AssemblyLine. Initializes a scheduler and an amount of workbenches.
@@ -43,8 +45,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * @throws 	IllegalArgumentException
 	 *             Thrown when one or both of the parameters are null
 	 */
-	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock, AssemblyLineState assemblyLineState) {
-		if (clockObserver == null || clock == null || assemblyLineState == null) {
+	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock, AssemblyLineState assemblyLineState, Set<VehicleSpecification> responsiblities) {
+		if (clockObserver == null || clock == null || assemblyLineState == null || responsiblities==null) {
 			throw new IllegalArgumentException();
 		}
 		workbenches = new ArrayList<IWorkBench>();
@@ -52,6 +54,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		observers = new ArrayList<>();
 		this.scheduler = new Scheduler(clockObserver, clock);
 		this.assemblyLineState = assemblyLineState;
+		this.responsibilities = responsiblities;
 	}
 
 	/**
@@ -287,6 +290,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	public void setState(AssemblyLineState state) {
 		this.assemblyLineState = state;
 		
+	}
+
+	@Override
+	public Set<VehicleSpecification> getResponsibilities() {
+		return responsibilities;
 	}
 	
 }

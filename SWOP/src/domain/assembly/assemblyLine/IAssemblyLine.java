@@ -7,6 +7,7 @@ import java.util.Set;
 import domain.assembly.workBench.IWorkBench;
 import domain.job.job.IJob;
 import domain.scheduling.Scheduler;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 public interface IAssemblyLine {
@@ -60,4 +61,9 @@ public interface IAssemblyLine {
 	 * 			The state the assemblyLine has to be in
 	 */
 	public void setState(AssemblyLineState state);
+	
+	/**
+	 * Get a list of responsibilities, which indicate the vehicles that the assemblyline can process.  
+	 */
+	public Set<VehicleSpecification> getResponsibilities();
 }
