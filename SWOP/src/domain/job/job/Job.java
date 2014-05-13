@@ -7,6 +7,7 @@ import java.util.List;
 import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 
@@ -127,6 +128,11 @@ public class Job implements IJob {
 	@Override
 	public int getTimeAtWorkBench() {
 		return this.order.getTimeAtWorkBench();
+	}
+
+	@Override
+	public VehicleSpecification getVehicleSpecification() {
+		return order.getVehicleSpecification();
 	}
 
 }

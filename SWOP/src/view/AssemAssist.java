@@ -21,6 +21,7 @@ import domain.facade.Facade;
 import domain.observer.observers.ClockObserver;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
@@ -73,7 +74,7 @@ public class AssemAssist {
 		clock.attachObserver(clockObserver);
 		
 		//TODO clockobserver
-		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, clock.getImmutableClock());
+		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);
 		
 		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
 		clientCommunication = new ClientCommunication();
@@ -83,12 +84,27 @@ public class AssemAssist {
 		userFlowController = new UserFlowController(clientCommunication, facade, flowControllers);
 	}
 
-	private static List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock) {
+	private static List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
 		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
 		
-		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL);
-		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL);
-		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL);
+		Set<VehicleSpecification> specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		
+		specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(catalogue.getCatalogue().get("model C"));
+		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		
+		specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(catalogue.getCatalogue().get("model C"));
+		specifications.add(catalogue.getCatalogue().get("model X"));
+		specifications.add(catalogue.getCatalogue().get("model Y"));
+		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
 		
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("Body");

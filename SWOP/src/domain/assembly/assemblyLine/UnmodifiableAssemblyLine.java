@@ -8,6 +8,7 @@ import domain.assembly.workBench.IWorkBench;
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.Scheduler;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 public class UnmodifiableAssemblyLine implements IAssemblyLine {
@@ -64,5 +65,10 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 	@Override
 	public String toString(){
 		return assemblyLine.toString();
+	}
+
+	@Override
+	public Set<VehicleSpecification> getResponsibilities() {
+		return assemblyLine.getResponsibilities();
 	}
 }

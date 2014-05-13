@@ -7,6 +7,7 @@ import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -105,5 +106,13 @@ public interface IOrder {
 	 * Get the time the specification has to spend on a workbench.
 	 */
 	public int getTimeAtWorkBench();
+
+	/**
+	 * Get the specification of the vehicle from the order.
+	 * 
+	 * @throws	NotImplementedException
+	 * 			If the order is a custom order
+	 */
+	public VehicleSpecification getVehicleSpecification();
 	
 }

@@ -7,6 +7,7 @@ import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicle.UnmodifiableVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -122,5 +123,10 @@ public class UnmodifiableOrder implements IOrder {
 	@Override
 	public int getTimeAtWorkBench() {
 		return this.order.getTimeAtWorkBench();
+	}
+
+	@Override
+	public VehicleSpecification getVehicleSpecification() {
+		return order.getVehicleSpecification();
 	}
 }
