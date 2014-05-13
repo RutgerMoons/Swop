@@ -17,7 +17,7 @@ public class LoggerTest {
 	@Before
 	public void testConstructor() {
 		int amount = 5;
-		logger = new Logger(amount, new ClockObserver(), new AssemblyLineObserver());
+		logger = new Logger(amount);
 		assertNotNull(logger);
 		assertEquals(0,logger.getDetailedDays().size());
 		assertEquals(0,logger.getDetailedDelays().size());
@@ -30,17 +30,7 @@ public class LoggerTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorTest2(){
-		logger = new Logger(5, null , new AssemblyLineObserver());
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void constructorTest3(){
-		logger = new Logger(5, new ClockObserver(), null);
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void constructorTest4(){
-		logger = new Logger(5, null , null);
+		logger = new Logger(0);
 	}
 	
 	@Test
@@ -118,5 +108,4 @@ public class LoggerTest {
 		assertEquals(2,logger.averageDays());
 		assertEquals(225,logger.averageDelays());
 	}
-
 }
