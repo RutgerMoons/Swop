@@ -12,7 +12,6 @@ import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.log.Logger;
 import domain.observer.observers.AssemblyLineObserver;
-import domain.observer.observers.ClockObserver;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
 import domain.vehicle.VehicleSpecification;

@@ -11,13 +11,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
-import domain.observer.observers.ClockObserver;
+import domain.exception.UnmodifiableException;
 import domain.order.CustomOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
