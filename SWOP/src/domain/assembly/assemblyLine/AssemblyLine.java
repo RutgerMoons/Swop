@@ -1,7 +1,6 @@
 package domain.assembly.assemblyLine;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +12,6 @@ import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
-import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
 import domain.observer.observable.ObservableAssemblyLine;
@@ -39,11 +37,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	/**
 	 * Construct a new AssemblyLine. Initializes a scheduler and an amount of workbenches.
 	 * 
-	 * @param clock
-	 *            The clock that has to be accessed by this AssemblyLine.
+	 * @param 	clock
+	 *            The clock that has to be accessed by this AssemblyLine
 	 *            
-	 * @throws IllegalArgumentException
-	 *             Thrown when one or both of the parameters are null.
+	 * @throws 	IllegalArgumentException
+	 *             Thrown when one or both of the parameters are null
 	 */
 	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock, AssemblyLineState assemblyLineState) {
 		if (clockObserver == null || clock == null || assemblyLineState == null) {
@@ -60,10 +58,10 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	/**
 	 * Add a workbench to the assemblyLine.
 	 * 
-	 * @param bench
-	 *            The workbench you want to add.
-	 * @throws IllegalArgumentException
-	 *             Thrown when the parameter is null.
+	 * @param 	bench
+	 *            The workbench you want to add
+	 * @throws 	IllegalArgumentException
+	 *             Thrown when the parameter is null
 	 */
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
@@ -76,14 +74,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * completed. It shifts the jobs to it's next workstation.
 	 * It notifies its observers when an order is completed.
 	 * 
-	 * @throws NoSuitableJobFoundException
-	 * 		Thrown when no job can be scheduled by the scheduler.
-	 *  
-	 * @throws UnmodifiableException 
-	 * 		Thrown when an IOrder has no deadline yet.
-	 * 
-	 * @throws IllegalStateException
-	 * 		Thrown when the assemblyLine cannot advance.
+	 * @throws 	NoSuitableJobFoundException
+	 * 		Thrown when no job can be scheduled by the scheduler
 	 */
 	public void advance() throws NoSuitableJobFoundException {
 		if (!canAdvance()) {
@@ -110,7 +102,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		}
 	}
 
-	
+	//TODO Doc
 	@Override
 	public boolean canAdvance() {
 		List<IWorkBench> workBenches = getWorkbenches();
@@ -151,6 +143,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return -1;
 	}
 
+	//TODO doc
 	@Override
 	public ArrayList<Integer> getBlockingWorkBenches() {
 		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
@@ -161,16 +154,26 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return notCompletedBenches;
 	}
 
+	/**
+	 * Returns an Immutable list of the current jobs on the assemblyLine
+	 */
 	@Override
 	public List<IJob> getCurrentJobs() {
 		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
 	}
 	
+	/**
+	 * Returns the current scheduler used by the AssemblyLine;
+	 */
 	@Override
 	public Scheduler getCurrentScheduler() {
 		return this.scheduler;
 	}
 	
+	/**
+	 * TODO
+	 * @return
+	 */
 	public String getCurrentSchedulingAlgorithm() {
 		return this.scheduler.getCurrentSchedulingAlgorithm();
 	}
@@ -209,6 +212,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 
 	}
 
+	//TODO change to string
 	@Override
 	public String toString() {
 		String assemblyLineString = "";
@@ -270,6 +274,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		this.scheduler.switchToAlgorithm(creator, this.workbenches.size());
 	}
 
+	/**
+	 * Method for returning the current state of the assemblyLine.
+	 */
 	@Override
 	public AssemblyLineState getState() {
 		return assemblyLineState;

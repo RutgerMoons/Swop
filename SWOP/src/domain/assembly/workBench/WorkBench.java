@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
-import domain.exception.UnmodifiableException;
 import domain.job.action.IAction;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
@@ -25,12 +24,12 @@ public class WorkBench implements IWorkBench {
 	/**
 	 * Construct a new Workbench.
 	 * 
-	 * @param responsibilities
+	 * @param 	responsibilities
 	 *            A list of strings. The types of Tasks that have to be
 	 *            performed by this WorkBench.
-	 * @param workbenchName
+	 * @param 	workbenchName
 	 *            A name for this workbench
-	 * @throws IllegalArgumentException
+	 * @throws 	IllegalArgumentException
 	 *            Thrown when workbenchName==null or isEmpty -if responsibilities==null
 	 */
 	public WorkBench(Set<String> responsibilities, String workbenchName) {
@@ -70,13 +69,12 @@ public class WorkBench implements IWorkBench {
 	}
 
 	/**
-	 * Set a new list of responsibilities for thies WorkBench.
+	 * Set a new list of responsibilities for this WorkBench
 	 * 
-	 * @param responsibilities
+	 * @param 	responsibilities
 	 *            A list of responsibilities.
-	 * @throws UnmodifiableException 
-	 * 			  If the IWorkBench is an ImmutableWorkBench.
-	 * @throws IllegalArgumentException
+	 *            
+	 * @throws 	IllegalArgumentException
 	 *             If responsibilities==null
 	 */
 	public void setResponsibilities(Set<String> responsibilities) {
@@ -88,11 +86,10 @@ public class WorkBench implements IWorkBench {
 	/**
 	 * Add a responsibility to this WorkBench.
 	 * 
-	 * @param responibility
+	 * @param 	responibility
 	 *            The responsibility you want to add.
-	 * @throws UnmodifiableException 
-	 * 			  If the IWorkBench is an ImmutableWorkBench.
-	 * @throws IllegalArgumentException
+	 *            
+	 * @throws 	IllegalArgumentException
 	 *             If responsibility==null or isEmpty.
 	 */
 	public void addResponsibility(String responibility) {
@@ -110,11 +107,10 @@ public class WorkBench implements IWorkBench {
 	/**
 	 * Set the tasks that have to be completed by this WorkBench.
 	 * 
-	 * @param list
+	 * @param 	list
 	 *            A list of tasks.
-	 * @throws UnmodifiableException 
-	 * 			  If the IWorkBench is an ImmutableWorkBench.
-	 * @throws IllegalArgumentException
+	 *            
+	 * @throws 	IllegalArgumentException
 	 *             If currentTasks==null
 	 */
 	public void setCurrentTasks(List<ITask> list) {
@@ -152,6 +148,7 @@ public class WorkBench implements IWorkBench {
 		return this.getWorkbenchName();
 	}
 	
+	//TODO doc
 	@Override
 	public void completeChosenTaskAtChosenWorkBench(ITask task){
 		for (ITask t : this.currentTasks) {
