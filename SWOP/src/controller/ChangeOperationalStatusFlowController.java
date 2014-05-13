@@ -3,7 +3,6 @@ package controller;
 import view.ClientCommunication;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -16,8 +15,7 @@ UseCaseFlowController {
 	}
 
 	@Override
-	public void executeUseCase() throws IllegalArgumentException,
-	UnmodifiableException {
+	public void executeUseCase() {
 
 		IAssemblyLine assemblyLine = clientCommunication.chooseAssemblyLine(facade.getAssemblyLines());
 		clientCommunication.showStatus(assemblyLine.getState());

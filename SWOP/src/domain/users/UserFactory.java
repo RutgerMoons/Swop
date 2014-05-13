@@ -48,7 +48,7 @@ public class UserFactory {
 
 	private User createManager(String userName) {
 		ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>(
-				Arrays.asList(new AccessRight[] {AccessRight.STATISTICS, AccessRight.SWITCH_SCHEDULING_ALGORITHM }));
+				Arrays.asList(new AccessRight[] {AccessRight.STATISTICS, AccessRight.SWITCH_SCHEDULING_ALGORITHM, AccessRight.SWITCH_OPERATIONAL_STATUS }));
 		return new User(userName, accessRights);
 	}
 

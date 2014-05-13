@@ -62,4 +62,8 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 		throw new UnmodifiableException();
 	}
 
+	@Override
+	public String toString(){
+		return assemblyLine.toString();
+	}
 }
