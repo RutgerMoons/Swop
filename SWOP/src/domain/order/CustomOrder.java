@@ -228,7 +228,7 @@ public class CustomOrder implements IOrder {
 	
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
-		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
+		return this.getDescription().getVehicleOptions().values();
 	}
 
 	@Override

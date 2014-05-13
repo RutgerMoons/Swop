@@ -114,10 +114,7 @@ public class UnmodifiableOrder implements IOrder {
 
 	@Override
 	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm, IJob job) {
-		if (schedulingAlgorithm == null || job == null) {
-			throw new IllegalArgumentException();
-		}
-		this.order.addToSchedulingAlgorithm(schedulingAlgorithm, job);
+		throw new UnmodifiableException();
 	}
 	
 	@Override

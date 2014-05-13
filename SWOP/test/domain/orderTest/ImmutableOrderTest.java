@@ -3,8 +3,10 @@ package domain.orderTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -15,10 +17,14 @@ import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
+import domain.job.job.IJob;
+import domain.order.CustomOrder;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
 import domain.order.StandardOrder;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -119,4 +125,38 @@ public class ImmutableOrderTest {
 	public void testGetProductionTime() throws NotImplementedException{
 		assertEquals(order.getProductionTime(), immutable.getProductionTime());
 	}
+	
+	@Test(expected = NotImplementedException.class)
+	public void testGetStandardDeadine(){
+		order.setDeadline(new ImmutableClock(0, 0));
+		assertEquals(order.getDeadline(), immutable.getDeadline());
+	}
+	
+	@Test
+	public void testGetCustomDeadine(){
+		CustomOrder order1 = new CustomOrder("garageholder", new CustomVehicle(), 1, order.getOrderTime(), new ImmutableClock(0, 0));
+		UnmodifiableOrder immutable = new UnmodifiableOrder(order1);
+		assertEquals(order1.getDeadline(), immutable.getDeadline());
+	}
+	
+	@Test
+	public void testGetVehicleOptions(){
+		assertEquals(order.getVehicleOptions(), immutable.getVehicleOptions());
+	}
+	
+	@Test (expected = UnmodifiableException.class)
+	public void testaddToSchedulingAlgorithm(){
+		immutable.addToSchedulingAlgorithm(null, null);
+	}
+	
+	@Test
+	public void testGetTimeAtWorkBench(){
+		assertEquals(order.getTimeAtWorkBench(), immutable.getTimeAtWorkBench());
+	}
+	
+	@Test
+	public void testGetVehicleSpecification(){
+		assertEquals(order.getVehicleSpecification(), immutable.getVehicleSpecification());
+	}
+
 }

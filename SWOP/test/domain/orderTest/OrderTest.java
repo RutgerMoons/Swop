@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +19,11 @@ import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
 import domain.job.action.Action;
+import domain.job.job.IJob;
+import domain.job.job.Job;
 import domain.order.StandardOrder;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -196,10 +202,11 @@ public class OrderTest {
 	
 	@Test
 	public void testGetProductionTime() throws NotImplementedException{
+		model.getTimeAtWorkBench().put(WorkbenchType.BODY, 50);
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		
 		//TODO
-		assertEquals(order1.getProductionTime(), model.getSpecification().getTimeAtWorkBench());
+		assertEquals(50, order1.getProductionTime());
 	}
 	
 	@Test
@@ -216,4 +223,32 @@ public class OrderTest {
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		order1.setOrderTime(null);
 	}
+	
+	@Test
+	public void testGetVehicleOptions(){
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
+		assertEquals(model.getVehicleOptions().values(), order1.getVehicleOptions());
+	}
+	
+	@Test
+	public void testAddToSchedulingAlgorithm(){
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
+		SchedulingAlgorithm algorithm = new SchedulingAlgorithmFifo(3);
+		IJob job = new Job(order1);
+		order1.addToSchedulingAlgorithm(algorithm, job);
+		assertTrue(algorithm.getStandardJobs().contains(job));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddIllegalToSchedulingAlgorithm(){
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
+		order1.addToSchedulingAlgorithm(null, null);
+	}
+	
+	@Test
+	public void testGetVehicleSpecification(){
+		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
+		assertEquals(model.getSpecification(), order1.getVehicleSpecification());
+	}
+	
 }
