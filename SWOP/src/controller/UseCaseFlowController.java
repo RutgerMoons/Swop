@@ -1,7 +1,6 @@
 package controller;
 
 import view.ClientCommunication;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -19,13 +18,16 @@ public abstract class UseCaseFlowController {
 	protected Facade facade;
 	
 	/**
-	 * Construct a new FlowController.
-	 * @param accessRight
-	 * 			The accessRight needed to perform the use case.
-	 * @param clientCommunication
-	 * 			The IClientCommunication the FlowController uses to communicate with the user.
-	 * @param facade
-	 * 			The Facade the Flowcontroller uses to access the domain logic.
+	 * Construct a new FlowController
+	 * 
+	 * @param 	accessRight
+	 * 				The accessRight needed to perform the use case
+	 * 
+	 * @param 	clientCommunication
+	 * 				The IClientCommunication the FlowController uses to communicate with the user
+	 * 
+	 * @param 	facade
+	 * 				The Facade the Flowcontroller uses to access the domain logic
 	 */
 	public UseCaseFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade){
 		if (accessRight == null || clientCommunication == null || facade == null) {
@@ -37,11 +39,9 @@ public abstract class UseCaseFlowController {
 	}
 	
 	/**
-	 * Execute the use case.
-	 * @param user
-	 * 			primary actor in this use case
+	 * Execute the use case
 	 */
-	public abstract void executeUseCase() throws IllegalArgumentException, UnmodifiableException;
+	public abstract void executeUseCase();
 
 	public AccessRight getAccessRight() {
 		return accessRight;
