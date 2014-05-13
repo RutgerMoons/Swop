@@ -83,7 +83,7 @@ public class Job implements IJob {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + taskList.hashCode() + getTasks().hashCode() + getTimeAtWorkBench() + getVehicleOptions().hashCode();
+		result = prime * result + taskList.hashCode() + getTasks().hashCode() + getTimeAtWorkBench();
 		return result;
 	}
 
@@ -104,8 +104,6 @@ public class Job implements IJob {
 		if(!getTasks().equals(other.getTasks()))
 			return false;
 		if(getTimeAtWorkBench()!=other.getTimeAtWorkBench())
-			return false;
-		if(!getVehicleOptions().equals(other.getVehicleOptions()))
 			return false;
 		return true;
 	}
