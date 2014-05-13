@@ -1,6 +1,5 @@
 package domain.job.action;
 
-import domain.exception.UnmodifiableException;
 
 /**
  * Interface for limiting access to standard Actions.
@@ -18,13 +17,11 @@ public interface IAction {
 	/**
 	 * Set the completed state of this action.
 	 * 
-	 * @param isCompleted
+	 * @param 	isCompleted
 	 *            if true, the action is completed. if false, the action is not
 	 *            completed.
-	 * @throws UnmodifiableException 
-	 * 			  If the IAction is an ImmutableAction.
 	 */
-	public void setCompleted(boolean isCompleted) throws UnmodifiableException;
+	public void setCompleted(boolean isCompleted);
 	
 	
 	/**
@@ -35,11 +32,10 @@ public interface IAction {
 	
 	/**
 	 * Set the description of this action.
-	 * @throws UnmodifiableException 
-	 * 			  If the IAction is an ImmutableAction.
-	 * @throws IllegalArgumentException
+	 * 
+	 * @throws 	IllegalArgumentException
 	 *             If description==null or empty
 	 */
-	public void setDescription(String description) throws UnmodifiableException;
+	public void setDescription(String description);
 	
 }

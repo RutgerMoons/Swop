@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
-import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
 
@@ -17,15 +16,15 @@ public interface IWorkBench {
 	/**
 	 * Get the name of the workbench
 	 * 
-	 * @return The name of the workbench
+	 * @return 	The name of the workbench
 	 */
 	public String getWorkbenchName();
 	
 	/**
 	 * Get the current Job(Car) that is on this WorkBench.
 	 * 
-	 * @return The current Job this WorkBench is working on. If there is no Job
-	 *         available, the Job is represented by Optional.absent().
+	 * @return 	The current Job this WorkBench is working on. If there is no Job
+	 *         	available, the Job is represented by Optional.absent().
 	 */
 	public Optional<IJob> getCurrentJob();
 	
@@ -33,33 +32,31 @@ public interface IWorkBench {
 	 * Get the list of responsibilities of this WorkBench. So the types of Tasks
 	 * that have to be performed by this workbench.
 	 * 
-	 * @return A list of responsibilities.
+	 * @return 	A list of responsibilities.
 	 */
 	public Set<String> getResponsibilities();
 	
 	/**
 	 * Get the current tasks that have to be completed by this WorkBench.
 	 * 
-	 * @return An Immutable list of tasks.
+	 * @return 	An Immutable list of tasks.
 	 */
 	public List<ITask> getCurrentTasks();
 	
 	/**
 	 * Check if the WorkBench has completed all of his Tasks.
 	 * 
-	 * @return True if all the Tasks are completed. False if one or more Tasks
-	 *         are not completed yet.
+	 * @return 	True if all the Tasks are completed. False if one or more Tasks
+	 *         	are not completed yet.
 	 */
 	public boolean isCompleted();
 
 	/**
 	 * Allocate a new Job(Car) to this WorkBench.
 	 * 
-	 * @param optional
+	 * @param 	optional
 	 *            The job you want to allocate to the WorkBench.
-	 * @throws UnmodifiableException 
-	 * 			  If the IWorkBench is an ImmutableWorkBench.
-	 * @throws IllegalArgumentException
+	 * @throws 	IllegalArgumentException
 	 *             if currentJob == null
 	 */
 	public void setCurrentJob(Optional<IJob> retrieveNextJob);
@@ -67,8 +64,6 @@ public interface IWorkBench {
 	/**
 	 * Selects the Tasks that are valid for this Workbench. The taskDescription
 	 * is checked against the responsibilities from the Workbench.
-	 * @throws UnmodifiableException 
-	 * 			  If the IWorkBench is an ImmutableWorkBench.
 	 */
 	public void chooseTasksOutOfJob();
 

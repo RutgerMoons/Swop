@@ -35,10 +35,10 @@ public class Clock implements ObservableClock {
 	
 	/**
 	 * Advance the clock.
-	 * @param elapsedTime
-	 * 			An integer that represents how much the clock has to be advanced, expressed in minutes.
-	 * @throws IllegalArgumentException
-	 * 			If elapsedTime<0
+	 * @param 	elapsedTime
+	 * 				An integer that represents how much the clock has to be advanced, expressed in minutes.
+	 * @throws 	IllegalArgumentException
+	 * 				If elapsedTime<0
 	 */
 	public void advanceTime(int elapsedTime) throws IllegalArgumentException{
 		if (elapsedTime < 0) {
