@@ -23,10 +23,11 @@ public class Job implements IJob {
 	private int minimalIndex;
 
 	/**
-	 * Construct a new Job.
+	 * Construct a new Job
 	 * 
 	 * @param order
-	 *            The order on which the Job is based.
+	 *            The order on which the Job is based
+	 *            
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */

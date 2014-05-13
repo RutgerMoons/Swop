@@ -12,10 +12,11 @@ public class Action implements IAction {
 	/**
 	 * Construct a new Action.
 	 * 
-	 * @param description
-	 *            The description for the action.
-	 * @throws IllegalArgumentException
-	 * 			if description==null of isEmpty.
+	 * @param 	description
+	 *            	The description for the action.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 				if description==null of isEmpty.
 	 */
 	public Action(String description) {
 		this.setDescription(description);
@@ -48,5 +49,4 @@ public class Action implements IAction {
 	public String toString() {
 		return this.getDescription();
 	}
-
 }

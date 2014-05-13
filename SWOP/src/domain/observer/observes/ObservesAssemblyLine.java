@@ -1,6 +1,9 @@
 package domain.observer.observes;
 
+<<<<<<< HEAD
 import domain.clock.ImmutableClock;
+=======
+>>>>>>> a224fc603c04cf7fb6480d24993d5fd3809fc554
 import domain.order.IOrder;
 
 /**
@@ -9,6 +12,10 @@ import domain.order.IOrder;
  */
 public interface ObservesAssemblyLine {
 
+<<<<<<< HEAD
 	public void updateCompletedOrder(IOrder order);
+=======
+	public void updateCompletedOrder(IOrder orderO);
+>>>>>>> a224fc603c04cf7fb6480d24993d5fd3809fc554
 	
 }

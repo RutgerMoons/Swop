@@ -21,15 +21,17 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	/**
 	 * A new logger is constructed:
 	 * 
-	 * @param numberOfDaysOfDetailedHistory
-	 * 			This number represents the degree of detail
-	 * @param clockObserver
-	 * 			The observer to which it subscribes for keeping track of time
-	 * @param assemblyLineObserver
-	 * 			The observer to which it subscribes for keeping track of completed orders
+	 * @param 	numberOfDaysOfDetailedHistory
+	 * 				This number represents the degree of detail
 	 * 
-	 * @throws IllegalArgumentException
-	 * 			Exception is thrown when one of the observers is null
+	 * @param 	clockObserver
+	 * 				The observer to which it subscribes for keeping track of time
+	 * 
+	 * @param 	assemblyLineObserver
+	 * 				The observer to which it subscribes for keeping track of completed orders
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 				Exception is thrown when one of the observers is null
 	 */
 	public Logger(int numberOfDaysOfDetailedHistory) {
 		this.logHistoryDays = new LogHistoryDays(numberOfDaysOfDetailedHistory);
@@ -39,11 +41,11 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	/**
 	 * Method for updating the current time.
 	 * 
-	 * @param currentTime
-	 * 			The new value for the current time
+	 * @param 	currentTime
+	 * 				The new value for the current time
 	 * 
-	 * @throws IllegalArgumentException
-	 * 			Exception is thrown when currentTime is null
+	 * @throws 	IllegalArgumentException
+	 * 				Exception is thrown when currentTime is null
 	 */
 	@Override
 	public void advanceTime(ImmutableClock currentTime) {
@@ -83,7 +85,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the median of completed orders in a day.
+	 * Method for computing the median of completed orders in a day
 	 */
 	public int medianDays() {
 		List<Integer> completeDays = logHistoryDays.getCompleteHistory();
@@ -91,7 +93,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the median of delays.
+	 * Method for computing the median of delays
 	 */
 	public int medianDelays() {
 		List<Integer> completeDelays = logHistoryDelays.getCompleteHistory();
@@ -111,7 +113,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the average of completed orders in a day.
+	 * Method for computing the average of completed orders in a day
 	 */
 	public int averageDays() {
 		List<Integer> completeDays = logHistoryDays.getCompleteHistory();
@@ -119,7 +121,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the average of delays.
+	 * Method for computing the average of delays
 	 */
 	public int averageDelays() {
 		List<Integer> completeDelays = logHistoryDelays.getCompleteHistory();

@@ -3,7 +3,6 @@ package domain.order;
 import java.util.Collection;
 
 import domain.clock.ImmutableClock;
-import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
@@ -72,23 +71,22 @@ public class UnmodifiableOrder implements IOrder {
 	}
 
 	@Override
-	public void setEstimatedTime(ImmutableClock clock) throws UnmodifiableException {
+	public void setEstimatedTime(ImmutableClock clock) {
 		throw new UnmodifiableException();
 	}
 
 	@Override
-	public void completeCar() throws UnmodifiableException {
+	public void completeCar() {
 		throw new UnmodifiableException();
 	}
 
 	@Override
-	public ImmutableClock getDeadline() throws NotImplementedException {
+	public ImmutableClock getDeadline(){
 		return order.getDeadline();
 	}
 
 	@Override
-	public void setDeadline(ImmutableClock clock)
-			throws NotImplementedException, UnmodifiableException {
+	public void setDeadline(ImmutableClock clock){
 		throw new UnmodifiableException();
 	}
 
@@ -98,7 +96,7 @@ public class UnmodifiableOrder implements IOrder {
 	}
 
 	@Override
-	public void setOrderTime(ImmutableClock clock) throws UnmodifiableException {
+	public void setOrderTime(ImmutableClock clock) {
 		throw new UnmodifiableException();
 	}
 

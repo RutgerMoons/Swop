@@ -2,7 +2,6 @@ package domain.observer.observers;
 
 import java.util.ArrayList;
 
-import domain.clock.ImmutableClock;
 import domain.observer.observes.ObservesAssemblyLine;
 import domain.order.IOrder;
 
