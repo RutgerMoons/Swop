@@ -311,6 +311,6 @@ public class Facade {
 	}
 
 	public List<AssemblyLineState> getAssemblyLineStates() {
-		return Arrays.asList(AssemblyLineState.values());
+		return ImmutableList.copyOf(Arrays.asList(AssemblyLineState.values()));
 	}
 }
