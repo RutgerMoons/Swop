@@ -340,6 +340,10 @@ public class Facade {
 		company.changeState(assemblyLine, state);
 	}
 
+	/**
+	 * Returns an immutable list with the current AssemblyLineState of all the 
+	 * AssemblyLines
+	 */
 	public List<AssemblyLineState> getAssemblyLineStates() {
 		return ImmutableList.copyOf(Arrays.asList(AssemblyLineState.values()));
 	}
