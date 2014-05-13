@@ -213,7 +213,7 @@ public class ClientCommunication{
 			partsString.add(i + "." + part.toString() );
 			i++;
 			if(i==parts.size()+1 && part.getType().isOptional()){
-				partsString.add(i + ". Select Nothing" );
+				partsString.add(i + ".Select Nothing" );
 			}
 		}
 
