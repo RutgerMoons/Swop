@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 
 import domain.assembly.workBench.WorkBench;
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.job.action.Action;
@@ -37,10 +39,10 @@ public class WorkBenchTest {
 	private ImmutableClock clock;
 	@Before
 	public void initialize() throws AlreadyInMapException{
-		workBench = new WorkBench(new HashSet<String>(), "name");
+		workBench = new WorkBench(new HashSet<String>(), WorkbenchType.BODY);
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		model = new Vehicle(template);
 		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -56,7 +58,7 @@ public class WorkBenchTest {
 	public void TestContstructor(){
 		assertNotNull(workBench);
 		assertNotNull(workBench.getResponsibilities());
-		assertEquals("name", workBench.getWorkbenchType());
+		assertEquals(WorkbenchType.BODY, workBench.getWorkbenchType());
 	}
 
 	@Test
@@ -258,7 +260,7 @@ public class WorkBenchTest {
 	public void TestToString(){
 		workBench.addResponsibility("Paint");
 		workBench.addResponsibility("Body");
-		assertEquals("name", workBench.toString());
+		assertEquals(WorkbenchType.BODY.toString(), workBench.toString());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

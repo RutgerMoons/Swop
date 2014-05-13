@@ -5,11 +5,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
@@ -86,7 +88,7 @@ public class FacadeTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void processCustomOrderTest() {
 		ImmutableClock time = new ImmutableClock(2, 30);
-		Vehicle vehicle = new Vehicle(new VehicleSpecification("test",Collections.<VehicleOption> emptySet() , 30));
+		Vehicle vehicle = new Vehicle(new VehicleSpecification("test",Collections.<VehicleOption> emptySet() , new HashMap<WorkbenchType, Integer>()));
 		facade.processCustomOrder(vehicle, time);
 	}
 	

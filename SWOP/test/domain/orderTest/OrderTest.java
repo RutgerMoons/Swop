@@ -5,12 +5,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
@@ -52,7 +54,7 @@ public class OrderTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		template = new VehicleSpecification("model", parts, 60);
+		template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		model = new Vehicle(template);
 		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addCarPart(new VehicleOption("sedan", VehicleOptionCategory.BODY));
@@ -143,7 +145,7 @@ public class OrderTest {
 
 	@Test
 	public void TestEqualsAndHashcode() throws AlreadyInMapException {
-		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), 50);
+		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), new HashMap<WorkbenchType, Integer>());
 		Vehicle model2 = new Vehicle(template2);
 		model2.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model2.addCarPart(new VehicleOption("sedan", VehicleOptionCategory.BODY));
@@ -176,7 +178,7 @@ public class OrderTest {
 		
 		order1.setEstimatedTime(new ImmutableClock(1, 100));
 		assertEquals(
-				"2 model Estimated completion time: 1 days and 1 hours and 40 minutes",
+				"2 model",
 				order1.toString());
 	}
 	
@@ -195,6 +197,8 @@ public class OrderTest {
 	@Test
 	public void testGetProductionTime() throws NotImplementedException{
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
+		
+		//TODO
 		assertEquals(order1.getProductionTime(), model.getSpecification().getTimeAtWorkBench());
 	}
 	

@@ -191,7 +191,7 @@ public class StandardOrder implements IOrder {
 	@Override
 	public int getProductionTime() {
 		int time = 0;
-		for(WorkbenchType type: WorkbenchType.values()){
+		for(WorkbenchType type: getTimeAtWorkBench().keySet()){
 			time += getTimeAtWorkBench().get(type);
 		}
 		return time;

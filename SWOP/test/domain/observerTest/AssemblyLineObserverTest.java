@@ -23,7 +23,7 @@ public class AssemblyLineObserverTest {
 	@Test 
 	public void attachLoggerTest1(){
 		ClockObserver observer2 = new ClockObserver();
-		Logger logger = new Logger(3, observer2, observer);
+		Logger logger = new Logger(3);
 		observer.attachLogger(logger);
 	}
 	
@@ -35,7 +35,7 @@ public class AssemblyLineObserverTest {
 	@Test 
 	public void detachLoggerTest1(){
 		ClockObserver observer2 = new ClockObserver();
-		Logger logger = new Logger(3, observer2, observer);
+		Logger logger = new Logger(3);
 		observer.attachLogger(logger);
 		observer.detachLogger(logger);
 	}
@@ -48,7 +48,7 @@ public class AssemblyLineObserverTest {
 	@Test
 	public void updateCompletedOrderTest(){
 		ClockObserver observer2 = new ClockObserver();
-		Logger logger = new Logger(3,observer2, observer);
+		Logger logger = new Logger(3);
 		logger.advanceTime(new ImmutableClock(1,200));
 		observer.updateCompletedOrder(new ImmutableClock(1,100));
 	}

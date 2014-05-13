@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
@@ -33,7 +35,7 @@ public class ImmutableJobTest {
 	public void initialize() throws AlreadyInMapException{
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		model = new Vehicle(template);
 		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -58,7 +60,9 @@ public class ImmutableJobTest {
 		
 		assertEquals(job.toString(), immutable.toString());
 		assertEquals(job.hashCode(), immutable.hashCode());
-		assertTrue(immutable.equals(job));;
+		assertTrue(immutable.equals(job));
+		//TODO
+		assertTrue(job.equals(immutable));
 		assertTrue(immutable.isCompleted());
 	}
 

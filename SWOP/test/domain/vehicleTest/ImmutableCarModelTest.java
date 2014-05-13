@@ -4,12 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
@@ -28,7 +30,7 @@ public class ImmutableCarModelTest {
 	public void initialize(){
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		car = new Vehicle(template);
 		immutable = new UnmodifiableVehicle(car);
 	}
@@ -44,9 +46,12 @@ public class ImmutableCarModelTest {
 		assertEquals(car.getVehicleOptions(), immutable.getVehicleOptions());
 		assertEquals(car.toString(), immutable.toString());
 		assertTrue(immutable.equals(car));
+		//TODO
+		assertTrue(car.equals(immutable));
 		assertEquals(car.hashCode(), immutable.hashCode());
 		
 		assertEquals(car.getSpecification(), immutable.getSpecification());
+		
 		
 		assertFalse(immutable.getForcedOptionalTypes().get(new VehicleOption("sport", VehicleOptionCategory.BODY)));
 	}

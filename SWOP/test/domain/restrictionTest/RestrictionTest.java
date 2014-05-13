@@ -6,17 +6,20 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -33,7 +36,8 @@ public class RestrictionTest {
 		
 		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
-		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
+		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
+		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
 		
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
@@ -57,7 +61,7 @@ public class RestrictionTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		picker.setNewModel(template);
 		
 	}
@@ -163,7 +167,7 @@ public class RestrictionTest {
 	
 	@Test
 	public void testAdd(){
-		picker = new PartPicker(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>());
+		picker = new PartPicker(new VehicleSpecificationCatalogue(), new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>());
 		picker.addBindingRestriction(new BindingRestriction(new VehicleOption("blabla", VehicleOptionCategory.AIRCO), new VehicleOption("test", VehicleOptionCategory.BODY)));
 		picker.addOptionalRestriction(new OptionalRestriction(new VehicleOption("blabla", VehicleOptionCategory.ENGINE), VehicleOptionCategory.SPOILER, false));
 		
