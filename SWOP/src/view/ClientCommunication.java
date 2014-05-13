@@ -194,6 +194,8 @@ public class ClientCommunication{
 					return chooseOrder(pendingOrders, completedOrders);
 				}
 			}
+		}else { 
+			show(Arrays.asList("You have no pending or completed orders"));
 		}
 		return Optional.absent();
 	}
@@ -210,7 +212,7 @@ public class ClientCommunication{
 		for (VehicleOption part : parts) {
 			partsString.add(i + "." + part.toString() );
 			i++;
-			if(i==parts.size() && part.getType().isOptional()){
+			if(i==parts.size()+1 && part.getType().isOptional()){
 				partsString.add(i + ". Select Nothing" );
 			}
 		}
@@ -458,14 +460,17 @@ public class ClientCommunication{
 
 	public void showAssemblyLine(IAssemblyLine assemblyLine) {
 		ArrayList<String> assemblyLineStrings = new ArrayList<String>();
-		assemblyLineStrings.add("STATE: " + assemblyLine.getState() );
+		assemblyLineStrings.add(assemblyLine.getState().toString() );
 
 		assemblyLineStrings.add(0, "current assemblyline:");
 
 		List<IWorkBench> allWorkbenches = assemblyLine.getWorkbenches();
 
 		for(IWorkBench workbench: allWorkbenches){
+			assemblyLineStrings.add("Workbench: " + workbench.toString());
+			assemblyLineStrings.add("Pending Tasks: ");
 			assemblyLineStrings.addAll(getPendingTasks(workbench));
+			assemblyLineStrings.add("Completed Tasks: ");
 			assemblyLineStrings.addAll(getCompletedTasks(workbench));
 		}
 		show(assemblyLineStrings);
@@ -711,8 +716,10 @@ public class ClientCommunication{
 	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches) {
 		List<String> strings = new ArrayList<>();
 
+		int i = 1;
 		for(IWorkBench workbench: workbenches){
-			strings.add(workbench.toString());
+			strings.add(i + ": " +workbench.toString());
+			i++;
 		}
 
 		show(strings);

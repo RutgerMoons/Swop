@@ -49,7 +49,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		}
 		workbenches = new ArrayList<IWorkBench>();
 		currentJobs = new ArrayList<IJob>();
-		initializeWorkbenches();
 		observers = new ArrayList<>();
 		this.scheduler = new Scheduler(clockObserver, clock);
 		this.assemblyLineState = assemblyLineState;
@@ -188,29 +187,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return workbenches;
 	}
 
-	/**
-	 * Initializes the workbenches at the start of the program.
-	 * 
-	 */
-	private void initializeWorkbenches() {
-		Set<String> responsibilitiesCarBodyPost = new HashSet<>();
-		responsibilitiesCarBodyPost.add("Paint");
-		responsibilitiesCarBodyPost.add("Assembly");
-		addWorkBench(new WorkBench(responsibilitiesCarBodyPost, "car body"));
 
-		Set<String> responsibilitiesDrivetrainPost = new HashSet<>();
-		responsibilitiesDrivetrainPost.add("Engine");
-		responsibilitiesDrivetrainPost.add("Gearbox");
-		addWorkBench(new WorkBench(responsibilitiesDrivetrainPost, "drivetrain"));
-
-		Set<String> responsibilitiesAccesoiresPost = new HashSet<>();
-		responsibilitiesAccesoiresPost.add("Seats");
-		responsibilitiesAccesoiresPost.add("Airco");
-		responsibilitiesAccesoiresPost.add("Wheels");
-		addWorkBench(new WorkBench(responsibilitiesAccesoiresPost,
-				"accessories"));
-
-	}
 
 	//TODO change to string
 	@Override
