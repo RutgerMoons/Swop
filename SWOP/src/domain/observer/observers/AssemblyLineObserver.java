@@ -42,7 +42,7 @@ public class AssemblyLineObserver {
 	}
 	
 	/**
-	 * Every subscribed object will be notified and receives the estimated time of the completed order
+	 * Every subscribed object will be notified and receives the completed order
 	 */
 	public void updateCompletedOrder(IOrder order) {
 		for (ObservesAssemblyLine logger : this.loggers) {

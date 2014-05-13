@@ -6,6 +6,7 @@ import domain.clock.ImmutableClock;
 import domain.observer.observes.ObservesAssemblyLine;
 import domain.observer.observes.ObservesClock;
 import domain.order.Delay;
+import domain.order.IOrder;
 
 /**
  * This object keeps track of completed orders and their delays. It also keeps track
@@ -75,7 +76,8 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	 * This method throws an IllegalArgumentException when the parameter is null.
 	 */
 	@Override
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfCompletion) {
+	public void updateCompletedOrder(IOrder order) {
+		ImmutableClock estimatedTimeOfCompletion = order.getEstimatedTime();
 		if (estimatedTimeOfCompletion == null) {
 			throw new IllegalArgumentException();
 		}
