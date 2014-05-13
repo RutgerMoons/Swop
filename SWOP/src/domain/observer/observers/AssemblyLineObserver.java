@@ -2,8 +2,8 @@ package domain.observer.observers;
 
 import java.util.ArrayList;
 
-import domain.clock.ImmutableClock;
 import domain.observer.observes.ObservesAssemblyLine;
+import domain.order.IOrder;
 
 /**
  * This object can attach and detach any object that implements the LogsAssemblyLine interface
@@ -44,9 +44,9 @@ public class AssemblyLineObserver {
 	/**
 	 * Every subscribed object will be notified and receives the estimated time of the completed order
 	 */
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder) {
+	public void updateCompletedOrder(IOrder order) {
 		for (ObservesAssemblyLine logger : this.loggers) {
-			logger.updateCompletedOrder(estimatedTimeOfOrder);
+			logger.updateCompletedOrder(order);
 		}
 	}
 }
