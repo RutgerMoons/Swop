@@ -2,6 +2,7 @@ package domain.usersTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -67,5 +68,11 @@ public class UserBookTest {
 		assertEquals("Stef", book.getCurrentUser().getName());
 		book.logout();
 		assertNull(book.getCurrentUser());
+	}
+	
+	@Test
+	public void createUser(){
+		book.createUser("jos", "manager");
+		assertTrue(book.getUserBook().containsKey("jos"));
 	}
 }

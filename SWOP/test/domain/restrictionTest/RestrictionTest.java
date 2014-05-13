@@ -1,9 +1,6 @@
 package domain.restrictionTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,6 +34,7 @@ public class RestrictionTest {
 		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
 		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
+		catalogue.addModel(new VehicleSpecification("model A", new HashSet<VehicleOption>(), new HashMap<WorkbenchType, Integer>()));
 		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
 		
 		Set<VehicleOption> parts = new HashSet<>();
@@ -64,6 +62,13 @@ public class RestrictionTest {
 		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		picker.setNewModel(template);
 		
+	}
+	
+	@Test
+	public void testContstructor(){
+		assertNotNull(picker.getBindingRestrictions());
+		assertNotNull(picker.getOptionalRestrictions());
+		assertNotNull(picker.getCatalogue());
 	}
 
 	@Test
@@ -173,5 +178,12 @@ public class RestrictionTest {
 		
 		assertEquals(1, picker.getBindingRestrictions().size());
 		assertEquals(1, picker.getOptionalRestrictions().size());
+	}
+	
+	@Test
+	public void testGetSpecification(){
+		assertNotNull(picker.getSpecification("model A"));
+		assertNotNull(picker.getVehicleSpecifications());
+		
 	}
 }

@@ -50,13 +50,12 @@ public class UnmodifiableVehicle implements IVehicle {
 		return model.toString();
 	}
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException,
-			UnmodifiableException {
+	public void addCarPart(VehicleOption part) throws AlreadyInMapException {
 		throw new UnmodifiableException();
 		
 	}
 	@Override
-	public Map<VehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
+	public Map<VehicleOption, Boolean> getForcedOptionalTypes() {
 		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
 	}
 	@Override
@@ -65,7 +64,7 @@ public class UnmodifiableVehicle implements IVehicle {
 		throw new UnmodifiableException();
 	}
 	@Override
-	public VehicleSpecification getSpecification() throws NotImplementedException {
+	public VehicleSpecification getSpecification() {
 		return model.getSpecification();
 	}
 	@Override
