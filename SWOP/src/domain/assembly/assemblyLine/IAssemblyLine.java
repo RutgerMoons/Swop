@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import domain.assembly.workBench.IWorkBench;
+import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.Scheduler;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -52,4 +53,14 @@ public interface IAssemblyLine {
 	 * @return	the state of the AssemblyLine
 	 */
 	public AssemblyLineState getState();
+
+	/**
+	 * Change the operational state of the assemblyLine.
+	 * 
+	 * @param	state
+	 * 			The state the assemblyLine has to be in
+	 * @throws	UnmodifiableException
+	 * 			Thrown when the object is an unmodifiable AssemblyLine
+	 */
+	public void setState(AssemblyLineState state);
 }

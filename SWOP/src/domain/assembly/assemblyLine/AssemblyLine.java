@@ -298,5 +298,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	public List<IJob> getStandardJobs() {
 		return this.scheduler.getStandardJobs();
 	}
+
+	@Override
+	public void setState(AssemblyLineState state) {
+		this.assemblyLineState = state;
+		
+	}
 	
 }

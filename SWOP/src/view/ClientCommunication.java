@@ -9,6 +9,7 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
@@ -757,17 +758,17 @@ public class ClientCommunication{
 			details.add(day + LINESEPARATOR);
 		}
 		show(details);
-		
+
 	}
 
 	public void showAverageDelays(int averageDelays) {
 		show(Arrays.asList("Average delays: " + averageDelays));
-		
+
 	}
 
 	public void showMedianDelays(int medianDelays) {
 		show(Arrays.asList("Median delays: " + medianDelays));
-		
+
 	}
 
 	public void showDetailedDelays(List<Delay> detailedDelays) {
@@ -785,9 +786,9 @@ public class ClientCommunication{
 		showAlgorithms.add("All possible algorithms: " + LINESEPARATOR);
 		showAlgorithms.addAll(modifiedList);
 		this.show(showAlgorithms);
-		
+
 	}
-	
+
 	public List<String> indexList(List<String> listToBeIndexed){
 		List<String> finalResult = new ArrayList<String>();
 		int index  = 1;
@@ -799,7 +800,7 @@ public class ClientCommunication{
 	}
 
 	public void showBatches(Set<Set<VehicleOption>> batches) {
-	    List<String> sets = new ArrayList<String>();
+		List<String> sets = new ArrayList<String>();
 		sets.add(0, "Possible Batches:");
 		int i = 1;
 		for (Iterator<Set<VehicleOption>> iterator = batches.iterator(); iterator.hasNext();) {
@@ -813,5 +814,33 @@ public class ClientCommunication{
 			i++;
 		}
 		this.show(sets);
+	}
+
+	public AssemblyLineState chooseStatus(AssemblyLineState assemblyLineState) {
+		AssemblyLineState[] states = AssemblyLineState.values();
+		showStatus(assemblyLineState);
+		
+		int customNumber = askNumber("Which operational state do you choose?") - 1;
+		
+		if (customNumber >0 && customNumber < states.length) {
+			return states[customNumber];
+		} else {
+			invalidAnswerPrompt();
+			return chooseStatus(assemblyLineState);
+		}
+		
+		
+	}
+
+	public void showStatus(AssemblyLineState assemblyLineState) {
+		AssemblyLineState[] states = AssemblyLineState.values();
+		List<String> strings = new ArrayList<String>();
+		strings.add(0, "Possible States:");
+		int i = 1;
+		for(AssemblyLineState state: states){
+			strings.add(i + ": " + state.toString());
+		}
+		
+		show(strings);
 	}
 }

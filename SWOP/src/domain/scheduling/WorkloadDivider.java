@@ -32,19 +32,11 @@ public class WorkloadDivider implements ObservesOrderBook {
 
 	private List<AssemblyLine> assemblyLines;
 	
-<<<<<<< HEAD
-	public WorkloadDivider(	ArrayList<AssemblyLine> assemblyLines, OrderBookObserver orderBookObserver, AssemblyLineObserver assemblyLineObserver) {
-		if (	assemblyLines == null || orderBookObserver == null || assemblyLineObserver == null) {
-			throw new IllegalArgumentException();
-		}
-		this.assemblyLines = assemblyLines;
-=======
 	public WorkloadDivider(	List<AssemblyLine> listOfAssemblyLines, OrderBookObserver orderBookObserver, AssemblyLineObserver assemblyLineObserver) {
 		if (	listOfAssemblyLines == null || orderBookObserver == null || assemblyLineObserver == null) {
 			throw new IllegalArgumentException();
 		}
 		this.assemblyLines = listOfAssemblyLines;
->>>>>>> origin/Stef
 		orderBookObserver.attachLogger(this);
 		// attach the assemblyLineObserver to all assemblyLines
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
@@ -231,6 +223,11 @@ public class WorkloadDivider implements ObservesOrderBook {
       		}
 	    }
 		return toReturn;
+	}
+
+	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
+		int index = assemblyLines.indexOf(assemblyLine);
+		assemblyLines.get(index).setState(state);
 	}
 	
 }

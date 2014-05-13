@@ -1,5 +1,6 @@
 package domain.company;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 
 import domain.assembly.assemblyLine.AssemblyLine;
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
@@ -34,10 +36,6 @@ import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.Vehicle;
-<<<<<<< HEAD
-import domain.vehicle.vehicleOption.VehicleOption;
-=======
->>>>>>> origin/Stef
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -61,9 +59,9 @@ public class Company {
 
 	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, 
 			CustomVehicleCatalogue customCatalogue, VehicleSpecificationCatalogue vehicleSpecificationCatalogue, 
-			List<AssemblyLine> listOfAssemblyLines){
+			List<AssemblyLine> listOfAssemblyLines, Clock clock){
 		if (bindingRestrictions == null || optionalRestrictions == null || customCatalogue == null || 
-				vehicleSpecificationCatalogue == null || listOfAssemblyLines == null){
+				vehicleSpecificationCatalogue == null || listOfAssemblyLines == null || clock==null){
 			throw new IllegalArgumentException();
 		}
 		this.userbook = new UserBook();
@@ -73,7 +71,7 @@ public class Company {
 		AssemblyLineObserver assemblyLineObserver = new AssemblyLineObserver();
 		assemblyLineObserver.attachLogger(log);
 		assemblyLineObserver.attachLogger(orderbook);
-		this.clock = new Clock();
+		this.clock = clock;
 		ClockObserver clockObserver = new ClockObserver();
 		this.clock.attachObserver(clockObserver);
 		clockObserver.attachLogger(log);
@@ -82,11 +80,7 @@ public class Company {
 		this.customCatalogue = customCatalogue;
 		this.partpicker = new PartPicker(vehicleSpecificationCatalogue, this.bindingRestrictions, this.optionalRestrictions);
 		OrderBookObserver orderBookObserver = new OrderBookObserver();
-<<<<<<< HEAD
-		this.workloadDivider = new WorkLoadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver, clockObserver);
-=======
 		this.workloadDivider = new WorkloadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver);
->>>>>>> origin/Stef
 	}
 
 	/**
@@ -194,11 +188,6 @@ public class Company {
 		return workloadDivider.getAssemblyLines();
 	}
 
-	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
-		// workloadDivider returnt een lijst van UnmodifiableWorkbenches
-		return workloadDivider.getBlockingWorkBenches(assemblyLine);
-	}
-
 	public VehicleSpecification getVehicleSpecification(String specificationName) {
 		return partpicker.getSpecification(specificationName);
 	}
@@ -240,7 +229,8 @@ public class Company {
 	}
 
 	public List<Integer> getDetailedDays(){
-		List<Integer> detailedList = log.getDetailedDays();
+		List<Integer> detailedList = new ArrayList<>();
+		detailedList.addAll(log.getDetailedDays());
 		if(detailedList.size() < this.amountOfDetailedHistory){
 			for(int i = detailedList.size();i<this.amountOfDetailedHistory; i++){
 				detailedList.add(0);
@@ -258,7 +248,8 @@ public class Company {
 	}
 
 	public List<Delay> getDetailedDelays(){
-		List<Delay> detailedList = log.getDetailedDelays();
+		List<Delay> detailedList = new ArrayList<>();
+		detailedList.addAll(log.getDetailedDelays());
 		if(detailedList.size() < this.amountOfDetailedHistory){
 			for(int i = detailedList.size();i<this.amountOfDetailedHistory; i++){
 				detailedList.add(new Delay(new ImmutableClock(0,0), new ImmutableClock(0,0)));
@@ -289,5 +280,9 @@ public class Company {
 
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		return this.workloadDivider.getAllCarOptionsInPendingOrders();
+	}
+
+	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
+		workloadDivider.changeState(assemblyLine, state);
 	}
 }

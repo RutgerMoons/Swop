@@ -1,10 +1,12 @@
 package domain.assembly.assemblyLine;
 
+import java.lang.instrument.UnmodifiableClassException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import domain.assembly.workBench.IWorkBench;
+import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.Scheduler;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -53,6 +55,11 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 	@Override
 	public AssemblyLineState getState() {
 		return this.assemblyLine.getState();
+	}
+
+	@Override
+	public void setState(AssemblyLineState state) {
+		throw new UnmodifiableException();
 	}
 
 }

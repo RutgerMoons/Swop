@@ -9,6 +9,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.ImmutableClock;
@@ -124,15 +125,6 @@ public class Facade {
 	 */
 	public List<AccessRight> getAccessRights() {
 		return this.company.getAccessRights();
-	}
-
-	/**
-	 * Get the workbenches which are blocking the AssemblyLine from advancing.
-	 * @return
-	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
-	 */
-	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
-		return ImmutableList.copyOf(company.getBlockingWorkBenches(assemblyLine));
 	}
 
 	/**
@@ -316,5 +308,9 @@ public class Facade {
 
 	public List<IAssemblyLine> getAssemblyLines() {
 		return Collections.unmodifiableList(company.getAssemblyLines());
+	}
+
+	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
+		company.changeState(assemblyLine, state);
 	}
 }
