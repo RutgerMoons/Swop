@@ -2,28 +2,37 @@ package domain.observerTest;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.log.Logger;
 import domain.observer.observers.AssemblyLineObserver;
-import domain.observer.observers.ClockObserver;
+import domain.order.OrderBook;
+import domain.order.StandardOrder;
+import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 public class AssemblyLineObserverTest {
 
 	private AssemblyLineObserver observer;
-	
+	private OrderBook book;
 	@Before
 	public void constructorTest() {
 		observer = new AssemblyLineObserver();
+		book = new OrderBook();
+		observer.attachLogger(book);
 		assertNotNull(observer);
 	}
 
 	@Test 
 	public void attachLoggerTest1(){
-		ClockObserver observer2 = new ClockObserver();
-		Logger logger = new Logger(3, observer2, observer);
+		Logger logger = new Logger(3);
 		observer.attachLogger(logger);
 	}
 	
@@ -34,8 +43,7 @@ public class AssemblyLineObserverTest {
 	
 	@Test 
 	public void detachLoggerTest1(){
-		ClockObserver observer2 = new ClockObserver();
-		Logger logger = new Logger(3, observer2, observer);
+		Logger logger = new Logger(3);
 		observer.attachLogger(logger);
 		observer.detachLogger(logger);
 	}
@@ -47,10 +55,12 @@ public class AssemblyLineObserverTest {
 	
 	@Test
 	public void updateCompletedOrderTest(){
-		ClockObserver observer2 = new ClockObserver();
-		Logger logger = new Logger(3,observer2, observer);
+		Logger logger = new Logger(3);
 		logger.advanceTime(new ImmutableClock(1,200));
-		observer.updateCompletedOrder(new ImmutableClock(1,100));
+		StandardOrder order = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkbenchType, Integer>())), 5, new ImmutableClock(0, 0));
+		order.setEstimatedTime(new ImmutableClock(1, 1));
+		observer.updateCompletedOrder(order);
+		assertNotNull(logger.getDetailedDelays());	
 	}
 	
 }

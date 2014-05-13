@@ -7,6 +7,7 @@ import java.util.Set;
 import domain.assembly.workBench.IWorkBench;
 import domain.job.job.IJob;
 import domain.scheduling.Scheduler;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 public interface IAssemblyLine {
@@ -24,9 +25,9 @@ public interface IAssemblyLine {
 	public ArrayList<IWorkBench> getBlockingWorkBenches();
 	
 	/**
-	 * Get all the pending jobs for this AssemblyLine.
+	 * Get all the pending jobs for this AssemblyLine
 	 * 
-	 * @return A list representing the current jobs.
+	 * @return 	A list representing the current jobs
 	 */
 	public List<IJob> getCurrentJobs();
 	
@@ -38,7 +39,7 @@ public interface IAssemblyLine {
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
 	 * 
-	 * @return	A list of IWorkBenches.
+	 * @return	A list of IWorkBenches
 	 */
 	public List<IWorkBench> getWorkbenches();
 	
@@ -52,4 +53,17 @@ public interface IAssemblyLine {
 	 * @return	the state of the AssemblyLine
 	 */
 	public AssemblyLineState getState();
+
+	/**
+	 * Change the operational state of the assemblyLine
+	 * 
+	 * @param	state
+	 * 			The state the assemblyLine has to be in
+	 */
+	public void setState(AssemblyLineState state);
+	
+	/**
+	 * Get a list of responsibilities, which indicate the vehicles that the assemblyline can process.  
+	 */
+	public Set<VehicleSpecification> getResponsibilities();
 }

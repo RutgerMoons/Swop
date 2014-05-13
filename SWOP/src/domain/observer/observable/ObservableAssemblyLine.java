@@ -1,7 +1,7 @@
 package domain.observer.observable;
 
-import domain.clock.ImmutableClock;
 import domain.observer.observers.AssemblyLineObserver;
+import domain.order.IOrder;
 
 public interface ObservableAssemblyLine {
 
@@ -26,5 +26,5 @@ public interface ObservableAssemblyLine {
 	 * Method that notifies all the subscribers when an order is completed and sends the current
 	 * time to every subscriber.
 	 */
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder);
+	public void updateCompletedOrder(IOrder order);
 }

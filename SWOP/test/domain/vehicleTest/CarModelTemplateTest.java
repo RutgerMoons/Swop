@@ -2,12 +2,14 @@ package domain.vehicleTest;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -39,14 +41,18 @@ public class CarModelTemplateTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		template = new VehicleSpecification("model", parts, 60);
+		
+		HashMap<WorkbenchType, Integer> timeAtWorkBench = new HashMap<WorkbenchType, Integer>();
+		timeAtWorkBench.put(WorkbenchType.BODY, 60);
+		template = new VehicleSpecification("model", parts, timeAtWorkBench);
 	}
 
 	@Test
 	public void testConstructor() {
 		assertEquals("model", template.getDescription());
 		assertEquals("model", template.toString());
-		assertEquals(60, template.getTimeAtWorkBench());
+		int time = template.getTimeAtWorkBench().get(WorkbenchType.BODY);
+		assertEquals(60, time);
 		
 		assertEquals(8, template.getCarParts().keySet().size());
 		assertEquals(14, template.getCarParts().values().size());

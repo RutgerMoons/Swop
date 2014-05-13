@@ -3,10 +3,13 @@ package domain.job.job;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 
@@ -22,10 +25,11 @@ public class Job implements IJob {
 	private int minimalIndex;
 
 	/**
-	 * Construct a new Job.
+	 * Construct a new Job
 	 * 
 	 * @param order
-	 *            The order on which the Job is based.
+	 *            The order on which the Job is based
+	 *            
 	 * @throws IllegalArgumentException
 	 *             if order==null
 	 */
@@ -82,7 +86,7 @@ public class Job implements IJob {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + taskList.hashCode();
+		result = prime * result + taskList.hashCode() + getTasks().hashCode() + getTimeAtWorkBench().hashCode();
 		return result;
 	}
 
@@ -92,10 +96,17 @@ public class Job implements IJob {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())//&&obj.getClass != UnmodifiableJob
+		IJob other;
+		try{
+			other = (IJob) obj; //IJob ipv Job
+		} catch (ClassCastException e){
 			return false;
-		Job other = (Job) obj; //IJob ipv Job
-		if (!order.equals(other.order))//other.getOrder()
+		}
+		if (!order.equals(other.getOrder()))//other.getOrder()
+			return false;
+		if(!getTasks().equals(other.getTasks()))
+			return false;
+		if(!getTimeAtWorkBench().equals(other.getTimeAtWorkBench()))
 			return false;
 		return true;
 	}
@@ -125,8 +136,13 @@ public class Job implements IJob {
 	}
 	
 	@Override
-	public int getTimeAtWorkBench() {
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return this.order.getTimeAtWorkBench();
+	}
+
+	@Override
+	public VehicleSpecification getVehicleSpecification() {
+		return order.getVehicleSpecification();
 	}
 
 }

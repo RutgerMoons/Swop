@@ -1,7 +1,6 @@
 package domain.assembly.assemblyLine;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,17 +9,17 @@ import com.google.common.collect.ImmutableList;
 
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
-import domain.assembly.workBench.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
-import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
 import domain.observer.observable.ObservableAssemblyLine;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
+import domain.order.IOrder;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
@@ -35,35 +34,36 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	private List<AssemblyLineObserver> observers;
 	private Scheduler scheduler;
 	private AssemblyLineState assemblyLineState;
+	private Set<VehicleSpecification> responsibilities;
 
 	/**
 	 * Construct a new AssemblyLine. Initializes a scheduler and an amount of workbenches.
 	 * 
-	 * @param clock
-	 *            The clock that has to be accessed by this AssemblyLine.
+	 * @param 	clock
+	 *            The clock that has to be accessed by this AssemblyLine
 	 *            
-	 * @throws IllegalArgumentException
-	 *             Thrown when one or both of the parameters are null.
+	 * @throws 	IllegalArgumentException
+	 *             Thrown when one or both of the parameters are null
 	 */
-	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock, AssemblyLineState assemblyLineState) {
-		if (clockObserver == null || clock == null || assemblyLineState == null) {
+	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock, AssemblyLineState assemblyLineState, Set<VehicleSpecification> responsiblities) {
+		if (clockObserver == null || clock == null || assemblyLineState == null || responsiblities==null) {
 			throw new IllegalArgumentException();
 		}
 		workbenches = new ArrayList<IWorkBench>();
 		currentJobs = new ArrayList<IJob>();
-		initializeWorkbenches();
 		observers = new ArrayList<>();
 		this.scheduler = new Scheduler(clockObserver, clock);
 		this.assemblyLineState = assemblyLineState;
+		this.responsibilities = responsiblities;
 	}
 
 	/**
 	 * Add a workbench to the assemblyLine.
 	 * 
-	 * @param bench
-	 *            The workbench you want to add.
-	 * @throws IllegalArgumentException
-	 *             Thrown when the parameter is null.
+	 * @param 	bench
+	 *            The workbench you want to add
+	 * @throws 	IllegalArgumentException
+	 *             Thrown when the parameter is null
 	 */
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
@@ -76,14 +76,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * completed. It shifts the jobs to it's next workstation.
 	 * It notifies its observers when an order is completed.
 	 * 
-	 * @throws NoSuitableJobFoundException
-	 * 		Thrown when no job can be scheduled by the scheduler.
-	 *  
-	 * @throws UnmodifiableException 
-	 * 		Thrown when an IOrder has no deadline yet.
-	 * 
-	 * @throws IllegalStateException
-	 * 		Thrown when the assemblyLine cannot advance.
+	 * @throws 	NoSuitableJobFoundException
+	 * 				Thrown when no job can be scheduled by the scheduler
 	 */
 	public void advance() throws NoSuitableJobFoundException {
 		if (!canAdvance()) {
@@ -106,11 +100,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		if (lastJob.isPresent()	&& lastJob.get().isCompleted()) {
 			currentJobs.remove(lastJob.get());
 			lastJob.get().getOrder().completeCar();
-			updateCompletedOrder(lastJob.get().getOrder().getEstimatedTime());
+			updateCompletedOrder(lastJob.get().getOrder());
 		}
 	}
 
-	
+	//TODO Doc
 	@Override
 	public boolean canAdvance() {
 		List<IWorkBench> workBenches = getWorkbenches();
@@ -124,9 +118,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * This method first sets the index of the first workbench that has to complete some tasks
 	 * of the job. Then the job is passed to the scheduler.
 	 * 
-	 * @param	job that needs to be scheduled
+	 * @param	job 
+	 * 				The job that needs to be scheduled
 	 * 
-	 * @throws	IllegalArgumentException when the given parameter is null
+	 * @throws	IllegalArgumentException 
+	 * 				Thrown when the given parameter is null
 	 */
 	public void schedule(IJob job) {
 		if (job == null) {
@@ -134,6 +130,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		}
 		job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
 		this.scheduler.addJobToAlgorithm(job);
+		
+		
 	}
 
 	/**
@@ -151,6 +149,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return -1;
 	}
 
+	//TODO doc
 	@Override
 	public ArrayList<IWorkBench> getBlockingWorkBenches() {
 		ArrayList<IWorkBench> notCompletedBenches = new ArrayList<>();
@@ -161,16 +160,26 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return notCompletedBenches;
 	}
 
+	/**
+	 * Returns an Immutable list of the current jobs on the assemblyLine
+	 */
 	@Override
 	public List<IJob> getCurrentJobs() {
 		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
 	}
 	
+	/**
+	 * Returns the current scheduler used by the AssemblyLine;
+	 */
 	@Override
 	public Scheduler getCurrentScheduler() {
 		return this.scheduler;
 	}
 	
+	/**
+	 * TODO
+	 * @return
+	 */
 	public String getCurrentSchedulingAlgorithm() {
 		return this.scheduler.getCurrentSchedulingAlgorithm();
 	}
@@ -185,30 +194,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return workbenches;
 	}
 
-	/**
-	 * Initializes the workbenches at the start of the program.
-	 * 
-	 */
-	private void initializeWorkbenches() {
-		Set<String> responsibilitiesCarBodyPost = new HashSet<>();
-		responsibilitiesCarBodyPost.add("Paint");
-		responsibilitiesCarBodyPost.add("Assembly");
-		addWorkBench(new WorkBench(responsibilitiesCarBodyPost, "car body"));
 
-		Set<String> responsibilitiesDrivetrainPost = new HashSet<>();
-		responsibilitiesDrivetrainPost.add("Engine");
-		responsibilitiesDrivetrainPost.add("Gearbox");
-		addWorkBench(new WorkBench(responsibilitiesDrivetrainPost, "drivetrain"));
 
-		Set<String> responsibilitiesAccesoiresPost = new HashSet<>();
-		responsibilitiesAccesoiresPost.add("Seats");
-		responsibilitiesAccesoiresPost.add("Airco");
-		responsibilitiesAccesoiresPost.add("Wheels");
-		addWorkBench(new WorkBench(responsibilitiesAccesoiresPost,
-				"accessories"));
-
-	}
-
+	//TODO change to string
 	@Override
 	public String toString() {
 		String assemblyLineString = "";
@@ -217,7 +205,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		for (int i = 0; i < this.getWorkbenches().size(); i++) {
 			workbench = this.getWorkbenches().get(i);
 			assemblyLineString += "," + "-workbench " + (i + 1) + ": "
-					+ this.getWorkbenches().get(i).getWorkbenchName();
+					+ this.getWorkbenches().get(i).getWorkbenchType();
 			for (int j = 0; j < workbench.getCurrentTasks().size(); j++) {
 				if (workbench.getCurrentTasks().get(j).isCompleted()) {
 					completed = "completed";
@@ -250,9 +238,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	}
 
 	@Override
-	public void updateCompletedOrder(ImmutableClock aClock) {
+	public void updateCompletedOrder(IOrder order) {
 		for (AssemblyLineObserver observer : observers) {
-			observer.updateCompletedOrder(aClock);
+			observer.updateCompletedOrder(order);
 		}
 	}
 	
@@ -270,6 +258,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		this.scheduler.switchToAlgorithm(creator, this.workbenches.size());
 	}
 
+	/**
+	 * Method for returning the current state of the assemblyLine.
+	 */
 	@Override
 	public AssemblyLineState getState() {
 		return assemblyLineState;
@@ -297,6 +288,17 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 */
 	public List<IJob> getStandardJobs() {
 		return this.scheduler.getStandardJobs();
+	}
+
+	@Override
+	public void setState(AssemblyLineState state) {
+		this.assemblyLineState = state;
+		
+	}
+
+	@Override
+	public Set<VehicleSpecification> getResponsibilities() {
+		return responsibilities;
 	}
 	
 }

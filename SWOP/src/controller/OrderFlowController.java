@@ -63,9 +63,9 @@ public class OrderFlowController extends UseCaseFlowController {
 			return;
 		} else {
 			String model = clientCommunication.chooseModel(facade
-					.getCarModelSpecifications());
-			VehicleSpecification realModel = facade.getCarModelSpecificationFromCatalogue(model);
-			facade.createNewModel(realModel);
+					.getVehicleSpecifications());
+			VehicleSpecification realModel = facade.getVehicleSpecificationFromCatalogue(model);
+			facade.createNewVehicle(realModel);
 
 			List<VehicleOption> chosenParts = createModel();
 
@@ -89,8 +89,8 @@ public class OrderFlowController extends UseCaseFlowController {
 
 	private List<VehicleOption> createModel() {
 		List<VehicleOption> chosenParts = new ArrayList<>();
-		for (VehicleOptionCategory type : facade.getCarPartTypes()) {
-			List<VehicleOption> parts = facade.getParts(type);
+		for (VehicleOptionCategory type : facade.getVehicleOptionCategory()) {
+			List<VehicleOption> parts = facade.getRemainingVehicleOptions(type);
 			
 			if (!parts.isEmpty()) {
 				Optional<VehicleOption> part = clientCommunication.choosePart(parts);

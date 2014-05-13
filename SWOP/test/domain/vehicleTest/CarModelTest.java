@@ -6,12 +6,14 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
 import domain.job.action.Action;
 import domain.vehicle.VehicleSpecification;
@@ -46,7 +48,7 @@ public class CarModelTest {
 
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		template = new VehicleSpecification("model", parts, 60);
+		template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 	}
 
 	@Test
@@ -121,7 +123,7 @@ public class CarModelTest {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		VehicleSpecification template2 = new VehicleSpecification("modelb",
-				parts, 50);
+				parts, new HashMap<WorkbenchType, Integer>());
 
 		Vehicle car4 = new Vehicle(template2);
 		car4.addCarPart(part1);

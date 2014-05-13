@@ -43,6 +43,8 @@ public class FlowControllerFactory {
 		flowControllers.add(new CheckStatisticsFlowController(AccessRight.STATISTICS, iClientCommunication, facade));
 		flowControllers.add(new AdaptSchedulingAlgorithmFlowController(AccessRight.SWITCH_SCHEDULING_ALGORITHM,
 																		iClientCommunication, facade));
+		flowControllers.add(new ChangeOperationalStatusFlowController(AccessRight.SWITCH_OPERATIONAL_STATUS,
+				iClientCommunication, facade));
 		return flowControllers;
 	}
 	

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
@@ -21,7 +22,6 @@ import domain.order.IOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
@@ -31,7 +31,6 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 public class ClientCommunication{
 
 	private Scanner inputReader;
-	private final String LINESEPARATOR = System.lineSeparator();
 	public ClientCommunication() {
 		this.inputReader = new Scanner(System.in);
 	}
@@ -164,16 +163,16 @@ public class ClientCommunication{
 
 	public Optional<IOrder> chooseOrder(List<IOrder> pendingOrders, List<IOrder> completedOrders) {
 		ArrayList<String> orderString = new ArrayList<String>();
-		orderString.add(0, "Pending Orders:" + LINESEPARATOR);
+		orderString.add(0, "Pending Orders:" );
 		int i = 1;
 		for (IOrder order : pendingOrders) {
-			orderString.add(i + "." + order.toString() + LINESEPARATOR);
+			orderString.add(i + "." + order.toString() );
 			i++;
 		}
 
 		orderString.add("Completed Orders:");
 		for (IOrder order : completedOrders) {
-			orderString.add(i + "." + order.toString() + LINESEPARATOR);
+			orderString.add(i + "." + order.toString() );
 			i++;
 		}
 		if(!pendingOrders.isEmpty() || !completedOrders.isEmpty()){
@@ -193,6 +192,8 @@ public class ClientCommunication{
 					return chooseOrder(pendingOrders, completedOrders);
 				}
 			}
+		}else { 
+			show(Arrays.asList("You have no pending or completed orders"));
 		}
 		return Optional.absent();
 	}
@@ -207,10 +208,10 @@ public class ClientCommunication{
 
 		int i = 1;
 		for (VehicleOption part : parts) {
-			partsString.add(i + "." + part.toString() + LINESEPARATOR);
+			partsString.add(i + "." + part.toString() );
 			i++;
-			if(i==parts.size() && part.getType().isOptional()){
-				partsString.add(i + ". Select Nothing" + LINESEPARATOR);
+			if(i==parts.size()+1 && part.getType().isOptional()){
+				partsString.add(i + ".Select Nothing" );
 			}
 		}
 
@@ -257,7 +258,7 @@ public class ClientCommunication{
 		tasksString.add(0, "Tasks:");
 		int i = 1;
 		for (ITask task : tasksAtWorkbench) {
-			tasksString.add(i + "." + task.toString() + LINESEPARATOR);
+			tasksString.add(i + "." + task.toString() );
 			i++;
 		}
 		show(tasksString);
@@ -419,7 +420,7 @@ public class ClientCommunication{
 	 */
 	public void showAlgorithms(String current, List<String> possible) {
 		List<String> currentAlgorithm = new ArrayList<String>();
-		currentAlgorithm.add("Current algorithm: " + current + LINESEPARATOR);
+		currentAlgorithm.add("Current algorithm: " + current );
 		this.show(currentAlgorithm);
 		this.showAlgorithms(possible);
 	}
@@ -457,14 +458,17 @@ public class ClientCommunication{
 
 	public void showAssemblyLine(IAssemblyLine assemblyLine) {
 		ArrayList<String> assemblyLineStrings = new ArrayList<String>();
-		assemblyLineStrings.add("STATE: " + assemblyLine.getState() + LINESEPARATOR);
+		assemblyLineStrings.add(assemblyLine.getState().toString() );
 
 		assemblyLineStrings.add(0, "current assemblyline:");
 
 		List<IWorkBench> allWorkbenches = assemblyLine.getWorkbenches();
 
 		for(IWorkBench workbench: allWorkbenches){
+			assemblyLineStrings.add("Workbench: " + workbench.toString());
+			assemblyLineStrings.add("Pending Tasks: ");
 			assemblyLineStrings.addAll(getPendingTasks(workbench));
+			assemblyLineStrings.add("Completed Tasks: ");
 			assemblyLineStrings.addAll(getCompletedTasks(workbench));
 		}
 		show(assemblyLineStrings);
@@ -475,7 +479,7 @@ public class ClientCommunication{
 
 		for(ITask task: workbench.getCurrentTasks()){
 			if(task.isCompleted()){
-				completedTaskList.add(task.toString() + ": completed" + LINESEPARATOR);
+				completedTaskList.add(task.toString() + ": completed" );
 			}
 		}
 
@@ -487,7 +491,7 @@ public class ClientCommunication{
 
 		for(ITask task: workbench.getCurrentTasks()){
 			if(!task.isCompleted()){
-				pendingTaskList.add(task.toString() + ": pending" + LINESEPARATOR);
+				pendingTaskList.add(task.toString() + ": pending" );
 			}
 		}
 
@@ -517,11 +521,11 @@ public class ClientCommunication{
 	public void showChosenTask(ITask chosenTask) {
 		ArrayList<String> taskStrings = new ArrayList<String>();
 		taskStrings.add("Your task: ");
-		taskStrings.add(chosenTask.toString() + LINESEPARATOR);
-		taskStrings.add("Required actions: "+ LINESEPARATOR);
+		taskStrings.add(chosenTask.toString() );
+		taskStrings.add("Required actions: ");
 		int i = 1;
 		for(IAction action: chosenTask.getActions()){
-			taskStrings.add(i + ". " + action.toString() + LINESEPARATOR);
+			taskStrings.add(i + ". " + action.toString() );
 			i++;
 		}
 
@@ -539,10 +543,10 @@ public class ClientCommunication{
 	public void showCompletedOrders(List<IOrder> completedOrders) {
 		List<String> completedOrdersList = new ArrayList<String>();
 		if (!completedOrders.isEmpty()) {
-			completedOrdersList.add(0, "Your completed orders:" + LINESEPARATOR);
+			completedOrdersList.add(0, "Your completed orders:" );
 			for(IOrder order : completedOrders){
-				completedOrdersList.add(order.toString() + LINESEPARATOR);
-				completedOrdersList.add("\tcompletion time: " + order.getEstimatedTime().toString() + LINESEPARATOR );
+				completedOrdersList.add(order.toString() );
+				completedOrdersList.add("\tcompletion time: " + order.getEstimatedTime().toString()  );
 			}
 		} else
 			show(new ArrayList<String>(
@@ -566,7 +570,7 @@ public class ClientCommunication{
 		customString.add(0, "Possible tasks:");
 		int i = 1;
 		for (IVehicle customTask : vehicles) {
-			customString.add(i + "." + customTask.toString() + LINESEPARATOR);
+			customString.add(i + "." + customTask.toString() );
 			i++;
 		}
 		show(customString);
@@ -613,16 +617,16 @@ public class ClientCommunication{
 			ImmutableClock estimatedTime) {
 
 		showOrder(quantity, model, chosenParts);
-		show(Arrays.asList("Estimated time of completion :" + estimatedTime.toString() + LINESEPARATOR));
+		show(Arrays.asList("Estimated time of completion :" + estimatedTime.toString() ));
 	}
 
 	public void showOrder(int quantity, VehicleSpecification realModel, List<VehicleOption> chosenParts){
 		show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
-				+ realModel.toString() + LINESEPARATOR )));
+				+ realModel.toString()  )));
 		show(new ArrayList<String>(Arrays.asList("Your chosen parts:")));
 		List<String> chosenPartsInString = new ArrayList<String>();
 		for(VehicleOption option : chosenParts){
-			chosenPartsInString.add(option.toString() + LINESEPARATOR);
+			chosenPartsInString.add(option.toString() );
 		}
 		show(chosenPartsInString);
 	}
@@ -668,10 +672,10 @@ public class ClientCommunication{
 	public void showPendingOrders(List<IOrder> pendingOrders) {
 		List<String> pendingOrdersList = new ArrayList<String>();
 		if (!pendingOrders.isEmpty()) {
-			pendingOrdersList.add(0, "Your pending orders:" + LINESEPARATOR);
+			pendingOrdersList.add(0, "Your pending orders:" );
 			for(IOrder order : pendingOrders){
-				pendingOrdersList.add(order.toString() + LINESEPARATOR);
-				pendingOrdersList.add("\tEstimated completion time: " + order.getEstimatedTime().toString() + LINESEPARATOR );
+				pendingOrdersList.add(order.toString() );
+				pendingOrdersList.add("\tEstimated completion time: " + order.getEstimatedTime().toString()  );
 			}
 		} else
 			show(new ArrayList<String>(
@@ -690,8 +694,10 @@ public class ClientCommunication{
 	public IAssemblyLine chooseAssemblyLine(List<IAssemblyLine> allAssemblyLines) {
 		List<String> strings = new ArrayList<>();
 
+		int i = 1;
 		for(IAssemblyLine assemblyLine: allAssemblyLines){
-			strings.add(assemblyLine.toString() + LINESEPARATOR);
+			strings.add(i + ": " +assemblyLine.toString());
+			i++;
 		}
 
 		show(strings);
@@ -708,8 +714,10 @@ public class ClientCommunication{
 	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches) {
 		List<String> strings = new ArrayList<>();
 
+		int i = 1;
 		for(IWorkBench workbench: workbenches){
-			strings.add(workbench.toString() + LINESEPARATOR);
+			strings.add(i + ": " +workbench.toString());
+			i++;
 		}
 
 		show(strings);
@@ -733,9 +741,9 @@ public class ClientCommunication{
 		show(customString);
 
 		int customNumber = askNumber("Which Task do you choose?") -1;
-		if (customNumber >0 && customNumber < customTasks.size()) {
-			return customString.get(customNumber).substring(	//TODO check of het werkt
-					customString.get(customNumber).indexOf(".") + 1);
+		if (customNumber >=0 && customNumber < customTasks.size()) {
+			return customString.get(customNumber+1).substring(	//TODO check of het werkt
+					customString.get(customNumber+1).indexOf(".") + 1);
 		} else {
 			invalidAnswerPrompt();
 			return showCustomTasks(customTasks);
@@ -754,27 +762,27 @@ public class ClientCommunication{
 		List<String> details = new ArrayList<>();
 		details.add("Details of the last " + detailedDays.size() + " days:");
 		for(Integer day : detailedDays){
-			details.add(day + LINESEPARATOR);
+			details.add(day.toString());
 		}
 		show(details);
-		
+
 	}
 
 	public void showAverageDelays(int averageDelays) {
 		show(Arrays.asList("Average delays: " + averageDelays));
-		
+
 	}
 
 	public void showMedianDelays(int medianDelays) {
 		show(Arrays.asList("Median delays: " + medianDelays));
-		
+
 	}
 
 	public void showDetailedDelays(List<Delay> detailedDelays) {
 		List<String> details = new ArrayList<>();
 		details.add("Details of the last " + detailedDelays.size() + " delays:");
 		for(Delay delay : detailedDelays){
-			details.add(delay.toString() + LINESEPARATOR);
+			details.add(delay.toString() );
 		}
 		show(details);
 	}
@@ -782,12 +790,12 @@ public class ClientCommunication{
 	public void showAlgorithms(List<String> possible) {
 		List<String> showAlgorithms = new ArrayList<String>();
 		List<String> modifiedList = this.indexList(possible);
-		showAlgorithms.add("All possible algorithms: " + LINESEPARATOR);
+		showAlgorithms.add("All possible algorithms: " );
 		showAlgorithms.addAll(modifiedList);
 		this.show(showAlgorithms);
-		
+
 	}
-	
+
 	public List<String> indexList(List<String> listToBeIndexed){
 		List<String> finalResult = new ArrayList<String>();
 		int index  = 1;
@@ -799,7 +807,7 @@ public class ClientCommunication{
 	}
 
 	public void showBatches(Set<Set<VehicleOption>> batches) {
-	    List<String> sets = new ArrayList<String>();
+		List<String> sets = new ArrayList<String>();
 		sets.add(0, "Possible Batches:");
 		int i = 1;
 		for (Iterator<Set<VehicleOption>> iterator = batches.iterator(); iterator.hasNext();) {
@@ -813,5 +821,34 @@ public class ClientCommunication{
 			i++;
 		}
 		this.show(sets);
+	}
+
+	public AssemblyLineState chooseStatus(List<AssemblyLineState> states, AssemblyLineState assemblyLineState) {
+		showStatus(assemblyLineState);
+		
+		int customNumber = askNumber("Which operational state do you choose?") - 1;
+		
+		if (customNumber >0 && customNumber < states.size()) {
+			return states.get(customNumber);
+		} else {
+			invalidAnswerPrompt();
+			return chooseStatus(states, assemblyLineState);
+		}
+		
+		
+	}
+
+	public void showStatus(AssemblyLineState assemblyLineState) {
+		AssemblyLineState[] states = AssemblyLineState.values();
+		List<String> strings = new ArrayList<String>();
+		strings.add(0, "Possible States:");
+		int i = 1;
+		for(AssemblyLineState state: states){
+			strings.add(i + ": " + state.toString());
+			i++;
+		}
+		strings.add("Current status: " + assemblyLineState.toString());
+		
+		show(strings);
 	}
 }

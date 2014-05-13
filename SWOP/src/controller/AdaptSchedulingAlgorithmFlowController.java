@@ -12,7 +12,6 @@ import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBa
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.users.AccessRight;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * Defines the program flow for the 'Adapt scheduling algorithm' use case.
@@ -21,13 +20,16 @@ import domain.vehicle.vehicleOption.VehicleOption;
 public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowController {
 
 	/**
-	 * Construct a new AdaptSchedulingAlgorithmFlowController.
-	 * @param accessRight
-	 * 			The accessRight needed to perform this use case.
-	 * @param clientCommunication
-	 * 			The IClientCommunication this FlowController uses to communicate with the user.
-	 * @param facade
-	 * 			The Facade this flowcontroller uses to access the domain logic.
+	 * Construct a new AdaptSchedulingAlgorithmFlowController
+	 * 
+	 * @param 	accessRight
+	 * 				The accessRight needed to perform this use case
+	 * 
+	 * @param 	clientCommunication
+	 * 				The ClientCommunication this FlowController uses to communicate with the user
+	 * 
+	 * @param 	facade
+	 * 				The Facade this flowcontroller uses to access the domain logic
 	 */
 	public AdaptSchedulingAlgorithmFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
@@ -93,7 +95,7 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		// let user pick from all the batches
 		// switch to batch with the chosen batch
 		
-		Set<Set<VehicleOption>> batches = facade.getAllCarOptionsInPendingOrders();
+		Set<Set<VehicleOption>> batches = facade.getAllVehicleOptionsInPendingOrders();
 		if (batches.size() <= 0) {
 			clientCommunication.showNoBatchesAvailable();
 			return;
@@ -108,7 +110,4 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		facade.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorBatch(toSet));
 		clientCommunication.showAlgorithmSwitched("Batch", unModifiableToSet);
 	}
-	
-	
-
 }

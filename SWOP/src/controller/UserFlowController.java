@@ -55,6 +55,7 @@ public class UserFlowController {
 		} catch (RoleNotYetAssignedException r) {
 			String role = this.ClientCommunication.chooseRole();
 			facade.createAndAddUser(name, role);
+			facade.login(name);
 		} catch (IllegalArgumentException i) {
 			ClientCommunication.invalidAnswerPrompt();
 			login();

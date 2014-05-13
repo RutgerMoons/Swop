@@ -24,19 +24,25 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	/**
 	 * Create an Immutable WorkBench.
 	 *  
-	 * @param bench
+	 * @param 	bench
 	 * 			The mutable WorkBench.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the given bench is null
 	 */
 	public UnmodifiableWorkBench(IWorkBench bench){
 		if(bench==null)
 			throw new IllegalArgumentException();
 		this.bench = bench;
 	}
+	
+	//TODO doc
 	@Override
-	public String getWorkbenchName() {
-		return bench.getWorkbenchName();
+	public WorkbenchType getWorkbenchType() {
+		return bench.getWorkbenchType();
 	}
 
+	//TODO doc
 	@Override
 	public Optional<IJob> getCurrentJob() {
 		Optional<IJob> currentJob = bench.getCurrentJob();
@@ -48,17 +54,20 @@ public class UnmodifiableWorkBench implements IWorkBench {
 		return currentJob;
 	}
 
+	//TODO doc
 	@Override
 	public Set<String> getResponsibilities() {
 		return new ImmutableSet.Builder<String>().addAll(bench.getResponsibilities())
 				.build();
 	}
 
+	//TODO doc
 	@Override
 	public List<ITask> getCurrentTasks() {
 		return new ImmutableList.Builder<ITask>().addAll(bench.getCurrentTasks()).build();
 	}
 
+	//TODO doc
 	@Override
 	public boolean isCompleted() {
 		return bench.isCompleted();
@@ -68,14 +77,17 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	public String toString(){
 		return bench.toString();
 	}
+	
 	@Override
 	public void setCurrentJob(Optional<IJob> retrieveNextJob) {
 		throw new UnmodifiableException();
 	}
+	
 	@Override
 	public void chooseTasksOutOfJob() {
 		throw new UnmodifiableException();		
 	}
+	
 	@Override
 	public void completeChosenTaskAtChosenWorkBench(ITask task) {
 		throw new UnmodifiableException();		

@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.clock.ImmutableClock;
-import domain.exception.UnmodifiableException;
 import domain.observer.observable.ObservableOrderBook;
 import domain.observer.observers.OrderBookObserver;
 import domain.observer.observes.ObservesAssemblyLine;
@@ -22,14 +21,12 @@ import domain.observer.observes.ObservesAssemblyLine;
  */
 public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 
-	// private HashMap<String, ArrayList<Order>> pendingOrders;
-	// private HashMap<String, ArrayList<Order>> completedOrders;
 	private Multimap<String, IOrder> pendingOrders;
 	private Multimap<String, IOrder> completedOrders;
 	private List<OrderBookObserver> observers;
-	//TODO assemblyLineObserver zodat assembly genotified wordt wanneer een nieuw order binnenkomt
+
 	/**
-	 * Create a new OrderBook.
+	 * Create a new OrderBook
 	 */
 	public OrderBook() {
 		initializeBook();
@@ -57,7 +54,8 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	 * added to the corresponding arrayList. If not the name of the garageholder
 	 * is added as key and the order is added to a new arrayList.
 	 * 
-	 * @param order
+	 * @param 	order
+	 * 				The order that needs to be updated
 	 */
 	public void updateOrderBook(IOrder order) {
 		if (order == null) {
@@ -65,14 +63,14 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 		}
 
 		List<IOrder> pending = (List<IOrder>) this.pendingOrders.get(order.getGarageHolder());
-		if (pending.contains(order)) {
+		if (order.getPendingCars()<=0 && pending.contains(order)) {
 			pending.remove(order);
 			this.completedOrders.put(order.getGarageHolder(), order);
 		}
 	}
 
 	/**
-	 * Method for initializing OrderBook. It initializes both hashmaps :
+	 * Method for initializing OrderBook. It initializes both Multimaps :
 	 * pendingOrders and completedOrders.
 	 */
 	public void initializeBook() {
@@ -88,21 +86,17 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	 * as a key to the hashmap and the order is added to a new arraylist and
 	 * this arraylist is added to pendingOrders.
 	 * 
-	 * @param order
-	 * 			The StandardOrder you want to add.
-	 * 
-	 * @throws UnmodifiableException 
-	 * 			If the order is an ImmutableOrder.
-	 * 			
+	 * @param 	order
+	 * 				The StandardOrder you want to add.
 	 */
-	public void addOrder(IOrder order, ImmutableClock currentTime) throws UnmodifiableException {
+	public void addOrder(IOrder order, ImmutableClock currentTime){
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		updatePlacedOrder(order);
 	}
 	
 	@Override
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfOrder) {
-		//TODO
+	public void updateCompletedOrder(IOrder order) {
+		updateOrderBook(order);
 	}
 
 	@Override

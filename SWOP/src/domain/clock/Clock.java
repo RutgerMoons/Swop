@@ -22,8 +22,8 @@ public class Clock implements ObservableClock {
 	
 	/**
 	 * Get the current time (in minutes).
-	 * @return
-	 * 			An integer that represents the current time, expressed in minutes.
+	 * 
+	 * @return 	An integer that represents the current time, expressed in minutes
 	 */
 	public int getMinutes(){
 		return minutes;
@@ -35,10 +35,10 @@ public class Clock implements ObservableClock {
 	
 	/**
 	 * Advance the clock.
-	 * @param elapsedTime
-	 * 			An integer that represents how much the clock has to be advanced, expressed in minutes.
-	 * @throws IllegalArgumentException
-	 * 			If elapsedTime<0
+	 * @param 	elapsedTime
+	 * 				An integer that represents how much the clock has to be advanced, expressed in minutes
+	 * @throws 	IllegalArgumentException
+	 * 				If elapsedTime<0
 	 */
 	public void advanceTime(int elapsedTime) throws IllegalArgumentException{
 		if (elapsedTime < 0) {
@@ -56,9 +56,9 @@ public class Clock implements ObservableClock {
 
 	/**
 	 * Get the current day.
-	 * @return
-	 * 			An integer that represents the current day. 
-	 * 			The 'current day' is interpreted as how many days the program has been running. (first day == 0)
+	 * 
+	 * @return  An integer that represents the current day. The 'current day' is interpreted as 
+	 * 			how many days the program has been running. (first day == 0)
 	 */
 	public int getDays() {
 		return this.days;
@@ -127,6 +127,4 @@ public class Clock implements ObservableClock {
 			observer.startNewDay(getImmutableClock());
 		}
 	}
-
-
 }

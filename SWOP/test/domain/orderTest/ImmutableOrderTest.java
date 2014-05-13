@@ -3,12 +3,14 @@ package domain.orderTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
@@ -50,7 +52,7 @@ public class ImmutableOrderTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		template = new VehicleSpecification("model", parts, 60);
+		template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		model = new Vehicle(template);
 		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addCarPart(new VehicleOption("sedan", VehicleOptionCategory.BODY));
@@ -72,6 +74,9 @@ public class ImmutableOrderTest {
 		assertEquals(order.getPendingCars(), immutable.getPendingCars());
 		assertEquals(order.getQuantity(), immutable.getQuantity());
 		assertTrue(immutable.equals(order));
+		//TODO
+		assertTrue(order.equals(immutable));
+		
 		assertEquals(order.hashCode(), immutable.hashCode());
 		assertEquals(order.toString(), immutable.toString());
 	}

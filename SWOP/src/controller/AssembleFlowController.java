@@ -21,21 +21,28 @@ import domain.users.AccessRight;
 public class AssembleFlowController extends UseCaseFlowController {
 
 	/**
-	 * Construct a new AssembleFlowController.
-	 * @param accessRight
-	 * 			The AccessRight needed to perform this use case.
-	 * @param iClientCommunication
-	 * 			The IClientCommpunication this AssembleFlowController has to use to communicate with the user.
+	 * Construct a new AssembleFlowController
+	 * 
+	 * @param 	accessRight
+	 * 				The AccessRight needed to perform this use case
+	 * 
+	 * @param 	clientCommunication
+	 * 				The ClientCommunication it has to use to communicate with the user
+	 * 
 	 * @param facade 
-	 * 			The Facade this FlowController uses to access the domain logic.
+	 * 			The Facade it uses to access the domain logic
 	 */
-	public AssembleFlowController(AccessRight accessRight, ClientCommunication iClientCommunication, Facade facade) {
-		super(accessRight, iClientCommunication, facade);
+	public AssembleFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
+		super(accessRight, clientCommunication, facade);
 	}
 
 
 	/**
-	 * Execute the use case.
+	 * Execute the use case in some steps
+	 * 1. show all assemblyLines and choose an assemblyLine
+	 * 2. show all workbench for this chosen assemblyLine and choose a workbench
+	 * 3. show all tasks on the chosen workbench and choose a task
+	 * 4. execute the chosen task and notify the Facade
 	 */
 	@Override
 	public void executeUseCase(){
@@ -58,7 +65,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	} 
 
 	/**
-	 * Get the workbench at which the user wants to perform tasks.
+	 * Get the workbench at which the user wants to perform tasks
 	 */
 	public IWorkBench chooseWorkBench(IAssemblyLine chosenAssemblyLine){
 		IWorkBench chosenWorkbench = clientCommunication.chooseWorkBench(chosenAssemblyLine.getWorkbenches());
@@ -66,8 +73,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	}
 
 	/**
-	 * Let the user choose and perform a task from the tasks at the workbench he has previously chosen.
-	 * 
+	 * Let the user choose and perform a task from the tasks at the workbench he has previously chosen
 	 */
 	public Optional<ITask> chooseTask(IWorkBench workBench){
 		List<ITask> tasksAtWorkbench = workBench.getCurrentTasks();
@@ -88,6 +94,10 @@ public class AssembleFlowController extends UseCaseFlowController {
 		return Optional.absent();
 	}
 	
+	/**
+	 * Asks the user how much time he needed for completing the task and returns an
+	 * ImmutableClock
+	 */
 	public ImmutableClock retrieveElapsedTime(){
 		int time = clientCommunication.getElapsedTime();
 		int days = time/Clock.MINUTESINADAY;

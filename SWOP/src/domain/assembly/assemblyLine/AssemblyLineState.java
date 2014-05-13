@@ -1,5 +1,5 @@
 package domain.assembly.assemblyLine;
-
+//TODO doc
 public enum AssemblyLineState {
 
 	OPERATIONAL {

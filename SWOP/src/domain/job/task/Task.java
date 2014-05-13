@@ -17,10 +17,10 @@ public class Task implements ITask {
 	/**
 	 * Construct a new Task.
 	 * 
-	 * @param taskDescription
-	 *            The description you want to give to this Task.
-	 * @throws IllegalArgumentException
-	 *             if taskDescription==null or isEmpty.
+	 * @param 	taskDescription
+	 *            	The description you want to give to this Task
+	 * @throws 	IllegalArgumentException
+	 *             if taskDescription==null or isEmpty
 	 */
 	public Task(String taskDescription) {
 		setActions(new ArrayList<IAction>());

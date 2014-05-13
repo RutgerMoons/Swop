@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 
-import domain.exception.UnmodifiableException;
 import domain.job.action.IAction;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
@@ -20,24 +19,24 @@ public class WorkBench implements IWorkBench {
 	private Set<String> responsibilities;
 	private Optional<IJob> currentJob;
 	private List<ITask> currentTasks;
-	private final String workbenchName;
+	private final WorkbenchType workbenchType;
 
 	/**
 	 * Construct a new Workbench.
 	 * 
-	 * @param responsibilities
+	 * @param 	responsibilities
 	 *            A list of strings. The types of Tasks that have to be
 	 *            performed by this WorkBench.
-	 * @param workbenchName
+	 * @param 	workbenchType
 	 *            A name for this workbench
-	 * @throws IllegalArgumentException
+	 * @throws 	IllegalArgumentException
 	 *            Thrown when workbenchName==null or isEmpty -if responsibilities==null
 	 */
-	public WorkBench(Set<String> responsibilities, String workbenchName) {
-		if (workbenchName == null || workbenchName.isEmpty()) {
+	public WorkBench(Set<String> responsibilities, WorkbenchType type) {
+		if (type == null || responsibilities==null) {
 			throw new IllegalArgumentException();
 		}
-		this.workbenchName = workbenchName;
+		this.workbenchType = type;
 		this.setResponsibilities(responsibilities);
 		setCurrentTasks(new ArrayList<ITask>());
 		Optional<IJob> nullJob = Optional.absent();
@@ -46,8 +45,8 @@ public class WorkBench implements IWorkBench {
 
 	
 	@Override
-	public String getWorkbenchName() {
-		return workbenchName;
+	public WorkbenchType getWorkbenchType() {
+		return workbenchType;
 	}
 
 
@@ -70,13 +69,12 @@ public class WorkBench implements IWorkBench {
 	}
 
 	/**
-	 * Set a new list of responsibilities for thies WorkBench.
+	 * Set a new list of responsibilities for this WorkBench
 	 * 
-	 * @param responsibilities
-	 *            A list of responsibilities.
-	 * @throws UnmodifiableException 
-	 * 			  If the IWorkBench is an ImmutableWorkBench.
-	 * @throws IllegalArgumentException
+	 * @param 	responsibilities
+	 *            A list of responsibilities
+	 *            
+	 * @throws 	IllegalArgumentException
 	 *             If responsibilities==null
 	 */
 	public void setResponsibilities(Set<String> responsibilities) {
@@ -88,12 +86,11 @@ public class WorkBench implements IWorkBench {
 	/**
 	 * Add a responsibility to this WorkBench.
 	 * 
-	 * @param responibility
-	 *            The responsibility you want to add.
-	 * @throws UnmodifiableException 
-	 * 			  If the IWorkBench is an ImmutableWorkBench.
-	 * @throws IllegalArgumentException
-	 *             If responsibility==null or isEmpty.
+	 * @param 	responibility
+	 *            The responsibility you want to add
+	 *            
+	 * @throws 	IllegalArgumentException
+	 *             If responsibility==null or isEmpty
 	 */
 	public void addResponsibility(String responibility) {
 		if (responibility == null || responibility.isEmpty())
@@ -110,11 +107,10 @@ public class WorkBench implements IWorkBench {
 	/**
 	 * Set the tasks that have to be completed by this WorkBench.
 	 * 
-	 * @param list
+	 * @param 	list
 	 *            A list of tasks.
-	 * @throws UnmodifiableException 
-	 * 			  If the IWorkBench is an ImmutableWorkBench.
-	 * @throws IllegalArgumentException
+	 *            
+	 * @throws 	IllegalArgumentException
 	 *             If currentTasks==null
 	 */
 	public void setCurrentTasks(List<ITask> list) {
@@ -149,9 +145,10 @@ public class WorkBench implements IWorkBench {
 
 	@Override
 	public String toString() {
-		return this.getWorkbenchName();
+		return this.getWorkbenchType().toString();
 	}
 	
+	//TODO doc
 	@Override
 	public void completeChosenTaskAtChosenWorkBench(ITask task){
 		for (ITask t : this.currentTasks) {

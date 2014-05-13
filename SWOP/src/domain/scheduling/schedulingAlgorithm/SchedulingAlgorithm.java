@@ -104,7 +104,7 @@ public abstract class SchedulingAlgorithm {
 	 * @throws IllegalArgumentException
 	 * 			thrown when one or more of the parameters are null
 	 */
-	public abstract int getEstimatedTimeInMinutes(IJob job, ImmutableClock currentTime) ;
+	public abstract void setEstimatedTime(IJob job, ImmutableClock currentTime) ;
 	
 	/**
 	 * returns a list of all the jobs currently on the assembly line
@@ -134,7 +134,8 @@ public abstract class SchedulingAlgorithm {
 		int biggest = 0;
 		for(Optional<IJob> job : list){
 			if(job.isPresent()){
-				int currentTimeAtWorkbenchForThisJob = job.get().getTimeAtWorkBench();
+				//TODO weten op welke assemblyline de job staat om de productiontime te berekenen
+				int currentTimeAtWorkbenchForThisJob = job.get().getProductionTime();
 				if(currentTimeAtWorkbenchForThisJob >= biggest){
 					biggest = currentTimeAtWorkbenchForThisJob;
 				}

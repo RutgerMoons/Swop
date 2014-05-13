@@ -2,14 +2,17 @@ package domain.job.job;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.IOrder;
 import domain.order.UnmodifiableOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 
@@ -64,25 +67,25 @@ public class UnmodifiableJob implements IJob {
 	}
 
 	@Override
-	public void setOrder(IOrder order) throws UnmodifiableException {
+	public void setOrder(IOrder order) {
 		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void setTasks(List<ITask> tasks) throws UnmodifiableException {
+	public void setTasks(List<ITask> tasks) {
 		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void addTask(ITask task) throws UnmodifiableException {
+	public void addTask(ITask task) {
 		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void setMinimalIndex(int index) throws UnmodifiableException {
+	public void setMinimalIndex(int index) {
 		throw new UnmodifiableException();
 		
 	}
@@ -106,7 +109,12 @@ public class UnmodifiableJob implements IJob {
 	}
 	
 	@Override
-	public int getTimeAtWorkBench() {
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return this.job.getTimeAtWorkBench();
+	}
+
+	@Override
+	public VehicleSpecification getVehicleSpecification() {
+		return job.getVehicleSpecification();
 	}
 }

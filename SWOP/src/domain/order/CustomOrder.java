@@ -2,11 +2,15 @@ package domain.order;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
+import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -236,7 +240,12 @@ public class CustomOrder implements IOrder {
 	}
 	
 	@Override
-	public int getTimeAtWorkBench() {
+	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return this.getDescription().getTimeAtWorkBench();
+	}
+
+	@Override
+	public VehicleSpecification getVehicleSpecification() {
+		throw new NotImplementedException();
 	}
 }

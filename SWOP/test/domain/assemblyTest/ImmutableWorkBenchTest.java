@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import com.google.common.base.Optional;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.assembly.workBench.WorkBench;
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
@@ -37,7 +39,7 @@ public class ImmutableWorkBenchTest {
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("paint");
 
-		bench = new WorkBench(responsibilities, "paintbooth");
+		bench = new WorkBench(responsibilities, WorkbenchType.BODY);
 		immutable = new UnmodifiableWorkBench(bench);
 		
 	}
@@ -45,7 +47,7 @@ public class ImmutableWorkBenchTest {
 	public void test() throws AlreadyInMapException, UnmodifiableException {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		Vehicle model = new Vehicle(template);
 		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -55,7 +57,7 @@ public class ImmutableWorkBenchTest {
 		model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 		model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		
-		assertEquals("paintbooth", immutable.getWorkbenchName());
+		assertEquals(WorkbenchType.BODY, immutable.getWorkbenchType());
 		assertTrue(immutable.getResponsibilities().contains("paint"));
 		
 		IJob job = new Job(new StandardOrder("Stef", model, 1, new ImmutableClock(0,240)));
@@ -80,21 +82,6 @@ public class ImmutableWorkBenchTest {
 	@Test(expected=UnmodifiableException.class)
 	public void testImmutable1() throws UnmodifiableException{
 		immutable.setCurrentJob(null);
-	}
-	
-	@Test(expected=UnmodifiableException.class)
-	public void testImmutable2() throws UnmodifiableException{
-		immutable.setResponsibilities(null);
-	}
-	
-	@Test(expected=UnmodifiableException.class)
-	public void testImmutable3() throws UnmodifiableException{
-		immutable.addResponsibility(null);
-	}
-	
-	@Test(expected=UnmodifiableException.class)
-	public void testImmutable4() throws UnmodifiableException{
-		immutable.setCurrentTasks(null);
 	}
 	
 	@Test(expected=UnmodifiableException.class)

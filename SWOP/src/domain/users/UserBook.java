@@ -33,7 +33,8 @@ public class UserBook {
 	 * @pre UserBook does not contain the combination of name and role.
 	 */
 	public void createUser(String userName, String role){
-		this.factory.createUser(userName, role);
+		User user = this.factory.createUser(userName, role);
+		addUser(user);
 	}
 	
 	/**

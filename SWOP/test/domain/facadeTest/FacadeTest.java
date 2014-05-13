@@ -5,16 +5,22 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.exception.UnmodifiableException;
+import domain.assembly.workBench.WorkbenchType;
+import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
+import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
+import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.Vehicle;
+import domain.vehicle.vehicleOption.VehicleOption;
 
 public class FacadeTest {
 
@@ -22,15 +28,10 @@ public class FacadeTest {
 	
 	@Before
 	public void initialize() {
-		facade = new Facade(Collections.EMPTY_SET, Collections.EMPTY_SET);
+		//TODO company initializen
+		facade = new Facade(null);
 	}
 	
-	@Test
-	public void testAdvanceTime() {
-		assertNotNull(facade);
-		facade.advanceClock(360);
-		assertNotNull(facade);
-	}
 	
 	@Test
 	public void teststartNewDay() {
@@ -53,15 +54,10 @@ public class FacadeTest {
 		facade.getAccessRights();
 	}
 	
-	@Test
-	public void getBlockingWorkBenchesTest() {
-		assertEquals(0, facade.getBlockingWorkBenches().size());
-		assertTrue(facade.canAssemblyLineAdvance());
-	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void getCarModelSpecificationFromCatalogueTestError() {
-		facade.getCarModelSpecificationFromCatalogue("Error");
+		facade.getVehicleSpecificationFromCatalogue("Error");
 	}
 	
 	@Test
@@ -86,12 +82,14 @@ public class FacadeTest {
 	
 	@Test
 	public void getAllCarOptionsInPendingOrdersTest() {
-		assertEquals(0, facade.getAllCarOptionsInPendingOrders().size());
+		assertEquals(0, facade.getAllVehicleOptionsInPendingOrders().size());
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void processCustomOrderTest() {
-		facade.processCustomOrder("test", "5");
+		ImmutableClock time = new ImmutableClock(2, 30);
+		Vehicle vehicle = new Vehicle(new VehicleSpecification("test",Collections.<VehicleOption> emptySet() , new HashMap<WorkbenchType, Integer>()));
+		facade.processCustomOrder(vehicle, time);
 	}
 	
 	@Test (expected = NullPointerException.class)

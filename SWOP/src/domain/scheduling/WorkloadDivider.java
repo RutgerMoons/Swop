@@ -29,14 +29,14 @@ import domain.vehicle.vehicleOption.VehicleOption;
 
 public class WorkloadDivider implements ObservesOrderBook {
 
-	private ArrayList<AssemblyLine> assemblyLines;
+	private List<AssemblyLine> assemblyLines;
 	
-	public WorkloadDivider(	ArrayList<AssemblyLine> assemblyLines, OrderBookObserver orderBookObserver, AssemblyLineObserver assemblyLineObserver) {
-		if (	assemblyLines == null || orderBookObserver == null || assemblyLineObserver == null) {
+	public WorkloadDivider(	List<AssemblyLine> listOfAssemblyLines, OrderBookObserver orderBookObserver, AssemblyLineObserver assemblyLineObserver) {
+		if (	listOfAssemblyLines == null || orderBookObserver == null || assemblyLineObserver == null) {
 			throw new IllegalArgumentException();
 		}
-		this.assemblyLines = assemblyLines;
 		orderBookObserver.attachLogger(this);
+		this.assemblyLines = listOfAssemblyLines;
 		// attach the assemblyLineObserver to all assemblyLines
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
 			assemblyLine.attachObserver(assemblyLineObserver);
@@ -156,6 +156,22 @@ public class WorkloadDivider implements ObservesOrderBook {
 		//3: kies assemblyLine met laagste workload
 		//4: schedule de job bij die assemblyLine
 		//assemblyLine.schedule(job)
+		
+		AssemblyLine scheduleHere = null;
+		for(AssemblyLine line: assemblyLines){
+			//Checken: Operational && kan job verwerken.
+			if(line.getState().equals(AssemblyLineState.OPERATIONAL) 
+					&& line.getResponsibilities().contains(job.getVehicleSpecification())){
+				//kijken naar workload
+				if(scheduleHere!=null && scheduleHere.getCurrentJobs().size()<line.getCurrentJobs().size()){
+					scheduleHere = line;
+				}else if(scheduleHere==null){
+					scheduleHere = line;
+				}
+			}
+		}
+		
+		scheduleHere.schedule(job);
 	}
 	
 	/**
@@ -222,6 +238,10 @@ public class WorkloadDivider implements ObservesOrderBook {
       		}
 	    }
 		return toReturn;
+	}
+
+	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
+		assemblyLine.setState(state);
 	}
 	
 	/**

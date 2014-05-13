@@ -6,6 +6,7 @@ import domain.clock.ImmutableClock;
 import domain.observer.observes.ObservesAssemblyLine;
 import domain.observer.observes.ObservesClock;
 import domain.order.Delay;
+import domain.order.IOrder;
 
 /**
  * This object keeps track of completed orders and their delays. It also keeps track
@@ -21,17 +22,16 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	/**
 	 * A new logger is constructed:
 	 * 
-	 * @param numberOfDaysOfDetailedHistory
-	 * 			This number represents the degree of detail
-	 * @param clockObserver
-	 * 			The observer to which it subscribes for keeping track of time
-	 * @param assemblyLineObserver
-	 * 			The observer to which it subscribes for keeping track of completed orders
-	 * 
-	 * @throws IllegalArgumentException
-	 * 			Exception is thrown when one of the observers is null
+	 * @param 	numberOfDaysOfDetailedHistory
+	 * 				This number represents the degree of detail
+	 *
+	 * @throws 	IllegalArgumentException
+	 * 				Exception is thrown when numbersOfDaysOfDetailedHistory is smaller than 1
 	 */
 	public Logger(int numberOfDaysOfDetailedHistory) {
+		if(numberOfDaysOfDetailedHistory < 1 ){
+			throw new IllegalArgumentException();
+		}
 		this.logHistoryDays = new LogHistoryDays(numberOfDaysOfDetailedHistory);
 		this.logHistoryDelays = new LogHistoryDelays(numberOfDaysOfDetailedHistory);
 	}
@@ -39,11 +39,11 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	/**
 	 * Method for updating the current time.
 	 * 
-	 * @param currentTime
-	 * 			The new value for the current time
+	 * @param 	currentTime
+	 * 				The new value for the current time
 	 * 
-	 * @throws IllegalArgumentException
-	 * 			Exception is thrown when currentTime is null
+	 * @throws 	IllegalArgumentException
+	 * 				Exception is thrown when currentTime is null
 	 */
 	@Override
 	public void advanceTime(ImmutableClock currentTime) {
@@ -73,17 +73,18 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	 * This method throws an IllegalArgumentException when the parameter is null.
 	 */
 	@Override
-	public void updateCompletedOrder(ImmutableClock estimatedTimeOfCompletion) {
-		if (estimatedTimeOfCompletion == null) {
+	public void updateCompletedOrder(IOrder order) {
+		if (order == null) {
 			throw new IllegalArgumentException();
 		}
+		ImmutableClock estimatedTimeOfCompletion = order.getEstimatedTime();
 		Delay delay = new Delay(estimatedTimeOfCompletion, this.currentTime);
 		this.logHistoryDelays.addNewDelay(delay);
 		this.logHistoryDays.incrementAmountOfCarsProducedToday();
 	}
 
 	/**
-	 * Method for computing the median of completed orders in a day.
+	 * Method for computing the median of completed orders in a day
 	 */
 	public int medianDays() {
 		List<Integer> completeDays = logHistoryDays.getCompleteHistory();
@@ -91,7 +92,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the median of delays.
+	 * Method for computing the median of delays
 	 */
 	public int medianDelays() {
 		List<Integer> completeDelays = logHistoryDelays.getCompleteHistory();
@@ -111,7 +112,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the average of completed orders in a day.
+	 * Method for computing the average of completed orders in a day
 	 */
 	public int averageDays() {
 		List<Integer> completeDays = logHistoryDays.getCompleteHistory();
@@ -119,7 +120,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the average of delays.
+	 * Method for computing the average of delays
 	 */
 	public int averageDelays() {
 		List<Integer> completeDelays = logHistoryDelays.getCompleteHistory();
