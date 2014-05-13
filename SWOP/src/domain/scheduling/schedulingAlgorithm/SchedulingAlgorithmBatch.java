@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
+import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
@@ -72,8 +73,8 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		if(customJobs.contains(job)) {
 			try {
 				int total = job.getOrder().getDeadline().minus(currentTime);
-				int days = total/60;
-				int minutes = total%60;
+				int days = total/Clock.MINUTESINADAY;
+				int minutes = total%Clock.MINUTESINADAY;
 				
 				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 			} 
@@ -95,8 +96,8 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 					addToList(absentJob, previousJobs);
 					totalProductionTime += this.getMaximum(previousJobs);
 				}
-				int days = totalProductionTime/60;
-				int minutes = totalProductionTime%60;
+				int days = totalProductionTime/Clock.MINUTESINADAY;
+				int minutes = totalProductionTime%Clock.MINUTESINADAY;
 				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 			}
 		}
@@ -117,8 +118,8 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 				}
 			}
 		}
-		int days = totalProductionTime/60;
-		int minutes = totalProductionTime%60;
+		int days = totalProductionTime/Clock.MINUTESINADAY;
+		int minutes = totalProductionTime%Clock.MINUTESINADAY;
 		job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 	}
 

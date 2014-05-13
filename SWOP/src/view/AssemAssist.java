@@ -21,6 +21,7 @@ import domain.facade.Facade;
 import domain.observer.observers.ClockObserver;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
@@ -92,6 +93,7 @@ public class AssemAssist {
 		specifications.add(catalogue.getCatalogue().get("model B"));
 		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
 		
+		
 		specifications = new HashSet<>();
 		specifications.add(catalogue.getCatalogue().get("model A"));
 		specifications.add(catalogue.getCatalogue().get("model B"));
@@ -155,6 +157,10 @@ public class AssemAssist {
 		assemblyLines.add(line1);
 		assemblyLines.add(line2);
 		assemblyLines.add(line3);
+		
+		line1.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		line2.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		line3.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		
 		return assemblyLines;
 	}
