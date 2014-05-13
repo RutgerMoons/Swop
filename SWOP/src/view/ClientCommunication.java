@@ -22,7 +22,6 @@ import domain.order.IOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
@@ -32,7 +31,6 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 public class ClientCommunication{
 
 	private Scanner inputReader;
-	private final String LINESEPARATOR = System.lineSeparator();
 	public ClientCommunication() {
 		this.inputReader = new Scanner(System.in);
 	}

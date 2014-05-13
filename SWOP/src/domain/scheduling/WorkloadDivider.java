@@ -26,7 +26,6 @@ import domain.observer.observes.ObservesOrderBook;
 import domain.order.IOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOption;
 
 public class WorkloadDivider implements ObservesOrderBook {
 

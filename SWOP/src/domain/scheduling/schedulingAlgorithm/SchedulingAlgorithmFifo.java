@@ -10,8 +10,6 @@ import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.job.IJob;
-import domain.job.jobComparator.JobComparatorDeadLine;
-import domain.job.jobComparator.JobComparatorOrderTime;
 
 /**
  * Represents a scheduling algorithm used for scheduling Jobs on an AssemblyLine.
@@ -162,6 +160,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	}
 
+	@Override
 	public String toString() {
 		return "Fifo";
 	}
