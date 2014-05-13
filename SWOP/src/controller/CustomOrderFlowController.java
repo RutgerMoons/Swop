@@ -32,7 +32,7 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 	@Override
 	public void executeUseCase() {
 		String customTaskDescription = clientCommunication.showCustomTasks(facade.getCustomTasks());
-		List<IVehicle> vehicles = facade.getSpecificCustomTasks(customTaskDescription);
+		List<IVehicle> vehicles = facade.getCustomOptions(customTaskDescription);
 		IVehicle model = clientCommunication.showSpecificCustomTasks(vehicles);
 
 		int deadlineInMinutes = clientCommunication.askDeadline();

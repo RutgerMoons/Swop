@@ -42,7 +42,7 @@ public class CustomOrderScenario {
 		
 		String customTaskSpraying = "spraying car bodies";
 
-		List<String> specificTasksSpraying= facade.getSpecificCustomTasks(customTaskSpraying);
+		List<String> specificTasksSpraying= facade.getCustomOptions(customTaskSpraying);
 		assertTrue(specificTasksSpraying.contains("COLOR: white"));
 		assertTrue(specificTasksSpraying.contains("COLOR: black"));
 		assertTrue(specificTasksSpraying.contains("COLOR: yellow"));
@@ -52,7 +52,7 @@ public class CustomOrderScenario {
 		
 		
 		String customTaskInstalling = "installing custom seats";
-		List<String> specificTasksInstalling= facade.getSpecificCustomTasks(customTaskInstalling);
+		List<String> specificTasksInstalling= facade.getCustomOptions(customTaskInstalling);
 		assertTrue(specificTasksInstalling.contains("SEATS: custom"));
 		
 		String model = "SEATS: custom";

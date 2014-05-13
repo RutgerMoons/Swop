@@ -95,7 +95,7 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		// let user pick from all the batches
 		// switch to batch with the chosen batch
 		
-		Set<Set<VehicleOption>> batches = facade.getAllCarOptionsInPendingOrders();
+		Set<Set<VehicleOption>> batches = facade.getAllVehicleOptionsInPendingOrders();
 		if (batches.size() <= 0) {
 			clientCommunication.showNoBatchesAvailable();
 			return;

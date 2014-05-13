@@ -14,9 +14,7 @@ import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.ImmutableClock;
 import domain.company.Company;
-import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
-import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.job.task.Task;
 import domain.order.CustomOrder;
@@ -31,8 +29,8 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * This class is the layer between the Domain model and the UI. The UI can only
- * call methods on this class to do something in the domain model.
+ * This class is the layer between the Domain model and the controllers. The controllers can only
+ * call methods in this class to do something in the domain model.
  * 
  */
 public class Facade {
@@ -106,7 +104,7 @@ public class Facade {
 	}
 
 	/**
-	 * Create a new Vehicle that has to be created from scratch.
+	 * Create a new Vehicle that has to be created from scratch
 	 * 
 	 * @param 	realModel
 	 *            The specification the PartPicker has to take into account when
@@ -135,21 +133,21 @@ public class Facade {
 	}
 
 	/**
-	 * Get a set of all the CarModelSpecifications that the Catalogue has.
+	 * Get a set of all the VehicleSpecifications that the VehicleSpecificationCatalogue has
 	 */
 	public Set<String> getVehicleSpecifications() {
 		return ImmutableSet.copyOf(company.getVehicleSpecifications());
 	}
 
 	/**
-	 * Get a set off all the CarPartTypes that are available.
+	 * Get a set off all the VehicleOptionCategories that are available
 	 */
-	public List<VehicleOptionCategory> getCarPartTypes() {
+	public List<VehicleOptionCategory> getVehicleOptionCategory() {
 		return ImmutableList.copyOf(Arrays.asList(VehicleOptionCategory.values()));
 	}
 
 	/**
-	 * Get a list of the completed orders of the user that is currently logged in. 
+	 * Get a list of the completed orders of the user that is currently logged in 
 	 */
 	public List<IOrder> getCompletedOrders() {
 		String name = company.getCurrentUser();
@@ -157,31 +155,32 @@ public class Facade {
 	}
 
 	/**
-	 * Returns the currently used Scheduling Algorithm Type as String
+	 * TODO Rutger: checken of dit klopt want een scheduling algorithm type bestaat niet echt meer??
+	 * Returns the currently used Scheduling Algorithm Type as String.
 	 */
 	public String getCurrentSchedulingAlgorithm() {
 		return company.getCurrentSchedulingAlgorithm();
 	}
 
 	/**
-	 * Get a list of available CustomTasks from the catalogue. 
-	 * @return
+	 * Get a list of available CustomTasks from the CustomVehicleCatalogue 
 	 */
 	public Set<String> getCustomTasks() {
 		return ImmutableSet.copyOf(company.getCustomTasksDescription());
 	}
 
 	/**
-	 * Get the still available Parts for the model that is being built. 
-	 * @param type
-	 * 			The type of the parts that has to be selected. 
+	 * Get the still available VehicleOptions for the model that is being built 
+	 * 
+	 * @param 	type
+	 * 				The type of the VehicleOption that has to be selected 
 	 */
-	public List<VehicleOption> getParts(VehicleOptionCategory type) {
+	public List<VehicleOption> getRemainingVehicleOptions(VehicleOptionCategory type) {
 		return ImmutableList.copyOf(company.getStillAvailableCarParts(type));
 	}
 
 	/**
-	 * Get a list of pending orders of the user that is currently logged in.
+	 * Get a list of pending orders of the user that is currently logged in
 	 */
 	public List<IOrder> getPendingOrders() {
 		String name = company.getCurrentUser();
@@ -189,70 +188,92 @@ public class Facade {
 	}
 
 	/**
-	 * Get a list of specific Custom Tasks on the basis of the taskDescription.
-	 * The taskDescription is like "spraying car bodies" or "installing custom seats"
+	 * Get a list of Vehicle based on the given optionDescription.
+	 * The optionDescription can for example be "spraying car bodies" or "installing custom seats"
 	 * 
 	 */
-	public List<IVehicle> getSpecificCustomTasks(String taskDescription) {
+	public List<IVehicle> getCustomOptions(String optionDescription) {
 		List<IVehicle> tasks = new ArrayList<>();
-		for (CustomVehicle model : company.getSpecificCustomTasks(taskDescription)) {
+		for (CustomVehicle model : company.getSpecificCustomTasks(optionDescription)) {
 			tasks.add(model);
 		}
 		return ImmutableList.copyOf(tasks);
 	}
 	
+	/**
+	 * Returns the average amount of Vehicles produced
+	 */
 	public int getAverageDays(){
 		return company.getAverageDays();
 	}
 	
+	/**
+	 * Returns the median amount of Vehicles produced 
+	 */
 	public int getMedianDays(){
 		return company.getMedianDays();
 	}
 	
+	/**
+	 * Returns an unmodifiable list with how many Vehicles were produced for the last x days. This amount
+	 * x is decided when the company is initialised.
+	 */
 	public List<Integer> getDetailedDays(){
 		return company.getDetailedDays();
 	}
 	
+	/**
+	 * Returns the average amount of delays when Vehicles were produced
+	 */
 	public int getAverageDelays(){
 		return company.getAverageDelays();
 	}
 	
+	/**
+	 * Returns the median amount of delays when Vehicles were produced
+	 */
 	public int getMedianDelays(){
 		return company.getMedianDelays();
 	}
 	
+	/**
+	 * Returns an unmodifiable list with the latest delays. The size of this list 
+	 * is decided when the company is initialised.
+	 */
 	public List<Delay> getDetailedDelays(){
 		return company.getDetailedDelays();
 	}
 
 
 	/**
-	 * Login with a userName.
-	 * @param userName
-	 * 			The name of the user.
-	 * @throws RoleNotYetAssignedException
-	 * 			If it's the first time that this user logs in.
+	 * Login with a userName
+	 * 
+	 * @param 	userName
+	 * 				The name of the user
+	 * @throws 	RoleNotYetAssignedException
+	 * 				If it's the first time that this user logs in
 	 */
 	public void login(String userName) throws RoleNotYetAssignedException {
 		this.company.login(userName);
 	}
 
 	/**
-	 * Log the current user out.
+	 * Log the current user out
 	 */
 	public void logout() {
 		this.company.logout();
 	}
 
 	/**
-	 * Create and schedule a CustomOrder.
+	 * Create and schedule a CustomOrder
 	 * 
-	 * @param model
-	 * 			The name of the CustomCarModel that has to be ordered.
-	 * @param deadline
+	 * @param 	model
+	 * 				The name of the CustomVehicle that has to be ordered
+	 * 
+	 * @param 	deadline
 	 * 			The deadline of the CustomOrder
 	 */
-	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline) throws IllegalArgumentException{
+	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline){
 		CustomVehicle vehicle = new CustomVehicle();
 		for(VehicleOption option: model.getVehicleOptions().values()){
 			vehicle.addCarPart(option);
@@ -266,22 +287,18 @@ public class Facade {
 	}
 
 	/**
-	 * Create and schedule a standard order.
-	 * @param quantity
-	 * 			The amount of cars you want to order.
-	 * @throws UnmodifiableException
-	 * 			This is never thrown here.
-	 * @throws IllegalStateException
-	 * 			If the CarModel isn't a valid model.
-	 * @throws NotImplementedException
-	 * 			This is never thrown here.
+	 * Create and schedule a standard order
+	 * 
+	 * @param 	quantity
+	 * 				The amount of vehicles the user wants to order
+	 * 
 	 */
-	public ImmutableClock processOrder(int quantity) throws	IllegalStateException{
+	public ImmutableClock processOrder(int quantity){
 		return company.processOrder(quantity);
 	}
 
 	/**
-	 * Advance the clock to the next day.
+	 * Advance the clock to the next day
 	 */
 	public void startNewDay() {
 		this.company.startNewDay();
@@ -296,16 +313,28 @@ public class Facade {
 	}
 
 	/**
-	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
+	 * Returns a powerset with all the VehicleOptions or sets of VvehicleOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
 		return this.company.getAllCarOptionsInPendingOrders();
 	}
 
+	/**
+	 * Returns a list of unmodifiable AssemblyLines.
+	 */
 	public List<IAssemblyLine> getAssemblyLines() {
 		return Collections.unmodifiableList(company.getAssemblyLines());
 	}
 
+	/**
+	 * Changes the State of a given AssemblyLine to the given AssemblyLineState
+	 * 
+	 * @param 	assemblyLine
+	 * 				The AssemblyLine which state needs to be changed by the user
+	 * 
+	 * @param 	state
+	 * 				This AssemblyLineState will be the new state of the given AssemblyLine
+	 */
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
 		company.changeState(assemblyLine, state);
 	}
