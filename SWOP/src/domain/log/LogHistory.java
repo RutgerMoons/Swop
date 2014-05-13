@@ -13,8 +13,8 @@ public abstract class LogHistory {
 	/**
 	 * Constructs a LogHistory object with a degree of detail
 	 * 
-	 * @param numberOfDetails
-	 * 		the amount of detailed information this object should keep track off
+	 * @param 	numberOfDetails
+	 * 				the amount of detailed information this object should keep track off
 	 */
 	public LogHistory(int numberOfDetails) {
 		this.numberOfDetails = numberOfDetails;

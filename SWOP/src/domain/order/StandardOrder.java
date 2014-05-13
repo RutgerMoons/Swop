@@ -19,6 +19,8 @@ import domain.vehicle.vehicleOption.VehicleOption;
  * ordered and the amount of cars yet to be completed, are specific attributes
  * of an order. Each order also has an estimated time. This is an estimation of
  * when the order will be completed. This time is expressed in days and minutes.
+ * 
+ * TODO doc
  */
 public class StandardOrder implements IOrder {
 
@@ -27,8 +29,6 @@ public class StandardOrder implements IOrder {
 	private int quantity, pendingCars;
 	private ImmutableClock estimatedTime;
 	private ImmutableClock orderTime;
-
-	
 
 	/**
 	 * Constructor of an Order, given the name of the orderer, the type of
@@ -43,7 +43,7 @@ public class StandardOrder implements IOrder {
 	}
 
 	/**
-	 * Assignes the given name to the name of the garageholder.
+	 * Assignes the given name to the name of the garageholder
 	 */
 	private void setGarageHolder(String holder) {
 		if (holder == null || holder.equals(" ")) {
@@ -105,7 +105,6 @@ public class StandardOrder implements IOrder {
 		}
 		this.description = description2;
 	}
-
 	
 	@Override
 	public IVehicle getDescription() {

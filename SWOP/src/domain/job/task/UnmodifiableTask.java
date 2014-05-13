@@ -17,10 +17,10 @@ public class UnmodifiableTask implements ITask{
 	private ITask task;
 
 	/**
-	 * Create an Immutable Task.
+	 * Create an Immutable Task
 	 * 
-	 * @param task
-	 * 			The mutable Task.
+	 * @param 	task
+	 * 				The mutable Task
 	 */
 	public UnmodifiableTask(ITask task){
 		if(task==null)

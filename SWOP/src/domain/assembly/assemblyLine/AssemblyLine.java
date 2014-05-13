@@ -1,7 +1,6 @@
 package domain.assembly.assemblyLine;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,7 +8,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import domain.assembly.workBench.IWorkBench;
-import domain.assembly.workBench.WorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
@@ -77,7 +75,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * It notifies its observers when an order is completed.
 	 * 
 	 * @throws 	NoSuitableJobFoundException
-	 * 		Thrown when no job can be scheduled by the scheduler
+	 * 				Thrown when no job can be scheduled by the scheduler
 	 */
 	public void advance() throws NoSuitableJobFoundException {
 		if (!canAdvance()) {
@@ -118,9 +116,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * This method first sets the index of the first workbench that has to complete some tasks
 	 * of the job. Then the job is passed to the scheduler.
 	 * 
-	 * @param	job that needs to be scheduled
+	 * @param	job 
+	 * 				The job that needs to be scheduled
 	 * 
-	 * @throws	IllegalArgumentException when the given parameter is null
+	 * @throws	IllegalArgumentException 
+	 * 				Thrown when the given parameter is null
 	 */
 	public void schedule(IJob job) {
 		if (job == null) {

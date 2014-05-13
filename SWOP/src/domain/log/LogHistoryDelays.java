@@ -19,8 +19,8 @@ public class LogHistoryDelays extends LogHistory {
 	/**
 	 * Constructs a new instance with a degree of detail
 	 * 
-	 * @param numberOfDetails
-	 * 		Amount of detailed delays to keep track off
+	 * @param 	numberOfDetails
+	 * 				Amount of detailed delays to keep track off
 	 */
 	public LogHistoryDelays(int numberOfDetails) {
 		super(numberOfDetails);
@@ -41,7 +41,7 @@ public class LogHistoryDelays extends LogHistory {
 	}
 
 	/**
-	 * Returns an unmodifiable list of the complete history.
+	 * Returns an unmodifiable list of the complete history
 	 */
 	@Override
 	public List<Integer> getCompleteHistory() {
@@ -57,13 +57,13 @@ public class LogHistoryDelays extends LogHistory {
 	}
 	
 	/**
-	 * Receives the newest delay and adds this to the history.
+	 * Receives the newest delay and adds this to the history
 	 * 
-	 * @param newDelay
-	 * 		The delay to be added.
+	 * @param 	newDelay
+	 * 				The delay to be added
 	 * 
-	 * @throws IllegalArgumentException
-	 * 		Thrown when the given delay is null.
+	 * @throws 	IllegalArgumentException
+	 * 				Thrown when the given delay is null
 	 */
 	public void addNewDelay(Delay newDelay) {
 		if (newDelay == null) {
@@ -81,5 +81,4 @@ public class LogHistoryDelays extends LogHistory {
 	public List<Delay> getHistory() {
 		return Collections.unmodifiableList(history);
 	}
-
 }

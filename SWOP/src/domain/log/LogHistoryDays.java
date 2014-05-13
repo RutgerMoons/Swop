@@ -17,8 +17,8 @@ public class LogHistoryDays extends LogHistory {
 	/**
 	 * Constructs a new instance with a degree of detail
 	 * 
-	 * @param numberOfDetails
-	 * 		Amount of detailed delays to keep track off
+	 * @param 	numberOfDetails
+	 * 				Amount of detailed delays to keep track off
 	 */
 	public LogHistoryDays(int numberOfDetails) {
 		super(numberOfDetails);

@@ -65,25 +65,25 @@ public class UnmodifiableJob implements IJob {
 	}
 
 	@Override
-	public void setOrder(IOrder order) throws UnmodifiableException {
+	public void setOrder(IOrder order) {
 		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void setTasks(List<ITask> tasks) throws UnmodifiableException {
+	public void setTasks(List<ITask> tasks) {
 		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void addTask(ITask task) throws UnmodifiableException {
+	public void addTask(ITask task) {
 		throw new UnmodifiableException();
 		
 	}
 
 	@Override
-	public void setMinimalIndex(int index) throws UnmodifiableException {
+	public void setMinimalIndex(int index) {
 		throw new UnmodifiableException();
 		
 	}
@@ -116,4 +116,3 @@ public class UnmodifiableJob implements IJob {
 		return job.getVehicleSpecification();
 	}
 }
-

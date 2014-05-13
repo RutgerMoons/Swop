@@ -7,10 +7,10 @@ package domain.job.action;
 public interface IAction {
 	
 	/**
-	 * Check if the action is completed.
+	 * Check if the action is completed
 	 * 
-	 * @return True if action is fully completed. False if action is not fully
-	 *         completed.
+	 * @return 	True if action is fully completed. False if action is not fully
+	 *         	completed.
 	 */
 	public boolean isCompleted();
 
@@ -18,20 +18,20 @@ public interface IAction {
 	 * Set the completed state of this action.
 	 * 
 	 * @param 	isCompleted
-	 *            if true, the action is completed. if false, the action is not
+	 *            If true, the action is completed. if false, the action is not
 	 *            completed.
 	 */
 	public void setCompleted(boolean isCompleted);
 	
 	
 	/**
-	 * Get the description of the action.
+	 * Get the description of the action
 	 */
 	public String getDescription();
 	
 	
 	/**
-	 * Set the description of this action.
+	 * Set the description of this action
 	 * 
 	 * @throws 	IllegalArgumentException
 	 *             If description==null or empty

@@ -12,8 +12,11 @@ public class UnmodifiableAction implements IAction {
 	/**
 	 * Create the Immutable Action.
 	 * 
-	 * @param action
-	 * 			The mutable action.
+	 * @param 	action
+	 * 				The mutable action.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 				Thrown when the given action is nulls
 	 */
 	public UnmodifiableAction(IAction action){
 		if(action==null)
