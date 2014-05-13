@@ -212,6 +212,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	}
 
+	@Override
 	public String toString() {
 		return "Batch";
 	}
