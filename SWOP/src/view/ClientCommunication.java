@@ -194,6 +194,8 @@ public class ClientCommunication{
 					return chooseOrder(pendingOrders, completedOrders);
 				}
 			}
+		}else { 
+			show(Arrays.asList("You have no pending or completed orders"));
 		}
 		return Optional.absent();
 	}
@@ -210,8 +212,8 @@ public class ClientCommunication{
 		for (VehicleOption part : parts) {
 			partsString.add(i + "." + part.toString() );
 			i++;
-			if(i==parts.size() && part.getType().isOptional()){
-				partsString.add(i + ". Select Nothing" );
+			if(i==parts.size()+1 && part.getType().isOptional()){
+				partsString.add(i + ".Select Nothing" );
 			}
 		}
 
@@ -458,14 +460,17 @@ public class ClientCommunication{
 
 	public void showAssemblyLine(IAssemblyLine assemblyLine) {
 		ArrayList<String> assemblyLineStrings = new ArrayList<String>();
-		assemblyLineStrings.add("STATE: " + assemblyLine.getState() );
+		assemblyLineStrings.add(assemblyLine.getState().toString() );
 
 		assemblyLineStrings.add(0, "current assemblyline:");
 
 		List<IWorkBench> allWorkbenches = assemblyLine.getWorkbenches();
 
 		for(IWorkBench workbench: allWorkbenches){
+			assemblyLineStrings.add("Workbench: " + workbench.toString());
+			assemblyLineStrings.add("Pending Tasks: ");
 			assemblyLineStrings.addAll(getPendingTasks(workbench));
+			assemblyLineStrings.add("Completed Tasks: ");
 			assemblyLineStrings.addAll(getCompletedTasks(workbench));
 		}
 		show(assemblyLineStrings);
@@ -711,8 +716,10 @@ public class ClientCommunication{
 	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches) {
 		List<String> strings = new ArrayList<>();
 
+		int i = 1;
 		for(IWorkBench workbench: workbenches){
-			strings.add(workbench.toString());
+			strings.add(i + ": " +workbench.toString());
+			i++;
 		}
 
 		show(strings);
@@ -736,9 +743,9 @@ public class ClientCommunication{
 		show(customString);
 
 		int customNumber = askNumber("Which Task do you choose?") -1;
-		if (customNumber >0 && customNumber < customTasks.size()) {
-			return customString.get(customNumber).substring(	//TODO check of het werkt
-					customString.get(customNumber).indexOf(".") + 1);
+		if (customNumber >=0 && customNumber < customTasks.size()) {
+			return customString.get(customNumber+1).substring(	//TODO check of het werkt
+					customString.get(customNumber+1).indexOf(".") + 1);
 		} else {
 			invalidAnswerPrompt();
 			return showCustomTasks(customTasks);
@@ -818,17 +825,16 @@ public class ClientCommunication{
 		this.show(sets);
 	}
 
-	public AssemblyLineState chooseStatus(AssemblyLineState assemblyLineState) {
-		AssemblyLineState[] states = AssemblyLineState.values();
+	public AssemblyLineState chooseStatus(List<AssemblyLineState> states, AssemblyLineState assemblyLineState) {
 		showStatus(assemblyLineState);
 		
 		int customNumber = askNumber("Which operational state do you choose?") - 1;
 		
-		if (customNumber >0 && customNumber < states.length) {
-			return states[customNumber];
+		if (customNumber >0 && customNumber < states.size()) {
+			return states.get(customNumber);
 		} else {
 			invalidAnswerPrompt();
-			return chooseStatus(assemblyLineState);
+			return chooseStatus(states, assemblyLineState);
 		}
 		
 		

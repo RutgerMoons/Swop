@@ -313,10 +313,11 @@ public class Facade {
 	}
 
 	/**
-	 * Returns a powerset with all the VehicleOptions or sets of VvehicleOptions that occur in three or more pending orders.
+	 * Returns a immutable powerset with all the VehicleOptions 
+	 * or sets of VvehicleOptions that occur in three or more pending orders.
 	 */
 	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
-		return this.company.getAllCarOptionsInPendingOrders();
+		return ImmutableSet.copyOf(this.company.getAllCarOptionsInPendingOrders());
 	}
 
 	/**
@@ -337,5 +338,9 @@ public class Facade {
 	 */
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
 		company.changeState(assemblyLine, state);
+	}
+
+	public List<AssemblyLineState> getAssemblyLineStates() {
+		return ImmutableList.copyOf(Arrays.asList(AssemblyLineState.values()));
 	}
 }

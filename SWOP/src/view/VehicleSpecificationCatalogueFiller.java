@@ -26,9 +26,64 @@ public class VehicleSpecificationCatalogueFiller {
 		models.add(getModelA());
 		models.add(getModelB());
 		models.add(getModelC());
+		models.add(getModelX());
+		models.add(getModelY());
 		return ImmutableSet.copyOf(models);
 	}
 
+	private VehicleSpecification getModelY(){
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("platform", VehicleOptionCategory.BODY));
+		
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
+		
+		parts.add(new VehicleOption("standard", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("hybrid", VehicleOptionCategory.ENGINE));
+		
+		parts.add(new VehicleOption("8 speed manual", VehicleOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("automatic", VehicleOptionCategory.GEARBOX));
+		
+		parts.add(new VehicleOption("vinyl grey", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("vinyl black", VehicleOptionCategory.SEATS));
+		
+		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
+		
+		parts.add(new VehicleOption("standard", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("heavy-duty", VehicleOptionCategory.WHEEL));
+		
+		return new VehicleSpecification("model Y", parts, 90);
+	}
+	
+	private VehicleSpecification getModelX(){
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("platform", VehicleOptionCategory.BODY));
+		parts.add(new VehicleOption("closed", VehicleOptionCategory.BODY));
+		
+		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
+		
+		parts.add(new VehicleOption("standard", VehicleOptionCategory.ENGINE));
+		parts.add(new VehicleOption("hybrid", VehicleOptionCategory.ENGINE));
+		
+		parts.add(new VehicleOption("8 speed manual", VehicleOptionCategory.GEARBOX));
+		parts.add(new VehicleOption("automatic", VehicleOptionCategory.GEARBOX));
+		
+		parts.add(new VehicleOption("vinyl grey", VehicleOptionCategory.SEATS));
+		parts.add(new VehicleOption("vinyl black", VehicleOptionCategory.SEATS));
+		
+		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
+		
+		parts.add(new VehicleOption("standard", VehicleOptionCategory.WHEEL));
+		parts.add(new VehicleOption("heavy-duty", VehicleOptionCategory.WHEEL));
+		
+		return new VehicleSpecification("model X", parts, 90);
+	}
+	
+	
+	
 	private VehicleSpecification getModelC() {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
