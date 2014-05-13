@@ -61,7 +61,7 @@ public class FacadeTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void getCarModelSpecificationFromCatalogueTestError() {
-		facade.getCarModelSpecificationFromCatalogue("Error");
+		facade.getVehicleSpecificationFromCatalogue("Error");
 	}
 	
 	@Test

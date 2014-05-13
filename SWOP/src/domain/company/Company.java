@@ -86,34 +86,28 @@ public class Company {
 	/**
 	 * Add a Part to the CarModel that is being built.
 	 * 
-	 * @param part
-	 * 			The part you want to add to the model.
+	 * @param 	part
+	 * 				The part you want to add to the model.
 	 */
 	public void addPartToModel(VehicleOption part){
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
 		this.partpicker.getModel().addCarPart(option);
 	}
-
-	/**
-	 * Advance the clock
-	 * 
-	 * @param time
-	 *            How much time the clock has to be advanced.
-	 */
-	public void advanceClock(int time){
-		this.clock.advanceTime(time);
-	}
-
+	
 	/**
 	 * Complete the task the user has chosen to complete. The method
 	 * automatically advances the AssemblyLine if it can advance.
-	 * @param assemblyLine
+	 * 
+	 * @param 	assemblyLine
 	 * 			  The assemblyLine on which a certain task of a job is assembled
-	 * @param workBench
+	 * 
+	 * @param 	workBench
 	 *            The workbench on which a certain task of a job is assembled
-	 * @param task
+	 * 
+	 * @param 	task
 	 *            The Task in the Job on the Workbench.
-	 * @param time
+	 * 
+	 * @param 	time
 	 *            The time the clock has to be advanced.
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time){
@@ -126,41 +120,42 @@ public class Company {
 	 * Create a new User and put it in the UserBook. The method automatically
 	 * logs the newly created user in.
 	 * 
-	 * @param userName
-	 *            The newly chosen userName.
-	 * @param role
-	 *            The role of the User.
+	 * @param 	userName
+	 *            The newly chosen userName
+	 * 
+	 * @param 	role
+	 *            The role of the User
 	 */
 	public void createAndAddUser(String userName, String role){
 		this.userbook.createUser(userName, role);
 	}
 
 	/**
-	 * Create a new CarModel that has to be created from scratch.
+	 * Create a new Vehicle that has to be created from scratch.
 	 * 
-	 * @param realModel
+	 * @param 	realModel
 	 *            The specification the PartPicker has to take into account when
-	 *            creating the CarModel
+	 *            creating the Vehicle
 	 */
-	public void createNewModel(VehicleSpecification realModel) {
+	public void createNewVehicle(VehicleSpecification realModel) {
 		this.partpicker.setNewModel(realModel);
 	}
 
 	/**
-	 * Get the accessrights of the User that is currently logged in.
+	 * Get the AccessRights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
 		return ImmutableList.copyOf(this.userbook.getCurrentUser().getAccessRights());
 	}
 
 	/**
-	 * Get the CarModelSpecification from the catalogue.
-	 * @param specificationName
-	 * 			The name of the specification to retrieve the specification.
-	 * @throws IllegalArgumentException
-	 * 			If no CarModelSpecification is found with the given name.
+	 * Get the VehicleSpecification from the VehicleSpecificationCatalogue.
+	 * 
+	 * @param 	specificationName
+	 * 				The name of the specification needed to retrieve the VehicleSpecification from
+	 * 				the VehicleSpecificationCatalogue.
 	 */
-	public VehicleSpecification getCarModelSpecificationFromCatalogue(String specificationName) {
+	public VehicleSpecification getVehicleSpecificationFromCatalogue(String specificationName) {
 		return this.partpicker.getCatalogue().getCatalogue().get(specificationName);
 	}
 	

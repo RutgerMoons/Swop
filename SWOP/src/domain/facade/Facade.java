@@ -28,7 +28,6 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
@@ -43,11 +42,12 @@ public class Facade {
 	/**
 	 * Create a new Facade. This initializes automatically all the necessary
 	 * resources.
+	 *
+	 * @param	company
+	 * 				The instantiation of a Company object to which the facade communicates everything to
 	 * 
-	 * @param bindingRestrictions
-	 *            The list of BindingRestrictions the facade has to deal with.
-	 * @param optionalRestrictions
-	 *            The list of OptionalRestrictions the facade has to deal with.
+	 * @throws 	IllegalArgumentException
+	 * 				Thrown when the given company is null
 	 * */
 	public Facade(Company company) {
 		if (company == null) {
@@ -57,10 +57,10 @@ public class Facade {
 	}
 
 	/**
-	 * Add a Part to the CarModel that is being built.
+	 * Add a Part to the VehicleModel that is being ordered
 	 * 
 	 * @param part
-	 * 			The part you want to add to the model.
+	 * 			The VehicleOption you want to add to the model
 	 */
 	public void addPartToModel(VehicleOption part) {
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
@@ -68,28 +68,23 @@ public class Facade {
 	}
 
 	/**
-	 * Advance the clock
+	 * Communicate to the company instance that at a given assemblyLine at a given workbench 
+	 * a given task is completed in a given time.
 	 * 
-	 * @param time
-	 *            How much time the clock has to be advanced.
-	 */
-	public void advanceClock(int time) {
-		this.company.advanceClock(time);
-	}
-
-	/**
-	 * Complete the task the user has chosen to complete. The method
-	 * automatically advances the AssemblyLine if it can advance.
+	 * @param 	assemblyLine
+	 * 				The assemblyLine at which the worker stands
 	 * 
-	 * @param workBenchIndex
-	 *            The index of the workbench the job from which the task has to
-	 *            be completed is on.
-	 * @param taskIndex
-	 *            The index of the Task in the Job on the Workbench.
-	 * @param time
-	 *            The time the clock has to be advanced.
+	 * @param 	workbench
+	 *           	The workbench where the given task is completed
+	 *           
+	 * @param 	task
+	 *            	The task that is completed by the worker
+	 *            
+	 * @param 	time
+	 *            	The amount of minutes needed to complete the task
 	 */
-	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time) {
+	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, 
+			ITask task, ImmutableClock time) {
 		Task modifiableTask = new Task(task.getTaskDescription());
 		modifiableTask.setActions(task.getActions());
 		
@@ -100,24 +95,25 @@ public class Facade {
 	 * Create a new User and put it in the UserBook. The method automatically
 	 * logs the newly created user in.
 	 * 
-	 * @param userName
-	 *            The newly chosen userName.
-	 * @param role
-	 *            The role of the User.
+	 * @param 	userName
+	 *            The newly chosen userName
+	 *            
+	 * @param 	role
+	 *            The role of the User
 	 */
 	public void createAndAddUser(String userName, String role) {
 		this.company.createAndAddUser(userName, role);
 	}
 
 	/**
-	 * Create a new CarModel that has to be created from scratch.
+	 * Create a new Vehicle that has to be created from scratch.
 	 * 
-	 * @param realModel
+	 * @param 	realModel
 	 *            The specification the PartPicker has to take into account when
-	 *            creating the CarModel
+	 *            creating the Vehicle
 	 */
-	public void createNewModel(VehicleSpecification realModel) {
-		this.company.createNewModel(realModel);
+	public void createNewVehicle(VehicleSpecification realModel) {
+		this.company.createNewVehicle(realModel);
 	}
 
 	/**
@@ -128,20 +124,20 @@ public class Facade {
 	}
 
 	/**
-	 * Get the CarModelSpecification from the catalogue.
-	 * @param specificationName
-	 * 			The name of the specification to retrieve the specification.
-	 * @throws IllegalArgumentException
-	 * 			If no CarModelSpecification is found with the given name.
+	 * Get the VehicleSpecification from the VehicleSpecificationCatalogue
+	 * 
+	 * @param 	specificationName
+	 * 				The name of the specification. This is needed to retrieve 
+	 * 				the associated VehicleSpecification.
 	 */
-	public VehicleSpecification getCarModelSpecificationFromCatalogue(String specificationName) {
+	public VehicleSpecification getVehicleSpecificationFromCatalogue(String specificationName) {
 		return company.getVehicleSpecification(specificationName);
 	}
 
 	/**
 	 * Get a set of all the CarModelSpecifications that the Catalogue has.
 	 */
-	public Set<String> getCarModelSpecifications() {
+	public Set<String> getVehicleSpecifications() {
 		return ImmutableSet.copyOf(company.getVehicleSpecifications());
 	}
 

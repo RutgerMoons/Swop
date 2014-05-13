@@ -72,7 +72,7 @@ public class WorkBench implements IWorkBench {
 	 * Set a new list of responsibilities for this WorkBench
 	 * 
 	 * @param 	responsibilities
-	 *            A list of responsibilities.
+	 *            A list of responsibilities
 	 *            
 	 * @throws 	IllegalArgumentException
 	 *             If responsibilities==null
@@ -87,10 +87,10 @@ public class WorkBench implements IWorkBench {
 	 * Add a responsibility to this WorkBench.
 	 * 
 	 * @param 	responibility
-	 *            The responsibility you want to add.
+	 *            The responsibility you want to add
 	 *            
 	 * @throws 	IllegalArgumentException
-	 *             If responsibility==null or isEmpty.
+	 *             If responsibility==null or isEmpty
 	 */
 	public void addResponsibility(String responibility) {
 		if (responibility == null || responibility.isEmpty())

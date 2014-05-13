@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import domain.assembly.workBench.IWorkBench;
-import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.Scheduler;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -25,9 +24,9 @@ public interface IAssemblyLine {
 	public ArrayList<Integer> getBlockingWorkBenches();
 	
 	/**
-	 * Get all the pending jobs for this AssemblyLine.
+	 * Get all the pending jobs for this AssemblyLine
 	 * 
-	 * @return A list representing the current jobs.
+	 * @return 	A list representing the current jobs
 	 */
 	public List<IJob> getCurrentJobs();
 	
@@ -39,7 +38,7 @@ public interface IAssemblyLine {
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
 	 * 
-	 * @return	A list of IWorkBenches.
+	 * @return	A list of IWorkBenches
 	 */
 	public List<IWorkBench> getWorkbenches();
 	
@@ -55,12 +54,10 @@ public interface IAssemblyLine {
 	public AssemblyLineState getState();
 
 	/**
-	 * Change the operational state of the assemblyLine.
+	 * Change the operational state of the assemblyLine
 	 * 
 	 * @param	state
 	 * 			The state the assemblyLine has to be in
-	 * @throws	UnmodifiableException
-	 * 			Thrown when the object is an unmodifiable AssemblyLine
 	 */
 	public void setState(AssemblyLineState state);
 }
