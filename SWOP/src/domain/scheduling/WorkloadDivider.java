@@ -30,13 +30,13 @@ import domain.vehicle.vehicleOption.VehicleOption;
 
 public class WorkloadDivider implements ObservesOrderBook {
 
-	private ArrayList<AssemblyLine> assemblyLines;
+	private List<AssemblyLine> assemblyLines;
 	
-	public WorkloadDivider(	ArrayList<AssemblyLine> assemblyLines, OrderBookObserver orderBookObserver, AssemblyLineObserver assemblyLineObserver) {
-		if (	assemblyLines == null || orderBookObserver == null || assemblyLineObserver == null) {
+	public WorkloadDivider(	List<AssemblyLine> listOfAssemblyLines, OrderBookObserver orderBookObserver, AssemblyLineObserver assemblyLineObserver) {
+		if (	listOfAssemblyLines == null || orderBookObserver == null || assemblyLineObserver == null) {
 			throw new IllegalArgumentException();
 		}
-		this.assemblyLines = assemblyLines;
+		this.assemblyLines = listOfAssemblyLines;
 		orderBookObserver.attachLogger(this);
 		// attach the assemblyLineObserver to all assemblyLines
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
