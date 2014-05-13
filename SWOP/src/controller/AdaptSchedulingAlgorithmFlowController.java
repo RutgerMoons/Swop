@@ -20,13 +20,16 @@ import domain.vehicle.vehicleOption.VehicleOption;
 public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowController {
 
 	/**
-	 * Construct a new AdaptSchedulingAlgorithmFlowController.
-	 * @param accessRight
-	 * 			The accessRight needed to perform this use case.
-	 * @param clientCommunication
-	 * 			The IClientCommunication this FlowController uses to communicate with the user.
-	 * @param facade
-	 * 			The Facade this flowcontroller uses to access the domain logic.
+	 * Construct a new AdaptSchedulingAlgorithmFlowController
+	 * 
+	 * @param 	accessRight
+	 * 				The accessRight needed to perform this use case
+	 * 
+	 * @param 	clientCommunication
+	 * 				The ClientCommunication this FlowController uses to communicate with the user
+	 * 
+	 * @param 	facade
+	 * 				The Facade this flowcontroller uses to access the domain logic
 	 */
 	public AdaptSchedulingAlgorithmFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
@@ -107,7 +110,4 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		facade.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorBatch(toSet));
 		clientCommunication.showAlgorithmSwitched("Batch", unModifiableToSet);
 	}
-	
-	
-
 }
