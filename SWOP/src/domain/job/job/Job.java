@@ -84,7 +84,7 @@ public class Job implements IJob {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + taskList.hashCode();
+		result = prime * result + taskList.hashCode() + getTasks().hashCode() + getTimeAtWorkBench();
 		return result;
 	}
 
@@ -94,10 +94,17 @@ public class Job implements IJob {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())//&&obj.getClass != UnmodifiableJob
+		IJob other;
+		try{
+			other = (IJob) obj; //IJob ipv Job
+		} catch (ClassCastException e){
 			return false;
-		Job other = (Job) obj; //IJob ipv Job
-		if (!order.equals(other.order))//other.getOrder()
+		}
+		if (!order.equals(other.getOrder()))//other.getOrder()
+			return false;
+		if(!getTasks().equals(other.getTasks()))
+			return false;
+		if(getTimeAtWorkBench()!=other.getTimeAtWorkBench())
 			return false;
 		return true;
 	}
