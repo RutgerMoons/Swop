@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ import com.google.common.base.Optional;
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
@@ -52,7 +54,7 @@ public class AssemblyLineTest{
 
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		model = new Vehicle(template);
 
 		try {
@@ -83,7 +85,7 @@ public class AssemblyLineTest{
 		Set<String> resp1 = new HashSet<String>();
 		resp1.add("bla");
 		resp1.add("bleu");
-		IWorkBench workbench1 = new WorkBench(resp1, "workbench1");
+		IWorkBench workbench1 = new WorkBench(resp1, WorkbenchType.BODY);
 		line.addWorkBench(workbench1);
 		assertEquals(4, line.getWorkbenches().size());
 	}
@@ -223,7 +225,7 @@ public class AssemblyLineTest{
 		AssemblyLineObserver observer = new AssemblyLineObserver();
 		line.attachObserver(observer);
 		ClockObserver clockObserver = new ClockObserver();
-		Logger logger = new Logger(2, clockObserver, observer);
+		Logger logger = new Logger(2);
 		ImmutableClock clock = new ImmutableClock(0,240);
 		StandardOrder order = new StandardOrder("Luigi", this.model, 10, clock);
 		try {
@@ -296,7 +298,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void TestToString(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), WorkbenchType.ACCESSORIES);
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
 		assertEquals("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories,-workbench 4: test", line.toString());

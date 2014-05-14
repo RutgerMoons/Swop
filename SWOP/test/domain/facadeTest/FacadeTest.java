@@ -14,10 +14,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-<<<<<<< HEAD
-=======
 import view.CustomVehicleCatalogueFiller;
->>>>>>> origin/Stef
 import view.VehicleSpecificationCatalogueFiller;
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
@@ -35,17 +32,10 @@ import domain.facade.Facade;
 import domain.job.task.ITask;
 import domain.observer.observers.ClockObserver;
 import domain.order.CustomOrder;
-<<<<<<< HEAD
-import domain.order.IOrder;
-import domain.restriction.BindingRestriction;
-import domain.restriction.OptionalRestriction;
-=======
-import domain.order.Delay;
 import domain.order.IOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
->>>>>>> origin/Stef
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.users.AccessRight;
 import domain.vehicle.VehicleSpecification;
@@ -70,10 +60,6 @@ public class FacadeTest {
 		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
 		catalogue.initializeCatalogue(filler.getInitialModels());
 		List<AssemblyLine> lines = getInitialAssemblyLines(observer, clock.getImmutableClock(), catalogue);
-<<<<<<< HEAD
-		
-		company = new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), new CustomVehicleCatalogue(), catalogue, lines, new Clock());
-=======
 		CustomVehicleCatalogue customCatalogue = new CustomVehicleCatalogue();
 		CustomVehicleCatalogueFiller customFiller = new CustomVehicleCatalogueFiller();
 		for(String str: customFiller.getInitialModels().keySet()){
@@ -81,7 +67,6 @@ public class FacadeTest {
 			customCatalogue.addModel(str, vehicle);
 		}
 		company = new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), customCatalogue, catalogue, lines, new Clock());
->>>>>>> origin/Stef
 		facade = new Facade(company);
 	}
 	
@@ -211,18 +196,6 @@ public class FacadeTest {
 		
 	}
 	
-<<<<<<< HEAD
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-=======
 	@Test
 	public void testGetVehicleSpecificationFromCatalogue(){
 		assertEquals("model A", facade.getVehicleSpecificationFromCatalogue("model A").getDescription());
@@ -354,7 +327,6 @@ public class FacadeTest {
 	public void testGetAssemblyLineStates(){
 		assertEquals(3, facade.getAssemblyLineStates().size());
 	}
->>>>>>> origin/Stef
 	
 	
 	
