@@ -244,7 +244,11 @@ public class WorkloadDivider implements ObservesOrderBook {
 	}
 
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
-		assemblyLine.setState(state);
+		for(AssemblyLine line: assemblyLines){
+			if(assemblyLine.equals(line)){
+				line.setState(state);
+			}
+		}
 	}
 
 	/**

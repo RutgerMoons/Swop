@@ -135,7 +135,7 @@ public abstract class SchedulingAlgorithm {
 		for(Optional<IJob> job : list){
 			if(job.isPresent()){
 				//TODO weten op welke assemblyline de job staat om de productiontime te berekenen
-				int currentTimeAtWorkbenchForThisJob = job.get().getProductionTime();
+				int currentTimeAtWorkbenchForThisJob = 60;//job.get().getProductionTime();
 				if(currentTimeAtWorkbenchForThisJob >= biggest){
 					biggest = currentTimeAtWorkbenchForThisJob;
 				}

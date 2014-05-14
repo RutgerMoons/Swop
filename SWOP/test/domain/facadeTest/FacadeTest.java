@@ -14,6 +14,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+<<<<<<< HEAD
+=======
+import view.CustomVehicleCatalogueFiller;
+>>>>>>> origin/Stef
 import view.VehicleSpecificationCatalogueFiller;
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
@@ -31,9 +35,17 @@ import domain.facade.Facade;
 import domain.job.task.ITask;
 import domain.observer.observers.ClockObserver;
 import domain.order.CustomOrder;
+<<<<<<< HEAD
 import domain.order.IOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
+=======
+import domain.order.Delay;
+import domain.order.IOrder;
+import domain.restriction.BindingRestriction;
+import domain.restriction.OptionalRestriction;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
+>>>>>>> origin/Stef
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.users.AccessRight;
 import domain.vehicle.VehicleSpecification;
@@ -58,8 +70,18 @@ public class FacadeTest {
 		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
 		catalogue.initializeCatalogue(filler.getInitialModels());
 		List<AssemblyLine> lines = getInitialAssemblyLines(observer, clock.getImmutableClock(), catalogue);
+<<<<<<< HEAD
 		
 		company = new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), new CustomVehicleCatalogue(), catalogue, lines, new Clock());
+=======
+		CustomVehicleCatalogue customCatalogue = new CustomVehicleCatalogue();
+		CustomVehicleCatalogueFiller customFiller = new CustomVehicleCatalogueFiller();
+		for(String str: customFiller.getInitialModels().keySet()){
+			for(CustomVehicle vehicle: customFiller.getInitialModels().get(str))
+			customCatalogue.addModel(str, vehicle);
+		}
+		company = new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), customCatalogue, catalogue, lines, new Clock());
+>>>>>>> origin/Stef
 		facade = new Facade(company);
 	}
 	
@@ -189,6 +211,7 @@ public class FacadeTest {
 		
 	}
 	
+<<<<<<< HEAD
 	
 	
 	
@@ -199,6 +222,139 @@ public class FacadeTest {
 	
 	
 	
+=======
+	@Test
+	public void testGetVehicleSpecificationFromCatalogue(){
+		assertEquals("model A", facade.getVehicleSpecificationFromCatalogue("model A").getDescription());
+	}
+	
+	@Test
+	public void testGetVehicleSpecifications(){
+		assertEquals(5, facade.getVehicleSpecifications().size());
+	}
+	
+	@Test
+	public void testGetVehicleOptionCategory(){
+		assertEquals(VehicleOptionCategory.values().length, facade.getVehicleOptionCategory().size());
+	}
+	
+	@Test
+	public void testGetCompletedOrders(){
+		facade.createAndAddUser("test", "worker");
+		facade.login("test");
+		
+		VehicleOption option = new VehicleOption("black", VehicleOptionCategory.COLOR);
+		VehicleSpecification specification = company.getVehicleSpecificationFromCatalogue("model A");
+		facade.createNewVehicle(specification);
+		
+		
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.BODY));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.SEATS));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
+		facade.addPartToVehicle(option);
+		
+		facade.processOrder(1);
+		
+		
+		assertEquals(company.getCompletedOrders("test"), facade.getCompletedOrders());
+	}
+	
+	@Test
+	public void testGetPendingOrders(){
+		facade.createAndAddUser("test", "worker");
+		facade.login("test");
+		
+		VehicleOption option = new VehicleOption("black", VehicleOptionCategory.COLOR);
+		VehicleSpecification specification = company.getVehicleSpecificationFromCatalogue("model A");
+		facade.createNewVehicle(specification);
+		
+		
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.BODY));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.SEATS));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
+		facade.addPartToVehicle(option);
+		
+		facade.processOrder(1);
+		
+		
+		assertEquals(company.getPendingOrders("test"), facade.getPendingOrders());
+		assertEquals(1, facade.getPendingOrders().size());
+	}
+	
+	@Test
+	public void testGetSchedulingAlgorithm(){
+		assertEquals("Fifo", facade.getCurrentSchedulingAlgorithm());
+	}
+	
+	@Test
+	public void testGetCustomTasks(){
+		assertEquals(company.getCustomTasksDescription(), facade.getCustomTasks());
+	}
+	
+	@Test
+	public void testGetRemainingVehicleOptions(){
+		facade.createNewVehicle(company.getVehicleSpecification("model A"));
+		assertEquals(company.getStillAvailableCarParts(VehicleOptionCategory.COLOR), facade.getRemainingVehicleOptions(VehicleOptionCategory.COLOR));
+	}
+	
+	@Test
+	public void testGetCustomOptions(){
+		
+		assertEquals(6, facade.getCustomOptions("spraying car bodies").size());
+	}
+	
+	
+	@Test
+	public void testGetAverageDays(){
+		assertEquals(company.getAverageDays(), facade.getAverageDays());
+	}
+	
+	@Test
+	public void testGetMedianDays(){
+		assertEquals(company.getMedianDays(), facade.getMedianDays());
+	}
+	
+	@Test
+	public void testGetDetailedDays(){
+		assertEquals(company.getDetailedDays(), facade.getDetailedDays());
+	}
+	
+	@Test
+	public void testGetAverageDelays(){
+		assertEquals(company.getAverageDelays(), facade.getAverageDelays());
+	}
+	
+	@Test
+	public void testGetMedianDelays(){
+		assertEquals(company.getMedianDelays(), facade.getMedianDelays());
+	}
+	
+	@Test
+	public void testGetDetailedDelays(){
+		assertEquals(company.getDetailedDelays().size(), facade.getDetailedDelays().size());
+	}
+	
+	@Test
+	public void testSwitchToSchedulingAlgorithm(){
+		facade.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorBatch(new ArrayList<VehicleOption>()));
+		assertEquals("Batch", facade.getCurrentSchedulingAlgorithm());
+	}
+	
+	@Test
+	public void testChangeState(){
+		facade.changeState(facade.getAssemblyLines().get(0), AssemblyLineState.BROKEN);
+		assertEquals(AssemblyLineState.BROKEN, facade.getAssemblyLines().get(0).getState());
+	}
+	
+	@Test
+	public void testGetAssemblyLineStates(){
+		assertEquals(3, facade.getAssemblyLineStates().size());
+	}
+>>>>>>> origin/Stef
 	
 	
 	

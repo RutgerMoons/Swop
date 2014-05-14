@@ -71,4 +71,9 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 	public Set<VehicleSpecification> getResponsibilities() {
 		return assemblyLine.getResponsibilities();
 	}
+	
+	@Override
+	public boolean equals(Object line){
+		return assemblyLine.equals(line);
+	}
 }
