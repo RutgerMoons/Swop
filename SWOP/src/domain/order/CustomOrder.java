@@ -2,6 +2,7 @@ package domain.order;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
@@ -246,5 +247,10 @@ public class CustomOrder implements IOrder {
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		throw new NotImplementedException();
+	}
+
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return description.canBeHandled(responsibilities);
 	}
 }

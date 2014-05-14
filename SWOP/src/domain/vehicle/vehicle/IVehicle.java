@@ -1,6 +1,7 @@
 package domain.vehicle.vehicle;
 
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
@@ -59,4 +60,11 @@ public interface IVehicle {
 	 * Get the time at the workbench of this CarModel.
 	 */
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
+
+	/**
+	 * Check if the vehicle can be handled by the responsibilities.
+	 * @param 	responsibilities
+	 * 			The responsibilities of the assemblyline
+	 */
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 }

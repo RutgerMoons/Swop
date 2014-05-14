@@ -14,6 +14,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import view.VehicleSpecificationCatalogueFiller;
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
@@ -27,6 +28,7 @@ import domain.exception.NotImplementedException;
 import domain.exception.RoleNotYetAssignedException;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
+import domain.job.task.ITask;
 import domain.observer.observers.ClockObserver;
 import domain.order.CustomOrder;
 import domain.order.IOrder;
@@ -53,6 +55,8 @@ public class FacadeTest {
 		Clock clock = new Clock();
 		clock.attachObserver(observer);
 		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
+		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
+		catalogue.initializeCatalogue(filler.getInitialModels());
 		List<AssemblyLine> lines = getInitialAssemblyLines(observer, clock.getImmutableClock(), catalogue);
 		
 		company = new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), new CustomVehicleCatalogue(), catalogue, lines, new Clock());
@@ -153,14 +157,7 @@ public class FacadeTest {
 		facade.login("test");
 		
 		VehicleOption option = new VehicleOption("black", VehicleOptionCategory.COLOR);
-		Set<VehicleOption> options = new HashSet<>();
-		options.add(new VehicleOption("bla", VehicleOptionCategory.BODY));
-		options.add(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
-		options.add(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
-		options.add(new VehicleOption("bla", VehicleOptionCategory.SEATS));
-		options.add(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
-		options.add(option);
-		VehicleSpecification specification = new VehicleSpecification("model A", options, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification specification = company.getVehicleSpecificationFromCatalogue("model A");
 		facade.createNewVehicle(specification);
 		
 		
@@ -182,14 +179,16 @@ public class FacadeTest {
 		IWorkBench bench = assemblyLine.getWorkbenches().get(0);
 		
 		assertNotNull(bench.getCurrentTasks());
+		
+		ITask task = bench.getCurrentTasks().get(0);
+		
+		
+		facade.completeChosenTaskAtChosenWorkBench(assemblyLine, bench, task, new ImmutableClock(0, 0));
+		
+		assertTrue(task.isCompleted());
+		
 	}
 	
-	@Test
-	public void testCompleteChosenTaskAtWorkbench(){
-		
-		
-		
-	}
 	
 	
 	
@@ -207,25 +206,25 @@ public class FacadeTest {
 	private static List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
 		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
 		
-		Set<VehicleSpecification> specifications = new HashSet<>();
-		specifications.add(catalogue.getCatalogue().get("model A"));
-		specifications.add(catalogue.getCatalogue().get("model B"));
-		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		Set<VehicleSpecification> specifications1 = new HashSet<>();
+		specifications1.add(catalogue.getCatalogue().get("model A"));
+		specifications1.add(catalogue.getCatalogue().get("model B"));
+		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications1);
 		
 		
-		specifications = new HashSet<>();
-		specifications.add(catalogue.getCatalogue().get("model A"));
-		specifications.add(catalogue.getCatalogue().get("model B"));
-		specifications.add(catalogue.getCatalogue().get("model C"));
-		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		Set<VehicleSpecification> specifications2 = new HashSet<>();
+		specifications2.add(catalogue.getCatalogue().get("model A"));
+		specifications2.add(catalogue.getCatalogue().get("model B"));
+		specifications2.add(catalogue.getCatalogue().get("model C"));
+		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications2);
 		
-		specifications = new HashSet<>();
-		specifications.add(catalogue.getCatalogue().get("model A"));
-		specifications.add(catalogue.getCatalogue().get("model B"));
-		specifications.add(catalogue.getCatalogue().get("model C"));
-		specifications.add(catalogue.getCatalogue().get("model X"));
-		specifications.add(catalogue.getCatalogue().get("model Y"));
-		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		Set<VehicleSpecification> specifications3 = new HashSet<>();
+		specifications3.add(catalogue.getCatalogue().get("model A"));
+		specifications3.add(catalogue.getCatalogue().get("model B"));
+		specifications3.add(catalogue.getCatalogue().get("model C"));
+		specifications3.add(catalogue.getCatalogue().get("model X"));
+		specifications3.add(catalogue.getCatalogue().get("model Y"));
+		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications3);
 		
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("Body");

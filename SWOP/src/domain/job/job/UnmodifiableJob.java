@@ -3,6 +3,7 @@ package domain.job.job;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 
@@ -116,5 +117,10 @@ public class UnmodifiableJob implements IJob {
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		return job.getVehicleSpecification();
+	}
+
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return job.canBeHandled(responsibilities);
 	}
 }

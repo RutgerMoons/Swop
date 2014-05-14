@@ -2,6 +2,7 @@ package domain.vehicle.vehicle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
@@ -142,5 +143,11 @@ public class Vehicle implements IVehicle {
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return this.getSpecification().getTimeAtWorkBench();
+	}
+
+
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return responsibilities.contains(specification);
 	}
 }
