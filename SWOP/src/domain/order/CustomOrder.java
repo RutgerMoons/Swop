@@ -1,7 +1,6 @@
 package domain.order;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import domain.assembly.workBench.WorkbenchType;
