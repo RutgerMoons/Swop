@@ -137,7 +137,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			addToHistory(toReturn);
 			return toReturn;
 		}
-		throw new NoSuitableJobFoundException();
+		return Optional.absent();
 	}
 
 
