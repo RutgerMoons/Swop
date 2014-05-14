@@ -244,7 +244,11 @@ public class PartPicker {
 	}
 
 	public VehicleSpecification getSpecification(String specificationName) {
-		return getCatalogue().getCatalogue().get(specificationName);
+		VehicleSpecification specification = getCatalogue().getCatalogue().get(specificationName);
+		if(specification==null){
+			throw new IllegalArgumentException();
+		}
+		return specification;
 	}
 
 	public Set<String> getVehicleSpecifications() {
