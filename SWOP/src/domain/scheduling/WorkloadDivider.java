@@ -156,7 +156,7 @@ public class WorkloadDivider implements ObservesOrderBook {
 		//3: kies assemblyLine met laagste workload
 		//4: schedule de job bij die assemblyLine
 		//assemblyLine.schedule(job)
-
+		//5: kijken of de assemblyline stilstaat (can advancen)
 		AssemblyLine scheduleHere = null;
 		for(AssemblyLine line: assemblyLines){
 			//Checken: Operational && kan job verwerken.
@@ -172,6 +172,9 @@ public class WorkloadDivider implements ObservesOrderBook {
 		}
 		if(scheduleHere!=null){
 			scheduleHere.schedule(job);
+			if(scheduleHere.canAdvance()){
+				scheduleHere.advance();
+			}
 		}
 	}
 

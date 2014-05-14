@@ -60,7 +60,7 @@ public class Facade {
 	 * @param part
 	 * 			The VehicleOption you want to add to the model
 	 */
-	public void addPartToModel(VehicleOption part) {
+	public void addPartToVehicle(VehicleOption part) {
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
 		company.addPartToModel(option);
 	}
