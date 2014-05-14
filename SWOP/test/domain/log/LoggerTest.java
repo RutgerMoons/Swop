@@ -29,6 +29,8 @@ public class LoggerTest {
 		assertNotNull(logger);
 		assertEquals(0,logger.getDetailedDays().size());
 		assertEquals(0,logger.getDetailedDelays().size());
+		assertEquals(0, logger.averageDelays());
+		assertEquals(0, logger.medianDelays());
 		int days = 4;
 		int minutes = 850;
 		ImmutableClock newCurrentTime = new ImmutableClock(days, minutes);

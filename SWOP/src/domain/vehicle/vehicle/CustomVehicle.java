@@ -33,8 +33,7 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException,
-			UnmodifiableException {
+	public void addCarPart(VehicleOption part) throws AlreadyInMapException {
 		if(part==null){
 			throw new IllegalArgumentException();
 		}
@@ -45,7 +44,7 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public Map<VehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException {
+	public Map<VehicleOption, Boolean> getForcedOptionalTypes() {
 		throw new NotImplementedException();
 	}
 
@@ -56,13 +55,12 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public VehicleSpecification getSpecification() throws NotImplementedException {
+	public VehicleSpecification getSpecification() {
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void setSpecification(VehicleSpecification template)
-			throws UnmodifiableException, NotImplementedException {
+	public void setSpecification(VehicleSpecification template) {
 		throw new NotImplementedException();
 	}
 

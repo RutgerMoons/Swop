@@ -23,29 +23,37 @@ public interface IVehicle {
 	/**
 	 * Adds a CarOption to this CarModel. 
 	 * @throws AlreadyInMapException
-	 * 			If the model already has a CarOption of this Category.
+	 * 			Thrown when the model already has a CarOption of this Category.
+	 * @throws	UnmodifiableException
+	 * 			Thrown when it is an UnmodifiableVehicle
 	 */
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException, UnmodifiableException;
+	public void addCarPart(VehicleOption part) throws AlreadyInMapException;
 	
 	/**
 	 * Get the CarOptions that need to be forced into the CarModel.
 	 */
-	public Map<VehicleOption, Boolean> getForcedOptionalTypes() throws NotImplementedException;
+	public Map<VehicleOption, Boolean> getForcedOptionalTypes();
 	
 	/**
 	 * Add a forced Optional type, so it has to be in the model.
+	 *  @throws	UnmodifiableException
+	 * 			Thrown when it is an UnmodifiableVehicle
 	 */
-	public void addForcedOptionalType(VehicleOption type, boolean bool) throws UnmodifiableException, NotImplementedException;
+	public void addForcedOptionalType(VehicleOption type, boolean bool);
 	
 	/**
 	 * Get the specification where the CarModel is built from.
 	 */
-	public VehicleSpecification getSpecification() throws NotImplementedException;
+	public VehicleSpecification getSpecification();
 	
 	/**
 	 * Set a new specification from which the CarModel has to be build.
+	 *  @throws	UnmodifiableException
+	 * 			Thrown when it is an UnmodifiableVehicle
+	 * @throws	NotImplementedException
+	 * 			Thrown when the Vehicle is a CustomVehicle
 	 */
-	public void setSpecification(VehicleSpecification template) throws UnmodifiableException, NotImplementedException;
+	public void setSpecification(VehicleSpecification template);
 
 	/**
 	 * Get the time at the workbench of this CarModel.

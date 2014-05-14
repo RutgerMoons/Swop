@@ -95,4 +95,9 @@ public class ImmutableWorkBenchTest {
 		bench.setCurrentJob(optional);
 		assertFalse(immutable.getCurrentJob().isPresent());
 	}
+	
+	@Test (expected=UnmodifiableException.class)
+	public void testCompleteChosenTaskAtWorkBench(){
+		immutable.completeChosenTaskAtChosenWorkBench(null);
+	}
 }

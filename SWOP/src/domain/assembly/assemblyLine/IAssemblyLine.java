@@ -22,7 +22,7 @@ public interface IAssemblyLine {
 	/**
 	 * Method for retrieving the workbenches with unfinished tasks.
 	 */
-	public ArrayList<Integer> getBlockingWorkBenches();
+	public ArrayList<IWorkBench> getBlockingWorkBenches();
 	
 	/**
 	 * Get all the pending jobs for this AssemblyLine

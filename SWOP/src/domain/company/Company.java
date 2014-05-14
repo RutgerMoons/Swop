@@ -82,7 +82,6 @@ public class Company {
 		OrderBookObserver orderBookObserver = new OrderBookObserver();
 		this.workloadDivider = new WorkloadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver);
 		orderbook.attachObserver(orderBookObserver);
-		
 	}
 
 	/**
@@ -183,6 +182,16 @@ public class Company {
 
 	public List<IAssemblyLine> getAssemblyLines() {
 		return workloadDivider.getAssemblyLines();
+	}
+
+	/**
+	 * Get the workbenches which are blocking the AssemblyLine from advancing.
+	 * @return
+	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
+	 */
+	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
+		// workloadDivider returnt een lijst van UnmodifiableWorkbenches
+		return workloadDivider.getBlockingWorkBenches(assemblyLine);
 	}
 
 	public VehicleSpecification getVehicleSpecification(String specificationName) {

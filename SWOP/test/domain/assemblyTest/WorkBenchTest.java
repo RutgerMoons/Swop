@@ -150,7 +150,7 @@ public class WorkBenchTest {
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
 		Task task = new Task("Paint");
 		task.addAction(new Action("Spray Colour"));
-		((Job) job).addTask(task);
+		job.addTask(task);
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();;
 		assertEquals(1, workBench.getCurrentTasks().size());
@@ -168,8 +168,8 @@ public class WorkBenchTest {
 		ITask task2 = new Task("Body");
 		((Task) task2).addAction(new Action("Spray Colour"));
 		
-		((Job) job).addTask(task1);
-		((Job) job).addTask(task2);
+		job.addTask(task1);
+		job.addTask(task2);
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		assertEquals(2, workBench.getCurrentTasks().size());
@@ -186,8 +186,8 @@ public class WorkBenchTest {
 		Task task2 = new Task("Body");
 		task2.addAction(new Action("Spray Colour"));
 		
-		((Job) job).addTask(task1);
-		((Job) job).addTask(task2);
+		job.addTask(task1);
+		job.addTask(task2);
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		assertEquals(1, workBench.getCurrentTasks().size());
@@ -209,8 +209,8 @@ public class WorkBenchTest {
 		Task task2 = new Task("Body");
 		task2.addAction(new Action("Spray Colour"));
 		
-		((Job) job).addTask(task1);
-		((Job) job).addTask(task2);
+		job.addTask(task1);
+		job.addTask(task2);
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		assertFalse(workBench.isCompleted());
@@ -227,8 +227,8 @@ public class WorkBenchTest {
 		Task task2 = new Task("Body");
 		task2.addAction(new Action("Spray Colour"));
 		
-		((Job) job).addTask(task1);
-		((Job) job).addTask(task2);
+		job.addTask(task1);
+		job.addTask(task2);
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		action1.setCompleted(true);
@@ -247,8 +247,8 @@ public class WorkBenchTest {
 		Action action2 = new Action("Spray Colour");
 		task2.addAction(action2);
 		
-		((Job) job).addTask(task1);
-		((Job) job).addTask(task2);
+		job.addTask(task1);
+		job.addTask(task2);
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
 		action1.setCompleted(true);
@@ -266,5 +266,26 @@ public class WorkBenchTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void TestInvalidConstructor(){
 		new WorkBench(new HashSet<String>(), null);
+	}
+	
+	@Test
+	public void completeChosenTaskAtWorkBench(){
+		workBench.addResponsibility("Paint");
+		workBench.addResponsibility("Body");
+		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
+		Task task1 = new Task("Paint");
+		Action action1 = new Action("Spray Colour");
+		task1.addAction(action1);
+		Task task2 = new Task("Body");
+		Action action2 = new Action("Spray Colour");
+		task2.addAction(action2);
+		
+		job.addTask(task1);
+		job.addTask(task2);
+		workBench.setCurrentJob(Optional.fromNullable(job));
+		workBench.chooseTasksOutOfJob();
+		workBench.completeChosenTaskAtChosenWorkBench(task1);
+		workBench.completeChosenTaskAtChosenWorkBench(task2);
+		assertTrue(workBench.isCompleted());
 	}
 }

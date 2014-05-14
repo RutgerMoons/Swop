@@ -10,7 +10,7 @@ public class VehicleOption {
 	private final VehicleOptionCategory type;
 
 	public VehicleOption(String description, VehicleOptionCategory type) {
-		if (description == null || type == null) {
+		if (description == null || description.isEmpty() || type == null) {
 			throw new IllegalArgumentException();
 		}
 		this.description = description;
