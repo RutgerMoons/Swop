@@ -28,7 +28,7 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 	}
 
 	@Override
-	public ArrayList<Integer> getBlockingWorkBenches() {
+	public ArrayList<IWorkBench> getBlockingWorkBenches() {
 		return this.assemblyLine.getBlockingWorkBenches();
 	}
 

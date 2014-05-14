@@ -96,6 +96,8 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	
 	@Override
 	public void updateCompletedOrder(IOrder order) {
+		if(order==null)
+			throw new IllegalArgumentException();
 		updateOrderBook(order);
 	}
 
@@ -117,6 +119,9 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 
 	@Override
 	public void updatePlacedOrder(IOrder order) {
+		if(order==null){
+			throw new IllegalArgumentException();
+		}
 		for (OrderBookObserver observer : this.observers) {
 			observer.notifyNewOrder(order);
 		}

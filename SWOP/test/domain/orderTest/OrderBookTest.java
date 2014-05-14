@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,14 +12,20 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
+import domain.log.Logger;
+import domain.observer.observers.AssemblyLineObserver;
+import domain.observer.observers.OrderBookObserver;
 import domain.order.CustomOrder;
+import domain.order.IOrder;
 import domain.order.OrderBook;
 import domain.order.StandardOrder;
+import domain.scheduling.WorkloadDivider;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.Vehicle;
@@ -55,16 +62,20 @@ public class OrderBookTest {
 	public void test1() throws UnmodifiableException, NotImplementedException {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
-		StandardOrder order = new StandardOrder("Mario", model1,3, new ImmutableClock(0,0));
+		StandardOrder order = new StandardOrder("Mario", model1,1, new ImmutableClock(0,0));
 		orderBook.addOrder(order, new ImmutableClock(0, 0));
 		assertFalse(orderBook.getPendingOrders().isEmpty());
 		StandardOrder order2 = new StandardOrder("Mario",model2,2, new ImmutableClock(0,0));
 		orderBook.addOrder(order2, new ImmutableClock(0, 0));
+		order2.completeCar();
+		order2.completeCar();
+		
 		assertEquals(1,orderBook.getPendingOrders().keySet().size());
 		assertEquals(2,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		orderBook.updateOrderBook(order2);
 		assertEquals(1,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		assertEquals(1,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
+		order.completeCar();
 		orderBook.updateOrderBook(order);
 		assertEquals(0,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		assertEquals(2,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
@@ -76,12 +87,13 @@ public class OrderBookTest {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
 		CustomVehicle customModel = new CustomVehicle();
-		CustomOrder order = new CustomOrder("Mario", customModel,3, new ImmutableClock(0,20), new ImmutableClock(1, 420));
+		CustomOrder order = new CustomOrder("Mario", customModel,1, new ImmutableClock(0,20), new ImmutableClock(1, 420));
 		orderBook.addOrder(order, new ImmutableClock(0, 0));
 		
 		assertFalse(orderBook.getPendingOrders().isEmpty());
 		assertEquals(1,orderBook.getPendingOrders().keySet().size());
 		assertEquals(1,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
+		order.completeCar();
 		orderBook.updateOrderBook(order);
 		assertEquals(0,orderBook.getPendingOrders().get(order.getGarageHolder()).size());
 		assertEquals(1,orderBook.getCompletedOrders().get(order.getGarageHolder()).size());
@@ -110,4 +122,38 @@ public class OrderBookTest {
 	public void test4(){
 		orderBook.updateOrderBook(null);
 	}
+	
+	@Test
+	public void testObservers(){
+		OrderBookObserver o1 = new OrderBookObserver();
+		AssemblyLineObserver o2 = new AssemblyLineObserver();
+		new WorkloadDivider(new ArrayList<AssemblyLine>(), o1, o2);
+		orderBook.attachObserver(o1);
+		
+		orderBook.updatePlacedOrder(new StandardOrder("mario", model1, 1, new ImmutableClock(0, 0)));
+		orderBook.updateCompletedOrder(new StandardOrder("mario", model1, 1, new ImmutableClock(0, 0)));
+		
+		orderBook.detachObserver(o1);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testObservers2(){
+		orderBook.attachObserver(null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testObservers3(){
+		orderBook.detachObserver(null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testObservers4(){
+		orderBook.updatePlacedOrder(null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testObservers5(){
+		orderBook.updateCompletedOrder(null);
+	}
+	
 }

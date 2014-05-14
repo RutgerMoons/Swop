@@ -77,5 +77,9 @@ public class ImmutableCarModelTest {
 		immutable.setSpecification(null);
 	}
 	
+	@Test
+	public void testGetTimeAtWorkBench(){
+		assertEquals(car.getTimeAtWorkBench(), immutable.getTimeAtWorkBench());
+	}
 	
 }

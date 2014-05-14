@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import domain.assembly.workBench.IWorkBench;
+import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
@@ -17,9 +18,7 @@ import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
 import domain.order.IOrder;
 import domain.scheduling.Scheduler;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
-import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -152,12 +151,12 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 
 	//TODO doc
 	@Override
-	public ArrayList<Integer> getBlockingWorkBenches() {
-		ArrayList<Integer> notCompletedBenches = new ArrayList<Integer>();
+	public ArrayList<IWorkBench> getBlockingWorkBenches() {
+		ArrayList<IWorkBench> notCompletedBenches = new ArrayList<>();
 		List<IWorkBench> workBenches = getWorkbenches();
 		for (int i = 0; i < workBenches.size(); i++)
 			if (!workBenches.get(i).isCompleted())
-				notCompletedBenches.add(i + 1);
+				notCompletedBenches.add(new UnmodifiableWorkBench(this.workbenches.get(i)));
 		return notCompletedBenches;
 	}
 
