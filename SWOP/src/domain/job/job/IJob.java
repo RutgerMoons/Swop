@@ -3,6 +3,7 @@ package domain.job.job;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.UnmodifiableException;
@@ -104,6 +105,13 @@ public interface IJob {
 	 * Get the specification of the vehicle from the order
 	 */
 	public VehicleSpecification getVehicleSpecification();
+
+	/**
+	 * Check if the job can be handled by the responsibilities.
+	 * @param 	responsibilities
+	 * 			The responsibilities of the assemblyline
+	 */
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 	
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.job.task.ITask;
@@ -143,6 +144,11 @@ public class Job implements IJob {
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		return order.getVehicleSpecification();
+	}
+
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return order.canBeHandled(responsibilities);
 	}
 
 }

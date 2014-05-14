@@ -1,6 +1,7 @@
 package domain.assembly.assemblyLine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -298,7 +299,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 
 	@Override
 	public Set<VehicleSpecification> getResponsibilities() {
-		return responsibilities;
+		return Collections.unmodifiableSet(responsibilities);
 	}
 	
 }
