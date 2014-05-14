@@ -5,9 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,11 +26,11 @@ public class CustomOrderTest {
 	private CustomVehicle model;
 	private ImmutableClock orderTime;
 	private ImmutableClock deadline;
+	
 	@Before
 	public void initializeModel() throws AlreadyInMapException, UnmodifiableException {
 		orderTime = new ImmutableClock(1, 10);
 		deadline = new ImmutableClock(5, 20);
-		Set<VehicleOption> parts = new HashSet<>();
 
 		model = new CustomVehicle();
 		model.addCarPart(new VehicleOption("low", VehicleOptionCategory.SPOILER));
@@ -190,7 +187,7 @@ public class CustomOrderTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testSetIllegalDescription(){
-		CustomOrder order1 = new CustomOrder("Jan", null, 2, orderTime, deadline);
+		new CustomOrder("Jan", null, 2, orderTime, deadline);
 	}
 	
 	@Test

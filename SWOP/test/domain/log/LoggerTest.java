@@ -11,8 +11,6 @@ import org.junit.Test;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
-import domain.observer.observers.AssemblyLineObserver;
-import domain.observer.observers.ClockObserver;
 import domain.order.StandardOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
