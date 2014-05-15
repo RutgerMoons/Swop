@@ -53,7 +53,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	private int getCurrentTotalProductionTime() {
 		int time = 0;
-		List<Optional<IJob>> historyCopy = getHistory();
+		List<Optional<IJob>> historyCopy = new ArrayList<>(getHistory());
 		if (historyCopy.size() == 0) {
 			return 0;
 		}

@@ -10,7 +10,6 @@ import java.util.Set;
 import domain.assembly.workBench.WorkbenchType;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -126,15 +125,6 @@ public class Job implements IJob {
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableCollection(this.order.getVehicleOptions());
-	}
-
-	@Override
-	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm) {
-		if (schedulingAlgorithm == null) {
-			throw new IllegalArgumentException();
-		}
-		this.order.addToSchedulingAlgorithm(schedulingAlgorithm, this);
-		
 	}
 	
 	@Override

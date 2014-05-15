@@ -8,9 +8,7 @@ import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
-import domain.job.job.IJob;
-import domain.order.orderVisitor.OrderVisitor;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.order.orderVisitor.IOrderVisitor;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -102,15 +100,6 @@ public interface IOrder {
 	public Collection<VehicleOption> getVehicleOptions();
 	
 	/**
-	 * Let this decide how it should be added
-	 * 
-	 * @param	schedulingAlgorithm job needs to be added to
-	 * 
-	 * @param	job that needs to be added
-	 */
-	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm, IJob job);
-	
-	/**
 	 * Get the time the specification has to spend on a workbench
 	 */
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
@@ -135,5 +124,5 @@ public interface IOrder {
 	 * VISITABLE
 	 * 
 	 * ----------------------------------------------*/
-	public void acceptVisit(OrderVisitor visitor);
+	public void acceptVisit(IOrderVisitor visitor);
 }

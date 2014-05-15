@@ -13,6 +13,10 @@ import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
 import domain.job.jobComparator.JobComparatorDeadLine;
 import domain.job.jobComparator.JobComparatorOrderTime;
+import domain.order.order.CustomOrder;
+import domain.order.order.StandardOrder;
+import domain.order.order.UnmodifiableOrder;
+import domain.order.orderVisitor.IOrderVisitor;
 
 /**
  * Abstract class that represents a possible scheduling algorithm used for 
@@ -193,6 +197,47 @@ public abstract class SchedulingAlgorithm {
 		this.customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
 		this.standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
 		return Collections.unmodifiableList(allJobs);
+	}
+	
+	public void addJobToAlgorithm(IJob job) {
+		if (job == null) {
+			throw new IllegalArgumentException();
+		}
+		OrderVisitor visitor = new OrderVisitor(job);
+		job.getOrder().acceptVisit(visitor);
+	}
+	
+	private class OrderVisitor implements IOrderVisitor {
+		
+		private IJob jobToAdd;
+		
+		public OrderVisitor(IJob job) {
+			this.jobToAdd = job;
+		}
+
+		/**
+		 * add the job as the custom order
+		 */
+		@Override
+		public void visit(CustomOrder order) {
+			addCustomJob(this.jobToAdd);
+		}
+
+		/**
+		 * add the job as the standard order
+		 */
+		@Override
+		public void visit(StandardOrder order) {
+			addStandardJob(this.jobToAdd);
+		}
+
+		/**
+		 * throws an IllegalArgumentException
+		 */
+		@Override
+		public void visit(UnmodifiableOrder order) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
 }
