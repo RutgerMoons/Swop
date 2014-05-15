@@ -167,7 +167,7 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		AssemblyLine scheduleHere = null;
 		for(AssemblyLine line: assemblyLines){
 			//Checken: Operational && kan job verwerken.
-			if(line.getState().equals(AssemblyLineState.OPERATIONAL) && job.canBeHandled(line.getResponsibilities()) ){
+			if(line.getState().equals(AssemblyLineState.OPERATIONAL) && canBeHandled(job, line) ){
 				//kijken naar workload
 				if(scheduleHere!=null && scheduleHere.getCurrentJobs().size()<line.getCurrentJobs().size()){
 					scheduleHere = line;
@@ -182,6 +182,10 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 				scheduleHere.advance();
 			}
 		}
+	}
+	
+	private boolean canBeHandled(IJob job, AssemblyLine line) {
+		return line.getResponsibilities().contains(job.getVehicleSpecification());
 	}
 
 	/**

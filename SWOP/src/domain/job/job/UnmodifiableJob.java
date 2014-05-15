@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.exception.UnmodifiableException;
@@ -107,10 +106,5 @@ public class UnmodifiableJob implements IJob {
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		return job.getVehicleSpecification();
-	}
-
-	@Override
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
-		return job.canBeHandled(responsibilities);
 	}
 }

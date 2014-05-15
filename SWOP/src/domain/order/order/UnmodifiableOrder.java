@@ -3,7 +3,6 @@ package domain.order.order;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
@@ -121,11 +120,6 @@ public class UnmodifiableOrder implements IOrder {
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		return order.getVehicleSpecification();
-	}
-
-	@Override
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
-		return order.canBeHandled(responsibilities);
 	}
 	
 	@Override

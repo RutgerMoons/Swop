@@ -2,7 +2,6 @@ package domain.order.order;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
@@ -111,13 +110,6 @@ public interface IOrder {
 	 * 				If the order is a custom order
 	 */
 	public VehicleSpecification getVehicleSpecification();
-
-	/**
-	 * Check if the order can be handled by the responsibilities.
-	 * @param 	responsibilities
-	 * 			The responsibilities of the AssemblyLine
-	 */
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 	
 	/*-------------------------------------------------
 	 * 
