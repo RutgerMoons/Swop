@@ -5,19 +5,23 @@ import java.util.ArrayList;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.observer.observes.ObservesAssemblyLineState;
 
+/**
+ * A class representing an observer that notifies every subscriber when the state of an AssemblyLine changes. 
+ *
+ */
 public class AssemblyLineStateObserver {
 
 private ArrayList<ObservesAssemblyLineState> loggers;
 	
 	/**
-	 * Creates a new AssemblyLineObserver and initializes it's internal data structures
+	 * Creates a new AssemblyLineObserver and initializes it's internal data structures.
 	 */
 	public AssemblyLineStateObserver() {
 		this.loggers = new ArrayList<ObservesAssemblyLineState>();
 	}
 	
 	/**
-	 * This logger will be added to the notify list and is subscribed for every notification
+	 * This logger will be added to the notify list and is subscribed for every notification.
 	 */
 	public void attachLogger(ObservesAssemblyLineState logger) {
 		if (logger == null) {
@@ -27,7 +31,7 @@ private ArrayList<ObservesAssemblyLineState> loggers;
 	}
 	
 	/**
-	 * This logger is no longer subscribed and will no longer be notified
+	 * This logger is no longer subscribed and will no longer be notified.
 	 */
 	public void detachLogger(ObservesAssemblyLineState logger) {
 		if (logger == null) {
@@ -37,7 +41,7 @@ private ArrayList<ObservesAssemblyLineState> loggers;
 	}
 	
 	/**
-	 * Every subscribed object will be notified and receives the completed order
+	 * Every subscribed object will be notified and receives the current and previous state of the AssemblyLine.
 	 */
 	public void updateAssemblyLineState(AssemblyLineState previousState, AssemblyLineState currentState) {
 		for (ObservesAssemblyLineState logger : this.loggers) {

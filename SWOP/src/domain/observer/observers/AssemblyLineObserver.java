@@ -6,23 +6,23 @@ import domain.observer.observes.ObservesAssemblyLine;
 import domain.order.order.IOrder;
 
 /**
- * This object can attach and detach any object that implements the LogsAssemblyLine interface
- * Every attached object will be notified when an order completed by the assemblyline(s) to which 
- * this observer is attached
+ * This object can attach and detach any object that implements the LogsAssemblyLine interface.
+ * Every attached object will be notified when an order completed by the AssemblyLine(s) to which 
+ * this observer is attached.
  */
 public class AssemblyLineObserver {
 
 	private ArrayList<ObservesAssemblyLine> loggers;
 	
 	/**
-	 * Creates a new AssemblyLineObserver and initializes it's internal data structures
+	 * Creates a new AssemblyLineObserver and initializes it's internal data structures.
 	 */
 	public AssemblyLineObserver() {
 		this.loggers = new ArrayList<ObservesAssemblyLine>();
 	}
 	
 	/**
-	 * This logger will be added to the notify list and is subscribed for every notification
+	 * This logger will be added to the notify list and is subscribed for every notification.
 	 */
 	public void attachLogger(ObservesAssemblyLine logger) {
 		if (logger == null) {
@@ -32,7 +32,7 @@ public class AssemblyLineObserver {
 	}
 	
 	/**
-	 * This logger is no longer subscribed and will no longer be notified
+	 * This logger is no longer subscribed and will no longer be notified.
 	 */
 	public void detachLogger(ObservesAssemblyLine logger) {
 		if (logger == null) {
@@ -42,7 +42,7 @@ public class AssemblyLineObserver {
 	}
 	
 	/**
-	 * Every subscribed object will be notified and receives the completed order
+	 * Every subscribed object will be notified and receives the completed order.
 	 */
 	public void updateCompletedOrder(IOrder order) {
 		for (ObservesAssemblyLine logger : this.loggers) {

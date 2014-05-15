@@ -6,23 +6,23 @@ import domain.clock.ImmutableClock;
 import domain.observer.observes.ObservesClock;
 
 /**
- * This object can attach and detach any object that implements the LogsClock interface
+ * This object can attach and detach any object that implements the LogsClock interface.
  * Every attached object will be notified when the observed Clock(s) to which 
- * this observer is attached change time
+ * this observer is attached change time.
  */
 public class ClockObserver {
 	
 	private ArrayList<ObservesClock> loggers;
 	
 	/**
-	 * Creates a new ClockObserver and initializes it's internal data structures
+	 * Creates a new ClockObserver and initializes it's internal data structures.
 	 */
 	public ClockObserver() {
 		this.loggers = new ArrayList<ObservesClock>();
 	}
 	
 	/**
-	 * This logger will be added to the notify list and is subscribed for every notification
+	 * This logger will be added to the notify list and is subscribed for every notification.
 	 */
 	public void attachLogger(ObservesClock logger) {
 		if (logger == null) {
@@ -32,7 +32,7 @@ public class ClockObserver {
 	}
 	
 	/**
-	 * This logger is no longer subscribed and will no longer be notified
+	 * This logger is no longer subscribed and will no longer be notified.
 	 */
 	public void detachLogger(ObservesClock logger) {
 		if (logger == null) {
@@ -42,7 +42,7 @@ public class ClockObserver {
 	}
 	
 	/**
-	 * Every subscribed object will be notified and receives the current time
+	 * Every subscribed object will be notified and receives the current time.
 	 */
 	public void advanceTime(ImmutableClock currentTime) {
 		for (ObservesClock logger : loggers) {
@@ -51,7 +51,7 @@ public class ClockObserver {
 	}
 
 	/**
-	 * Every subscribed object will be notified that a new day has started and receives the current time
+	 * Every subscribed object will be notified that a new day has started and receives the current time.
 	 */
 	public void startNewDay(ImmutableClock newDay) {
 		for (ObservesClock logger : loggers) {
