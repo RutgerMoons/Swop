@@ -4,7 +4,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Class representing a restriction of this kind: "If CarOption 'a' is chosen, CarOptionCategory 'b' becomes mandatory/optional."
+ * A class representing a restriction of this kind: "If VehicleOption 'a' is chosen, VehicleOptionCategory 'b' becomes mandatory/optional".
  *
  */
 public class OptionalRestriction{
@@ -15,7 +15,7 @@ public class OptionalRestriction{
 	private Boolean restrictedPartAlreadyChosen;
 
 	/**
-	 * Create a new OptionalRestriction between a CarOption and a CarOptionCategory.
+	 * Create a new OptionalRestriction between a VehicleOption and a VehicleOptionCategory.
 	 */
 	public OptionalRestriction(VehicleOption part, VehicleOptionCategory type, Boolean optional){
 		this.type = type;
@@ -24,39 +24,42 @@ public class OptionalRestriction{
 	}
 	
 	/**
-	 * The CarOption which, if chosen, makes the CarOptionCategory become mandatory/optional.
+	 * The VehicleOption which, if chosen, makes the VehicleOptionCategory become mandatory/optional.
 	 */
 	public VehicleOption getCarPart(){
 		return part;
 	}
 	
 	/**
-	 * 		The CarOptionCategory that becomes mandatory/optional if the CarOption is chosen.
+	 * The VehicleOptionCategory that becomes mandatory/optional if the VehicleOption is chosen.
 	 */
 	public VehicleOptionCategory getCarPartType(){
 		return type;
 	}
 	
 	/**
-	 * True if the CarOptionCategory becomes optional.
-	 * False if the CarOptionCategory becomes mandatory.
+	 * Check if the VehicleOptionCategory becomes optional or mandatory.
+	 * 
+	 * @return	True if and only if the VehicleOptionCategory becomes optional
 	 */
 	public boolean isOptional(){
 		return optional;
 	}
 
 	/**
-	 * True if a CarOption of the CarOptionCategory of this restriction has already been chosen.
-	 * False otherwise.
+	 * Check if the restricted part has already been chosen by the user.
+	 * 
+	 * @return 	True if and only if a VehicleOption of the VehicleOptionCategory of this restriction has already been chosen
 	 */
 	public Boolean getRestrictedPartAlreadyChosen() {
 		return restrictedPartAlreadyChosen;
 	}
 
 	/**
-	 * Set if the restrictedparts is already chosen.
-	 * @param restrictedPartAlreadyChosen
-	 * 			True if a CarOption of the CarOptionCategory of this restriction has already been chosen.
+	 * Set if the restricted part has been chosen already.
+	 * 
+	 * @param 	restrictedPartAlreadyChosen
+	 * 			True if a VehicleOption of the VehicleOptionCategory of this restriction has already been chosen.
 	 * 			False otherwise.
 	 */
 	public void setRestrictedPartAlreadyChosen(
