@@ -72,5 +72,4 @@ public interface IWorkBench {
 	 * @param	task to be matched and set to completed
 	 */
 	void completeChosenTaskAtChosenWorkBench(ITask task);
-	
 }

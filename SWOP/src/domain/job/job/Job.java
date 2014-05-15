@@ -29,10 +29,10 @@ public class Job implements IJob {
 	/**
 	 * Construct a new Job
 	 * 
-	 * @param order
+	 * @param 	order
 	 *            The order on which the Job is based
 	 *            
-	 * @throws IllegalArgumentException
+	 * @throws 	IllegalArgumentException
 	 *             if order==null
 	 */
 	public Job(IOrder order) {
@@ -151,5 +151,4 @@ public class Job implements IJob {
 	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
 		return order.canBeHandled(responsibilities);
 	}
-
 }

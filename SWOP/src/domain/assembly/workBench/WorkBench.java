@@ -28,8 +28,10 @@ public class WorkBench implements IWorkBench {
 	 * @param 	responsibilities
 	 *            A list of strings. The types of Tasks that have to be
 	 *            performed by this WorkBench.
+	 * 
 	 * @param 	workbenchType
 	 *            A name for this workbench
+	 * 
 	 * @throws 	IllegalArgumentException
 	 *            Thrown when workbenchName==null or isEmpty -if responsibilities==null
 	 */
@@ -211,6 +213,4 @@ public class WorkBench implements IWorkBench {
 			return false;
 		return true;
 	}
-
-
 }

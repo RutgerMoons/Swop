@@ -180,12 +180,12 @@ public class StandardOrder implements IOrder {
 	}
 
 	@Override
-	public ImmutableClock getDeadline() throws NotImplementedException {
+	public ImmutableClock getDeadline(){
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void setDeadline(ImmutableClock clock) throws NotImplementedException {
+	public void setDeadline(ImmutableClock clock){
 		throw new NotImplementedException();
 	}
 	

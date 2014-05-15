@@ -14,7 +14,8 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Represents a set of CarOptions used in the creation of Single Task Orders by Custom Car Shop Managers.
+ * TODO doc
+ * Represents a set of VehicleOptions used in the creation of Single Task Orders by Custom Car Shop Managers.
  */
 public class CustomVehicle implements IVehicle {
 

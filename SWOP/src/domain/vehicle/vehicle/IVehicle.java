@@ -12,33 +12,36 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Interface for limiting access to standard CarModels.
+ * Interface for limiting access to standard Vehicles.
  */
 public interface IVehicle {
 
 	/**
-	 * Returns all the CarOptions of which this model currently consists.
+	 * Returns all the VehicleOptions of which this model currently consists.
 	 */
 	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions();
 	
 	/**
-	 * Adds a CarOption to this CarModel. 
-	 * @throws AlreadyInMapException
-	 * 			Thrown when the model already has a CarOption of this Category.
+	 * Adds a VehicleOption to this IVehicle. 
+	 * 
+	 * @throws 	AlreadyInMapException
+	 * 				Thrown when the model already has a VehicleOption of this Category.
+	 * 
 	 * @throws	UnmodifiableException
-	 * 			Thrown when it is an UnmodifiableVehicle
+	 * 				Thrown when it is an UnmodifiableVehicle
 	 */
 	public void addCarPart(VehicleOption part) throws AlreadyInMapException;
 	
 	/**
-	 * Get the CarOptions that need to be forced into the CarModel.
+	 * Get the VehicleOptions that need to be forced into the IVehicle.
 	 */
 	public Map<VehicleOption, Boolean> getForcedOptionalTypes();
 	
 	/**
-	 * Add a forced Optional type, so it has to be in the model.
-	 *  @throws	UnmodifiableException
-	 * 			Thrown when it is an UnmodifiableVehicle
+	 * Add a forced Optional type, so it has to be in the model
+	 * 
+	 * @throws	UnmodifiableException
+	 * 				Thrown when it is an UnmodifiableVehicle
 	 */
 	public void addForcedOptionalType(VehicleOption type, boolean bool);
 	
@@ -48,23 +51,26 @@ public interface IVehicle {
 	public VehicleSpecification getSpecification();
 	
 	/**
-	 * Set a new specification from which the CarModel has to be build.
-	 *  @throws	UnmodifiableException
-	 * 			Thrown when it is an UnmodifiableVehicle
-	 * @throws	NotImplementedException
-	 * 			Thrown when the Vehicle is a CustomVehicle
+	 * Set a new specification from which the IVehicle has to be build.
+	 * 
+	 *@throws	UnmodifiableException
+	 * 				Thrown when it is an UnmodifiableVehicle
+	 * 
+	 *@throws	NotImplementedException
+	 * 				Thrown when the Vehicle is a CustomVehicle
 	 */
 	public void setSpecification(VehicleSpecification template);
 
 	/**
-	 * Get the time at the workbench of this CarModel.
+	 * Get the time at each workbench of this IVehicle.
 	 */
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
 
 	/**
-	 * Check if the vehicle can be handled by the responsibilities.
+	 * Check if the vehicle can be handled by the responsibilities
+	 * 
 	 * @param 	responsibilities
-	 * 			The responsibilities of the assemblyline
+	 * 				The responsibilities of the AssemblyLine
 	 */
 	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 }
