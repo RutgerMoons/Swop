@@ -23,6 +23,9 @@ public class ClockObserver {
 	
 	/**
 	 * This logger will be added to the notify list and is subscribed for every notification.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	public void attachLogger(ObservesClock logger) {
 		if (logger == null) {
@@ -33,6 +36,9 @@ public class ClockObserver {
 	
 	/**
 	 * This logger is no longer subscribed and will no longer be notified.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	public void detachLogger(ObservesClock logger) {
 		if (logger == null) {

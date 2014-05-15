@@ -22,6 +22,9 @@ private ArrayList<ObservesAssemblyLineState> loggers;
 	
 	/**
 	 * This logger will be added to the notify list and is subscribed for every notification.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	public void attachLogger(ObservesAssemblyLineState logger) {
 		if (logger == null) {
@@ -32,6 +35,9 @@ private ArrayList<ObservesAssemblyLineState> loggers;
 	
 	/**
 	 * This logger is no longer subscribed and will no longer be notified.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	public void detachLogger(ObservesAssemblyLineState logger) {
 		if (logger == null) {
