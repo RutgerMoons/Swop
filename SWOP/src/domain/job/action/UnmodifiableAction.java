@@ -3,20 +3,20 @@ package domain.job.action;
 import domain.exception.UnmodifiableException;
 
 /**
- * Create an Immutable Action, only the getters are accessible.
- *
+ * Class representing an unmodifiable Action. It implements an Action
+ * where only the getters are accessible.
  */
 public class UnmodifiableAction implements IAction {
 
 	private IAction action;
 	/**
-	 * Create the Immutable Action.
+	 * Create an unmodifiable version of the given Action.
 	 * 
 	 * @param 	action
-	 * 				The mutable action.
+	 * 			The mutable action
 	 * 
 	 * @throws	IllegalArgumentException
-	 * 				Thrown when the given action is nulls
+	 * 			Thrown when the given action is null
 	 */
 	public UnmodifiableAction(IAction action){
 		if(action==null)
@@ -48,5 +48,4 @@ public class UnmodifiableAction implements IAction {
 	public void setDescription(String description) throws UnmodifiableException {
 		throw new UnmodifiableException();
 	}
-
 }
