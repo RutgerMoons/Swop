@@ -11,7 +11,6 @@ import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
 import domain.order.order.UnmodifiableOrder;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -98,14 +97,6 @@ public class UnmodifiableJob implements IJob {
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableCollection(job.getVehicleOptions());
-	}
-	
-	@Override
-	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm) {
-		if (schedulingAlgorithm == null) {
-			throw new IllegalArgumentException();
-		}
-		this.job.addToSchedulingAlgorithm(schedulingAlgorithm);
 	}
 	
 	@Override
