@@ -7,7 +7,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -56,12 +56,12 @@ public class VehicleSpecificationCatalogueFiller {
 		parts.add(new VehicleOption("standard", VehicleOptionCategory.WHEEL));
 		parts.add(new VehicleOption("heavy-duty", VehicleOptionCategory.WHEEL));
 		
-		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
-		timesAtWorkbench.put(WorkbenchType.BODY, 120);
-		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 120);
-		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 120);
-		timesAtWorkbench.put(WorkbenchType.CARGO, 45);
-		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 45);
+		Map<WorkBenchType, Integer> timesAtWorkbench = new HashMap<WorkBenchType, Integer>();
+		timesAtWorkbench.put(WorkBenchType.BODY, 120);
+		timesAtWorkbench.put(WorkBenchType.ACCESSORIES, 120);
+		timesAtWorkbench.put(WorkBenchType.DRIVETRAIN, 120);
+		timesAtWorkbench.put(WorkBenchType.CARGO, 45);
+		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 45);
 		
 		return new VehicleSpecification("model Y", parts, timesAtWorkbench);
 	}
@@ -89,12 +89,12 @@ public class VehicleSpecificationCatalogueFiller {
 		parts.add(new VehicleOption("standard", VehicleOptionCategory.WHEEL));
 		parts.add(new VehicleOption("heavy-duty", VehicleOptionCategory.WHEEL));
 		
-		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
-		timesAtWorkbench.put(WorkbenchType.BODY, 90);
-		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 90);
-		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 90);
-		timesAtWorkbench.put(WorkbenchType.CARGO, 30);
-		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 30);
+		Map<WorkBenchType, Integer> timesAtWorkbench = new HashMap<WorkBenchType, Integer>();
+		timesAtWorkbench.put(WorkBenchType.BODY, 90);
+		timesAtWorkbench.put(WorkBenchType.ACCESSORIES, 90);
+		timesAtWorkbench.put(WorkBenchType.DRIVETRAIN, 90);
+		timesAtWorkbench.put(WorkBenchType.CARGO, 30);
+		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 30);
 		
 		return new VehicleSpecification("model X", parts, timesAtWorkbench);
 	}
@@ -125,12 +125,12 @@ public class VehicleSpecificationCatalogueFiller {
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		
-		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
-		timesAtWorkbench.put(WorkbenchType.BODY, 60);
-		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 60);
-		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 60);
-		timesAtWorkbench.put(WorkbenchType.CARGO, 0);
-		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 0);
+		Map<WorkBenchType, Integer> timesAtWorkbench = new HashMap<WorkBenchType, Integer>();
+		timesAtWorkbench.put(WorkBenchType.BODY, 60);
+		timesAtWorkbench.put(WorkBenchType.ACCESSORIES, 60);
+		timesAtWorkbench.put(WorkBenchType.DRIVETRAIN, 60);
+		timesAtWorkbench.put(WorkBenchType.CARGO, 0);
+		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 0);
 		
 		return new VehicleSpecification("model C", parts, timesAtWorkbench);
 	}
@@ -166,12 +166,12 @@ public class VehicleSpecificationCatalogueFiller {
 		
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		
-		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
-		timesAtWorkbench.put(WorkbenchType.BODY, 70);
-		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 70);
-		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 70);
-		timesAtWorkbench.put(WorkbenchType.CARGO, 0);
-		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 0);
+		Map<WorkBenchType, Integer> timesAtWorkbench = new HashMap<WorkBenchType, Integer>();
+		timesAtWorkbench.put(WorkBenchType.BODY, 70);
+		timesAtWorkbench.put(WorkBenchType.ACCESSORIES, 70);
+		timesAtWorkbench.put(WorkBenchType.DRIVETRAIN, 70);
+		timesAtWorkbench.put(WorkBenchType.CARGO, 0);
+		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 0);
 		
 		return new VehicleSpecification("model B", parts, timesAtWorkbench);
 	}
@@ -203,12 +203,12 @@ public class VehicleSpecificationCatalogueFiller {
 		parts.add(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
 		
-		Map<WorkbenchType, Integer> timesAtWorkbench = new HashMap<WorkbenchType, Integer>();
-		timesAtWorkbench.put(WorkbenchType.BODY, 50);
-		timesAtWorkbench.put(WorkbenchType.ACCESSORIES, 50);
-		timesAtWorkbench.put(WorkbenchType.DRIVETRAIN, 50);
-		timesAtWorkbench.put(WorkbenchType.CARGO, 0);
-		timesAtWorkbench.put(WorkbenchType.CERTIFICATION, 0);
+		Map<WorkBenchType, Integer> timesAtWorkbench = new HashMap<WorkBenchType, Integer>();
+		timesAtWorkbench.put(WorkBenchType.BODY, 50);
+		timesAtWorkbench.put(WorkBenchType.ACCESSORIES, 50);
+		timesAtWorkbench.put(WorkBenchType.DRIVETRAIN, 50);
+		timesAtWorkbench.put(WorkBenchType.CARGO, 0);
+		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 0);
 		
 		return new VehicleSpecification("model A", parts, timesAtWorkbench);
 	}

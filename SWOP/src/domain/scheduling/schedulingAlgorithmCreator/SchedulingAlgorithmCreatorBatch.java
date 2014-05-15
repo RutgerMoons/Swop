@@ -2,6 +2,7 @@ package domain.scheduling.schedulingAlgorithmCreator;
 
 import java.util.List;
 
+import domain.assembly.workBench.WorkBenchType;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmBatch;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -18,8 +19,8 @@ public class SchedulingAlgorithmCreatorBatch extends SchedulingAlgorithmCreator 
 	}
 
 	@Override
-	public SchedulingAlgorithm createSchedulingAlgorithm(int amountOfWorkBenches) {
-		return new SchedulingAlgorithmBatch(this.carParts, amountOfWorkBenches);
+	public SchedulingAlgorithm createSchedulingAlgorithm(List<WorkBenchType> workBenchTypes) {
+		return new SchedulingAlgorithmBatch(this.carParts, workBenchTypes);
 	}
 
 }

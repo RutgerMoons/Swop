@@ -8,6 +8,7 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
@@ -24,14 +25,17 @@ import domain.order.orderVisitor.IOrderVisitor;
  */
 public abstract class SchedulingAlgorithm {
 	
-	protected final int amountOfWorkBenches;
 	protected PriorityQueue<IJob> customJobs;
 	protected List<Optional<IJob>> history;
 	protected List<Optional<IJob>> jobsStartOfDay;
 	protected PriorityQueue<IJob> standardJobs;
+	protected List<WorkBenchType> workBenchTypes;
 	
-	public SchedulingAlgorithm(int amountOfWorkBenches) {
-		this.amountOfWorkBenches = amountOfWorkBenches;
+	public SchedulingAlgorithm(List<WorkBenchType> workBenchTypes) {
+		if (workBenchTypes == null) {
+			throw new IllegalArgumentException();
+		}
+		this.workBenchTypes = workBenchTypes;
 		this.history = new ArrayList<>();
 		this.customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
 		this.standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
@@ -77,7 +81,7 @@ public abstract class SchedulingAlgorithm {
 	 */
 	protected void addToList(Optional<IJob> job, List<Optional<IJob>> list) {
 		list.add(job);
-		if (list.size() > this.amountOfWorkBenches) {
+		if (list.size() > this.workBenchTypes.size()) {
 			list.remove(0);
 		}
 	}
@@ -122,7 +126,7 @@ public abstract class SchedulingAlgorithm {
 	}
 	
 	protected IJob getJobWithHighestWorkBenchIndex() {
-		int index = this.amountOfWorkBenches - 1;
+		int index = this.workBenchTypes.size() - 1;
 		while (index >= 0) {
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();

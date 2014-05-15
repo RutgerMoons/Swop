@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class WorkBenchTypeTest {
@@ -13,8 +13,8 @@ public class WorkBenchTypeTest {
 
 	@Test
 	public void test() {
-		assertNotEquals(WorkbenchType.ACCESSORIES, WorkbenchType.BODY);
-		assertEquals(WorkbenchType.BODY, WorkbenchType.valueOf("BODY"));
+		assertNotEquals(WorkBenchType.ACCESSORIES, WorkBenchType.BODY);
+		assertEquals(WorkBenchType.BODY, WorkBenchType.valueOf("BODY"));
 		
 	}
 

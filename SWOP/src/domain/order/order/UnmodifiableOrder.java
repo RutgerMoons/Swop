@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
 import domain.order.orderVisitor.IOrderVisitor;
@@ -114,7 +114,7 @@ public class UnmodifiableOrder implements IOrder {
 	}
 	
 	@Override
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(this.order.getTimeAtWorkBench());
 	}
 

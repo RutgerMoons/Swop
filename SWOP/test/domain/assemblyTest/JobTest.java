@@ -14,7 +14,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.job.action.Action;
@@ -34,7 +34,7 @@ public class JobTest {
 	public void initializeModel() throws AlreadyInMapException{
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
 		model = new Vehicle(template);
 		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));

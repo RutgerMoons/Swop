@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
@@ -20,12 +20,12 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 public class CustomVehicle implements IVehicle {
 
 	private HashMap<VehicleOptionCategory, VehicleOption> vehicleOptions;
-	private Map<WorkbenchType, Integer> timeAtWorkbench;
+	private Map<WorkBenchType, Integer> timeAtWorkbench;
 	public CustomVehicle(){
 		vehicleOptions = new HashMap<>();
 		timeAtWorkbench = new HashMap<>();
 		
-		for(WorkbenchType type: WorkbenchType.values()){
+		for(WorkBenchType type: WorkBenchType.values()){
 			timeAtWorkbench.put(type, 60);
 		}
 	}
@@ -80,7 +80,7 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(timeAtWorkbench);
 	}
 

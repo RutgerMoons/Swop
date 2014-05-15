@@ -10,7 +10,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -34,7 +34,7 @@ public class RestrictionTest {
 		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
 		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
-		catalogue.addModel(new VehicleSpecification("model A", new HashSet<VehicleOption>(), new HashMap<WorkbenchType, Integer>()));
+		catalogue.addModel(new VehicleSpecification("model A", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>()));
 		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
 		
 		Set<VehicleOption> parts = new HashSet<>();
@@ -59,7 +59,7 @@ public class RestrictionTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
 		picker.setNewModel(template);
 		
 	}

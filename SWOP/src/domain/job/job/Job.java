@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
 import domain.vehicle.VehicleSpecification;
@@ -128,7 +128,7 @@ public class Job implements IJob {
 	}
 	
 	@Override
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(this.order.getTimeAtWorkBench());
 	}
 

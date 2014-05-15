@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
@@ -100,7 +100,7 @@ public class UnmodifiableJob implements IJob {
 	}
 	
 	@Override
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(this.job.getTimeAtWorkBench());
 	}
 
