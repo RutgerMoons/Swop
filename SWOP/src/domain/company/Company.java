@@ -93,7 +93,7 @@ public class Company {
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
 		this.partpicker.getModel().addCarPart(option);
 	}
-	
+
 	/**
 	 * Complete the task the user has chosen to complete. The method
 	 * automatically advances the AssemblyLine if it can advance.
@@ -112,7 +112,7 @@ public class Company {
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time){
 		this.workloadDivider.completeChosenTaskAtChosenWorkBench(assemblyLine, workbench, task);
-		
+
 		clock.advanceTime(time.getTotalInMinutes());
 	}
 
@@ -158,7 +158,7 @@ public class Company {
 	public VehicleSpecification getVehicleSpecificationFromCatalogue(String specificationName) {
 		return this.partpicker.getCatalogue().getCatalogue().get(specificationName);
 	}
-	
+
 	public String getCurrentSchedulingAlgorithm() {
 		return this.workloadDivider.getCurrentSchedulingAlgorithm();
 	}
@@ -262,7 +262,7 @@ public class Company {
 		}
 		return Collections.unmodifiableList(detailedList);
 	}
-	
+
 	public ImmutableClock getUnmodifiableClock() {
 		return clock.getImmutableClock();
 	}
@@ -288,6 +288,12 @@ public class Company {
 	}
 
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
-		workloadDivider.changeState(assemblyLine, state);
+		if(state.equals(AssemblyLineState.MAINTENANCE)){
+			ClockObserver observer = new ClockObserver();
+			clock.attachObserver(observer);
+			workloadDivider.changeState(assemblyLine, state, observer, clock.getImmutableClock());
+		} else {
+			workloadDivider.changeState(assemblyLine, state);
+		}
 	}
 }
