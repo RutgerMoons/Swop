@@ -7,7 +7,6 @@ import java.util.Set;
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
-import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.VehicleSpecification;
@@ -139,7 +138,7 @@ public class CustomOrder implements IOrder {
 	}
 
 	@Override
-	public void completeCar() throws UnmodifiableException {
+	public void completeCar(){
 		setPendingCars(--pendingCars);
 	}
 

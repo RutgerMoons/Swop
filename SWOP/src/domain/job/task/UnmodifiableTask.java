@@ -9,7 +9,7 @@ import domain.job.action.IAction;
 
 
 /**
- * Create an Immutable Task, only the getters are accessible.
+ * Create an unmodifiable Task, only the getters are accessible.
  *
  */
 public class UnmodifiableTask implements ITask{
@@ -17,7 +17,7 @@ public class UnmodifiableTask implements ITask{
 	private ITask task;
 
 	/**
-	 * Create an Immutable Task
+	 * Create an unmodifiable Task
 	 * 
 	 * @param 	task
 	 * 				The mutable Task
@@ -49,17 +49,17 @@ public class UnmodifiableTask implements ITask{
 	}
 	
 	@Override
-	public void setActions(List<IAction> actions) throws UnmodifiableException {
+	public void setActions(List<IAction> actions){
 		throw new UnmodifiableException();
 	}
 	
 	@Override
-	public void addAction(IAction action) throws UnmodifiableException {
+	public void addAction(IAction action){
 		throw new UnmodifiableException();
 	}
 	
 	@Override
-	public void setTaskDescription(String taskDescription) throws UnmodifiableException {
+	public void setTaskDescription(String taskDescription){
 		throw new UnmodifiableException();
 	}
 }

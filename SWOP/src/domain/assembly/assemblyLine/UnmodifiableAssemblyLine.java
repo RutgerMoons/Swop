@@ -10,7 +10,7 @@ import domain.job.job.IJob;
 import domain.scheduling.Scheduler;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
-
+//TODO doc
 public class UnmodifiableAssemblyLine implements IAssemblyLine {
 
 	private AssemblyLine assemblyLine;

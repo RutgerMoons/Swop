@@ -125,7 +125,7 @@ public interface IOrder {
 	/**
 	 * Check if the order can be handled by the responsibilities.
 	 * @param 	responsibilities
-	 * 			The responsibilities of the assemblyline
+	 * 			The responsibilities of the AssemblyLine
 	 */
 	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 }

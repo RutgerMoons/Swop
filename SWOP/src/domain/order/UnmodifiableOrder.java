@@ -15,17 +15,17 @@ import domain.vehicle.vehicle.UnmodifiableVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Create an Immutable Order, only the getters are accessible.
+ * Create an unmodifiable Order, only the getters are accessible.
  *
  */
 public class UnmodifiableOrder implements IOrder {
 
 	IOrder order;
 	/**
-	 * Create an Immutable Order.
+	 * Create an unmodifiable Order
 	 * 
-	 * @param iOrder
-	 * 			The mutable Order.
+	 * @param 	iOrder
+	 * 				The mutable Order
 	 */
 	public UnmodifiableOrder(IOrder iOrder){
 		if(iOrder==null)
