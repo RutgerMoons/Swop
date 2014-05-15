@@ -6,11 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-
+import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.assemblyLine.UnmodifiableAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.ImmutableClock;
 import domain.company.Company;
@@ -20,11 +19,13 @@ import domain.job.task.Task;
 import domain.order.CustomOrder;
 import domain.order.Delay;
 import domain.order.IOrder;
+import domain.order.UnmodifiableOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.users.AccessRight;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.IVehicle;
+import domain.vehicle.vehicle.UnmodifiableVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -118,7 +119,7 @@ public class Facade {
 	 * Get the access rights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
-		return this.company.getAccessRights();
+		return Collections.unmodifiableList(this.company.getAccessRights());
 	}
 
 	/**
@@ -136,14 +137,14 @@ public class Facade {
 	 * Get a set of all the VehicleSpecifications that the VehicleSpecificationCatalogue has
 	 */
 	public Set<String> getVehicleSpecifications() {
-		return ImmutableSet.copyOf(company.getVehicleSpecifications());
+		return Collections.unmodifiableSet(company.getVehicleSpecifications());
 	}
 
 	/**
 	 * Get a set off all the VehicleOptionCategories that are available
 	 */
 	public List<VehicleOptionCategory> getVehicleOptionCategory() {
-		return ImmutableList.copyOf(Arrays.asList(VehicleOptionCategory.values()));
+		return Collections.unmodifiableList(Arrays.asList(VehicleOptionCategory.values()));
 	}
 
 	/**
@@ -151,7 +152,11 @@ public class Facade {
 	 */
 	public List<IOrder> getCompletedOrders() {
 		String name = company.getCurrentUser();
-		return ImmutableList.copyOf(company.getCompletedOrders(name));
+		List<IOrder> unmodifiables = new ArrayList<>();
+		for(IOrder order: company.getCompletedOrders(name)){
+			unmodifiables.add(new UnmodifiableOrder(order));
+		}
+		return Collections.unmodifiableList(unmodifiables);
 	}
 
 	/**
@@ -166,7 +171,7 @@ public class Facade {
 	 * Get a list of available CustomTasks from the CustomVehicleCatalogue 
 	 */
 	public Set<String> getCustomTasks() {
-		return ImmutableSet.copyOf(company.getCustomTasksDescription());
+		return Collections.unmodifiableSet(company.getCustomTasksDescription());
 	}
 
 	/**
@@ -176,7 +181,7 @@ public class Facade {
 	 * 				The type of the VehicleOption that has to be selected 
 	 */
 	public List<VehicleOption> getRemainingVehicleOptions(VehicleOptionCategory type) {
-		return ImmutableList.copyOf(company.getStillAvailableCarParts(type));
+		return Collections.unmodifiableList(company.getStillAvailableCarParts(type));
 	}
 
 	/**
@@ -184,7 +189,11 @@ public class Facade {
 	 */
 	public List<IOrder> getPendingOrders() {
 		String name = company.getCurrentUser();
-		return ImmutableList.copyOf(company.getPendingOrders(name));
+		List<IOrder> unmodifiables = new ArrayList<>();
+		for(IOrder order: company.getPendingOrders(name)){
+			unmodifiables.add(new UnmodifiableOrder(order));
+		}
+		return Collections.unmodifiableList(unmodifiables);
 	}
 
 	/**
@@ -195,9 +204,9 @@ public class Facade {
 	public List<IVehicle> getCustomOptions(String optionDescription) {
 		List<IVehicle> tasks = new ArrayList<>();
 		for (CustomVehicle model : company.getSpecificCustomTasks(optionDescription)) {
-			tasks.add(model);
+			tasks.add(new UnmodifiableVehicle(model));
 		}
-		return ImmutableList.copyOf(tasks);
+		return Collections.unmodifiableList(tasks);
 	}
 	
 	/**
@@ -219,7 +228,7 @@ public class Facade {
 	 * x is decided when the company is initialised.
 	 */
 	public List<Integer> getDetailedDays(){
-		return company.getDetailedDays();
+		return Collections.unmodifiableList(company.getDetailedDays());
 	}
 	
 	/**
@@ -241,7 +250,7 @@ public class Facade {
 	 * is decided when the company is initialised.
 	 */
 	public List<Delay> getDetailedDelays(){
-		return company.getDetailedDelays();
+		return Collections.unmodifiableList(company.getDetailedDelays());
 	}
 
 
@@ -317,14 +326,18 @@ public class Facade {
 	 * or sets of VvehicleOptions that occur in three or more pending orders.
 	 */
 	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
-		return ImmutableSet.copyOf(this.company.getAllCarOptionsInPendingOrders());
+		return Collections.unmodifiableSet(this.company.getAllCarOptionsInPendingOrders());
 	}
 
 	/**
 	 * Returns a list of unmodifiable AssemblyLines.
 	 */
 	public List<IAssemblyLine> getAssemblyLines() {
-		return Collections.unmodifiableList(company.getAssemblyLines());
+		ArrayList<IAssemblyLine> unmodifiables = new ArrayList<>();
+		for (IAssemblyLine assemblyLine : company.getAssemblyLines()) {
+			unmodifiables.add(new UnmodifiableAssemblyLine(assemblyLine));
+		}
+		return Collections.unmodifiableList(unmodifiables);
 	}
 
 	/**
@@ -345,6 +358,6 @@ public class Facade {
 	 * AssemblyLines
 	 */
 	public List<AssemblyLineState> getAssemblyLineStates() {
-		return ImmutableList.copyOf(Arrays.asList(AssemblyLineState.values()));
+		return Collections.unmodifiableList(Arrays.asList(AssemblyLineState.values()));
 	}
 }

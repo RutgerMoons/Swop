@@ -1,11 +1,10 @@
 package domain.job.job;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.collect.ImmutableList;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.UnmodifiableException;
@@ -44,7 +43,7 @@ public class UnmodifiableJob implements IJob {
 
 	@Override
 	public List<ITask> getTasks() {
-		return new ImmutableList.Builder<ITask>().addAll(job.getTasks()).build();
+		return Collections.unmodifiableList(job.getTasks());
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class UnmodifiableJob implements IJob {
 	
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
-		return job.getVehicleOptions();
+		return Collections.unmodifiableCollection(job.getVehicleOptions());
 	}
 	
 	@Override
@@ -111,7 +110,7 @@ public class UnmodifiableJob implements IJob {
 	
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return this.job.getTimeAtWorkBench();
+		return Collections.unmodifiableMap(this.job.getTimeAtWorkBench());
 	}
 
 	@Override

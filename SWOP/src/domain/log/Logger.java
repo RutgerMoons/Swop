@@ -1,5 +1,6 @@
 package domain.log;
 
+import java.util.Collections;
 import java.util.List;
 
 import domain.clock.ImmutableClock;
@@ -140,11 +141,11 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	public List<Integer> getDetailedDays() {
-		return logHistoryDays.getHistory();
+		return Collections.unmodifiableList(logHistoryDays.getHistory());
 	}
 
 	public List<Delay> getDetailedDelays() {
-		return logHistoryDelays.getHistory();
+		return Collections.unmodifiableList(logHistoryDelays.getHistory());
 	}
 
 }

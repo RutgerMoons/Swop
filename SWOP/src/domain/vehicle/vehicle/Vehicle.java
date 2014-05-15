@@ -1,5 +1,6 @@
 package domain.vehicle.vehicle;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class Vehicle implements IVehicle {
 	
 	@Override
 	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions() {
-		return vehicleOptions;
+		return Collections.unmodifiableMap(vehicleOptions);
 	}
 
 	
@@ -105,7 +106,7 @@ public class Vehicle implements IVehicle {
 	
 	@Override
 	public Map<VehicleOption, Boolean> getForcedOptionalTypes() {
-		return forcedOptionalTypes;
+		return Collections.unmodifiableMap(forcedOptionalTypes);
 	}
 
 	
@@ -142,7 +143,7 @@ public class Vehicle implements IVehicle {
 	
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return this.getSpecification().getTimeAtWorkBench();
+		return Collections.unmodifiableMap(this.getSpecification().getTimeAtWorkBench());
 	}
 
 

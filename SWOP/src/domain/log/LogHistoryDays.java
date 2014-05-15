@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * This class keeps track of all the completed orders and offers a detailed view for 
  * a certain amount of latest days. 

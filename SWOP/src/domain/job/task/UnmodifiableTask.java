@@ -1,8 +1,7 @@
 package domain.job.task;
 
+import java.util.Collections;
 import java.util.List;
-
-import com.google.common.collect.ImmutableList;
 
 import domain.exception.UnmodifiableException;
 import domain.job.action.IAction;
@@ -30,7 +29,7 @@ public class UnmodifiableTask implements ITask{
 	
 	@Override
 	public List<IAction> getActions() {
-		return new ImmutableList.Builder<IAction>().addAll(task.getActions()).build();
+		return Collections.unmodifiableList(task.getActions());
 	}
 
 	@Override

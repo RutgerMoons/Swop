@@ -1,7 +1,9 @@
 package domain.scheduling.schedulingAlgorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
@@ -20,8 +22,8 @@ public abstract class SchedulingAlgorithm {
 	
 	protected final int amountOfWorkBenches;
 	protected PriorityQueue<IJob> customJobs;
-	protected ArrayList<Optional<IJob>> history;
-	protected ArrayList<Optional<IJob>> jobsStartOfDay;
+	protected List<Optional<IJob>> history;
+	protected List<Optional<IJob>> jobsStartOfDay;
 	protected PriorityQueue<IJob> standardJobs;
 	
 	public SchedulingAlgorithm(int amountOfWorkBenches) {
@@ -69,7 +71,7 @@ public abstract class SchedulingAlgorithm {
 	 * Adds the given job to the specified list. If the list gets too long (size() > amountOfWorkbenches)
 	 * The oldest Job in the list will be removed.
 	 */
-	protected void addToList(Optional<IJob> job, ArrayList<Optional<IJob>> list) {
+	protected void addToList(Optional<IJob> job, List<Optional<IJob>> list) {
 		list.add(job);
 		if (list.size() > this.amountOfWorkBenches) {
 			list.remove(0);
@@ -109,10 +111,10 @@ public abstract class SchedulingAlgorithm {
 	/**
 	 * returns a list of all the jobs currently on the assembly line
 	 */
-	public ArrayList<Optional<IJob>> getHistory() {
+	public List<Optional<IJob>> getHistory() {
 		ArrayList<Optional<IJob>> historyCopy = new ArrayList<>();
 		historyCopy.addAll(this.history);
-		return historyCopy;
+		return Collections.unmodifiableList(historyCopy);
 	}
 	
 	protected IJob getJobWithHighestWorkBenchIndex() {
@@ -130,7 +132,7 @@ public abstract class SchedulingAlgorithm {
 		return null;
 	}
 	
-	protected int getMaximum(ArrayList<Optional<IJob>> list) {
+	protected int getMaximum(List<Optional<IJob>> list) {
 		int biggest = 0;
 		for(Optional<IJob> job : list){
 			if(job.isPresent()){
@@ -147,10 +149,10 @@ public abstract class SchedulingAlgorithm {
 	/**
 	 * returns a list containing all the pending standard jobs (no specific order)
 	 */
-	public ArrayList<IJob> getStandardJobs() {
+	public List<IJob> getStandardJobs() {
 		ArrayList<IJob> list = new ArrayList<>();
 		list.addAll(this.standardJobs);
-		return list;
+		return Collections.unmodifiableList(list);
 	}
 
 	/**
@@ -182,6 +184,15 @@ public abstract class SchedulingAlgorithm {
 	 * @throws IllegalArgumentException
 	 * 			Thrown when one or more of the parameters are null
 	 */
-	public abstract void transform(PriorityQueue<IJob> customjobs, ArrayList<IJob> standardjobs, ArrayList<Optional<IJob>> history);
+	public abstract void transform(PriorityQueue<IJob> customjobs, List<IJob> standardjobs, List<Optional<IJob>> history);
+
+	public List<IJob> removeUnscheduledJobs() {
+		List<IJob> allJobs = new ArrayList<>();
+		allJobs.addAll(customJobs);
+		allJobs.addAll(getStandardJobs());
+		this.customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
+		this.standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
+		return Collections.unmodifiableList(allJobs);
+	}
 	
 }

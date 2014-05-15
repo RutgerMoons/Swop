@@ -1,6 +1,7 @@
 package domain.assembly.workBench;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -65,7 +66,7 @@ public class WorkBench implements IWorkBench {
 
 	@Override
 	public Set<String> getResponsibilities() {
-		return responsibilities;
+		return Collections.unmodifiableSet(responsibilities);
 	}
 
 	/**
@@ -101,7 +102,7 @@ public class WorkBench implements IWorkBench {
 
 	@Override
 	public List<ITask> getCurrentTasks() {
-		return currentTasks;
+		return Collections.unmodifiableList(currentTasks);
 	}
 
 	/**

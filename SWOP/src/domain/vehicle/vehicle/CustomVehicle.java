@@ -1,13 +1,14 @@
 package domain.vehicle.vehicle;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
-import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
+import domain.exception.UnmodifiableException;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -30,7 +31,7 @@ public class CustomVehicle implements IVehicle {
 	
 	@Override
 	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions() {
-		return vehicleOptions;
+		return Collections.unmodifiableMap(vehicleOptions);
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class CustomVehicle implements IVehicle {
 
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return timeAtWorkbench;
+		return Collections.unmodifiableMap(timeAtWorkbench);
 	}
 
 	@Override

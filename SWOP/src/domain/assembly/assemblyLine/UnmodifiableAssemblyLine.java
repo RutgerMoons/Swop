@@ -1,25 +1,28 @@
 package domain.assembly.assemblyLine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import domain.assembly.workBench.IWorkBench;
+import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
+import domain.job.job.UnmodifiableJob;
 import domain.scheduling.Scheduler;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 public class UnmodifiableAssemblyLine implements IAssemblyLine {
 
-	private AssemblyLine assemblyLine;
+	private IAssemblyLine assemblyLine;
 	
-	public UnmodifiableAssemblyLine(AssemblyLine assemblyLine) {
-		if (assemblyLine == null) {
+	public UnmodifiableAssemblyLine(IAssemblyLine assemblyLine2) {
+		if (assemblyLine2 == null) {
 			throw new IllegalArgumentException();
 		}
-		this.assemblyLine = assemblyLine;
+		this.assemblyLine = assemblyLine2;
 	}
 
 	@Override
@@ -28,13 +31,21 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 	}
 
 	@Override
-	public ArrayList<IWorkBench> getBlockingWorkBenches() {
-		return this.assemblyLine.getBlockingWorkBenches();
+	public List<IWorkBench> getBlockingWorkBenches() {
+		List<IWorkBench> unmodifiables = new ArrayList<>();
+		for(IWorkBench bench: assemblyLine.getBlockingWorkBenches()){
+			unmodifiables.add(new UnmodifiableWorkBench(bench));
+		}
+		return Collections.unmodifiableList(unmodifiables);
 	}
 
 	@Override
 	public List<IJob> getCurrentJobs() {
-		return this.assemblyLine.getCurrentJobs();
+		List<IJob> unmodifiables = new ArrayList<IJob>();
+		for(IJob job: assemblyLine.getCurrentJobs()){
+			unmodifiables.add(new UnmodifiableJob(job));
+		}
+		return Collections.unmodifiableList(unmodifiables);
 	}
 
 	@Override
@@ -44,7 +55,11 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 
 	@Override
 	public List<IWorkBench> getWorkbenches() {
-		return this.assemblyLine.getWorkbenches();
+		List<IWorkBench> unmodifiables = new ArrayList<>();
+		for(IWorkBench bench: assemblyLine.getWorkbenches()){
+			unmodifiables.add(new UnmodifiableWorkBench(bench));
+		}
+		return Collections.unmodifiableList(unmodifiables);
 	}
 
 	@Override

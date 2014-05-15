@@ -1,6 +1,7 @@
 package domain.vehicle.catalogue;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 import domain.vehicle.vehicle.CustomVehicle;
@@ -28,7 +29,7 @@ public class CustomVehicleCatalogue {
 		 * Returns an immutable Map of carmodels with their names.
 		 */
 		public Multimap<String, CustomVehicle> getCatalogue() {
-			return data;
+			return new ImmutableMultimap.Builder<String, CustomVehicle>().putAll(data).build();
 		}
 
 

@@ -27,7 +27,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
 public class Scheduler implements ObservesClock {
 
 	private SchedulingAlgorithm schedulingAlgorithm;
-	private ArrayList<Shift> shifts;
+	private List<Shift> shifts;
 	private ImmutableClock clock;
 
 	/**
@@ -76,8 +76,8 @@ public class Scheduler implements ObservesClock {
 			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(amountOfWorkbenches);
 		} else {
 			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
-			ArrayList<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
-			ArrayList<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
+			List<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
+			List<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
 			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(amountOfWorkbenches);
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
@@ -144,7 +144,7 @@ public class Scheduler implements ObservesClock {
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		HashSet<VehicleOption> set = new HashSet<>();
-		ArrayList<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
+		List<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
 		
 		// get all the CarOptions that occur in the pending orders
 		for (IJob job : jobs) {
@@ -184,7 +184,7 @@ public class Scheduler implements ObservesClock {
       			toReturn.add(subset);
       		}
 	    }
-		return toReturn;
+		return Collections.unmodifiableSet(toReturn);
 	}
 	
 	/**
@@ -192,5 +192,9 @@ public class Scheduler implements ObservesClock {
 	 */
 	public List<IJob> getStandardJobs() {
 		return Collections.unmodifiableList(this.schedulingAlgorithm.getStandardJobs());
+	}
+
+	public List<IJob> removeUnscheduledJobs() {
+		return Collections.unmodifiableList(schedulingAlgorithm.removeUnscheduledJobs());
 	}
 }

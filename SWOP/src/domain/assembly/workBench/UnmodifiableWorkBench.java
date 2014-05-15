@@ -1,16 +1,17 @@
 package domain.assembly.workBench;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.job.job.UnmodifiableJob;
 import domain.job.task.ITask;
+import domain.job.task.UnmodifiableTask;
 
 
 /**
@@ -57,14 +58,17 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	//TODO doc
 	@Override
 	public Set<String> getResponsibilities() {
-		return new ImmutableSet.Builder<String>().addAll(bench.getResponsibilities())
-				.build();
+		return Collections.unmodifiableSet(bench.getResponsibilities());
 	}
 
 	//TODO doc
 	@Override
 	public List<ITask> getCurrentTasks() {
-		return new ImmutableList.Builder<ITask>().addAll(bench.getCurrentTasks()).build();
+		List<ITask> unmodifiable = new ArrayList<>();
+		for(ITask task: bench.getCurrentTasks()){
+			unmodifiable.add(new UnmodifiableTask(task));
+		}
+		return Collections.unmodifiableList(unmodifiable);
 	}
 
 	//TODO doc

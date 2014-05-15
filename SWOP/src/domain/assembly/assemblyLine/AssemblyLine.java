@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
@@ -152,13 +151,13 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 
 	//TODO doc
 	@Override
-	public ArrayList<IWorkBench> getBlockingWorkBenches() {
+	public List<IWorkBench> getBlockingWorkBenches() {
 		ArrayList<IWorkBench> notCompletedBenches = new ArrayList<>();
 		List<IWorkBench> workBenches = getWorkbenches();
 		for (int i = 0; i < workBenches.size(); i++)
 			if (!workBenches.get(i).isCompleted())
 				notCompletedBenches.add(new UnmodifiableWorkBench(this.workbenches.get(i)));
-		return notCompletedBenches;
+		return Collections.unmodifiableList(notCompletedBenches);
 	}
 
 	/**
@@ -166,7 +165,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 */
 	@Override
 	public List<IJob> getCurrentJobs() {
-		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
+		return Collections.unmodifiableList(currentJobs);
 	}
 
 	/**
@@ -192,7 +191,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 */
 	@Override
 	public List<IWorkBench> getWorkbenches() {
-		return workbenches;
+		return Collections.unmodifiableList(workbenches);
 	}
 
 
@@ -234,7 +233,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 
 	@Override
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
-		return this.scheduler.getAllCarOptionsInPendingOrders();
+		return Collections.unmodifiableSet(this.scheduler.getAllCarOptionsInPendingOrders());
 	}
 
 	/**
@@ -253,8 +252,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	public AssemblyLineState getState() {
 		return assemblyLineState;
 	}
-
-	//TODO: equals..
 
 	/**
 	 * Matches the given workbench to one of its own. If a match is found, 
@@ -275,7 +272,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 * returns a list containing all the pending standard jobs (no specific order)
 	 */
 	public List<IJob> getStandardJobs() {
-		return this.scheduler.getStandardJobs();
+		return Collections.unmodifiableList(this.scheduler.getStandardJobs());
 	}
 
 	@Override
@@ -311,7 +308,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return result;
 	}
 
-	//TODO symmetrische equals
+	//TODO symmetrische equals| is al symmetrisch normaal gezien :)
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -342,6 +339,10 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		} else if (!workbenches.equals(other.getWorkbenches()))
 			return false;
 		return true;
+	}
+
+	public List<IJob> removeUnscheduledJobs() {
+		return Collections.unmodifiableList(scheduler.removeUnscheduledJobs());
 	}
 
 

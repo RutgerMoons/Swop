@@ -7,7 +7,6 @@ import java.util.Set;
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
-import domain.exception.NotImplementedException;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -75,7 +74,7 @@ public class UnmodifiableVehicle implements IVehicle {
 	}
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return model.getTimeAtWorkBench();
+		return Collections.unmodifiableMap(model.getTimeAtWorkBench());
 	}
 	@Override
 	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {

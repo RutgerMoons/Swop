@@ -1,6 +1,7 @@
 package domain.job.task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import domain.job.action.IAction;
@@ -29,7 +30,7 @@ public class Task implements ITask {
 
 	@Override
 	public List<IAction> getActions() {
-		return this.actionList;
+		return Collections.unmodifiableList(this.actionList);
 	}
 
 	@Override

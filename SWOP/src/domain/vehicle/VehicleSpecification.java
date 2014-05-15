@@ -1,5 +1,6 @@
 package domain.vehicle;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,7 +59,7 @@ public class VehicleSpecification {
 	 * Get the time the specification has to spend on a workbench.
 	 */
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return timeAtWorkBench;
+		return Collections.unmodifiableMap(timeAtWorkBench);
 	}
 
 	/**

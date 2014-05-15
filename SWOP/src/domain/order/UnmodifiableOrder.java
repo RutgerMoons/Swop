@@ -1,6 +1,7 @@
 package domain.order;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -110,7 +111,7 @@ public class UnmodifiableOrder implements IOrder {
 	
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
-		return this.order.getVehicleOptions();
+		return Collections.unmodifiableCollection(this.order.getVehicleOptions());
 	}
 
 	@Override
@@ -120,7 +121,7 @@ public class UnmodifiableOrder implements IOrder {
 	
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return this.order.getTimeAtWorkBench();
+		return Collections.unmodifiableMap(this.order.getTimeAtWorkBench());
 	}
 
 	@Override
