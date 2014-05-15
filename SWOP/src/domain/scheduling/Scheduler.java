@@ -37,7 +37,7 @@ public class Scheduler implements ObservesClock {
 	 * @param clockObserver
 	 * 		The observer used to keep track of time.
 	 * @param clock
-	 * 		The current time at initialisation.
+	 * 		The current time at initialization.
 	 * 
 	 * @throws IllegalArgumentException
 	 * 		Thrown when the clockObserver or the clock is null.
