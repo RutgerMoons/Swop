@@ -13,7 +13,7 @@ import domain.clock.ImmutableClock;
 import domain.log.Logger;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.order.OrderBook;
-import domain.order.StandardOrder;
+import domain.order.order.StandardOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;

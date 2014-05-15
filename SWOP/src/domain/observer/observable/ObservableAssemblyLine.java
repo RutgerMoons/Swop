@@ -1,7 +1,7 @@
 package domain.observer.observable;
 
 import domain.observer.observers.AssemblyLineObserver;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 
 public interface ObservableAssemblyLine {
 

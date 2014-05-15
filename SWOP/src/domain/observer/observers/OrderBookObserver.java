@@ -3,7 +3,7 @@ package domain.observer.observers;
 import java.util.ArrayList;
 
 import domain.observer.observes.ObservesOrderBook;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 
 public class OrderBookObserver {
 

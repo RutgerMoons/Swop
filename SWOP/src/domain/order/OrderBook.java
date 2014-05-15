@@ -11,6 +11,7 @@ import domain.clock.ImmutableClock;
 import domain.observer.observable.ObservableOrderBook;
 import domain.observer.observers.OrderBookObserver;
 import domain.observer.observes.ObservesAssemblyLine;
+import domain.order.order.IOrder;
 
 /**
  * this class will be used to keep record of two kinds of orders. these two

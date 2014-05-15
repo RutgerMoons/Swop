@@ -1,4 +1,4 @@
-package domain.order;
+package domain.order.order;
 
 import java.util.Collection;
 import java.util.Collections;

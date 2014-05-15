@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
-import domain.order.StandardOrder;
+import domain.order.order.StandardOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;

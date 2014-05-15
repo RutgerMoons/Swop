@@ -18,7 +18,7 @@ import domain.exception.NotImplementedException;
 import domain.job.action.IAction;
 import domain.job.task.ITask;
 import domain.order.Delay;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;

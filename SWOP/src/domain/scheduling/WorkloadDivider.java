@@ -23,7 +23,7 @@ import domain.job.task.Task;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.OrderBookObserver;
 import domain.observer.observes.ObservesOrderBook;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.vehicleOption.VehicleOption;
 

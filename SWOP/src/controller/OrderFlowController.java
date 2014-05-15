@@ -8,7 +8,7 @@ import com.google.common.base.Optional;
 import view.ClientCommunication;
 import domain.clock.ImmutableClock;
 import domain.facade.Facade;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 import domain.users.AccessRight;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;

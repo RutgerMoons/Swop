@@ -1,6 +1,6 @@
 package domain.observer.observes;
 
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 
 public interface ObservesOrderBook {
 	
