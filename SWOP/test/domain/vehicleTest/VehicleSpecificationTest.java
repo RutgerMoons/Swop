@@ -43,7 +43,11 @@ public class VehicleSpecificationTest {
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		
 		HashMap<WorkbenchType, Integer> timeAtWorkBench = new HashMap<WorkbenchType, Integer>();
+		timeAtWorkBench.put(WorkbenchType.ACCESSORIES, 60);
 		timeAtWorkBench.put(WorkbenchType.BODY, 60);
+		timeAtWorkBench.put(WorkbenchType.CARGO, 60);
+		timeAtWorkBench.put(WorkbenchType.CERTIFICATION, 60);
+		timeAtWorkBench.put(WorkbenchType.DRIVETRAIN, 60);
 		template = new VehicleSpecification("model", parts, timeAtWorkBench);
 	}
 
