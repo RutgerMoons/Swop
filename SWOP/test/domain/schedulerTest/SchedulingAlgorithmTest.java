@@ -16,15 +16,10 @@ import view.ClientCommunication;
 
 import com.google.common.base.Optional;
 
-import domain.assembly.assemblyLine.AssemblyLine;
-import domain.assembly.assemblyLine.AssemblyLineState;
-import domain.assembly.workBench.WorkbenchType;
-import domain.clock.Clock;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.AlreadyInMapException;
 import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.job.job.IJob;
 import domain.job.job.Job;
@@ -55,7 +50,8 @@ public class SchedulingAlgorithmTest {
 	private Set<BindingRestriction> bindingRestrictions;
 	private Set<OptionalRestriction> optionalRestrictions;
 	private PartPicker picker;
-	private HashMap<WorkbenchType, Integer> timeAtWorkBench;
+	private HashMap<WorkBenchType, Integer> timeAtWorkBench;
+	private List<WorkBenchType> workBenchTypes;
 	
 	
 	@Before
@@ -65,14 +61,18 @@ public class SchedulingAlgorithmTest {
 		int amount = 3;
 		clock = new ClockObserver();
 		scheduler = new Scheduler(clock, new ImmutableClock(0,600));
+		List<WorkBenchType> workBenchTypes = new ArrayList<>();
+		workBenchTypes.add(WorkBenchType.BODY);
+		workBenchTypes.add(WorkBenchType.CARGO);
+		workBenchTypes.add(WorkBenchType.ACCESSORIES);
 		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();
-		scheduler.switchToAlgorithm(fifo, 3);
-		timeAtWorkBench = new HashMap<WorkbenchType, Integer>();
-		timeAtWorkBench.put(WorkbenchType.ACCESSORIES, 60);
-		timeAtWorkBench.put(WorkbenchType.BODY, 60);
-		timeAtWorkBench.put(WorkbenchType.CARGO, 60);
-		timeAtWorkBench.put(WorkbenchType.CERTIFICATION, 60);
-		timeAtWorkBench.put(WorkbenchType.DRIVETRAIN, 60);
+		scheduler.switchToAlgorithm(fifo, workBenchTypes);
+		timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		timeAtWorkBench.put(WorkBenchType.ACCESSORIES, 60);
+		timeAtWorkBench.put(WorkBenchType.BODY, 60);
+		timeAtWorkBench.put(WorkBenchType.CARGO, 60);
+		timeAtWorkBench.put(WorkBenchType.CERTIFICATION, 60);
+		timeAtWorkBench.put(WorkBenchType.DRIVETRAIN, 60);
 	}
 	
 	public void initializeRestrictions(){
@@ -155,7 +155,12 @@ public class SchedulingAlgorithmTest {
 	@Test
 	public void switchToFifoTest(){
 		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();
-		scheduler.switchToAlgorithm(fifo, 3);
+		List<WorkBenchType> workBenchTypes = new ArrayList<>();
+		workBenchTypes.add(WorkBenchType.BODY);
+		workBenchTypes.add(WorkBenchType.CARGO);
+		workBenchTypes.add(WorkBenchType.ACCESSORIES);
+		assertNotNull(workBenchTypes);
+		scheduler.switchToAlgorithm(fifo, workBenchTypes);
 	}
 	
 	@Test
@@ -163,7 +168,11 @@ public class SchedulingAlgorithmTest {
 		List<VehicleOption> options = new ArrayList<VehicleOption>();
 		options.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		SchedulingAlgorithmCreatorBatch batch = new SchedulingAlgorithmCreatorBatch(options);
-		scheduler.switchToAlgorithm(batch, 3);
+		List<WorkBenchType> workBenchTypes = new ArrayList<>();
+		workBenchTypes.add(WorkBenchType.BODY);
+		workBenchTypes.add(WorkBenchType.CARGO);
+		workBenchTypes.add(WorkBenchType.ACCESSORIES);
+		scheduler.switchToAlgorithm(batch, workBenchTypes);
 	}
 	
 	@Test

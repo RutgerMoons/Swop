@@ -10,6 +10,7 @@ import java.util.Set;
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
@@ -65,14 +66,14 @@ public class Scheduler implements ObservesClock {
 		schedulingAlgorithm.setEstimatedTime(job, clock);
 	}
 
-	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, int amountOfWorkbenches) {
+	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, List<WorkBenchType> workBenchTypes) {
 		if (this.schedulingAlgorithm == null) {
-			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(amountOfWorkbenches);
+			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(workBenchTypes);
 		} else {
 			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
 			List<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
 			List<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
-			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(amountOfWorkbenches);
+			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(workBenchTypes);
 			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
 		}
 	}

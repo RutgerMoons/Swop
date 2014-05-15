@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.assembly.assemblyLine.AssemblyLine;
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
@@ -45,14 +45,14 @@ public class OrderBookTest {
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		
-		VehicleSpecification specification = new VehicleSpecification("test", parts, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification specification = new VehicleSpecification("test", parts, new HashMap<WorkBenchType, Integer>());
 		model1 = new Vehicle(specification);
 		
 		Set<VehicleOption> parts2 = new HashSet<>();
 		parts2.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		parts2.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		parts2.add(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
-		VehicleSpecification specification2 = new VehicleSpecification("test", parts2, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification specification2 = new VehicleSpecification("test", parts2, new HashMap<WorkBenchType, Integer>());
 		model2 = new Vehicle(specification2);
 }
 

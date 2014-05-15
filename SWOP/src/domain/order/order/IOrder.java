@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
@@ -102,7 +102,7 @@ public interface IOrder {
 	/**
 	 * Get the time the specification has to spend on a workbench
 	 */
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
 
 	/**
 	 * Get the specification of the vehicle from the order.

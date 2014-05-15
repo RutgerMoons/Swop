@@ -14,7 +14,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
 import domain.job.action.Action;
 import domain.vehicle.VehicleSpecification;
@@ -49,8 +49,8 @@ public class VehicleTest {
 
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		Map<WorkbenchType, Integer> map = new HashMap<WorkbenchType, Integer>();
-		map.put(WorkbenchType.BODY, 50);
+		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
+		map.put(WorkBenchType.BODY, 50);
 		template = new VehicleSpecification("model", parts, map);
 	}
 
@@ -126,7 +126,7 @@ public class VehicleTest {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		VehicleSpecification template2 = new VehicleSpecification("modelb",
-				parts, new HashMap<WorkbenchType, Integer>());
+				parts, new HashMap<WorkBenchType, Integer>());
 
 		Vehicle car4 = new Vehicle(template2);
 		car4.addCarPart(part1);
@@ -189,7 +189,7 @@ public class VehicleTest {
 		model.addCarPart(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 
 		model.addCarPart(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
-		int time = model.getTimeAtWorkBench().get(WorkbenchType.BODY);
+		int time = model.getTimeAtWorkBench().get(WorkBenchType.BODY);
 		assertEquals(50, time);
 	}
 }

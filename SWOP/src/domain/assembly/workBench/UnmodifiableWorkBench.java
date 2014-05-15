@@ -39,7 +39,7 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	
 	//TODO doc
 	@Override
-	public WorkbenchType getWorkbenchType() {
+	public WorkBenchType getWorkbenchType() {
 		return bench.getWorkbenchType();
 	}
 

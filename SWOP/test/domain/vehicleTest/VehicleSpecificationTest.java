@@ -9,7 +9,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -42,12 +42,12 @@ public class VehicleSpecificationTest {
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		
-		HashMap<WorkbenchType, Integer> timeAtWorkBench = new HashMap<WorkbenchType, Integer>();
-		timeAtWorkBench.put(WorkbenchType.ACCESSORIES, 60);
-		timeAtWorkBench.put(WorkbenchType.BODY, 60);
-		timeAtWorkBench.put(WorkbenchType.CARGO, 60);
-		timeAtWorkBench.put(WorkbenchType.CERTIFICATION, 60);
-		timeAtWorkBench.put(WorkbenchType.DRIVETRAIN, 60);
+		HashMap<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		timeAtWorkBench.put(WorkBenchType.ACCESSORIES, 60);
+		timeAtWorkBench.put(WorkBenchType.BODY, 60);
+		timeAtWorkBench.put(WorkBenchType.CARGO, 60);
+		timeAtWorkBench.put(WorkBenchType.CERTIFICATION, 60);
+		timeAtWorkBench.put(WorkBenchType.DRIVETRAIN, 60);
 		template = new VehicleSpecification("model", parts, timeAtWorkBench);
 	}
 
@@ -55,7 +55,7 @@ public class VehicleSpecificationTest {
 	public void testConstructor() {
 		assertEquals("model", template.getDescription());
 		assertEquals("model", template.toString());
-		int time = template.getTimeAtWorkBench().get(WorkbenchType.BODY);
+		int time = template.getTimeAtWorkBench().get(WorkBenchType.BODY);
 		assertEquals(60, time);
 		
 		assertEquals(8, template.getCarParts().keySet().size());

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.order.orderVisitor.IOrderVisitor;
@@ -191,7 +191,7 @@ public class StandardOrder implements IOrder {
 	@Override
 	public int getProductionTime() {
 		int time = 0;
-		for(WorkbenchType type: getTimeAtWorkBench().keySet()){
+		for(WorkBenchType type: getTimeAtWorkBench().keySet()){
 			time += getTimeAtWorkBench().get(type);
 		}
 		return time;
@@ -203,7 +203,7 @@ public class StandardOrder implements IOrder {
 	}
 	
 	@Override
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(this.getDescription().getTimeAtWorkBench());
 	}
 

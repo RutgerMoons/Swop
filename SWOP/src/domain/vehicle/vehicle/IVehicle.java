@@ -3,7 +3,7 @@ package domain.vehicle.vehicle;
 import java.util.Map;
 import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
@@ -64,7 +64,7 @@ public interface IVehicle {
 	/**
 	 * Get the time at each workbench of this IVehicle.
 	 */
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
 
 	/**
 	 * Check if the vehicle can be handled by the responsibilities
