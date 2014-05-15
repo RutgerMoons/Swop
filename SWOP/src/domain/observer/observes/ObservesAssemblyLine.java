@@ -1,6 +1,6 @@
 package domain.observer.observes;
 
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 
 /**
  * AssemblyLineObservers use this interface as a gateway for addressing complex objects and notifying 

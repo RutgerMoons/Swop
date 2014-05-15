@@ -19,7 +19,7 @@ import domain.exception.NotImplementedException;
 import domain.job.action.Action;
 import domain.job.job.IJob;
 import domain.job.job.Job;
-import domain.order.StandardOrder;
+import domain.order.order.StandardOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.vehicle.VehicleSpecification;

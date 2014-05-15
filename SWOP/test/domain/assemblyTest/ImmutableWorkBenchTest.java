@@ -24,7 +24,7 @@ import domain.job.action.Action;
 import domain.job.job.IJob;
 import domain.job.job.Job;
 import domain.job.task.Task;
-import domain.order.StandardOrder;
+import domain.order.order.StandardOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;

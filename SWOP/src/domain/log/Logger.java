@@ -7,7 +7,7 @@ import domain.clock.ImmutableClock;
 import domain.observer.observes.ObservesAssemblyLine;
 import domain.observer.observes.ObservesClock;
 import domain.order.Delay;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 
 /**
  * This object keeps track of completed orders and their delays. It also keeps track

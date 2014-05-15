@@ -15,7 +15,7 @@ import domain.exception.UnmodifiableException;
 import domain.job.action.Action;
 import domain.job.job.IJob;
 import domain.job.job.Job;
-import domain.order.CustomOrder;
+import domain.order.order.CustomOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.vehicle.vehicle.CustomVehicle;

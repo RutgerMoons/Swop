@@ -16,7 +16,7 @@ import domain.job.task.ITask;
 import domain.observer.observable.ObservableAssemblyLine;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleSpecification;

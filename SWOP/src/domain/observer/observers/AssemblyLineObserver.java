@@ -3,7 +3,7 @@ package domain.observer.observers;
 import java.util.ArrayList;
 
 import domain.observer.observes.ObservesAssemblyLine;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 
 /**
  * This object can attach and detach any object that implements the LogsAssemblyLine interface

@@ -1,4 +1,4 @@
-package domain.order;
+package domain.order.order;
 
 import java.util.Collection;
 import java.util.Map;
@@ -9,6 +9,7 @@ import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
+import domain.order.orderVisitor.OrderVisitor;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
@@ -128,4 +129,11 @@ public interface IOrder {
 	 * 			The responsibilities of the AssemblyLine
 	 */
 	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
+	
+	/*-------------------------------------------------
+	 * 
+	 * VISITABLE
+	 * 
+	 * ----------------------------------------------*/
+	public void acceptVisit(OrderVisitor visitor);
 }

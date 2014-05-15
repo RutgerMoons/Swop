@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 
 import view.ClientCommunication;
 import domain.facade.Facade;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 import domain.users.AccessRight;
 
 /**

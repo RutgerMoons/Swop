@@ -8,7 +8,7 @@ import java.util.Set;
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
-import domain.order.IOrder;
+import domain.order.order.IOrder;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
