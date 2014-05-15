@@ -25,7 +25,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	private int getCurrentTotalProductionTime() {
 		int time = 0;
-		List<Optional<IJob>> historyCopy = getHistory();
+		List<Optional<IJob>> historyCopy = new ArrayList<>(getHistory());
 		if (historyCopy.size() == 0) {
 			return 0;
 		}
@@ -53,7 +53,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			} 
 			catch (NotImplementedException e) {	}
 		}
-		List<Optional<IJob>> previousJobs = this.getHistory();
+		List<Optional<IJob>> previousJobs = new ArrayList<>(this.getHistory());
 		int totalProductionTime = 0;
 		for (Iterator<IJob> iterator = standardJobs.iterator(); iterator.hasNext();) {
 			IJob j = iterator.next();
