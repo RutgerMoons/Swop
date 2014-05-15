@@ -6,13 +6,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.assemblyLine.MaintenanceTimeManager;
 import domain.assembly.assemblyLine.UnmodifiableAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
+import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
 import domain.job.action.Action;
 import domain.job.action.IAction;
@@ -21,13 +24,16 @@ import domain.job.job.Job;
 import domain.job.task.ITask;
 import domain.job.task.Task;
 import domain.observer.observers.AssemblyLineObserver;
+import domain.observer.observers.AssemblyLineStateObserver;
+import domain.observer.observers.ClockObserver;
 import domain.observer.observers.OrderBookObserver;
+import domain.observer.observes.ObservesAssemblyLineState;
 import domain.observer.observes.ObservesOrderBook;
 import domain.order.order.IOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.vehicleOption.VehicleOption;
 
-public class WorkloadDivider implements ObservesOrderBook {
+public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineState {
 
 	private List<AssemblyLine> assemblyLines;
 
@@ -37,9 +43,12 @@ public class WorkloadDivider implements ObservesOrderBook {
 		}
 		orderBookObserver.attachLogger(this);
 		this.assemblyLines = listOfAssemblyLines;
+		AssemblyLineStateObserver assemblyLineStateObserver = new AssemblyLineStateObserver();
+		assemblyLineStateObserver.attachLogger(this);
 		// attach the assemblyLineObserver to all assemblyLines
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
 			assemblyLine.attachObserver(assemblyLineObserver);
+			assemblyLine.attachObserver(assemblyLineStateObserver);
 		}
 	}
 
@@ -149,8 +158,6 @@ public class WorkloadDivider implements ObservesOrderBook {
 	}
 
 	private void divide(IJob job) {
-		//TODO:
-
 		//1: filter operational assemblyLines
 		//2: filter assemblyLines that can complete job
 		//3: kies assemblyLine met laagste workload
@@ -243,20 +250,32 @@ public class WorkloadDivider implements ObservesOrderBook {
 		return Collections.unmodifiableSet(toReturn);
 	}
 
-	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
+	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state){
 		for(AssemblyLine line: assemblyLines){
 			if(assemblyLine.equals(line)){
 				line.setState(state);
-				if(!line.getState().equals(AssemblyLineState.OPERATIONAL)){
-					List<IJob> jobs = line.removeUnscheduledJobs();
-					for(IJob job: jobs){
-						divide(job);
-					}
-				}
 			}
 		}
 	}
 
+	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state, ClockObserver observer, ImmutableClock clock) {
+		Optional<AssemblyLine> finalLine = getModifiableAssemblyLine(assemblyLine);
+
+		if(finalLine.isPresent()){
+			MaintenanceTimeManager manager = new MaintenanceTimeManager(finalLine.get(), clock);
+			observer.attachLogger(manager);
+			changeState(assemblyLine, state);
+		}
+	}
+
+	private Optional<AssemblyLine> getModifiableAssemblyLine(IAssemblyLine assemblyLine){
+		for(AssemblyLine line: assemblyLines){
+			if(assemblyLine.equals(line)){
+				return Optional.fromNullable(line);
+			}
+		}
+		return Optional.absent();
+	}
 	/**
 	 * Get the workbenches which are blocking the AssemblyLine from advancing.
 	 * @return
@@ -269,6 +288,20 @@ public class WorkloadDivider implements ObservesOrderBook {
 			}
 		}
 		return new ArrayList<>();
+	}
+
+	@Override
+	public void updateAssemblylineState(AssemblyLineState previousState, AssemblyLineState currentState) {
+		if(!(previousState.equals(AssemblyLineState.BROKEN) && !currentState.equals(AssemblyLineState.OPERATIONAL)) &&
+				!(previousState.equals(AssemblyLineState.MAINTENANCE) && !currentState.equals(AssemblyLineState.OPERATIONAL))){
+			List<IJob> jobs = new ArrayList<>();
+			for(AssemblyLine assemblyLine: this.assemblyLines){
+				jobs.addAll(assemblyLine.removeUnscheduledJobs());
+			}
+			for(IJob job: jobs){
+				divide(job);
+			}
+		}
 	}
 
 }

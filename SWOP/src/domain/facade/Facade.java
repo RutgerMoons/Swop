@@ -347,9 +347,10 @@ public class Facade {
 	 * 
 	 * @param 	state
 	 * 				This AssemblyLineState will be the new state of the given AssemblyLine
+	 * @param clock 
 	 */
-	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
-		company.changeState(assemblyLine, state);
+	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state, ImmutableClock clock) {
+		company.changeState(assemblyLine, state, clock);
 	}
 
 	/**

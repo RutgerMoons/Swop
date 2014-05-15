@@ -14,7 +14,9 @@ import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
 import domain.observer.observable.ObservableAssemblyLine;
+import domain.observer.observable.ObservableAssemblyLineState;
 import domain.observer.observers.AssemblyLineObserver;
+import domain.observer.observers.AssemblyLineStateObserver;
 import domain.observer.observers.ClockObserver;
 import domain.order.order.IOrder;
 import domain.scheduling.Scheduler;
@@ -27,7 +29,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
  * It notifies the attached observers when an order is completed. Each assemblyLine has a scheduler.
  * 
  */
-public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
+public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, ObservableAssemblyLineState {
 
 	private List<IJob> currentJobs;
 	private List<IWorkBench> workbenches;
@@ -35,7 +37,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	private Scheduler scheduler;
 	private AssemblyLineState assemblyLineState;
 	private Set<VehicleSpecification> responsibilities;
-
+	private List<AssemblyLineStateObserver> assemblyLineStateObservers;
 	/**
 	 * Construct a new AssemblyLine. Initializes a scheduler and an amount of workbenches.
 	 * 
@@ -52,6 +54,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		workbenches = new ArrayList<IWorkBench>();
 		currentJobs = new ArrayList<IJob>();
 		observers = new ArrayList<>();
+		assemblyLineStateObservers = new ArrayList<AssemblyLineStateObserver>();
 		this.scheduler = new Scheduler(clockObserver, clock);
 		this.assemblyLineState = assemblyLineState;
 		this.responsibilities = responsiblities;
@@ -277,8 +280,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 
 	@Override
 	public void setState(AssemblyLineState state) {
+		AssemblyLineState previousState = assemblyLineState;
 		this.assemblyLineState = state;
-
+		updatAssemblyLineState(previousState, state);
 	}
 
 	@Override
@@ -345,5 +349,27 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		return Collections.unmodifiableList(scheduler.removeUnscheduledJobs());
 	}
 
+	@Override
+	public void attachObserver(AssemblyLineStateObserver observer) {
+		if(observer==null){
+			throw new IllegalArgumentException();
+		}
+		assemblyLineStateObservers.add(observer);
+	}
 
+	@Override
+	public void detachObserver(AssemblyLineStateObserver observer) {
+		if(observer==null){
+			throw new IllegalArgumentException();
+		}
+		assemblyLineStateObservers.remove(observer);
+	}
+
+	@Override
+	public void updatAssemblyLineState(AssemblyLineState previousState,
+			AssemblyLineState currentState) {
+		for(AssemblyLineStateObserver observer: assemblyLineStateObservers){
+			observer.updateAssemblyLineState(previousState, currentState);
+		}
+	}
 }
