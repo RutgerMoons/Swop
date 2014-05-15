@@ -61,13 +61,7 @@ public class Scheduler implements ObservesClock {
 	 * @param	job to be added to the currently used SchedulingAlgorithm
 	 */
 	public void addJobToAlgorithm(IJob job) {
-		if (this.schedulingAlgorithm == null) {
-			throw new IllegalStateException();
-		}
-		if (job == null) {
-			throw new IllegalArgumentException();
-		}
-		job.addToSchedulingAlgorithm(this.schedulingAlgorithm);
+		this.schedulingAlgorithm.addJobToAlgorithm(job);
 		schedulingAlgorithm.setEstimatedTime(job, clock);
 	}
 

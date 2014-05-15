@@ -8,8 +8,7 @@ import java.util.Set;
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
-import domain.job.job.IJob;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.order.orderVisitor.IOrderVisitor;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicle.Vehicle;
@@ -202,14 +201,6 @@ public class StandardOrder implements IOrder {
 	public Collection<VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
 	}
-
-	@Override
-	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm, IJob job) {
-		if (schedulingAlgorithm == null || job == null) {
-			throw new IllegalArgumentException();
-		}
-		schedulingAlgorithm.addStandardJob(job);
-	}
 	
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
@@ -224,5 +215,10 @@ public class StandardOrder implements IOrder {
 	@Override
 	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
 		return description.canBeHandled(responsibilities);
+	}
+	
+	@Override
+	public void acceptVisit(IOrderVisitor visitor) {
+		visitor.visit(this);
 	}
 }

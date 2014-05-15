@@ -9,7 +9,6 @@ import domain.assembly.workBench.WorkbenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -88,13 +87,6 @@ public interface IJob {
 	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
 	 */
 	public Collection<VehicleOption> getVehicleOptions();
-	
-	/**
-	 * Passes request to the order and let it decide how it should be added
-	 * 
-	 * @param	schedulingAlgorithm this needs to be added to
-	 */
-	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm);
 	
 	/**
 	 * Get the time the specification has to spend on a workbench.

@@ -8,8 +8,7 @@ import java.util.Set;
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
-import domain.job.job.IJob;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
+import domain.order.orderVisitor.IOrderVisitor;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicle.UnmodifiableVehicle;
@@ -113,11 +112,6 @@ public class UnmodifiableOrder implements IOrder {
 	public Collection<VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableCollection(this.order.getVehicleOptions());
 	}
-
-	@Override
-	public void addToSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm, IJob job) {
-		throw new UnmodifiableException();
-	}
 	
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
@@ -132,5 +126,10 @@ public class UnmodifiableOrder implements IOrder {
 	@Override
 	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
 		return order.canBeHandled(responsibilities);
+	}
+	
+	@Override
+	public void acceptVisit(IOrderVisitor visitor) {
+		visitor.visit(this);
 	}
 }
