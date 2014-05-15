@@ -1,5 +1,6 @@
 package domain.vehicle.catalogue;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class VehicleSpecificationCatalogue {
 	 * Returns an immutable Map of CarModelSpecifications with their names.
 	 */
 	public Map<String, VehicleSpecification> getCatalogue() {
-		return data;
+		return Collections.unmodifiableMap(data);
 	}
 
 	/**

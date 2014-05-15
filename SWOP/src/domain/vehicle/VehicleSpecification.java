@@ -1,5 +1,6 @@
 package domain.vehicle;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,7 +59,7 @@ public class VehicleSpecification {
 	 * Get the time the specification has to spend on a workbench.
 	 */
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return timeAtWorkBench;
+		return Collections.unmodifiableMap(timeAtWorkBench);
 	}
 
 	/**
@@ -79,5 +80,46 @@ public class VehicleSpecification {
 	public String toString(){
 		return description;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((parts == null) ? 0 : parts.hashCode());
+		result = prime * result
+				+ ((timeAtWorkBench == null) ? 0 : timeAtWorkBench.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VehicleSpecification other = (VehicleSpecification) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (parts == null) {
+			if (other.parts != null)
+				return false;
+		} else if (!parts.equals(other.parts))
+			return false;
+		if (timeAtWorkBench == null) {
+			if (other.timeAtWorkBench != null)
+				return false;
+		} else if (!timeAtWorkBench.equals(other.timeAtWorkBench))
+			return false;
+		return true;
+	}
+	
+	
 
 }

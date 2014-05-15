@@ -1,6 +1,7 @@
 package domain.job.task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import domain.job.action.IAction;
@@ -29,7 +30,7 @@ public class Task implements ITask {
 
 	@Override
 	public List<IAction> getActions() {
-		return this.actionList;
+		return Collections.unmodifiableList(this.actionList);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class Task implements ITask {
 			actionList.add(action);
 	}
 
-	
+
 	@Override
 	public boolean isCompleted() {
 		for (IAction action : getActions())
@@ -57,7 +58,7 @@ public class Task implements ITask {
 		return true;
 	}
 
-	
+
 	@Override
 	public String getTaskDescription() {
 		return this.taskDescription;
@@ -73,5 +74,41 @@ public class Task implements ITask {
 	@Override
 	public String toString() {
 		return this.taskDescription;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((actionList == null) ? 0 : actionList.hashCode());
+		result = prime * result
+				+ ((taskDescription == null) ? 0 : taskDescription.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		ITask other=null;
+		try{
+			other = (ITask) obj;
+		} catch (ClassCastException e){
+			return false;
+		}
+		if (actionList == null) {
+			if (other.getActions() != null)
+				return false;
+		} else if (!actionList.equals(other.getActions()))
+			return false;
+		if (taskDescription == null) {
+			if (other.getTaskDescription() != null)
+				return false;
+		} else if (!taskDescription.equals(other.getTaskDescription()))
+			return false;
+		return true;
 	}
 }

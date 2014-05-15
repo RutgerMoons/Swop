@@ -2,6 +2,7 @@ package domain.scheduling.schedulingAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
@@ -24,7 +25,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	private int getCurrentTotalProductionTime() {
 		int time = 0;
-		ArrayList<Optional<IJob>> historyCopy = getHistory();
+		List<Optional<IJob>> historyCopy = getHistory();
 		if (historyCopy.size() == 0) {
 			return 0;
 		}
@@ -52,7 +53,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			} 
 			catch (NotImplementedException e) {	}
 		}
-		ArrayList<Optional<IJob>> previousJobs = this.getHistory();
+		List<Optional<IJob>> previousJobs = this.getHistory();
 		int totalProductionTime = 0;
 		for (Iterator<IJob> iterator = standardJobs.iterator(); iterator.hasNext();) {
 			IJob j = iterator.next();
@@ -91,6 +92,8 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			}
 			idx++;
 		}
+		
+		//TODO niet return null
 		return null;
 	}
 
@@ -137,7 +140,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			addToHistory(toReturn);
 			return toReturn;
 		}
-		throw new NoSuitableJobFoundException();
+		return Optional.absent();
 	}
 
 
@@ -167,7 +170,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	}
 	
 	@Override
-	public void transform(PriorityQueue<IJob> customJobs, ArrayList<IJob> standardJobs, ArrayList<Optional<IJob>> history) {
+	public void transform(PriorityQueue<IJob> customJobs, List<IJob> standardJobs, List<Optional<IJob>> history) {
 		if(customJobs == null || standardJobs == null || history == null) {
 			throw new IllegalArgumentException();
 		}

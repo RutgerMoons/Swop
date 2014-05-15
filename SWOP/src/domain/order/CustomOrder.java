@@ -3,11 +3,11 @@ package domain.order;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
-import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.vehicle.VehicleSpecification;
@@ -139,7 +139,7 @@ public class CustomOrder implements IOrder {
 	}
 
 	@Override
-	public void completeCar() throws UnmodifiableException {
+	public void completeCar(){
 		setPendingCars(--pendingCars);
 	}
 
@@ -228,7 +228,7 @@ public class CustomOrder implements IOrder {
 	
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
-		return this.getDescription().getVehicleOptions().values();
+		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
 	}
 
 	@Override
@@ -241,11 +241,16 @@ public class CustomOrder implements IOrder {
 	
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return this.getDescription().getTimeAtWorkBench();
+		return Collections.unmodifiableMap(this.getDescription().getTimeAtWorkBench());
 	}
 
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		throw new NotImplementedException();
+	}
+
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return description.canBeHandled(responsibilities);
 	}
 }

@@ -1,6 +1,5 @@
 package domain.assembly.assemblyLine;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public interface IAssemblyLine {
 	/**
 	 * Method for retrieving the workbenches with unfinished tasks.
 	 */
-	public ArrayList<IWorkBench> getBlockingWorkBenches();
+	public List<IWorkBench> getBlockingWorkBenches();
 	
 	/**
 	 * Get all the pending jobs for this AssemblyLine

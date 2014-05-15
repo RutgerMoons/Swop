@@ -87,7 +87,7 @@ public class PartPicker {
 
 		List<VehicleOption> options = new ArrayList<>();
 		options.addAll(availableParts);
-		return options;
+		return Collections.unmodifiableList(options);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class PartPicker {
 			}
 
 		}
-		return availableParts;
+		return Collections.unmodifiableCollection(availableParts);
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class PartPicker {
 				availableParts.add(option);
 			}
 		}
-		return availableParts;
+		return Collections.unmodifiableCollection(availableParts);
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class PartPicker {
 			}
 		}
 
-		return availableParts;
+		return Collections.unmodifiableCollection(availableParts);
 	}
 
 	/**
@@ -244,11 +244,15 @@ public class PartPicker {
 	}
 
 	public VehicleSpecification getSpecification(String specificationName) {
-		return getCatalogue().getCatalogue().get(specificationName);
+		VehicleSpecification specification = getCatalogue().getCatalogue().get(specificationName);
+		if(specification==null){
+			throw new IllegalArgumentException();
+		}
+		return specification;
 	}
 
 	public Set<String> getVehicleSpecifications() {
-		return getCatalogue().getCatalogue().keySet();
+		return Collections.unmodifiableSet(getCatalogue().getCatalogue().keySet());
 	}
 
 	public VehicleSpecificationCatalogue getCatalogue() {

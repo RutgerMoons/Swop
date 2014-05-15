@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +17,10 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 
 import domain.assembly.assemblyLine.AssemblyLine;
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
+import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
@@ -33,7 +36,9 @@ import domain.log.Logger;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
 import domain.order.CustomOrder;
+import domain.order.IOrder;
 import domain.order.StandardOrder;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.Vehicle;
@@ -48,11 +53,17 @@ public class AssemblyLineTest{
 
 	@Before
 	public void initialize() {
-		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0,240));
+
 
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification template2 = new VehicleSpecification("model B", parts, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification template3 = new VehicleSpecification("model C", parts, new HashMap<WorkbenchType, Integer>());
+		Set<VehicleSpecification> specifications = new HashSet<VehicleSpecification>();
+		specifications.add(template);
+		specifications.add(template2);
+		specifications.add(template3);
 		model = new Vehicle(template);
 
 		try {
@@ -64,6 +75,30 @@ public class AssemblyLineTest{
 			model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 			model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		} catch (AlreadyInMapException e) {}
+		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0,240), AssemblyLineState.OPERATIONAL, specifications);
+
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(responsibilities, WorkbenchType.BODY);
+
+		responsibilities = new HashSet<>();
+		responsibilities.add("Engine");
+		responsibilities.add("Gearbox");
+		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkbenchType.DRIVETRAIN);
+
+		responsibilities = new HashSet<>();
+		responsibilities.add("Seat");
+		responsibilities.add("Airco");
+		responsibilities.add("Spoiler");
+		responsibilities.add("Wheel");
+		WorkBench accessories1 = new WorkBench(responsibilities, WorkbenchType.ACCESSORIES);
+
+		line.addWorkBench(body1);
+		line.addWorkBench(drivetrain1);
+		line.addWorkBench(accessories1);
+		
+		line.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 	}
 
 	@Test
@@ -75,7 +110,7 @@ public class AssemblyLineTest{
 
 	@Test(expected = IllegalArgumentException.class)
 	public void TestInvalidConstructor(){
-		new AssemblyLine(null, new ImmutableClock(0, 240));
+		new AssemblyLine(null, new ImmutableClock(0, 240), null, null);
 	}
 
 	@Test
@@ -83,7 +118,7 @@ public class AssemblyLineTest{
 		Set<String> resp1 = new HashSet<String>();
 		resp1.add("bla");
 		resp1.add("bleu");
-		IWorkBench workbench1 = new WorkBench(resp1, "workbench1");
+		IWorkBench workbench1 = new WorkBench(resp1, WorkbenchType.BODY);
 		line.addWorkBench(workbench1);
 		assertEquals(4, line.getWorkbenches().size());
 	}
@@ -97,73 +132,40 @@ public class AssemblyLineTest{
 	public void canAdvanceTestTrue(){
 		Action action1 = new Action("paint");
 		action1.setCompleted(true);
-		Task task1 = new Task("task pait");
+		Task task1 = new Task("Color");
 		task1.addAction(action1);
 		ArrayList<ITask> list = new ArrayList<ITask>();
 		list.add(task1);
-		try {
-			line.getWorkbenches().get(0).setCurrentTasks(list);
-			for(IWorkBench bench : line.getWorkbenches()){
-				for(ITask task : bench.getCurrentTasks()){
-					for(IAction action: task.getActions()){
-						action.setCompleted(true);
-					}
+
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		job.setTasks(list);
+		line.getWorkbenches().get(0).setCurrentJob(Optional.fromNullable(job));
+		line.getWorkbenches().get(0).chooseTasksOutOfJob();
+		for(IWorkBench bench : line.getWorkbenches()){
+			for(ITask task : bench.getCurrentTasks()){
+				for(IAction action: task.getActions()){
+					action.setCompleted(true);
 				}
 			}
-			assertTrue(line.canAdvance());
-		} catch (UnmodifiableException e) {}
+		}
+		assertTrue(line.canAdvance());
 	}
 
 	@Test
 	public void canAdvanceTestFalse(){
 		Action action1 = new Action("paint");
 		action1.setCompleted(false);
-		Task task1 = new Task("task pait");
+		Task task1 = new Task("Color");
 		task1.addAction(action1);
 		ArrayList<ITask> list = new ArrayList<ITask>();
 		list.add(task1);
-		try {
-			line.getWorkbenches().get(0).setCurrentTasks(list);
-		} catch (UnmodifiableException e) {		}
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		job.setTasks(list);
+		line.getWorkbenches().get(0).setCurrentJob(Optional.fromNullable(job));
+		line.getWorkbenches().get(0).chooseTasksOutOfJob();
 		assertFalse(line.canAdvance());
-	}
-
-	@Test
-	public void testConvertStandardOrderToJob(){
-		ImmutableClock clock = new ImmutableClock(0,240);
-		StandardOrder order = new StandardOrder("Luigi", this.model, 5, clock);
-		try {
-			int minutes = line.convertStandardOrderToJob(order);
-			assertEquals(420,minutes);
-		} catch (UnmodifiableException e) {}
-
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void testConvertStandardOrderToJobError(){
-		try {
-			line.convertStandardOrderToJob(null);
-		} catch (UnmodifiableException e) {}
-	}
-
-	@Test
-	public void testConvertCustoOrderToJob(){
-		ImmutableClock clock = new ImmutableClock(0,240);
-		ImmutableClock deadline = new ImmutableClock(5, 800);
-		CustomVehicle model = new CustomVehicle();
-		CustomOrder order = new CustomOrder("Luigi in da house", model, 5, clock, deadline);
-		try {
-			int minutes = line.convertCustomOrderToJob(order);
-			assertEquals(deadline.minus(clock),minutes);
-		} catch (UnmodifiableException e) {}
-
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void testConvertCustomOrderToJobError(){
-		try {
-			line.convertCustomOrderToJob(null);
-		} catch (UnmodifiableException e) {}
 	}
 
 	@Test
@@ -207,15 +209,16 @@ public class AssemblyLineTest{
 	public void getBlockingWorkenchesTest(){
 		Action action1 = new Action("paint");
 		action1.setCompleted(false);
-		Task task1 = new Task("task pait");
+		Task task1 = new Task("Color");
 		task1.addAction(action1);
 		ArrayList<ITask> list = new ArrayList<ITask>();
 		list.add(task1);
-		try {
-			line.getWorkbenches().get(0).setCurrentTasks(list);
-		} catch (UnmodifiableException e) {		}
-		assertTrue(line.getBlockingWorkBenches().contains(1));
-		assertTrue(line.getBlockingWorkBenches().size()==1);
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		job.setTasks(list);
+		line.getWorkbenches().get(0).setCurrentJob(Optional.fromNullable(job));
+		line.getWorkbenches().get(0).chooseTasksOutOfJob();
+		assertEquals(1, line.getBlockingWorkBenches().size());
 	}
 
 	@Test
@@ -223,15 +226,25 @@ public class AssemblyLineTest{
 		AssemblyLineObserver observer = new AssemblyLineObserver();
 		line.attachObserver(observer);
 		ClockObserver clockObserver = new ClockObserver();
-		Logger logger = new Logger(2, clockObserver, observer);
+		Logger logger = new Logger(2);
+		clockObserver.attachLogger(logger);
+		observer.attachLogger(logger);
 		ImmutableClock clock = new ImmutableClock(0,240);
-		StandardOrder order = new StandardOrder("Luigi", this.model, 10, clock);
-		try {
-			int minutes = line.convertStandardOrderToJob(order);
-			order.setEstimatedTime(clock.getImmutableClockPlusExtraMinutes(minutes));
-		} catch (UnmodifiableException e) {}
+		StandardOrder order = new StandardOrder("Luigi", this.model, 3, clock);
+		StandardOrder order1 = new StandardOrder("Mario", this.model, 10, clock);
+		
+		for(int i=0; i<3; i++){
+			IJob job = new Job(order);
+			for (VehicleOption part : order.getVehicleOptions()) {
+				ITask task = new Task(part.getTaskDescription());
+				IAction action = new Action(part.getActionDescription());
+				task.addAction(action);
+				job.addTask(task);
+			}
+			
+			line.getCurrentScheduler().addJobToAlgorithm(job);
+		}
 		line.advance();
-
 		for(IWorkBench bench : line.getWorkbenches()){
 			for(ITask task : bench.getCurrentTasks()){
 				for(IAction action: task.getActions()){
@@ -271,45 +284,22 @@ public class AssemblyLineTest{
 	public void advanceTestFail(){
 		Action action1 = new Action("paint");
 		action1.setCompleted(false);
-		Task task1 = new Task("task paint");
+		Task task1 = new Task("Color");
 		task1.addAction(action1);
 		ArrayList<ITask> list = new ArrayList<ITask>();
 		list.add(task1);
-		try {
-			line.getWorkbenches().get(0).setCurrentTasks(list);
-			line.advance();
-		} catch (UnmodifiableException e) {}
-		catch (NoSuitableJobFoundException e) {}
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		job.setTasks(list);
+		line.getWorkbenches().get(0).setCurrentJob(Optional.fromNullable(job));
+		line.getWorkbenches().get(0).chooseTasksOutOfJob();
+		line.advance();
 	}
-	
-	@Test
-	public void switchToFifoTest() throws NotImplementedException{
-		line.switchToFifo();
-	}
-	
-	@Test
-	public void switchToBatchTest() throws NotImplementedException{
-		List<VehicleOption> list = new ArrayList<VehicleOption>();
-		list.add(new VehicleOption("break", VehicleOptionCategory.BODY));
-		line.switchToBatch(list);
-	}
-
 	@Test
 	public void TestToString(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), "test");
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), WorkbenchType.ACCESSORIES);
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
-		assertEquals("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories,-workbench 4: test", line.toString());
-		StandardOrder order = new StandardOrder("Stef", model, 1, new ImmutableClock(0,240));
-		IJob job = new Job(order);
-		ITask task = new Task("Paint");
-		IAction action = new Action("Paint car blue");
-		((Task) task).addAction(action);
-		((Job) job).addTask(task);
-		bench1.setCurrentJob(Optional.fromNullable(job));
-		bench1.chooseTasksOutOfJob();
-		assertEquals("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories,-workbench 4: test,  *Paint: not completed", line.toString());
-		((Action) action).setCompleted(true);
-		assertEquals("-workbench 1: car body,-workbench 2: drivetrain,-workbench 3: accessories,-workbench 4: test,  *Paint: completed", line.toString());
+		assertEquals("Responsibilities: model C, model B, model", line.toString());
 	}
 }

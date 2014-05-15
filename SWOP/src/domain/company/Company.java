@@ -2,10 +2,9 @@ package domain.company;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import com.google.common.collect.ImmutableList;
 
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
@@ -146,7 +145,7 @@ public class Company {
 	 * Get the AccessRights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
-		return ImmutableList.copyOf(this.userbook.getCurrentUser().getAccessRights());
+		return Collections.unmodifiableList(this.userbook.getCurrentUser().getAccessRights());
 	}
 
 	/**
@@ -181,7 +180,7 @@ public class Company {
 	}
 
 	public List<IAssemblyLine> getAssemblyLines() {
-		return workloadDivider.getAssemblyLines();
+		return Collections.unmodifiableList(workloadDivider.getAssemblyLines());
 	}
 
 	/**
@@ -191,7 +190,7 @@ public class Company {
 	 */
 	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
 		// workloadDivider returnt een lijst van UnmodifiableWorkbenches
-		return workloadDivider.getBlockingWorkBenches(assemblyLine);
+		return Collections.unmodifiableList(workloadDivider.getBlockingWorkBenches(assemblyLine));
 	}
 
 	public VehicleSpecification getVehicleSpecification(String specificationName) {
@@ -199,7 +198,7 @@ public class Company {
 	}
 
 	public Set<String> getVehicleSpecifications() {
-		return partpicker.getVehicleSpecifications();
+		return Collections.unmodifiableSet(partpicker.getVehicleSpecifications());
 	}
 
 	public String getCurrentUser() {
@@ -207,23 +206,23 @@ public class Company {
 	}
 
 	public Collection<IOrder> getCompletedOrders(String name) {
-		return orderbook.getCompletedOrders().get(name);
+		return Collections.unmodifiableCollection(orderbook.getCompletedOrders().get(name));
 	}
 
 	public Set<String> getCustomTasksDescription() {
-		return customCatalogue.getCatalogue().keySet();
+		return Collections.unmodifiableSet(customCatalogue.getCatalogue().keySet());
 	}
 
 	public List<VehicleOption> getStillAvailableCarParts(VehicleOptionCategory type) {
-		return partpicker.getStillAvailableCarParts(type);
+		return Collections.unmodifiableList(partpicker.getStillAvailableCarParts(type));
 	}
 
 	public Collection<IOrder> getPendingOrders(String name) {
-		return orderbook.getPendingOrders().get(name);
+		return Collections.unmodifiableCollection(orderbook.getPendingOrders().get(name));
 	}
 
 	public Collection<CustomVehicle> getSpecificCustomTasks(String taskDescription) {
-		return customCatalogue.getCatalogue().get(taskDescription);
+		return Collections.unmodifiableCollection(customCatalogue.getCatalogue().get(taskDescription));
 	}
 
 	public int getAverageDays() {
@@ -242,7 +241,7 @@ public class Company {
 				detailedList.add(0);
 			}
 		}
-		return detailedList;
+		return Collections.unmodifiableList(detailedList);
 	}
 
 	public int getAverageDelays(){
@@ -261,7 +260,7 @@ public class Company {
 				detailedList.add(new Delay(new ImmutableClock(0,0), new ImmutableClock(0,0)));
 			}
 		}
-		return detailedList;
+		return Collections.unmodifiableList(detailedList);
 	}
 	
 	public ImmutableClock getUnmodifiableClock() {
@@ -285,7 +284,7 @@ public class Company {
 	}
 
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
-		return this.workloadDivider.getAllCarOptionsInPendingOrders();
+		return Collections.unmodifiableSet(this.workloadDivider.getAllCarOptionsInPendingOrders());
 	}
 
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {

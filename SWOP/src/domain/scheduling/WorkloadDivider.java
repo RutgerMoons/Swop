@@ -1,11 +1,11 @@
 package domain.scheduling;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 
 import domain.assembly.assemblyLine.AssemblyLine;
@@ -60,46 +60,46 @@ public class WorkloadDivider implements ObservesOrderBook {
 	public List<IAssemblyLine> getAssemblyLines() {
 		ArrayList<IAssemblyLine> assemblyLines = new ArrayList<>();
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
-			assemblyLines.add(new UnmodifiableAssemblyLine(assemblyLine));
+			assemblyLines.add(assemblyLine);
 		}
-		return assemblyLines;
+		return Collections.unmodifiableList(assemblyLines);
 	}
 
-	private ArrayList<AssemblyLine> getAssemblyLines(AssemblyLineState state) {
+	private List<AssemblyLine> getAssemblyLines(AssemblyLineState state) {
 		ArrayList<AssemblyLine> operational = new ArrayList<>();
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
 			if (assemblyLine.getState() == state) {
 				operational.add(assemblyLine);
 			}
 		}
-		return operational;
+		return Collections.unmodifiableList(operational);
 	}
 
 	public List<IAssemblyLine> getOperationalUnmodifiableAssemblyLines() {
-		ArrayList<AssemblyLine> operational = getAssemblyLines(AssemblyLineState.OPERATIONAL);
+		List<AssemblyLine> operational = getAssemblyLines(AssemblyLineState.OPERATIONAL);
 		ArrayList<IAssemblyLine> unmodifiable = new ArrayList<>();
 		for (AssemblyLine assemblyLine : operational) {
 			unmodifiable.add(new UnmodifiableAssemblyLine(assemblyLine));
 		}
-		return unmodifiable;
+		return Collections.unmodifiableList(unmodifiable);
 	}
 
 	public List<IAssemblyLine> getMaintenanceUnmodifiableAssemblyLines() {
-		ArrayList<AssemblyLine> maintenance = getAssemblyLines(AssemblyLineState.MAINTENANCE);
+		List<AssemblyLine> maintenance = getAssemblyLines(AssemblyLineState.MAINTENANCE);
 		ArrayList<IAssemblyLine> unmodifiable = new ArrayList<>();
 		for (AssemblyLine assemblyLine : maintenance) {
 			unmodifiable.add(new UnmodifiableAssemblyLine(assemblyLine));
 		}
-		return unmodifiable;
+		return Collections.unmodifiableList(unmodifiable);
 	}
 
 	public List<IAssemblyLine> getBrokenUnmodifiableAssemblyLines() {
-		ArrayList<AssemblyLine> broken = getAssemblyLines(AssemblyLineState.BROKEN);
+		List<AssemblyLine> broken = getAssemblyLines(AssemblyLineState.BROKEN);
 		ArrayList<IAssemblyLine> unmodifiable = new ArrayList<>();
 		for (AssemblyLine assemblyLine : broken) {
 			unmodifiable.add(new UnmodifiableAssemblyLine(assemblyLine));
 		}
-		return unmodifiable;
+		return Collections.unmodifiableList(unmodifiable);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class WorkloadDivider implements ObservesOrderBook {
 			}
 			jobs.add(job);
 		}
-		return new ImmutableList.Builder<IJob>().addAll(jobs).build();
+		return Collections.unmodifiableList(jobs);
 	}
 
 	/**
@@ -156,12 +156,11 @@ public class WorkloadDivider implements ObservesOrderBook {
 		//3: kies assemblyLine met laagste workload
 		//4: schedule de job bij die assemblyLine
 		//assemblyLine.schedule(job)
-
+		//5: kijken of de assemblyline stilstaat (can advancen)
 		AssemblyLine scheduleHere = null;
 		for(AssemblyLine line: assemblyLines){
 			//Checken: Operational && kan job verwerken.
-			if(line.getState().equals(AssemblyLineState.OPERATIONAL) 
-					&& line.getResponsibilities().contains(job.getVehicleSpecification())){
+			if(line.getState().equals(AssemblyLineState.OPERATIONAL) && job.canBeHandled(line.getResponsibilities()) ){
 				//kijken naar workload
 				if(scheduleHere!=null && scheduleHere.getCurrentJobs().size()<line.getCurrentJobs().size()){
 					scheduleHere = line;
@@ -172,6 +171,9 @@ public class WorkloadDivider implements ObservesOrderBook {
 		}
 		if(scheduleHere!=null){
 			scheduleHere.schedule(job);
+			if(scheduleHere.canAdvance()){
+				scheduleHere.advance();
+			}
 		}
 	}
 
@@ -238,11 +240,21 @@ public class WorkloadDivider implements ObservesOrderBook {
 				toReturn.add(subset);
 			}
 		}
-		return toReturn;
+		return Collections.unmodifiableSet(toReturn);
 	}
 
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
-		assemblyLine.setState(state);
+		for(AssemblyLine line: assemblyLines){
+			if(assemblyLine.equals(line)){
+				line.setState(state);
+				if(!line.getState().equals(AssemblyLineState.OPERATIONAL)){
+					List<IJob> jobs = line.removeUnscheduledJobs();
+					for(IJob job: jobs){
+						divide(job);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -253,10 +265,10 @@ public class WorkloadDivider implements ObservesOrderBook {
 	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
 		for (AssemblyLine line : this.assemblyLines) {
 			if (line.equals(assemblyLine)) {
-				return line.getBlockingWorkBenches();
+				return Collections.unmodifiableList(line.getBlockingWorkBenches());
 			}
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 }

@@ -1,7 +1,9 @@
 package domain.order;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
@@ -109,7 +111,7 @@ public class UnmodifiableOrder implements IOrder {
 	
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
-		return this.order.getVehicleOptions();
+		return Collections.unmodifiableCollection(this.order.getVehicleOptions());
 	}
 
 	@Override
@@ -119,11 +121,16 @@ public class UnmodifiableOrder implements IOrder {
 	
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return this.order.getTimeAtWorkBench();
+		return Collections.unmodifiableMap(this.order.getTimeAtWorkBench());
 	}
 
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		return order.getVehicleSpecification();
+	}
+
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return order.canBeHandled(responsibilities);
 	}
 }

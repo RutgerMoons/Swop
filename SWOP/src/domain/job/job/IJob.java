@@ -3,6 +3,7 @@ package domain.job.job;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.UnmodifiableException;
@@ -50,7 +51,7 @@ public interface IJob {
 	 * @throws 	IllegalArgumentException
 	 *             If tasks==null
 	 */
-	public void setTasks(List<ITask> tasks) throws UnmodifiableException;
+	public void setTasks(List<ITask> tasks);
 
 	/**
 	 * Add a new task to the Job
@@ -61,7 +62,7 @@ public interface IJob {
 	 * @throws IllegalArgumentException
 	 *             If task==null
 	 */
-	public void addTask(ITask task) throws UnmodifiableException;
+	public void addTask(ITask task);
 
 	/**
 	 * Check if the Job(Car) is completed
@@ -75,7 +76,7 @@ public interface IJob {
 	 * The given index represents the first WorkBench at which some Tasks of this Job need to be
 	 * completed.
 	 */
-	public void setMinimalIndex(int index) throws UnmodifiableException;
+	public void setMinimalIndex(int index);
 
 	/**
 	 * @return 	An integer that represents the index of the first workbench 
@@ -104,6 +105,14 @@ public interface IJob {
 	 * Get the specification of the vehicle from the order
 	 */
 	public VehicleSpecification getVehicleSpecification();
+
+	/**
+	 * Check if the job can be handled by the responsibilities
+	 * 
+	 * @param 	responsibilities
+	 * 				The responsibilities of the assemblyline
+	 */
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 	
 
 }

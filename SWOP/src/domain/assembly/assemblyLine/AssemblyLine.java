@@ -1,11 +1,11 @@
 package domain.assembly.assemblyLine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
@@ -113,7 +113,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 				return false;
 		return true;
 	}
-	
+
 	/**
 	 * This method first sets the index of the first workbench that has to complete some tasks
 	 * of the job. Then the job is passed to the scheduler.
@@ -130,8 +130,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 		}
 		job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
 		this.scheduler.addJobToAlgorithm(job);
-		
-		
+
+
 	}
 
 	/**
@@ -151,13 +151,13 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 
 	//TODO doc
 	@Override
-	public ArrayList<IWorkBench> getBlockingWorkBenches() {
+	public List<IWorkBench> getBlockingWorkBenches() {
 		ArrayList<IWorkBench> notCompletedBenches = new ArrayList<>();
 		List<IWorkBench> workBenches = getWorkbenches();
 		for (int i = 0; i < workBenches.size(); i++)
 			if (!workBenches.get(i).isCompleted())
 				notCompletedBenches.add(new UnmodifiableWorkBench(this.workbenches.get(i)));
-		return notCompletedBenches;
+		return Collections.unmodifiableList(notCompletedBenches);
 	}
 
 	/**
@@ -165,9 +165,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 */
 	@Override
 	public List<IJob> getCurrentJobs() {
-		return new ImmutableList.Builder<IJob>().addAll(currentJobs).build();
+		return Collections.unmodifiableList(currentJobs);
 	}
-	
+
 	/**
 	 * Returns the current scheduler used by the AssemblyLine;
 	 */
@@ -175,7 +175,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	public Scheduler getCurrentScheduler() {
 		return this.scheduler;
 	}
-	
+
 	/**
 	 * TODO
 	 * @return
@@ -191,7 +191,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	 */
 	@Override
 	public List<IWorkBench> getWorkbenches() {
-		return workbenches;
+		return Collections.unmodifiableList(workbenches);
 	}
 
 
@@ -199,26 +199,13 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	//TODO change to string
 	@Override
 	public String toString() {
-		String assemblyLineString = "";
-		IWorkBench workbench;
-		String completed;
-		for (int i = 0; i < this.getWorkbenches().size(); i++) {
-			workbench = this.getWorkbenches().get(i);
-			assemblyLineString += "," + "-workbench " + (i + 1) + ": "
-					+ this.getWorkbenches().get(i).getWorkbenchType();
-			for (int j = 0; j < workbench.getCurrentTasks().size(); j++) {
-				if (workbench.getCurrentTasks().get(j).isCompleted()) {
-					completed = "completed";
-				} else {
-					completed = "not completed";
-				}
-				assemblyLineString += ","
-						+ "  *"
-						+ workbench.getCurrentTasks().get(j)
-						.getTaskDescription() + ": " + completed;
-			}
+		String result = "Responsibilities: ";
+		for(VehicleSpecification specification: getResponsibilities()){
+			result += ", " + specification.getDescription();
 		}
-		return assemblyLineString.replaceFirst(",", "");
+		
+		
+		return result.replaceFirst(", ", "");
 	}
 
 	@Override
@@ -243,10 +230,10 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 			observer.updateCompletedOrder(order);
 		}
 	}
-	
+
 	@Override
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
-		return this.scheduler.getAllCarOptionsInPendingOrders();
+		return Collections.unmodifiableSet(this.scheduler.getAllCarOptionsInPendingOrders());
 	}
 
 	/**
@@ -265,9 +252,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 	public AssemblyLineState getState() {
 		return assemblyLineState;
 	}
-	
-	//TODO: equals..
-	
+
 	/**
 	 * Matches the given workbench to one of its own. If a match is found, 
 	 * the request is passed on.
@@ -282,23 +267,83 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine {
 			}
 		}
 	}
-	
+
 	/**
 	 * returns a list containing all the pending standard jobs (no specific order)
 	 */
 	public List<IJob> getStandardJobs() {
-		return this.scheduler.getStandardJobs();
+		return Collections.unmodifiableList(this.scheduler.getStandardJobs());
 	}
 
 	@Override
 	public void setState(AssemblyLineState state) {
 		this.assemblyLineState = state;
-		
+
 	}
 
 	@Override
 	public Set<VehicleSpecification> getResponsibilities() {
-		return responsibilities;
+		return Collections.unmodifiableSet(responsibilities);
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((assemblyLineState == null) ? 0 : assemblyLineState
+						.hashCode());
+		result = prime * result
+				+ ((currentJobs == null) ? 0 : currentJobs.hashCode());
+		result = prime * result
+				+ ((observers == null) ? 0 : observers.hashCode());
+		result = prime
+				* result
+				+ ((responsibilities == null) ? 0 : responsibilities.hashCode());
+		result = prime * result
+				+ ((scheduler == null) ? 0 : scheduler.hashCode());
+		result = prime * result
+				+ ((workbenches == null) ? 0 : workbenches.hashCode());
+		return result;
+	}
+
+	//TODO symmetrische equals| is al symmetrisch normaal gezien :)
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		IAssemblyLine other = null;
+		try{
+			other = (IAssemblyLine) obj;
+		} catch (ClassCastException e){
+			return false;
+		}
+		if (assemblyLineState != other.getState())
+			return false;
+		if (currentJobs == null) {
+			if (other.getCurrentJobs() != null)
+				return false;
+		} else if (!currentJobs.equals(other.getCurrentJobs()))
+			return false;
+		if (responsibilities == null) {
+			if (other.getResponsibilities() != null)
+				return false;
+		} else if (!responsibilities.equals(other.getResponsibilities()))
+			return false;
+		if (workbenches == null) {
+			if (other.getWorkbenches() != null)
+				return false;
+		} else if (!workbenches.equals(other.getWorkbenches()))
+			return false;
+		return true;
+	}
+
+	public List<IJob> removeUnscheduledJobs() {
+		return Collections.unmodifiableList(scheduler.removeUnscheduledJobs());
+	}
+
+
 }

@@ -2,17 +2,16 @@ package domain.vehicle.vehicle;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
-import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
-import domain.exception.NotImplementedException;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Create an Immutable CarModel, only the getters are accessible.
+ * Create an unmodifiable Vehicle, only the getters are accessible.
  *
  */
 public class UnmodifiableVehicle implements IVehicle {
@@ -20,10 +19,10 @@ public class UnmodifiableVehicle implements IVehicle {
 	private IVehicle model;
 	
 	/**
-	 * Create an Immutable CarModel.
+	 * Create an unmodifiable Vehicle.
 	 * 
 	 * @param model
-	 * 			The mutable CarModel.
+	 * 			The mutable Vehicle.
 	 */
 	public UnmodifiableVehicle(IVehicle model){
 		if(model==null)
@@ -50,7 +49,7 @@ public class UnmodifiableVehicle implements IVehicle {
 		return model.toString();
 	}
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException {
+	public void addCarPart(VehicleOption part){
 		throw new UnmodifiableException();
 		
 	}
@@ -59,8 +58,7 @@ public class UnmodifiableVehicle implements IVehicle {
 		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
 	}
 	@Override
-	public void addForcedOptionalType(VehicleOption type, boolean bool)
-			throws UnmodifiableException {
+	public void addForcedOptionalType(VehicleOption type, boolean bool){
 		throw new UnmodifiableException();
 	}
 	@Override
@@ -68,12 +66,15 @@ public class UnmodifiableVehicle implements IVehicle {
 		return model.getSpecification();
 	}
 	@Override
-	public void setSpecification(VehicleSpecification template)
-			throws UnmodifiableException {
+	public void setSpecification(VehicleSpecification template){
 		throw new UnmodifiableException();
 	}
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return model.getTimeAtWorkBench();
+		return Collections.unmodifiableMap(model.getTimeAtWorkBench());
+	}
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return model.canBeHandled(responsibilities);
 	}
 }

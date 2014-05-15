@@ -3,6 +3,7 @@ package domain.order;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.clock.ImmutableClock;
@@ -179,12 +180,12 @@ public class StandardOrder implements IOrder {
 	}
 
 	@Override
-	public ImmutableClock getDeadline() throws NotImplementedException {
+	public ImmutableClock getDeadline(){
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void setDeadline(ImmutableClock clock) throws NotImplementedException {
+	public void setDeadline(ImmutableClock clock){
 		throw new NotImplementedException();
 	}
 	
@@ -199,7 +200,7 @@ public class StandardOrder implements IOrder {
 
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
-		return this.getDescription().getVehicleOptions().values();
+		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
 	}
 
 	@Override
@@ -212,11 +213,16 @@ public class StandardOrder implements IOrder {
 	
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return this.getDescription().getTimeAtWorkBench();
+		return Collections.unmodifiableMap(this.getDescription().getTimeAtWorkBench());
 	}
 
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		return description.getSpecification();
+	}
+
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return description.canBeHandled(responsibilities);
 	}
 }

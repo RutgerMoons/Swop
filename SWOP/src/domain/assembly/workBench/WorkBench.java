@@ -1,6 +1,7 @@
 package domain.assembly.workBench;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -27,8 +28,10 @@ public class WorkBench implements IWorkBench {
 	 * @param 	responsibilities
 	 *            A list of strings. The types of Tasks that have to be
 	 *            performed by this WorkBench.
+	 * 
 	 * @param 	workbenchType
 	 *            A name for this workbench
+	 * 
 	 * @throws 	IllegalArgumentException
 	 *            Thrown when workbenchName==null or isEmpty -if responsibilities==null
 	 */
@@ -43,7 +46,7 @@ public class WorkBench implements IWorkBench {
 		setCurrentJob(nullJob);
 	}
 
-	
+
 	@Override
 	public WorkbenchType getWorkbenchType() {
 		return workbenchType;
@@ -62,10 +65,10 @@ public class WorkBench implements IWorkBench {
 		this.currentJob = optional;
 	}
 
-	
+
 	@Override
 	public Set<String> getResponsibilities() {
-		return responsibilities;
+		return Collections.unmodifiableSet(responsibilities);
 	}
 
 	/**
@@ -101,7 +104,7 @@ public class WorkBench implements IWorkBench {
 
 	@Override
 	public List<ITask> getCurrentTasks() {
-		return currentTasks;
+		return Collections.unmodifiableList(currentTasks);
 	}
 
 	/**
@@ -134,7 +137,7 @@ public class WorkBench implements IWorkBench {
 		setCurrentTasks(tasks);
 	}
 
-	
+
 	@Override
 	public boolean isCompleted() {
 		for (ITask task : getCurrentTasks())
@@ -147,7 +150,7 @@ public class WorkBench implements IWorkBench {
 	public String toString() {
 		return this.getWorkbenchType().toString();
 	}
-	
+
 	//TODO doc
 	@Override
 	public void completeChosenTaskAtChosenWorkBench(ITask task){
@@ -159,5 +162,55 @@ public class WorkBench implements IWorkBench {
 				break;
 			}
 		}
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((currentJob == null) ? 0 : currentJob.hashCode());
+		result = prime * result
+				+ ((currentTasks == null) ? 0 : currentTasks.hashCode());
+		result = prime
+				* result
+				+ ((responsibilities == null) ? 0 : responsibilities.hashCode());
+		result = prime * result
+				+ ((workbenchType == null) ? 0 : workbenchType.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		IWorkBench other = null;
+		try{
+			other = (IWorkBench) obj;
+		} catch (ClassCastException e){
+			return false;
+		}
+		if (currentJob == null) {
+			if (other.getCurrentJob() != null)
+				return false;
+		} else if (!currentJob.equals(other.getCurrentJob()))
+			return false;
+		if (currentTasks == null) {
+			if (other.getCurrentTasks() != null)
+				return false;
+		} else if (!currentTasks.equals(other.getCurrentTasks()))
+			return false;
+		if (responsibilities == null) {
+			if (other.getResponsibilities() != null)
+				return false;
+		} else if (!responsibilities.equals(other.getResponsibilities()))
+			return false;
+		if (workbenchType != other.getWorkbenchType())
+			return false;
+		return true;
 	}
 }

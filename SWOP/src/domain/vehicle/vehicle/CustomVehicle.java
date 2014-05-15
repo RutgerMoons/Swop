@@ -1,18 +1,21 @@
 package domain.vehicle.vehicle;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import domain.assembly.workBench.WorkbenchType;
 import domain.exception.AlreadyInMapException;
-import domain.exception.UnmodifiableException;
 import domain.exception.NotImplementedException;
+import domain.exception.UnmodifiableException;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Represents a set of CarOptions used in the creation of Single Task Orders by Custom Car Shop Managers.
+ * TODO doc
+ * Represents a set of VehicleOptions used in the creation of Single Task Orders by Custom Car Shop Managers.
  */
 public class CustomVehicle implements IVehicle {
 
@@ -29,7 +32,7 @@ public class CustomVehicle implements IVehicle {
 	
 	@Override
 	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions() {
-		return vehicleOptions;
+		return Collections.unmodifiableMap(vehicleOptions);
 	}
 
 	@Override
@@ -78,7 +81,12 @@ public class CustomVehicle implements IVehicle {
 
 	@Override
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
-		return timeAtWorkbench;
+		return Collections.unmodifiableMap(timeAtWorkbench);
+	}
+
+	@Override
+	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+		return true;
 	}
 }
 

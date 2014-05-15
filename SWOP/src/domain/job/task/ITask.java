@@ -26,7 +26,7 @@ public interface ITask {
 	 * @throws 	IllegalArgumentException
 	 *             	If actions==null
 	 */
-	public void setActions(List<IAction> actions) throws UnmodifiableException;
+	public void setActions(List<IAction> actions);
 	
 	/**
 	 * Add an Action to this Task
@@ -37,7 +37,7 @@ public interface ITask {
 	 * @throws 	IllegalArgumentException
 	 *             	If action==null
 	 */
-	public void addAction(IAction action) throws UnmodifiableException;
+	public void addAction(IAction action);
 	
 	/**
 	 * Checks if the Task is completed
@@ -61,5 +61,5 @@ public interface ITask {
 	 * @throws 	IllegalArgumentException
 	 *             	If taskDescription==null or isEmpty
 	 */
-	public void setTaskDescription(String taskDescription) throws UnmodifiableException;
+	public void setTaskDescription(String taskDescription);
 }

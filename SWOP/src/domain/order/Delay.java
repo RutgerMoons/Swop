@@ -4,6 +4,7 @@ import domain.clock.ImmutableClock;
 
 /**
  * Object with attributes to calculate and represent the delay of an order.
+ * TODO doc
  */
 public class Delay {
 	
