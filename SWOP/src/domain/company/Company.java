@@ -287,11 +287,12 @@ public class Company {
 		return Collections.unmodifiableSet(this.workloadDivider.getAllCarOptionsInPendingOrders());
 	}
 
-	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state) {
+	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state, ImmutableClock clock) {
+		this.clock.advanceTime(clock.getTotalInMinutes());
 		if(state.equals(AssemblyLineState.MAINTENANCE)){
 			ClockObserver observer = new ClockObserver();
-			clock.attachObserver(observer);
-			workloadDivider.changeState(assemblyLine, state, observer, clock.getImmutableClock());
+			this.clock.attachObserver(observer);
+			workloadDivider.changeState(assemblyLine, state, observer, this.clock.getImmutableClock());
 		} else {
 			workloadDivider.changeState(assemblyLine, state);
 		}
