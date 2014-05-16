@@ -188,13 +188,8 @@ public class VehicleTest {
 
 		model.addVehicleOption(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 
-<<<<<<< HEAD
 		model.addVehicleOption(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
-		int time = model.getTimeAtWorkBench().get(WorkbenchType.BODY);
-=======
-		model.addCarPart(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
 		int time = model.getTimeAtWorkBench().get(WorkBenchType.BODY);
->>>>>>> 0fbc9f8f29bcd199f2bc75d53ce8160004a0229f
 		assertEquals(50, time);
 	}
 }

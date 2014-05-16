@@ -1,9 +1,9 @@
 package domain.vehicle.vehicleOption;
 
-
 /**
  * A class representing a part of a vehicle, that can be added to an IVehicle.
- * It consists of a small description of what it is and which VehicleOptionCategory it belongs to.
+ * It consists of a small description of what it is and which
+ * VehicleOptionCategory it belongs to.
  */
 public class VehicleOption {
 
@@ -13,14 +13,15 @@ public class VehicleOption {
 	/**
 	 * Create a new VehicleOption.
 	 * 
-	 * @param 	description
-	 * 			A small description of what the VehicleOption is
+	 * @param description
+	 *            A small description of what the VehicleOption is
 	 * 
-	 * @param 	type
-	 * 			The type the VehicleOption has to belong to
+	 * @param type
+	 *            The type the VehicleOption has to belong to
 	 * 
-	 * @throws	IllegalArgumentException
-	 * 			Thrown when the parameters are null or the description is empty
+	 * @throws IllegalArgumentException
+	 *             Thrown when the parameters are null or the description is
+	 *             empty
 	 * 
 	 */
 	public VehicleOption(String description, VehicleOptionCategory type) {
@@ -51,26 +52,28 @@ public class VehicleOption {
 	}
 
 	/**
-	 * Get the description of the task that has to be completed for this VehicleOption on the WorkBenches.
+	 * Get the description of the task that has to be completed for this
+	 * VehicleOption on the WorkBenches.
 	 */
 	public String getTaskDescription() {
 		return this.getType().toString();
 	}
-	
+
 	/**
-	 * Get the description of the action that has to be completed for this VehicleOption on the WorkBenches.
+	 * Get the description of the action that has to be completed for this
+	 * VehicleOption on the WorkBenches.
 	 */
 	public String getActionDescription() {
-		return "Put on " + this.getDescription() + " " + this.getType().toString().toLowerCase();
+		return "Put on " + this.getDescription() + " "
+				+ this.getType().toString().toLowerCase();
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + description.hashCode();
+		result = prime * result + type.hashCode();
 		return result;
 	}
 
@@ -83,10 +86,7 @@ public class VehicleOption {
 		if (getClass() != obj.getClass())
 			return false;
 		VehicleOption other = (VehicleOption) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
+		if (!description.equals(other.description))
 			return false;
 		if (type != other.type)
 			return false;
