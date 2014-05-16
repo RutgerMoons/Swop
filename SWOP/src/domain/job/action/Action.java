@@ -1,7 +1,7 @@
 package domain.job.action;
 
 /**
- * This class represents an Action that is available for the workers.
+ * A class represents an Action that is available for the workers.
  * Action is an implementation of IAction.
  */
 public class Action implements IAction {

@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import domain.job.job.IJob;
 /**
- * Class representing an comparator used to compare two IJobs on their time of ordering.  
+ * A class representing an comparator used to compare two IJobs on their time of ordering.  
  */
 public class JobComparatorOrderTime implements Comparator<IJob> {
 

@@ -3,7 +3,7 @@ package domain.job.action;
 import domain.exception.UnmodifiableException;
 
 /**
- * Class representing an unmodifiable Action. It implements an Action
+ * A class representing an unmodifiable Action. It implements an Action
  * where only the getters are accessible.
  */
 public class UnmodifiableAction implements IAction {
