@@ -1,5 +1,7 @@
 package domain.assembly.assemblyLine;
-//TODO doc
+/**
+ * A class representing the state of an AssemblyLine. The state of an AssemblyLine can be operational, broken or maintenance.
+ */
 public enum AssemblyLineState {
 
 	OPERATIONAL {

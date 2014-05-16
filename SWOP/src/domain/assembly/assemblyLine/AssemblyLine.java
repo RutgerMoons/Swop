@@ -26,9 +26,8 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Represents an AssemblyLine. It contains the workbenches and the current jobs on these workbenches.
- * It notifies the attached observers when an order is completed. Each assemblyLine has a scheduler.
- * 
+ * A class representing an assembly line. It contains the workbenches and the current jobs on these workbenches.
+ * It notifies the attached observers when an order is completed. Each AssemblyLine has a scheduler.
  */
 public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, ObservableAssemblyLineState {
 
@@ -40,10 +39,10 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	private Set<VehicleSpecification> responsibilities;
 	private List<AssemblyLineStateObserver> assemblyLineStateObservers;
 	/**
-	 * Construct a new AssemblyLine. Initializes a scheduler and an amount of workbenches.
+	 * Construct a new AssemblyLine. Initializes a scheduler.
 	 * 
 	 * @param 	clock
-	 *            The clock that has to be accessed by this AssemblyLine
+	 *          The clock that has to be accessed by this AssemblyLine
 	 *            
 	 * @throws 	IllegalArgumentException
 	 *             Thrown when one or both of the parameters are null
@@ -65,9 +64,10 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	 * Add a workbench to the assemblyLine.
 	 * 
 	 * @param 	bench
-	 *            The workbench you want to add
+	 *          The workbench you want to add
+	 *          
 	 * @throws 	IllegalArgumentException
-	 *             Thrown when the parameter is null
+	 *          Thrown when the parameter is null
 	 */
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
@@ -81,7 +81,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	 * It notifies its observers when an order is completed.
 	 * 
 	 * @throws 	NoSuitableJobFoundException
-	 * 				Thrown when no job can be scheduled by the scheduler
+	 * 			Thrown when no job can be scheduled by the scheduler
 	 */
 	public void advance() throws NoSuitableJobFoundException {
 		if (!canAdvance()) {
@@ -108,7 +108,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		}
 	}
 
-	//TODO Doc
 	@Override
 	public boolean canAdvance() {
 		List<IWorkBench> workBenches = getWorkbenches();
@@ -123,10 +122,10 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	 * of the job. Then the job is passed to the scheduler.
 	 * 
 	 * @param	job 
-	 * 				The job that needs to be scheduled
+	 * 			The job that needs to be scheduled
 	 * 
 	 * @throws	IllegalArgumentException 
-	 * 				Thrown when the given parameter is null
+	 * 			Thrown when the given parameter is null
 	 */
 	public void schedule(IJob job) {
 		if (job == null) {
@@ -153,7 +152,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		return -1;
 	}
 
-	//TODO doc
 	@Override
 	public List<IWorkBench> getBlockingWorkBenches() {
 		ArrayList<IWorkBench> notCompletedBenches = new ArrayList<>();
@@ -165,7 +163,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * Returns an Immutable list of the current jobs on the assemblyLine
+	 * Returns an unmodifiable list of the current Jobs on the AssemblyLine.
 	 */
 	@Override
 	public List<IJob> getCurrentJobs() {
@@ -173,16 +171,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * Returns the current scheduler used by the AssemblyLine;
-	 */
-	@Override
-	public Scheduler getCurrentScheduler() {
-		return this.scheduler;
-	}
-
-	/**
-	 * TODO
-	 * @return
+	 * Returns the current Scheduling Algorithm used by the Scheduler used by this AssemblyLine.
 	 */
 	public String getCurrentSchedulingAlgorithm() {
 		return this.scheduler.getCurrentSchedulingAlgorithm();
@@ -191,16 +180,13 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
 	 * 
-	 * @return A list of IWorkBenches.
+	 * @return An unmodifiable list of IWorkBenches.
 	 */
 	@Override
 	public List<IWorkBench> getWorkbenches() {
 		return Collections.unmodifiableList(workbenches);
 	}
 
-
-
-	//TODO change to string
 	@Override
 	public String toString() {
 		String result = "Responsibilities: ";
@@ -241,7 +227,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * Method for asking the scheduler to switch to the algorithm the given creator can create.
+	 * Method for asking the Scheduler to switch to the algorithm the given creator can create.
 	 * 
 	 * @param	creator is responsible for creating the correct SchedulingAlgorithm
 	 */
@@ -259,7 +245,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * Method for returning the current state of the assemblyLine.
+	 * Method for returning the current state of the AssemblyLine.
 	 */
 	@Override
 	public AssemblyLineState getState() {
@@ -282,7 +268,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * returns a list containing all the pending standard jobs (no specific order)
+	 * Returns an unmodifiable list containing all the pending StandardJobs.
 	 */
 	public List<IJob> getStandardJobs() {
 		return Collections.unmodifiableList(this.scheduler.getStandardJobs());
@@ -322,7 +308,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		return result;
 	}
 
-	//TODO symmetrische equals| is al symmetrisch normaal gezien :)
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
