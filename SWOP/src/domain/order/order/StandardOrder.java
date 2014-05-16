@@ -21,7 +21,9 @@ import domain.vehicle.vehicleOption.VehicleOption;
  * of an order. Each order also has an estimated time. This is an estimation of
  * when the order will be completed. This time is expressed in days and minutes.
  * 
- * TODO doc
+ * A class representing an order of a Vehicle.
+ * It consists of a Vehicle, the garage holder who ordered the Vehicle, a quantity,
+ * the time when you ordered it and the estimated time of completion.
  */
 public class StandardOrder implements IOrder {
 
@@ -32,8 +34,22 @@ public class StandardOrder implements IOrder {
 	private ImmutableClock orderTime;
 
 	/**
-	 * Constructor of an Order, given the name of the orderer, the type of
-	 * carModel and the amount of cars to be ordered.
+	 * Create a new Order.
+	 *  
+	 * @param 	holder
+	 * 			The garage holder that orders the Vehicles
+	 * 
+	 * @param 	description
+	 * 			The vehicle that has to be manufactured
+	 * 
+	 * @param 	quantity
+	 * 			How many Vehicles there have to be manufactured
+	 * 
+	 * @param 	orderTime
+	 * 			The time when this order is placed
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null, the holder is empty or the quantity is less than or equal to zero
 	 */
 	public StandardOrder(String holder, Vehicle description, int quantity, ImmutableClock orderTime) {
 		this.setDescription(description);
@@ -43,11 +59,8 @@ public class StandardOrder implements IOrder {
 		setOrderTime(orderTime);
 	}
 
-	/**
-	 * Assignes the given name to the name of the garageholder
-	 */
 	private void setGarageHolder(String holder) {
-		if (holder == null || holder.equals(" ")) {
+		if (holder == null || holder.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
 		this.garageholder = holder;
@@ -58,12 +71,6 @@ public class StandardOrder implements IOrder {
 		return this.garageholder;
 	}
 
-	/**
-	 * Changing the amount of pendingCars to the given amount. That's how other
-	 * classes may check if the order is completed or not. The method checks if
-	 * the given amount is lower than zero. If so an IllegalArgumentException is
-	 * thrown.
-	 */
 	private void setPendingCars(int quantity) {
 		if (quantity < 0) {
 			throw new IllegalArgumentException();
@@ -77,11 +84,6 @@ public class StandardOrder implements IOrder {
 		return this.pendingCars;
 	}
 
-	/**
-	 * Method for assigning the amount of cars ordered to the given amount. The
-	 * method checks if the given amount is lower than zero. If so an
-	 * IllegalArgumentException is thrown.
-	 */
 	private void setQuantity(int quantity) {
 		if (quantity <= 0) {
 			throw new IllegalArgumentException();
@@ -95,11 +97,6 @@ public class StandardOrder implements IOrder {
 		return this.quantity;
 	}
 
-	/**
-	 * Assigning the type/name of the ordered carModel to the given description.
-	 * The method throws an IllegalArgumentException is the given name equals
-	 * null.
-	 */
 	private void setDescription(IVehicle description2) {
 		if (description2 == null) {
 			throw new IllegalArgumentException();

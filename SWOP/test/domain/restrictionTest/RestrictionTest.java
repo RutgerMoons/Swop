@@ -68,7 +68,7 @@ public class RestrictionTest {
 	public void testContstructor(){
 		assertNotNull(picker.getBindingRestrictions());
 		assertNotNull(picker.getOptionalRestrictions());
-		assertNotNull(picker.getCatalogue());
+		assertNotNull(picker.getVehicleSpecificationCatalogue());
 	}
 
 	@Test
@@ -185,5 +185,10 @@ public class RestrictionTest {
 		assertNotNull(picker.getSpecification("model A"));
 		assertNotNull(picker.getVehicleSpecifications());
 		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetIllegalSpecification(){
+		picker.getSpecification(null);
 	}
 }

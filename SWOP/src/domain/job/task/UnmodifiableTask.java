@@ -60,4 +60,14 @@ public class UnmodifiableTask implements ITask{
 	public void setTaskDescription(String taskDescription) throws UnmodifiableException {
 		throw new UnmodifiableException();
 	}
+
+	@Override
+	public int hashCode() {
+		return task.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return task.equals(obj);
+	}
 }

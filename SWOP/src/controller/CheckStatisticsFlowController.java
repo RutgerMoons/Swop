@@ -9,19 +9,21 @@ import domain.order.Delay;
 import domain.users.AccessRight;
 
 /**
- * Defines the program flow for the 'Check production statistics' use case.
- *
+ *  A class representing the order of execution for the 'Check production statistics' use case.
  */
 public class CheckStatisticsFlowController extends UseCaseFlowController {
 
 	/**
 	 * Construct a new CheckStatisticsFlowController.
-	 * @param accessRight
-	 * 			The accessRight needed to perform this use case.
-	 * @param clientCommunication
-	 * 			The IClientCommunication this FlowController uses to communicate with the user.
-	 * @param facade
-	 * 			The Facade this Flowcontroller uses to access the domain logic.
+	 * 
+	 * @param 	accessRight
+	 * 			The AccessRight needed to perform this use case.
+	 * 
+	 * @param 	clientCommunication
+	 * 			The ClientCommunication this FlowController uses to communicate with the user.
+	 * 
+	 * @param 	facade
+	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic.
 	 */
 	public CheckStatisticsFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
@@ -48,5 +50,4 @@ public class CheckStatisticsFlowController extends UseCaseFlowController {
 		List<Delay> detailedDelays = facade.getDetailedDelays();
 		clientCommunication.showDetailedDelays(detailedDelays);
 	}
-
 }

@@ -10,19 +10,22 @@ import domain.users.AccessRight;
 import domain.vehicle.vehicle.IVehicle;
 
 /**
- * Defines the program flow for the 'Order single task' use case.
+ * A class representing the order of execution for the 'Order single task' use case.
  *
  */
 public class CustomOrderFlowController extends UseCaseFlowController {
 
 	/**
 	 * Construct a new CustomOrderFlowController.
-	 * @param accessRight
-	 * 			The accessRight needed to perform this use case.
-	 * @param clientCommunication
-	 * 			The IClientCommunication this FlowController uses to communicate with the user.
-	 * @param facade
-	 * 			The Facade this Flowcontroller uses to access the domain logic.
+	 * 
+	 * @param 	accessRight
+	 * 			The AccessRight needed to perform this use case
+	 * 
+	 * @param 	clientCommunication
+	 * 			The ClientCommunication this FlowController uses to communicate with the user
+	 * 
+	 * @param 	facade
+	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
 	 */
 	public CustomOrderFlowController(AccessRight accessRight,
 			ClientCommunication clientCommunication, Facade facade) {

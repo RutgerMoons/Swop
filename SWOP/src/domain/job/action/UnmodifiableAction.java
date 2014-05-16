@@ -48,4 +48,14 @@ public class UnmodifiableAction implements IAction {
 	public void setDescription(String description) throws UnmodifiableException {
 		throw new UnmodifiableException();
 	}
+
+	@Override
+	public int hashCode() {
+		return action.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return action.equals(obj);
+	}
 }

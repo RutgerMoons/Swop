@@ -9,11 +9,23 @@ import domain.facade.Facade;
 import domain.users.AccessRight;
 
 /**
- * Defines the program flow for the 'Change operational status' use case.
+ * A class representing the order of execution for the 'Change operational status' use case.
  */
 public class ChangeOperationalStatusFlowController extends
 UseCaseFlowController {
 
+	/**
+	 * Construct a new ChangeOperationalStatusFlowController.
+	 * 
+	 * @param 	accessRight
+	 * 			The AccessRight needed to perform this use case
+	 * 
+	 * @param 	clientCommunication
+	 * 			The ClientCommunication this FlowController uses to communicate with the user
+	 * 
+	 * @param 	facade
+	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
+	 */
 	public ChangeOperationalStatusFlowController(AccessRight accessRight,
 			ClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);

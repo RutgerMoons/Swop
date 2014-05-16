@@ -1,83 +1,76 @@
 package controller;
 
-import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
 import view.ClientCommunication;
 import domain.exception.RoleNotYetAssignedException;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
 
 /**
- * 
- * Defines the program flow associated with user-login.
- * In between login and logout it calls executes the proper UseCaseHandler, depending on which user has logged in.
- *
+ * A class representing the order of execution associated with logging a user in.
+ * In between login and logout it calls executes the proper UseCaseFlowControllers, depending on which user has logged in.
  */
 public class UserFlowController {
 	
 	private ArrayList<UseCaseFlowController> useCaseFlowControllers;
 	private Facade facade;
-	private ClientCommunication ClientCommunication;
+	private ClientCommunication clientCommunication;
 	
 	/**
 	 * Creates a new UserHandler.
-	 * @param iClientCommunication
-	 * 			The UIfacade this UserHandler has to use to communicate with the user.
-	 * @param userBook
-	 * 			The UserBook this Userhandler uses to complete the login-process.
-	 * @param useCaseFlowControllers
-	 * 			An ArrayList containing all the UseCaseHandlers.
-	 * @throws NullPointerException
-	 * 			if one of the given arguments is null.
+	 * 
+	 * @param 	clientCommunication
+	 * 			The ClientCommunication this FlowController uses to communicate with the user
+	 * 
+	 * @param 	useCaseFlowControllers
+	 * 			An ArrayList containing all the UseCaseFowControllers
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when one of the given arguments is null
 	 */
-	public UserFlowController(ClientCommunication iClientCommunication, Facade facade, ArrayList<UseCaseFlowController> useCaseFlowControllers) throws NullPointerException{
-		if(iClientCommunication == null || facade == null || useCaseFlowControllers == null) {
-			throw new NullPointerException();
+	public UserFlowController(ClientCommunication clientCommunication, Facade facade, ArrayList<UseCaseFlowController> useCaseFlowControllers){
+		if(clientCommunication == null || facade == null || useCaseFlowControllers == null) {
+			throw new IllegalArgumentException();
 		}
 			
-		this.ClientCommunication = iClientCommunication;
+		this.clientCommunication = clientCommunication;
 		this.facade = facade;
 		this.useCaseFlowControllers = useCaseFlowControllers;
 	}
 	
 	/**
-	 * Assign an existing user to the current user (identify the existing user by the name the user gives),
-	 * or create a new user with the given name and assign that user to the current user.
+	 * Login a user. Ask his name through clientCommunication and try to log him in. If this fails,
+	 * the method is going to create the new user.
 	 */
 	public void login() {
-		String name = this.ClientCommunication.getName();
+		String name = this.clientCommunication.getName();
 		try {		
 			facade.login(name);
 		} catch (RoleNotYetAssignedException r) {
-			String role = this.ClientCommunication.chooseRole();
+			String role = this.clientCommunication.chooseRole();
 			facade.createAndAddUser(name, role);
 			facade.login(name);
 		} catch (IllegalArgumentException i) {
-			ClientCommunication.invalidAnswerPrompt();
+			clientCommunication.invalidAnswerPrompt();
 			login();
 		}
 	}
 	
 	/**
-	 * Set the currentUser to null, indicating there is currently no user logged in.
+	 * Method for logging out.
 	 */
 	public void logout(){
-		ClientCommunication.logout();
+		clientCommunication.logout();
 		facade.logout();
 	}
 	
 	/**
-	 * Have the user execute the use case he has the authorization to execute. 
-	 * @throws UnmodifiableException 
-	 * @throws IllegalArgumentException 
-	 * @throws InvalidObjectException
-	 * 			If the user doesn't have authorization to execute any of the use cases.
+	 * Ask the user which one of his access rights it wants to use.
 	 */
-	public void performDuties() throws IllegalArgumentException, UnmodifiableException{
+	public void performDuties(){
 		List<AccessRight> accessRights = facade.getAccessRights();
 		UseCaseFlowController useCaseHandler = selectUseCaseFlowController(accessRights, useCaseFlowControllers);
 		
@@ -93,9 +86,8 @@ public class UserFlowController {
 		ArrayList<String> accessRightsAsStrings = new ArrayList<String>();
 		for (AccessRight a : accessRights) {
 			accessRightsAsStrings.add(a.toString());
-			//TODO eventueel niet een lijst van strings doorgeven maar in clientcommunication shizzle in string zetten
 		}
-		int index = ClientCommunication.getFlowControllerIndex(accessRightsAsStrings);
+		int index = clientCommunication.getFlowControllerIndex(accessRightsAsStrings);
 	
 		AccessRight accessRight = accessRights.get(index-1);
 		for(UseCaseFlowController flowController : flowControllers){
