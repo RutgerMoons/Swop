@@ -258,8 +258,8 @@ public class Company {
 	/**
 	 * Get a list of the completed Orders of the User that is currently logged in. 
 	 */
-	public Collection<IOrder> getCompletedOrders(String name) {
-		return Collections.unmodifiableCollection(orderbook.getCompletedOrders().get(name));
+	public List<IOrder> getCompletedOrders(String name) {
+		return Collections.unmodifiableList(new ArrayList<IOrder>(orderbook.getCompletedOrders().get(name)));
 	}
 
 	/**
@@ -282,8 +282,8 @@ public class Company {
 	/**
 	 * Get a list of pending Orders of the User that is currently logged in.
 	 */
-	public Collection<IOrder> getPendingOrders(String name) {
-		return Collections.unmodifiableCollection(orderbook.getPendingOrders().get(name));
+	public List<IOrder> getPendingOrders(String name) {
+		return Collections.unmodifiableList(new ArrayList<IOrder>(orderbook.getPendingOrders().get(name)));
 	}
 
 	public Collection<CustomVehicle> getSpecificCustomTasks(String taskDescription) {
@@ -357,7 +357,7 @@ public class Company {
 	 * Method that adds the given Order to the OrderBook.
 	 * 
 	 * @param 	order
-	 * 			Order that needs to be added to the OrderBook.s
+	 * 			Order that needs to be added to the OrderBook.
 	 */
 	public void addOrder(CustomOrder order) {
 		orderbook.addOrder(order, getUnmodifiableClock());
