@@ -13,14 +13,14 @@ import domain.order.order.IOrder;
 public class AssemblyLineObserver {
 
 	private ArrayList<ObservesAssemblyLine> loggers;
-	
+
 	/**
 	 * Creates a new AssemblyLineObserver and initializes it's internal data structures.
 	 */
 	public AssemblyLineObserver() {
 		this.loggers = new ArrayList<ObservesAssemblyLine>();
 	}
-	
+
 	/**
 	 * This logger will be added to the notify list and is subscribed for every notification.
 	 * 
@@ -33,7 +33,7 @@ public class AssemblyLineObserver {
 		}
 		loggers.add(logger);
 	}
-	
+
 	/**
 	 * This logger is no longer subscribed and will no longer be notified.
 	 * 
@@ -46,11 +46,17 @@ public class AssemblyLineObserver {
 		}
 		loggers.remove(logger);
 	}
-	
+
 	/**
 	 * Every subscribed object will be notified and receives the completed order.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the order is null
 	 */
 	public void updateCompletedOrder(IOrder order) {
+		if(order==null){
+			throw new IllegalArgumentException();
+		}
 		for (ObservesAssemblyLine logger : this.loggers) {
 			logger.updateCompletedOrder(order);
 		}

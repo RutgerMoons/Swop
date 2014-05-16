@@ -49,8 +49,14 @@ public class ClockObserver {
 	
 	/**
 	 * Every subscribed object will be notified and receives the current time.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when currentTime is null
 	 */
 	public void advanceTime(ImmutableClock currentTime) {
+		if(currentTime==null){
+			throw new IllegalArgumentException();
+		}
 		for (ObservesClock logger : loggers) {
 			logger.advanceTime(currentTime);
 		}
@@ -58,8 +64,14 @@ public class ClockObserver {
 
 	/**
 	 * Every subscribed object will be notified that a new day has started and receives the current time.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when newDay is null
 	 */
 	public void startNewDay(ImmutableClock newDay) {
+		if(newDay==null){
+			throw new IllegalArgumentException();
+		}
 		for (ObservesClock logger : loggers) {
 			logger.startNewDay(newDay);
 		}

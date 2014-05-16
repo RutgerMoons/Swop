@@ -57,5 +57,15 @@ public class ClockObserverTest {
 		assertEquals(new ImmutableClock(1, 0), logger.getCurrentTime());
 		assertNotNull(logger.getDetailedDays());
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void advanceIllegalTime(){
+		observer.advanceTime(null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void startIllegalDay(){
+		observer.startNewDay(null);
+	}
 
 }

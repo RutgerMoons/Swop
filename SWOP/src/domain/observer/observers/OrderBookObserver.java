@@ -44,8 +44,14 @@ public class OrderBookObserver {
 	
 	/**
 	 * Every subscribed object will be notified and receives the new Order.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the order is null
 	 */
 	public void notifyNewOrder(IOrder order) {
+		if(order==null){
+			throw new IllegalArgumentException();
+		}
 		for (ObservesOrderBook logger : loggers) {
 			logger.processNewOrder(order);
 		}

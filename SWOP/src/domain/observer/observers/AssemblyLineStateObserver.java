@@ -47,9 +47,15 @@ private ArrayList<ObservesAssemblyLineState> loggers;
 	}
 	
 	/**
-	 * Every subscribed object will be notified and receives the current and previous state of the AssemblyLine.
+	 * Every subscribed object will be notified ad receives the current and previous state of the AssemblyLine.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when one or both of the states is null
 	 */
 	public void updateAssemblyLineState(AssemblyLineState previousState, AssemblyLineState currentState) {
+		if(previousState==null || currentState==null){
+			throw new IllegalArgumentException();
+		}
 		for (ObservesAssemblyLineState logger : this.loggers) {
 			logger.updateAssemblylineState(previousState, currentState);
 		}
