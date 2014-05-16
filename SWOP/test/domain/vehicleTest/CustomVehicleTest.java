@@ -1,12 +1,17 @@
 package domain.vehicleTest;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
+import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -53,12 +58,49 @@ public class CustomVehicleTest {
 		model.addForcedOptionalType(new VehicleOption("sport", VehicleOptionCategory.BODY), false);
 	}
 	
+	@Test
 	public void testGetSpecification() {
 		assertEquals("custom", model.getVehicleSpecification().getDescription());
 	}
 	
+	@Test
+	public void testSetSpecification(){
+		VehicleSpecification specification = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		model.setVehicleSpecification(specification);
+	}
+	
 	@Test(expected=IllegalArgumentException.class)
-	public void testsetSpecification() {
+	public void testSetIllegalSpecification() {
 		model.setVehicleSpecification(null);
+	}
+	
+	@Test
+	public void testGetTimeAtWorkBench(){
+		assertTrue(model.getTimeAtWorkBench().containsValue(60));
+	}
+	
+	@Test
+	public void testEquals(){
+		assertEquals(model, model);
+		CustomVehicle vehicle = new CustomVehicle();
+		assertEquals(model, vehicle);
+		assertEquals(model.hashCode(), vehicle.hashCode());
+		assertNotEquals(model, VehicleOptionCategory.AIRCO);
+		
+		
+		CustomVehicle vehicle2 = new CustomVehicle();
+		VehicleSpecification specification = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		vehicle2.setVehicleSpecification(specification);
+		assertNotEquals(model, vehicle2);
+		assertNotEquals(model.hashCode(), vehicle2.hashCode());
+		
+		CustomVehicle vehicle3 = new CustomVehicle();
+		vehicle3.addVehicleOption(new VehicleOption("test", VehicleOptionCategory.AIRCO));
+		assertNotEquals(model, vehicle3);
+		assertNotEquals(model.hashCode(), vehicle3.hashCode());
+		
+		assertFalse(model.equals(null));
+		
+		
 	}
 }

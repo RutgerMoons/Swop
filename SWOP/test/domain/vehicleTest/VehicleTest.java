@@ -123,6 +123,10 @@ public class VehicleTest {
 		assertEquals(car1, car3);
 		assertEquals(car1.hashCode(), car3.hashCode());
 
+		car3.addForcedOptionalType(new VehicleOption("test", VehicleOptionCategory.AIRCO), true);
+		assertNotEquals(car1, car3);
+		
+		
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		VehicleSpecification template2 = new VehicleSpecification("modelb",
@@ -192,4 +196,17 @@ public class VehicleTest {
 		int time = model.getTimeAtWorkBench().get(WorkBenchType.BODY);
 		assertEquals(50, time);
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddIllegalForcedOptional(){
+		Vehicle model = new Vehicle(template);
+		model.addForcedOptionalType(null, false);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testSetIllegalVehicleSpecification(){
+		Vehicle model = new Vehicle(template);
+		model.setVehicleSpecification(null);
+	}
+	
 }

@@ -30,13 +30,13 @@ public class CustomVehicle implements IVehicle {
 		timeAtWorkbench = new HashMap<>();
 		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
 		for(WorkBenchType type: WorkBenchType.values()){
-			timeAtWorkBench.put(type, 60);
+			if(!type.equals(WorkBenchType.CARGO) && !type.equals(WorkBenchType.CERTIFICATION)){
+				timeAtWorkBench.put(type, 60);
+			}
 		}
+		this.timeAtWorkbench = timeAtWorkBench;
 		specification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench);
 
-		for(WorkBenchType type: WorkBenchType.values()){
-			timeAtWorkbench.put(type, 60);
-		}
 	}
 
 	@Override
@@ -101,11 +101,11 @@ public class CustomVehicle implements IVehicle {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((specification == null) ? 0 : specification.hashCode());
+				+ specification.hashCode();
 		result = prime * result
-				+ ((timeAtWorkbench == null) ? 0 : timeAtWorkbench.hashCode());
+				+ timeAtWorkbench.hashCode();
 		result = prime * result
-				+ ((vehicleOptions == null) ? 0 : vehicleOptions.hashCode());
+				+ vehicleOptions.hashCode();
 		return result;
 	}
 
@@ -121,20 +121,9 @@ public class CustomVehicle implements IVehicle {
 		} catch (ClassCastException e){
 			return false;
 		}
-		if (specification == null) {
-			if (other.getVehicleSpecification()!= null)
-				return false;
-		} else if (!specification.equals(other.getVehicleSpecification()))
+		if (!specification.equals(other.getVehicleSpecification()))
 			return false;
-		if (timeAtWorkbench == null) {
-			if (other.getTimeAtWorkBench() != null)
-				return false;
-		} else if (!timeAtWorkbench.equals(other.getTimeAtWorkBench()))
-			return false;
-		if (vehicleOptions == null) {
-			if (other.getVehicleOptions() != null)
-				return false;
-		} else if (!vehicleOptions.equals(other.getVehicleOptions()))
+		if(!vehicleOptions.equals(other.getVehicleOptions()))
 			return false;
 		return true;
 	}
