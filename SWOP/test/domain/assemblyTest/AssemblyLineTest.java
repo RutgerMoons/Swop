@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -23,9 +23,6 @@ import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
-import domain.exception.UnmodifiableException;
-import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
 import domain.job.action.Action;
 import domain.job.action.IAction;
 import domain.job.job.IJob;
@@ -35,12 +32,10 @@ import domain.job.task.Task;
 import domain.log.Logger;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
-import domain.order.order.CustomOrder;
 import domain.order.order.IOrder;
 import domain.order.order.StandardOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -57,7 +52,11 @@ public class AssemblyLineTest{
 
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
+		map.put(WorkBenchType.ACCESSORIES, 20);
+		map.put(WorkBenchType.BODY, 20);
+		map.put(WorkBenchType.DRIVETRAIN, 20);
+		VehicleSpecification template = new VehicleSpecification("model", parts, map);
 		VehicleSpecification template2 = new VehicleSpecification("model B", parts, new HashMap<WorkBenchType, Integer>());
 		VehicleSpecification template3 = new VehicleSpecification("model C", parts, new HashMap<WorkBenchType, Integer>());
 		Set<VehicleSpecification> specifications = new HashSet<VehicleSpecification>();
@@ -224,7 +223,7 @@ public class AssemblyLineTest{
 	}
 
 	@Test
-	public void advanceTest() throws UnmodifiableException, NoSuitableJobFoundException, NotImplementedException{
+	public void advanceTest() {
 		AssemblyLineObserver observer = new AssemblyLineObserver();
 		line.attachObserver(observer);
 		ClockObserver clockObserver = new ClockObserver();
@@ -233,7 +232,6 @@ public class AssemblyLineTest{
 		observer.attachLogger(logger);
 		ImmutableClock clock = new ImmutableClock(0,240);
 		StandardOrder order = new StandardOrder("Luigi", this.model, 3, clock);
-		StandardOrder order1 = new StandardOrder("Mario", this.model, 10, clock);
 		
 		for(int i=0; i<3; i++){
 			IJob job = new Job(order);
@@ -244,7 +242,7 @@ public class AssemblyLineTest{
 				job.addTask(task);
 			}
 			
-			line.getCurrentScheduler().addJobToAlgorithm(job);
+			line.schedule(job);
 		}
 		line.advance();
 		for(IWorkBench bench : line.getWorkbenches()){
