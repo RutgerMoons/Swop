@@ -2,27 +2,27 @@ package domain.job.action;
 
 
 /**
- * Interface for limiting access to standard Actions.
+ * An interface used to represent an Action. An Action consists of an description
+ * and a boolean for indicating if the Action is completed.
  */
 public interface IAction {
 	
 	/**
-	 * Check if the action is completed
+	 * Check if the action is completed.
 	 * 
 	 * @return 	True if action is fully completed. False if action is not fully
-	 *         	completed.
+	 *         	completed
 	 */
 	public boolean isCompleted();
 
 	/**
-	 * Set the completed state of this action.
+	 * Set the state of this action to the given parameter.
 	 * 
 	 * @param 	isCompleted
-	 *            If true, the action is completed. if false, the action is not
-	 *            completed.
+	 *          If true, the action is completed. If false, the action is not
+	 *          completed
 	 */
 	public void setCompleted(boolean isCompleted);
-	
 	
 	/**
 	 * Get the description of the action
@@ -34,8 +34,7 @@ public interface IAction {
 	 * Set the description of this action
 	 * 
 	 * @throws 	IllegalArgumentException
-	 *             If description==null or empty
+	 *          Thrown when the description is null or empty
 	 */
 	public void setDescription(String description);
-	
 }

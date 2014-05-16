@@ -8,7 +8,7 @@ import java.util.Set;
 import domain.vehicle.VehicleSpecification;
 
 /**
- * A class representing a catalogue consisting of CarModelSpecifications.
+ * A class representing a catalogue consisting of VehicleSpecifications.
  * 
  */
 public class VehicleSpecificationCatalogue {
@@ -16,24 +16,21 @@ public class VehicleSpecificationCatalogue {
 	private Map<String, VehicleSpecification> data;
 
 	/**
-	 * Default constructor. When a carModelCatalogue is constructed, a
-	 * carModelCatalogueFiller is created and the newly constructed
-	 * carModelCatalogue is filled with the basic carModels thanks to the
-	 * carModelCatalogueFiller.
+	 * Create a new VehicleSpecificationCatalogue.
 	 */
 	public VehicleSpecificationCatalogue() {
 		data = new HashMap<String, VehicleSpecification>();
 	}
 
 	/**
-	 * Returns an immutable Map of CarModelSpecifications with their names.
+	 * Get the catalogue consisting of VehicleSpecifications.
 	 */
 	public Map<String, VehicleSpecification> getCatalogue() {
 		return Collections.unmodifiableMap(data);
 	}
 
 	/**
-	 * Method for initializing the catalogue. The given arrayList of CarModelSpecifications is
+	 * Method for initializing the catalogue. The given arrayList of VehicleSpecifications is
 	 * included in the catalogue.
 	 */
 	public void initializeCatalogue(Set<VehicleSpecification> models) {

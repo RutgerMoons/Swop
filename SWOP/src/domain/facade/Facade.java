@@ -29,7 +29,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * This class is the layer between the Domain model and the controllers. The controllers can only
+ * This class representing the layer between the Domain model and the controllers. The controllers can only
  * call methods in this class to do something in the domain model.
  * 
  */
@@ -42,10 +42,10 @@ public class Facade {
 	 * resources.
 	 *
 	 * @param	company
-	 * 				The instantiation of a Company object to which the facade communicates everything to
+	 * 			The instantiation of a Company object to which the facade communicates everything to
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 				Thrown when the given company is null
+	 * 			Thrown when the given company is null
 	 * */
 	public Facade(Company company) {
 		if (company == null) {
@@ -55,9 +55,9 @@ public class Facade {
 	}
 
 	/**
-	 * Add a Part to the VehicleModel that is being ordered
+	 * Add a Part to the Vehicle that is being ordered.
 	 * 
-	 * @param part
+	 * @param 	part
 	 * 			The VehicleOption you want to add to the model
 	 */
 	public void addPartToVehicle(VehicleOption part) {
@@ -66,20 +66,20 @@ public class Facade {
 	}
 
 	/**
-	 * Communicate to the company instance that at a given assemblyLine at a given workbench 
-	 * a given task is completed in a given time.
+	 * Communicate to the company that at a given AssemblyLine at a given WorkBench 
+	 * a given Task is completed in a given time.
 	 * 
 	 * @param 	assemblyLine
-	 * 				The assemblyLine at which the worker stands
+	 * 			The AssemblyLine at which the worker stands
 	 * 
 	 * @param 	workbench
-	 *           	The workbench where the given task is completed
+	 *           The WorkBench where the given Task is completed
 	 *           
 	 * @param 	task
-	 *            	The task that is completed by the worker
+	 *          The Task that is completed by the worker
 	 *            
 	 * @param 	time
-	 *            	The amount of minutes needed to complete the task
+	 *          The amount of minutes needed to complete the Task
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, 
 			ITask task, ImmutableClock time) {
@@ -94,21 +94,21 @@ public class Facade {
 	 * logs the newly created user in.
 	 * 
 	 * @param 	userName
-	 *            The newly chosen userName
+	 *          The newly chosen userName
 	 *            
 	 * @param 	role
-	 *            The role of the User
+	 *          The role of the User
 	 */
 	public void createAndAddUser(String userName, String role) {
 		this.company.createAndAddUser(userName, role);
 	}
 
 	/**
-	 * Create a new Vehicle that has to be created from scratch
+	 * Create a new Vehicle that has to be created from scratch.
 	 * 
 	 * @param 	realModel
-	 *            The specification the PartPicker has to take into account when
-	 *            creating the Vehicle
+	 *          The specification the PartPicker has to take into account when
+	 *          creating the Vehicle
 	 */
 	public void createNewVehicle(VehicleSpecification realModel) {
 		this.company.createNewVehicle(realModel);
@@ -122,32 +122,32 @@ public class Facade {
 	}
 
 	/**
-	 * Get the VehicleSpecification from the VehicleSpecificationCatalogue
+	 * Get the VehicleSpecification from the VehicleSpecificationCatalogue.
 	 * 
 	 * @param 	specificationName
-	 * 				The name of the specification. This is needed to retrieve 
-	 * 				the associated VehicleSpecification.
+	 * 			The name of the specification. This is needed to retrieve 
+	 * 			the associated VehicleSpecification.
 	 */
 	public VehicleSpecification getVehicleSpecificationFromCatalogue(String specificationName) {
 		return company.getVehicleSpecification(specificationName);
 	}
 
 	/**
-	 * Get a set of all the VehicleSpecifications that the VehicleSpecificationCatalogue has
+	 * Get a set of all the VehicleSpecifications that the VehicleSpecificationCatalogue has.
 	 */
 	public Set<String> getVehicleSpecifications() {
 		return Collections.unmodifiableSet(company.getVehicleSpecifications());
 	}
 
 	/**
-	 * Get a set off all the VehicleOptionCategories that are available
+	 * Get a set off all the VehicleOptionCategories that are available.
 	 */
 	public List<VehicleOptionCategory> getVehicleOptionCategory() {
 		return Collections.unmodifiableList(Arrays.asList(VehicleOptionCategory.values()));
 	}
 
 	/**
-	 * Get a list of the completed orders of the user that is currently logged in 
+	 * Get a list of the completed Orders of the User that is currently logged in. 
 	 */
 	public List<IOrder> getCompletedOrders() {
 		String name = company.getCurrentUser();
@@ -159,32 +159,31 @@ public class Facade {
 	}
 
 	/**
-	 * TODO Rutger: checken of dit klopt want een scheduling algorithm type bestaat niet echt meer??
-	 * Returns the currently used Scheduling Algorithm Type as String.
+	 * Returns the name of the currently used Scheduling Algorithm.
 	 */
 	public String getCurrentSchedulingAlgorithm() {
 		return company.getCurrentSchedulingAlgorithm();
 	}
 
 	/**
-	 * Get a list of available CustomTasks from the CustomVehicleCatalogue 
+	 * Get a list of available CustomTasks from the CustomVehicleCatalogue. 
 	 */
 	public Set<String> getCustomTasks() {
 		return Collections.unmodifiableSet(company.getCustomTasksDescription());
 	}
 
 	/**
-	 * Get the still available VehicleOptions for the model that is being built 
+	 * Get the still available VehicleOptions for the model that is being built. 
 	 * 
 	 * @param 	type
-	 * 				The type of the VehicleOption that has to be selected 
+	 * 			The type of the VehicleOption that has to be selected 
 	 */
 	public List<VehicleOption> getRemainingVehicleOptions(VehicleOptionCategory type) {
 		return Collections.unmodifiableList(company.getStillAvailableCarParts(type));
 	}
 
 	/**
-	 * Get a list of pending orders of the user that is currently logged in
+	 * Get a list of pending Orders of the User that is currently logged in.
 	 */
 	public List<IOrder> getPendingOrders() {
 		String name = company.getCurrentUser();
@@ -197,8 +196,7 @@ public class Facade {
 
 	/**
 	 * Get a list of Vehicle based on the given optionDescription.
-	 * The optionDescription can for example be "spraying car bodies" or "installing custom seats"
-	 * 
+	 * The optionDescription can for example be "spraying car bodies" or "installing custom seats".
 	 */
 	public List<IVehicle> getCustomOptions(String optionDescription) {
 		List<IVehicle> tasks = new ArrayList<>();
@@ -209,14 +207,14 @@ public class Facade {
 	}
 	
 	/**
-	 * Returns the average amount of Vehicles produced
+	 * Returns the average amount of Vehicles produced.
 	 */
 	public int getAverageDays(){
 		return company.getAverageDays();
 	}
 	
 	/**
-	 * Returns the median amount of Vehicles produced 
+	 * Returns the median amount of Vehicles produced.
 	 */
 	public int getMedianDays(){
 		return company.getMedianDays();
@@ -231,52 +229,52 @@ public class Facade {
 	}
 	
 	/**
-	 * Returns the average amount of delays when Vehicles were produced
+	 * Returns the average amount of Delays when Vehicles were produced.
 	 */
 	public int getAverageDelays(){
 		return company.getAverageDelays();
 	}
 	
 	/**
-	 * Returns the median amount of delays when Vehicles were produced
+	 * Returns the median amount of Delays when Vehicles were produced.
 	 */
 	public int getMedianDelays(){
 		return company.getMedianDelays();
 	}
 	
 	/**
-	 * Returns an unmodifiable list with the latest delays. The size of this list 
+	 * Returns an unmodifiable list with the latest Delays. The size of this list 
 	 * is decided when the company is initialised.
 	 */
 	public List<Delay> getDetailedDelays(){
 		return Collections.unmodifiableList(company.getDetailedDelays());
 	}
 
-
 	/**
-	 * Login with a userName
+	 * Login with a userName.
 	 * 
 	 * @param 	userName
-	 * 				The name of the user
+	 * 			The name of the user
+	 * 
 	 * @throws 	RoleNotYetAssignedException
-	 * 				If it's the first time that this user logs in
+	 * 			Thrown when it's the first time that this user logs in
 	 */
 	public void login(String userName) throws RoleNotYetAssignedException {
 		this.company.login(userName);
 	}
 
 	/**
-	 * Log the current user out
+	 * Log the current user out.
 	 */
 	public void logout() {
 		this.company.logout();
 	}
 
 	/**
-	 * Create and schedule a CustomOrder
+	 * Create and schedule a custom Order.
 	 * 
 	 * @param 	model
-	 * 				The name of the CustomVehicle that has to be ordered
+	 * 			The name of the CustomVehicle that has to be ordered
 	 * 
 	 * @param 	deadline
 	 * 			The deadline of the CustomOrder
@@ -295,18 +293,17 @@ public class Facade {
 	}
 
 	/**
-	 * Create and schedule a standard order
+	 * Create and schedule a standard Order.
 	 * 
 	 * @param 	quantity
-	 * 				The amount of vehicles the user wants to order
-	 * 
+	 * 			The amount of vehicles the user wants to order
 	 */
 	public ImmutableClock processOrder(int quantity){
 		return company.processOrder(quantity);
 	}
 
 	/**
-	 * Advance the clock to the next day
+	 * Advance the clock to the next day.
 	 */
 	public void startNewDay() {
 		this.company.startNewDay();
@@ -322,7 +319,7 @@ public class Facade {
 
 	/**
 	 * Returns a immutable powerset with all the VehicleOptions 
-	 * or sets of VvehicleOptions that occur in three or more pending orders.
+	 * or sets of VehicleOptions that occur in three or more pending Orders.
 	 */
 	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
 		return Collections.unmodifiableSet(this.company.getAllCarOptionsInPendingOrders());
@@ -340,14 +337,16 @@ public class Facade {
 	}
 
 	/**
-	 * Changes the State of a given AssemblyLine to the given AssemblyLineState
+	 * Changes the State of a given AssemblyLine to the given AssemblyLineState.
 	 * 
 	 * @param 	assemblyLine
-	 * 				The AssemblyLine which state needs to be changed by the user
+	 * 			The AssemblyLine which state needs to be changed by the user
 	 * 
 	 * @param 	state
-	 * 				This AssemblyLineState will be the new state of the given AssemblyLine
-	 * @param clock 
+	 * 			This AssemblyLineState will be the new state of the given AssemblyLine
+	 * 
+	 * @param 	clock
+	 * 			The current time 
 	 */
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state, ImmutableClock clock) {
 		company.changeState(assemblyLine, state, clock);
@@ -355,7 +354,7 @@ public class Facade {
 
 	/**
 	 * Returns an immutable list with the current AssemblyLineState of all the 
-	 * AssemblyLines
+	 * AssemblyLines.
 	 */
 	public List<AssemblyLineState> getAssemblyLineStates() {
 		return Collections.unmodifiableList(Arrays.asList(AssemblyLineState.values()));

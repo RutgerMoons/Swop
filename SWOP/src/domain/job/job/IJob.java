@@ -12,7 +12,9 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Interface for limiting access to standard Jobs.
+ * An interface used to represent an Job. An Job consists of an iOrder, a list of
+ * ITasks, an index, indicating which workbench it needs first, and a boolean 
+ * for indicating if the Action is completed.
  */
 public interface IJob {
 
@@ -25,10 +27,10 @@ public interface IJob {
 	 * Allocate a new Order to this Job.
 	 * 
 	 * @throws 	UnmodifiableException
-	 * 				thrown if the IJob is unmodifiable
+	 * 			Thrown when the IJob is unmodifiable
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 				If order==null
+	 * 			Thrown when	the given parameter is null
 	 */
 	public void setOrder(IOrder order);
 
@@ -41,29 +43,29 @@ public interface IJob {
 
 	/**
 	 * Set a new list of tasks that have to be completed before the Job is
-	 * finished
+	 * finished.
 	 * 
 	 * @throws 	UnmodifiableException
-	 * 			  	If the IJob is an unmodifiable Job
+	 * 			Thrown when the IJob is an unmodifiable Job
 	 * 
 	 * @throws 	IllegalArgumentException
-	 *             If tasks==null
+	 *          Thrown when the given parameter is null
 	 */
 	public void setTasks(List<ITask> tasks);
 
 	/**
-	 * Add a new task to the Job
+	 * Add a new task to the Job.
 	 * 
-	 * @throws UnmodifiableException 
-	 * 		 	  If the IJob is an unmodifiable Job
+	 * @throws 	UnmodifiableException 
+	 * 		 	Thrown when the IJob is an unmodifiable Job
 	 * 
-	 * @throws IllegalArgumentException
-	 *             If task==null
+	 * @throws 	IllegalArgumentException
+	 *          Thrown when the given parameter is null
 	 */
 	public void addTask(ITask task);
 
 	/**
-	 * Check if the Job(Car) is completed
+	 * Check if the Job(Car) is completed.
 	 * 
 	 * @return 	True if all Tasks are fully completed. False if one or more Tasks
 	 *         are not fully completed.
@@ -77,13 +79,13 @@ public interface IJob {
 	public void setMinimalIndex(int index);
 
 	/**
-	 * @return 	An integer that represents the index of the first workbench 
-	 * 			at which some Tasks of this Job will need to be completed.
+	 * Returns an integer that represents the index of the first workbench 
+	 * at which some Tasks of this Job will need to be completed.
 	 */
 	public int getMinimalIndex();
 	
 	/**
-	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
+	 * Returns a collection of all the VehicleOptions of which the ordered cars consist.
 	 */
 	public Collection<VehicleOption> getVehicleOptions();
 	
@@ -96,5 +98,5 @@ public interface IJob {
 	 * Get the specification of the vehicle from the order
 	 */
 	public VehicleSpecification getVehicleSpecification();
-
+	
 }

@@ -15,18 +15,18 @@ import domain.vehicle.vehicleOption.VehicleOption;
 
 
 /**
- * Create an Immutable Job, only the getters are accessible.
- * 
+ * Class representing an unmodifiable Job. It implements IJob where only
+ * the getters are accessible.
  */
 public class UnmodifiableJob implements IJob {
 
 	private IJob job;
 
 	/**
-	 * Create the Immutable Job.
+	 * Create the unmodifiable version of the given Job.
 	 * 
-	 * @param job
-	 * 			The mutable Job.
+	 * @param 	job
+	 * 			The mutable Job
 	 */
 	public UnmodifiableJob(IJob job) {
 		if (job == null)
@@ -67,25 +67,21 @@ public class UnmodifiableJob implements IJob {
 	@Override
 	public void setOrder(IOrder order) {
 		throw new UnmodifiableException();
-		
 	}
 
 	@Override
 	public void setTasks(List<ITask> tasks) {
 		throw new UnmodifiableException();
-		
 	}
 
 	@Override
 	public void addTask(ITask task) {
 		throw new UnmodifiableException();
-		
 	}
 
 	@Override
 	public void setMinimalIndex(int index) {
 		throw new UnmodifiableException();
-		
 	}
 
 	@Override

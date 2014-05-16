@@ -7,8 +7,8 @@ import java.util.List;
 import domain.job.action.IAction;
 
 /**
- * Represents a single task that contains a certain amount of Actions.
- * 
+ * This class represents a single task that contains a certain amount
+ * of IActions. Task is an implementation of ITask.
  */
 public class Task implements ITask {
 
@@ -19,9 +19,9 @@ public class Task implements ITask {
 	 * Construct a new Task.
 	 * 
 	 * @param 	taskDescription
-	 *            	The description you want to give to this Task
+	 *          The description you want to give to this Task
 	 * @throws 	IllegalArgumentException
-	 *             if taskDescription==null or isEmpty
+	 *          Thrown when taskDescription is null or is empty
 	 */
 	public Task(String taskDescription) {
 		setActions(new ArrayList<IAction>());

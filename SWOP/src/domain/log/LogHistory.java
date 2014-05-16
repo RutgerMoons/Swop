@@ -3,20 +3,26 @@ package domain.log;
 import java.util.List;
 
 /**
- * This class provides abstract functions necessary for every logger of history.
- *
+ * This class represents an abstract class who provides functions necessary for every implementation
+ * of LogHistory.
  */
 public abstract class LogHistory {
 
 	protected final int numberOfDetails;
 	
 	/**
-	 * Constructs a LogHistory object with a degree of detail
+	 * Constructs a LogHistory object with a given degree of detail.
 	 * 
 	 * @param 	numberOfDetails
-	 * 				the amount of detailed information this object should keep track off
+	 * 			The amount of detailed information this object should keep track off
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the parameter is smaller than 1.
 	 */
 	public LogHistory(int numberOfDetails) {
+		if( numberOfDetails <1 ){
+			throw new IllegalArgumentException();
+		}
 		this.numberOfDetails = numberOfDetails;
 	}
 	
@@ -30,8 +36,4 @@ public abstract class LogHistory {
 	 * Returns an unmodifiable list of the history.
 	 */
 	public abstract List<?> getCompleteHistory();
-	
-	
-	
-	
 }
