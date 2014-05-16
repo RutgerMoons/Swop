@@ -41,6 +41,9 @@ public abstract class UseCaseFlowController {
 	 */
 	public abstract void executeUseCase();
 
+	/**
+	 * Returns the AccesRight of this use case.
+	 */
 	public AccessRight getAccessRight() {
 		return accessRight;
 	}
