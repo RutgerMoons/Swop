@@ -1,7 +1,7 @@
 package domain.exception;
 
 /**
- * Class representing an Exception thrown when an SchedulingAlgorithm of an AssemblyLine didn't find
+ * A class representing an Exception thrown when an SchedulingAlgorithm of an AssemblyLine didn't find
  * a suitable Job.
  */
 public class NoSuitableJobFoundException extends IllegalStateException {

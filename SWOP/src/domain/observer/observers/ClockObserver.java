@@ -6,7 +6,7 @@ import domain.clock.ImmutableClock;
 import domain.observer.observes.ObservesClock;
 
 /**
- * This object can attach and detach any object that implements the LogsClock interface.
+ * A class representing the possibility attach and detach any object that implements the LogsClock interface.
  * Every attached object will be notified when the observed Clock(s) to which 
  * this observer is attached change time.
  */

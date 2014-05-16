@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * Class representing  to keeps track of all the completed Orders and offers a detailed view for 
+ * A class representing to keeps track of all the completed Orders and offers a detailed view for 
  * a certain amount of latest days. 
  */
 public class LogHistoryDays extends LogHistory {

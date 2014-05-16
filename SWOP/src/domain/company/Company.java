@@ -39,9 +39,9 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * 
- * 
- *
+ * A class representing a company. Everything that defines a company has this class as an attribute, direct or indirect.
+ * Direct attributes are for example: an UserBook, an OrderBook, a PartPicker but also a CustomVehicleCatalogue, a Logger, a Clock,
+ * a WorkloadDivider etc.
  */
 public class Company {
 
@@ -56,6 +56,28 @@ public class Company {
 	private Set<OptionalRestriction> optionalRestrictions;
 	private int amountOfDetailedHistory;
 
+	/**
+	 * Create a new Company. It receives all its defining datastructures to initialise everything properly. TODO veranderen later
+	 * 
+	 * @param 	bindingRestrictions
+	 * 			List of BindingRestrictions necessary for the internal PartPicker
+	 * 
+	 * @param 	optionalRestrictions
+	 * 			List of OptionalRestrictions necessary for the internal PartPicker
+	 * 
+	 * @param 	customCatalogue
+	 * 			Catalogue for CustomOrders, this catalogue contains all the possible sorts of CustomOrders this Company can process.
+	 * 
+	 * @param 	vehicleSpecificationCatalogue
+	 * 			Catalogue for StandardOrders, this catalogue contains all the different possible kinds of StandardOrders that
+	 * 			this Company can process.
+	 * 
+	 * @param 	listOfAssemblyLines
+	 * 			A list with all the AssemblyLines for this Company.
+	 * 
+	 * @param 	clock
+	 * 			A clock necessary for keeping track of time.s
+	 */
 	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, 
 			CustomVehicleCatalogue customCatalogue, VehicleSpecificationCatalogue vehicleSpecificationCatalogue, 
 			List<AssemblyLine> listOfAssemblyLines, Clock clock){
@@ -331,10 +353,22 @@ public class Company {
 		return clock.getImmutableClock();
 	}
 
+	/**
+	 * Method that adds the given Order to the OrderBook.
+	 * 
+	 * @param 	order
+	 * 			Order that needs to be added to the OrderBook.s
+	 */
 	public void addOrder(CustomOrder order) {
 		orderbook.addOrder(order, getUnmodifiableClock());
 	}
 
+	/**
+	 * Create and schedule a standard Order.
+	 * 
+	 * @param 	quantity
+	 * 			The amount of vehicles the user wants to order
+	 */
 	public ImmutableClock processOrder(int quantity) {
 		Vehicle vehicle = partpicker.getModel();
 		if (!vehicle.isValid())
