@@ -9,7 +9,6 @@ import domain.vehicle.VehicleSpecification;
 
 /**
  * A class representing a catalogue consisting of VehicleSpecifications.
- * 
  */
 public class VehicleSpecificationCatalogue {
 
@@ -23,29 +22,37 @@ public class VehicleSpecificationCatalogue {
 	}
 
 	/**
-	 * Get the catalogue consisting of VehicleSpecifications.
+	 * Get the VehicleSpecificationCatalogue consisting of VehicleSpecifications.
 	 */
 	public Map<String, VehicleSpecification> getCatalogue() {
 		return Collections.unmodifiableMap(data);
 	}
 
 	/**
-	 * Method for initializing the catalogue. The given arrayList of VehicleSpecifications is
-	 * included in the catalogue.
+	 * Method for initializing the VehicleSpecificationCatalogue. 
+	 * 
+	 * @param	models
+	 * 			The given set of VehicleSpecifications is included in the VehicleSpecificationCatalogue
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	public void initializeCatalogue(Set<VehicleSpecification> models) {
+		if(models==null){
+			throw new IllegalArgumentException();
+		}
 		for (VehicleSpecification model : models) {
 			addModel(model);
 		}
 	}
 
 	/**
-	 * Add a new specification to the catalogue.
+	 * Add a new specification to the VehicleSpecificationCatalogue.
 	 * 
-	 * @param specification
-	 *            The specification you want to add.
-	 * @throws IllegalArgumentException
-	 *             if specification==null
+	 * @param 	specification
+	 *			The specification you want to add.
+	 * @throws 	IllegalArgumentException
+	 *			Thrown when the specification is null
 	 */
 	public void addModel(VehicleSpecification specification) {
 		if (specification == null)
