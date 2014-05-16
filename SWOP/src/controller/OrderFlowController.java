@@ -15,7 +15,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Defines the program flow for the 'Order New Car' use case.
+ * A class representing the order of execution for the 'Order New Car' use case.
  * 
  */
 public class OrderFlowController extends UseCaseFlowController {
@@ -23,13 +23,18 @@ public class OrderFlowController extends UseCaseFlowController {
 	/**
 	 * Construct a new OrderFlowController
 	 * 
-	 * @param iClientCommunication
-	 *            The CLI this OrderFlowController has to use to communicate with
-	 *            the user.
+	 * @param 	accessRight
+	 * 			The AccessRight needed to perform this use case.
+	 * 
+	 * @param 	clientCommunication
+	 * 			The ClientCommunication this FlowController uses to communicate with the user.
+	 * 
+	 * @param 	facade
+	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic.
 	 */
 	public OrderFlowController(AccessRight accessRight,
-			ClientCommunication iClientCommunication, Facade facade) {
-		super(accessRight, iClientCommunication, facade);
+			ClientCommunication clientCommunication, Facade facade) {
+		super(accessRight, clientCommunication, facade);
 	}
 
 	/**

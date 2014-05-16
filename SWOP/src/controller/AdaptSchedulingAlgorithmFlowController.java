@@ -14,22 +14,22 @@ import domain.users.AccessRight;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Defines the program flow for the 'Adapt scheduling algorithm' use case.
+ * A class representing the order of execution for the 'Adapt scheduling algorithm' use case.
  *
  */
 public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowController {
 
 	/**
-	 * Construct a new AdaptSchedulingAlgorithmFlowController
+	 * Construct a new AdaptSchedulingAlgorithmFlowController.
 	 * 
 	 * @param 	accessRight
-	 * 				The accessRight needed to perform this use case
+	 * 			The accessRight needed to perform this use case
 	 * 
 	 * @param 	clientCommunication
-	 * 				The ClientCommunication this FlowController uses to communicate with the user
+	 * 			The ClientCommunication this FlowController uses to communicate with the user
 	 * 
 	 * @param 	facade
-	 * 				The Facade this flowcontroller uses to access the domain logic
+	 * 			The Facade this UseCaseFlowController uses to access the domain logic
 	 */
 	public AdaptSchedulingAlgorithmFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
