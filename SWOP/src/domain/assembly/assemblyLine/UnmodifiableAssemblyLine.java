@@ -10,7 +10,6 @@ import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.job.job.UnmodifiableJob;
-import domain.scheduling.Scheduler;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -46,11 +45,6 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 			unmodifiables.add(new UnmodifiableJob(job));
 		}
 		return Collections.unmodifiableList(unmodifiables);
-	}
-
-	@Override
-	public Scheduler getCurrentScheduler() {
-		return this.assemblyLine.getCurrentScheduler();
 	}
 
 	@Override

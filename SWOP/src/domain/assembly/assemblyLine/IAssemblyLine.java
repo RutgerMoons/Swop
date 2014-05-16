@@ -5,7 +5,6 @@ import java.util.Set;
 
 import domain.assembly.workBench.IWorkBench;
 import domain.job.job.IJob;
-import domain.scheduling.Scheduler;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -29,11 +28,6 @@ public interface IAssemblyLine {
 	 * @return 	A list representing the current jobs
 	 */
 	public List<IJob> getCurrentJobs();
-	
-	/**
-	 * Returns the currently used Scheduling Algorithm Type as String
-	 */
-	public Scheduler getCurrentScheduler();
 	
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
