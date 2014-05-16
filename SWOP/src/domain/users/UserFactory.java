@@ -5,15 +5,22 @@ import java.util.Arrays;
 
 /**
  * 
- * This class is used for creating all users based on name and role. The user is
- * automatically granted his access rights.
- * 
+ * A class representing the creation of a User based on a given name
+ * and role. The newly created user is automatically granted his access rights.
  */
 public class UserFactory {
 
 	/**
-	 * Uses name and role to create a user of the correct type with the correct
-	 * access rights
+	 * Method to create the User given a name and a role. 
+	 * 
+	 * @param	name
+	 * 			The name of the new User
+	 * 
+	 * @param 	role
+	 * 			The role of the new User
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the role is null or when the given role doesn't exist.
 	 */
 	public User createUser(String userName, String role)
 			throws IllegalArgumentException {
@@ -57,5 +64,4 @@ public class UserFactory {
 				Arrays.asList(new AccessRight[] { AccessRight.ASSEMBLE, AccessRight.CHECKLINE }));
 		return new User(userName, accessRights);
 	}
-
 }
