@@ -21,7 +21,7 @@ public class UnmodifiableVehicle implements IVehicle {
 	/**
 	 * Create an unmodifiable Vehicle.
 	 * 
-	 * @param model
+	 * @param	model
 	 * 			The mutable Vehicle.
 	 */
 	public UnmodifiableVehicle(IVehicle model){
