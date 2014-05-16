@@ -24,11 +24,15 @@ public interface IVehicle {
 	/**
 	 * Adds a VehicleOption to this IVehicle. 
 	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the part is null
+	 * 
 	 * @throws 	AlreadyInMapException
 	 * 			Thrown when the model already has a VehicleOption of this Category.
 	 * 
 	 * @throws	UnmodifiableException
 	 * 			Thrown when it is an UnmodifiableVehicle
+	 * 
 	 * @throws	NotImplementedException
 	 * 			Thrown when the IVehicle is a CustomVehicle
 	 */
@@ -41,6 +45,9 @@ public interface IVehicle {
 	
 	/**
 	 * Add a forced Optional type, so it has to be in the IVehicle.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the type is null
 	 * 
 	 * @throws	UnmodifiableException
 	 * 			Thrown when it is an UnmodifiableVehicle
@@ -60,6 +67,9 @@ public interface IVehicle {
 	
 	/**
 	 * Set a new specification from which the IVehicle has to be build.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the template is null
 	 * 
 	 *@throws	UnmodifiableException
 	 * 			Thrown when it is an UnmodifiableVehicle

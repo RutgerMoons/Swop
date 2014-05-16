@@ -27,6 +27,9 @@ public class Vehicle implements IVehicle {
 	 * 
 	 * @param 	template
 	 * 			The VehicleSpecification according to which this Vehicle will be built
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the template is null
 	 */
 	public Vehicle(VehicleSpecification template) {
 		if(template==null)
@@ -111,6 +114,9 @@ public class Vehicle implements IVehicle {
 	
 	@Override
 	public void addForcedOptionalType(VehicleOption type, boolean bool){
+		if(type==null){
+			throw new IllegalArgumentException();
+		}
 		forcedOptionalTypes.put(type, bool);
 	}
 
@@ -123,6 +129,9 @@ public class Vehicle implements IVehicle {
 	
 	@Override
 	public void setVehicleSpecification(VehicleSpecification template) {
+		if(template==null){
+			throw new IllegalArgumentException();
+		}
 		this.specification = template;
 	}
 

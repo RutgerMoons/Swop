@@ -27,16 +27,22 @@ public class VehicleSpecification {
 	 * Create a new VehicleSpecification.
 	 * 
 	 * @param 	description
-	 * 			The description of the VehicleSpecification, often a model name.
+	 * 			The description of the VehicleSpecification, often a model name
 	 * 
 	 * @param 	parts
-	 * 			The VehicleOptions that can be used to build a vehicle.
+	 * 			The VehicleOptions that can be used to build a vehicle
 	 * 
 	 * @param 	timeAtWorkBench
-	 * 			The time it has to spend on certain WorkBenches.
+	 * 			The time it has to spend on certain WorkBenches
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the parameters is null or if the description is empty
 	 */
 	public VehicleSpecification(String description, Set<VehicleOption> parts,
 			Map<WorkBenchType, Integer> timeAtWorkBench) {
+		if(description==null || description.isEmpty() || parts==null || timeAtWorkBench==null){
+			throw new IllegalArgumentException();
+		}
 		this.setDescription(description);
 		this.setTimeAtWorkBench(timeAtWorkBench);
 		this.parts = HashMultimap.create();
@@ -58,8 +64,17 @@ public class VehicleSpecification {
 
 	/**
 	 * Set the name of the VehicleSpecification.
+	 * 
+	 * @param	description
+	 * 			The name to give the VehicleSpecification
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the description is null or is empty
 	 */
 	public void setDescription(String description) {
+		if(description==null || description.isEmpty()){
+			throw new IllegalArgumentException();
+		}
 		this.description = description;
 	}
 	
@@ -70,9 +85,6 @@ public class VehicleSpecification {
 		return Collections.unmodifiableMap(timeAtWorkBench);
 	}
 
-	/**
-	 * Set the time the specification has to spend on a workbench.
-	 */
 	private void setTimeAtWorkBench(Map<WorkBenchType, Integer> timeAtWorkBench) {
 		this.timeAtWorkBench = timeAtWorkBench;
 	}
@@ -128,6 +140,12 @@ public class VehicleSpecification {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param	workBenchType used to determine the time this job will take to complete
+	 * 
+	 * @return	The amount of minutes to complete this VehicleSpecification at the given type of WorkBench
+	 */
 	public int getProductionTime(WorkBenchType workBenchType) {
 		return getTimeAtWorkBench().get(workBenchType);
 	}
