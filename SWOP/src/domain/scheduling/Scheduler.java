@@ -80,11 +80,8 @@ public class Scheduler implements ObservesClock {
 
 	/**
 	 * Passes the next job to the assemblyLine.
-	 * 
-	 * @throws NoSuitableJobFoundException
-	 * 		Thrown when there're no more jobs.
 	 */
-	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException{
+	public Optional<IJob> retrieveNextJob(){
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
 		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
 				- this.internalClock.getMinutes();

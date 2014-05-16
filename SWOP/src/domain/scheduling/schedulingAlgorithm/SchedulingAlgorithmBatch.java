@@ -155,8 +155,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) 
-			throws NoSuitableJobFoundException{
+	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) {
 		/*
 		 * step 0: check in the beginning of the day if custom jobs can be executed
 		 * step 1: check if you have to force some custom jobs

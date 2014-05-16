@@ -169,11 +169,8 @@ public abstract class SchedulingAlgorithm {
 	 * The scheduling algorithm tries to find the best job in the circumstances to be scheduled at the current time
 	 * this Job is returned, if no job is found an error is thrown.
 	 * 
-	 * @throws NoSuitableJobFoundException
-	 * 			Thrown when no job can be scheduled this day
 	 */
-	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) 
-			throws NoSuitableJobFoundException;
+	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime);
 	
 	/**
 	 * The scheduling algorithm will look for custom jobs that can be placed in a time saving way.

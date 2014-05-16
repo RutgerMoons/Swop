@@ -100,8 +100,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 
 	@Override
-	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) 
-			throws NoSuitableJobFoundException{
+	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) {
 		/* 
 		 * step 0: check if jobsStartOfDay contains any jobs..
 		 * step 1: check if you have to force some custom jobs
