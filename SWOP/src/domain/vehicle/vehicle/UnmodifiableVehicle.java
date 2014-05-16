@@ -2,7 +2,6 @@ package domain.vehicle.vehicle;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.exception.UnmodifiableException;
@@ -48,33 +47,35 @@ public class UnmodifiableVehicle implements IVehicle {
 	public String toString(){
 		return model.toString();
 	}
+	
 	@Override
 	public void addVehicleOption(VehicleOption part){
 		throw new UnmodifiableException();
 		
 	}
+	
 	@Override
 	public Map<VehicleOption, Boolean> getForcedOptionalTypes() {
 		return Collections.unmodifiableMap(model.getForcedOptionalTypes());
 	}
+	
 	@Override
 	public void addForcedOptionalType(VehicleOption type, boolean bool){
 		throw new UnmodifiableException();
 	}
+	
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
 		return model.getVehicleSpecification();
 	}
+	
 	@Override
 	public void setVehicleSpecification(VehicleSpecification template){
 		throw new UnmodifiableException();
 	}
+	
 	@Override
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(model.getTimeAtWorkBench());
-	}
-	@Override
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
-		return model.canBeHandled(responsibilities);
 	}
 }
