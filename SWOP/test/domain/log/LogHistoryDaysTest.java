@@ -18,7 +18,7 @@ public class LogHistoryDaysTest {
 	@Test
 	public void shiftTest1(){
 		for(int i = 0; i < 4;i++){
-			history.incrementAmountOfCarsProducedToday();
+			history.incrementAmountOfVehiclesProducedToday();
 		}
 		history.shift();
 		assertEquals(1,history.getHistory().size());
@@ -29,15 +29,15 @@ public class LogHistoryDaysTest {
 	@Test
 	public void shiftTest2(){
 		for(int i = 0; i < 4;i++){
-			history.incrementAmountOfCarsProducedToday();
+			history.incrementAmountOfVehiclesProducedToday();
 		}
 		history.shift();
 		for(int i = 0; i < 5;i++){
-			history.incrementAmountOfCarsProducedToday();
+			history.incrementAmountOfVehiclesProducedToday();
 		}
 		history.shift();
 		for(int i = 0; i < 3;i++){
-			history.incrementAmountOfCarsProducedToday();
+			history.incrementAmountOfVehiclesProducedToday();
 		}
 		history.shift();
 		assertEquals(2,history.getHistory().size());

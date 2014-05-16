@@ -2,7 +2,10 @@ package domain.observer.observable;
 
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.observer.observers.AssemblyLineStateObserver;
-
+/**
+ * An interface describing every function needed to implement to be subscribed to a 
+ * AssemblyLineStateObserver. 
+ */
 public interface ObservableAssemblyLineState {
 
 	/**

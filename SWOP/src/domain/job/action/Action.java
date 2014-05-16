@@ -2,7 +2,7 @@ package domain.job.action;
 
 /**
  * This class represents an Action that is available for the workers.
- * 
+ * Action is an implementation of IAction.
  */
 public class Action implements IAction {
 
@@ -13,10 +13,10 @@ public class Action implements IAction {
 	 * Construct a new Action.
 	 * 
 	 * @param 	description
-	 *            	The description for the action.
+	 *          The description for the action
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 				if description==null of isEmpty.
+	 * 			Thrown when the description null or it's empty
 	 */
 	public Action(String description) {
 		this.setDescription(description);

@@ -98,7 +98,7 @@ public class StandardOrder implements IOrder {
 	/**
 	 * Assigning the type/name of the ordered carModel to the given description.
 	 * The method throws an IllegalArgumentException is the given name equals
-	 * null.s
+	 * null.
 	 */
 	private void setDescription(IVehicle description2) {
 		if (description2 == null) {
@@ -215,4 +215,5 @@ public class StandardOrder implements IOrder {
 	public void acceptVisit(IOrderVisitor visitor) {
 		visitor.visit(this);
 	}
+	
 }

@@ -91,7 +91,7 @@ public interface IOrder {
 	 * @throws 	UnmodifiableException 
 	 * 				If the IOrder is an unmodifiable Order
 	 */
-	public void completeCar() throws UnmodifiableException;
+	public void completeCar();
 	
 	/**
 	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
