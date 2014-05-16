@@ -12,7 +12,6 @@ import com.google.common.collect.Sets;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
 import domain.observer.observers.ClockObserver;
 import domain.observer.observes.ObservesClock;
@@ -80,8 +79,6 @@ public class Scheduler implements ObservesClock {
 	/**
 	 * Passes the next job to the assemblyLine.
 	 * 
-	 * @throws NoSuitableJobFoundException
-	 * 		Thrown when there're no more jobs.
 	 */
 	public Optional<IJob> retrieveNextJob(ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
