@@ -11,7 +11,6 @@ import com.google.common.base.Optional;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.job.IJob;
 import domain.job.jobComparator.JobComparatorOrderTime;
@@ -52,9 +51,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		} catch (NotImplementedException e) {}
 	}
 
-	private int getCurrentTotalProductionTime() {
+	private int getCurrentTotalProductionTime(ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		int time = 0;
-		List<Optional<IJob>> historyCopy = new ArrayList<>(getHistory());
+		List<Optional<IJob>> historyCopy = new ArrayList<>(jobsOnAssemblyLine);
 		if (historyCopy.size() == 0) {
 			return 0;
 		}
@@ -67,7 +66,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public void setEstimatedTime(IJob job, ImmutableClock currentTime) {
+	public void setEstimatedTime(IJob job, ImmutableClock currentTime, ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		if (job == null || currentTime == null) {
 			throw new IllegalArgumentException();
 		}
@@ -82,7 +81,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			} 
 			catch (NotImplementedException e) {	}
 		}
-		List<Optional<IJob>> previousJobs = this.getHistory();
+		List<Optional<IJob>> previousJobs = jobsOnAssemblyLine;
 		int totalProductionTime = 0;
 		for (Iterator<IJob> iterator = batchJobs.iterator(); iterator.hasNext();) {
 			IJob j = iterator.next();
@@ -155,8 +154,8 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 
 	@Override
-	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) 
-			throws NoSuitableJobFoundException{
+	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
+									   ArrayList<Optional<IJob>> jobsOnAssemblyLine) { 
 		/*
 		 * step 0: check in the beginning of the day if custom jobs can be executed
 		 * step 1: check if you have to force some custom jobs
@@ -167,30 +166,26 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		if (jobsStartOfDay.size() > 0) {
 			Optional<IJob> toReturn = jobsStartOfDay.remove(0);
 			this.customJobs.remove(toReturn.get());
-			addToHistory(toReturn);
 			return toReturn;
 		}
 
 		IJob toSchedule = hasToForceCustomJob(currentTime);
-		int currentTotalProductionTime = getCurrentTotalProductionTime();
+		int currentTotalProductionTime = getCurrentTotalProductionTime(jobsOnAssemblyLine);
 		//Step 1:
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(toSchedule);
 			Optional<IJob> toReturn = Optional.fromNullable(toSchedule);
-			addToHistory(toReturn);
 			return toReturn;
 		}
 
 		//Step 2:
 		if (canAssembleJobInTime(batchJobs.peek(), currentTotalProductionTime, minutesTillEndOfDay)) {
 			Optional<IJob> toReturn = Optional.fromNullable(batchJobs.poll());
-			addToHistory(toReturn);
 			return toReturn;
 		}
 		
 		if (canAssembleJobInTime(standardJobs.peek(), currentTotalProductionTime, minutesTillEndOfDay)) {
 			Optional<IJob> toReturn = Optional.fromNullable(standardJobs.poll());
-			addToHistory(toReturn);
 			return toReturn;
 		}
 
@@ -199,7 +194,6 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		if (canAssembleJobInTime(jobWithHighestWorkBenchIndex, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(jobWithHighestWorkBenchIndex);
 			Optional<IJob> toReturn = Optional.fromNullable(jobWithHighestWorkBenchIndex);
-			addToHistory(toReturn);
 			return toReturn;
 		}
 		return Optional.absent();
@@ -230,12 +224,11 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	}
 	
 	@Override
-	public void transform(PriorityQueue<IJob> customJobs, List<IJob> standardJobs, List<Optional<IJob>> history) {
-		if(customJobs == null || standardJobs == null || history == null){
+	public void transform(PriorityQueue<IJob> customJobs, List<IJob> standardJobs) {
+		if(customJobs == null || standardJobs == null){
 			throw new IllegalArgumentException();
 		}
 		this.customJobs = customJobs;
-		this.history = history;
 		//split jobs into the two remaining queues based on carParts
 
 		for(IJob job : standardJobs){

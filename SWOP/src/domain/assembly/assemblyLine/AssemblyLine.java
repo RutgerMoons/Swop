@@ -11,7 +11,6 @@ import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
 import domain.observer.observable.ObservableAssemblyLine;
@@ -92,7 +91,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		// begin at the last workBench
 		// if you start at the front, it could be impossible to move a job multiple spots
 		
-		for (int i = this.workbenches.size() - 1; i > 0; i--) {
+		for (int i = this.workbenches.size() - 1; i >= 0; i--) {
 			IWorkBench bench = getWorkbenches().get(i);
 			Optional<IJob> jobAtBench = bench.getCurrentJob();
 			if (jobAtBench.isPresent()) {
@@ -120,33 +119,41 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 			}
 		}
 		
-		IWorkBench bench = getWorkbenches().get(0);
-		try {
-			Optional<IJob> nextJob = this.scheduler.retrieveNextJob();
-			bench.setCurrentJob(nextJob);
-		} catch (NoSuitableJobFoundException noSuitableJobFoundException) {
-			Optional<IJob> absentJob = Optional.absent();
-			bench.setCurrentJob(absentJob);
-		}
-		
-		//update schedulingAlgorithm met een lijst van IJobs op de correcte positie
+		ArrayList<Optional<IJob>> jobsOnAssemblyLine = getCurrentJobsOnAssemblyLine();
+		Optional<IJob> nextJob = this.scheduler.retrieveNextJob(jobsOnAssemblyLine);
+		this.workbenches.get(0).setCurrentJob(nextJob);
+		this.workbenches.get(0).chooseTasksOutOfJob();
+	}
+
+	private ArrayList<Optional<IJob>> getCurrentJobsOnAssemblyLine() {
 		ArrayList<Optional<IJob>> jobsOnAssemblyLine = new ArrayList<>();
-		for (int i = 0; i < this.workbenches.size(); i++) {
-			jobsOnAssemblyLine.add(this.workbenches.get(i).getCurrentJob());
+		for (IWorkBench workBench : this.workbenches) {
+			jobsOnAssemblyLine.add(workBench.getCurrentJob());
 		}
-		//TODO: implement that shit! I pity the fool!!
-		this.scheduler.passCurrentJobsOnAssemblyLineToAlgorithm(jobsOnAssemblyLine);
+		return jobsOnAssemblyLine;
 	}
 	
+	/**
+	 * If the job has a production greater than 0 at that workBench it returns true 
+	 * Else the workBench has no tasks from this job to complete, so it returns false 
+	 */
 	private boolean workbenchHasToAssembleJob(IWorkBench workBench, IJob jobToMove) {
 		return jobToMove.getProductionTime(workBench.getWorkbenchType()) > 0;
 	}
 
+	/**
+	 * Sets the currentJob of this workBench to an absentJob
+	 */
 	private void emptyWorkbench(int index) {
 		Optional<IJob> absentJob = Optional.absent();
 		this.workbenches.get(index).setCurrentJob(absentJob);
 	}
 
+	/**
+	 * Empties the workBench at CurrentWorkBenchIndex,
+	 * moves the job to the workBench at indexOfFurthestEmptyWorkBench
+	 * and this workBench chooses its tasks out of the job
+	 */
 	private void moveJobToWorkBench(int currentWorkBenchIndex, int indexOfFurthestEmptyWorkBench, Optional<IJob> jobToMove) {
 		emptyWorkbench(currentWorkBenchIndex);
 		this.workbenches.get(indexOfFurthestEmptyWorkBench).setCurrentJob(jobToMove);
@@ -154,8 +161,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 	
 	/**
-	 * Find and returns the index of the furthest empty workbench given an index. It goes over all the workbenches starting
-	 * with the workbench one index further than the given index and stops when it finds a Job on an workbench. 
+	 * Finds and returns the index of the furthest empty workbench given an index. It goes over all the workbenches starting
+	 * with the workbench one index further than the given index and stops when it finds a Job on a workbench. 
 	 * 
 	 * @param 	currentIndex
 	 * 			Index of a workBench
@@ -175,6 +182,10 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		return workBenchIndex - 1;
 	}
 
+	/**
+	 * Remove the job from this.currentjobs and completes the order.
+	 * Then the observers are notified of the completed Job.
+	 */
 	private void completeJob(IJob lastJob) {
 		currentJobs.remove(lastJob);
 		lastJob.getOrder().completeCar();
@@ -205,7 +216,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 			throw new IllegalArgumentException();
 		}
 		job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
-		this.scheduler.addJobToAlgorithm(job);
+		this.scheduler.addJobToAlgorithm(job, this.getCurrentJobsOnAssemblyLine());
 
 
 	}

@@ -10,7 +10,6 @@ import com.google.common.base.Optional;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
 import domain.job.jobComparator.JobComparatorDeadLine;
 import domain.job.jobComparator.JobComparatorOrderTime;
@@ -26,7 +25,6 @@ import domain.order.orderVisitor.IOrderVisitor;
 public abstract class SchedulingAlgorithm {
 	
 	protected PriorityQueue<IJob> customJobs;
-	protected List<Optional<IJob>> history;
 	protected List<Optional<IJob>> jobsStartOfDay;
 	protected PriorityQueue<IJob> standardJobs;
 	protected List<WorkBenchType> workBenchTypes;
@@ -36,7 +34,6 @@ public abstract class SchedulingAlgorithm {
 			throw new IllegalArgumentException();
 		}
 		this.workBenchTypes = workBenchTypes;
-		this.history = new ArrayList<>();
 		this.customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
 		this.standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
 		this.jobsStartOfDay = new ArrayList<>();
@@ -66,13 +63,6 @@ public abstract class SchedulingAlgorithm {
 			throw new IllegalArgumentException();
 		}
 		this.standardJobs.add(standardjob);
-	}
-	
-	/**
-	 * Add the given job to history
-	 */
-	protected void addToHistory(Optional<IJob> job) {
-		this.addToList(job, history);
 	}
 	
 	/**
@@ -114,16 +104,7 @@ public abstract class SchedulingAlgorithm {
 	 * @throws IllegalArgumentException
 	 * 			thrown when one or more of the parameters are null
 	 */
-	public abstract void setEstimatedTime(IJob job, ImmutableClock currentTime) ;
-	
-	/**
-	 * returns a list of all the jobs currently on the assembly line
-	 */
-	public List<Optional<IJob>> getHistory() {
-		ArrayList<Optional<IJob>> historyCopy = new ArrayList<>();
-		historyCopy.addAll(this.history);
-		return Collections.unmodifiableList(historyCopy);
-	}
+	public abstract void setEstimatedTime(IJob job, ImmutableClock currentTime, ArrayList<Optional<IJob>> jobsOnAssemblyLine) ;
 	
 	protected IJob getJobWithHighestWorkBenchIndex() {
 		int index = this.workBenchTypes.size() - 1;
@@ -140,7 +121,6 @@ public abstract class SchedulingAlgorithm {
 		return null;
 	}
 	
-	//TODO: List of workBenchTypes meegeven
 	protected int getMaximum(List<Optional<IJob>> list) {
 		int biggest = 0;
 		int index = 0;
@@ -168,12 +148,9 @@ public abstract class SchedulingAlgorithm {
 	/**
 	 * The scheduling algorithm tries to find the best job in the circumstances to be scheduled at the current time
 	 * this Job is returned, if no job is found an error is thrown.
-	 * 
-	 * @throws NoSuitableJobFoundException
-	 * 			Thrown when no job can be scheduled this day
 	 */
-	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime) 
-			throws NoSuitableJobFoundException;
+	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
+												ArrayList<Optional<IJob>> jobsOnAssemblyLine);
 	
 	/**
 	 * The scheduling algorithm will look for custom jobs that can be placed in a time saving way.
@@ -194,7 +171,7 @@ public abstract class SchedulingAlgorithm {
 	 * @throws IllegalArgumentException
 	 * 			Thrown when one or more of the parameters are null
 	 */
-	public abstract void transform(PriorityQueue<IJob> customjobs, List<IJob> standardjobs, List<Optional<IJob>> history);
+	public abstract void transform(PriorityQueue<IJob> customjobs, List<IJob> standardjobs);
 
 	public List<IJob> removeUnscheduledJobs() {
 		List<IJob> allJobs = new ArrayList<>();

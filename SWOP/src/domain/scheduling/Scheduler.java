@@ -61,9 +61,9 @@ public class Scheduler implements ObservesClock {
 	 * 
 	 * @param	job to be added to the currently used SchedulingAlgorithm
 	 */
-	public void addJobToAlgorithm(IJob job) {
+	public void addJobToAlgorithm(IJob job, ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		this.schedulingAlgorithm.addJobToAlgorithm(job);
-		schedulingAlgorithm.setEstimatedTime(job, internalClock);
+		schedulingAlgorithm.setEstimatedTime(job, internalClock, jobsOnAssemblyLine);
 	}
 
 	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, List<WorkBenchType> workBenchTypes) {
@@ -72,9 +72,8 @@ public class Scheduler implements ObservesClock {
 		} else {
 			PriorityQueue<IJob> customJobs = this.schedulingAlgorithm.getCustomJobs();
 			List<IJob> standardJobs = this.schedulingAlgorithm.getStandardJobs();
-			List<Optional<IJob>> history = this.schedulingAlgorithm.getHistory();
 			this.schedulingAlgorithm = creator.createSchedulingAlgorithm(workBenchTypes);
-			this.schedulingAlgorithm.transform(customJobs, standardJobs, history);
+			this.schedulingAlgorithm.transform(customJobs, standardJobs);
 		}
 	}
 
@@ -84,11 +83,11 @@ public class Scheduler implements ObservesClock {
 	 * @throws NoSuitableJobFoundException
 	 * 		Thrown when there're no more jobs.
 	 */
-	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException{
+	public Optional<IJob> retrieveNextJob(ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
 		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
 				- this.internalClock.getMinutes();
-		return this.schedulingAlgorithm.retrieveNext(minutesTillEndOfDay, internalClock);
+		return this.schedulingAlgorithm.retrieveNext(minutesTillEndOfDay, internalClock, jobsOnAssemblyLine);
 	}
 
 	/**
