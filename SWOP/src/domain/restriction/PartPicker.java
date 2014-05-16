@@ -250,7 +250,7 @@ public class PartPicker {
 	 * 			Thrown when there is no VehicleSpecification that belongs to the specificationName.
 	 */
 	public VehicleSpecification getSpecification(String specificationName) {
-		VehicleSpecification specification = getCatalogue().getCatalogue().get(specificationName);
+		VehicleSpecification specification = getVehicleSpecificationCatalogue().getCatalogue().get(specificationName);
 		if(specification==null){
 			throw new IllegalArgumentException();
 		}
@@ -261,13 +261,13 @@ public class PartPicker {
 	 * Get all the names of the VehicleSpecifications.
 	 */
 	public Set<String> getVehicleSpecifications() {
-		return Collections.unmodifiableSet(getCatalogue().getCatalogue().keySet());
+		return Collections.unmodifiableSet(getVehicleSpecificationCatalogue().getCatalogue().keySet());
 	}
 
 	/**
 	 * Get the VehicleSpecificationCatalogue.
 	 */
-	public VehicleSpecificationCatalogue getCatalogue() {
+	public VehicleSpecificationCatalogue getVehicleSpecificationCatalogue() {
 		return catalogue;
 	}
 	

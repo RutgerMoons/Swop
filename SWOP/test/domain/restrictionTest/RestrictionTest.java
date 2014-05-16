@@ -68,7 +68,7 @@ public class RestrictionTest {
 	public void testContstructor(){
 		assertNotNull(picker.getBindingRestrictions());
 		assertNotNull(picker.getOptionalRestrictions());
-		assertNotNull(picker.getCatalogue());
+		assertNotNull(picker.getVehicleSpecificationCatalogue());
 	}
 
 	@Test

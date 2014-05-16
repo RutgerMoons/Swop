@@ -66,17 +66,20 @@ public class Company {
 	 * 			List of OptionalRestrictions necessary for the internal PartPicker
 	 * 
 	 * @param 	customCatalogue
-	 * 			Catalogue for CustomOrders, this catalogue contains all the possible sorts of CustomOrders this Company can process.
+	 * 			Catalogue for CustomOrders, this catalogue contains all the possible sorts of CustomOrders this Company can process
 	 * 
 	 * @param 	vehicleSpecificationCatalogue
 	 * 			Catalogue for StandardOrders, this catalogue contains all the different possible kinds of StandardOrders that
-	 * 			this Company can process.
+	 * 			this Company can process
 	 * 
 	 * @param 	listOfAssemblyLines
-	 * 			A list with all the AssemblyLines for this Company.
+	 * 			A list with all the AssemblyLines for this Company
 	 * 
 	 * @param 	clock
-	 * 			A clock necessary for keeping track of time.s
+	 * 			A clock necessary for keeping track of time
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null
 	 */
 	public Company(Set<BindingRestriction> bindingRestrictions, Set<OptionalRestriction> optionalRestrictions, 
 			CustomVehicleCatalogue customCatalogue, VehicleSpecificationCatalogue vehicleSpecificationCatalogue, 
@@ -109,11 +112,16 @@ public class Company {
 	 * Add a Part to the Vehicle that is being built.
 	 * 
 	 * @param 	part
-	 * 			The part you want to add to the model.
+	 * 			The part you want to add to the model
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the part is null
 	 */
 	public void addPartToModel(VehicleOption part){
-		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
-		this.partpicker.getModel().addVehicleOption(option);
+		if(part==null){
+			throw new IllegalArgumentException();
+		}
+		this.partpicker.addCarPartToModel(part);
 	}
 
 	/**
@@ -127,12 +135,18 @@ public class Company {
 	 *          The workbench on which a certain task of a job is assembled
 	 * 
 	 * @param 	task
-	 *          The Task in the Job on the Workbench.
+	 *          The Task in the Job on the Workbench
 	 * 
 	 * @param 	time
-	 *          The time the clock has to be advanced.
+	 *          The time the clock has to be advanced
+	 *          
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time){
+		if(assemblyLine==null || workbench==null || task==null || clock==null){
+			throw new IllegalArgumentException();
+		}
 		int currentAmountOfMinutesAtScheduler = this.workloadDivider.completeChosenTaskAtChosenWorkBench(
 																		assemblyLine, workbench, task, time);
 		int difference = currentAmountOfMinutesAtScheduler - this.clock.getMinutes();
@@ -150,8 +164,13 @@ public class Company {
 	 * 
 	 * @param 	role
 	 *          The role of the User
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null or is empty
 	 */
 	public void createAndAddUser(String userName, String role){
+		if(userName==null || userName.isEmpty() || role==null || role.isEmpty()){
+			throw new IllegalArgumentException();
+		}
 		this.userbook.createUser(userName, role);
 	}
 
@@ -161,13 +180,19 @@ public class Company {
 	 * @param 	realModel
 	 *          The specification the PartPicker has to take into account when
 	 *          creating the Vehicle
+	 *          
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when realModel is null
 	 */
 	public void createNewVehicle(VehicleSpecification realModel) {
+		if(realModel==null){
+			throw new IllegalArgumentException();
+		}
 		this.partpicker.setNewModel(realModel);
 	}
 
 	/**
-	 * Returns an unmodifiable list with the AccessRights of the User that is currently logged in.
+	 * Returns a list with the AccessRights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
 		return Collections.unmodifiableList(this.userbook.getCurrentUser().getAccessRights());
@@ -178,10 +203,16 @@ public class Company {
 	 * 
 	 * @param 	specificationName
 	 * 			The name of the specification needed to retrieve the VehicleSpecification from
-	 * 			the VehicleSpecificationCatalogue.
+	 * 			the VehicleSpecificationCatalogue
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the specificationName is null or is empty
 	 */
 	public VehicleSpecification getVehicleSpecificationFromCatalogue(String specificationName) {
-		return this.partpicker.getCatalogue().getCatalogue().get(specificationName);
+		if(specificationName==null || specificationName.isEmpty()){
+			throw new IllegalArgumentException();
+		}
+		return this.partpicker.getVehicleSpecificationCatalogue().getCatalogue().get(specificationName);
 	}
 
 	/**
@@ -199,8 +230,14 @@ public class Company {
 	 * 
 	 * @throws 	RoleNotYetAssignedException
 	 * 			Thrown when it's the first time that this user logs in
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the userName is null or is empty
 	 */
 	public void login(String userName) throws RoleNotYetAssignedException{
+		if(userName==null || userName.isEmpty()){
+			throw new IllegalArgumentException();
+		}
 		this.userbook.login(userName);
 	}
 
@@ -221,13 +258,16 @@ public class Company {
 	/**
 	 * Switches the scheduling algorithm based on the information
 	 * given in the ScedulingAlgoritmeCreator object.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the creator is null
 	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
 		this.workloadDivider.switchToSchedulingAlgorithm(creator);
 	}
 
 	/**
-	 * Returns a list of unmodifiable AssemblyLines.
+	 * Get all the AssemblyLines.
 	 */
 	public List<IAssemblyLine> getAssemblyLines() {
 		return Collections.unmodifiableList(workloadDivider.getAssemblyLines());
@@ -238,9 +278,15 @@ public class Company {
 	 * 
 	 * @param 	specificationName
 	 * 			The name of the specification. This is needed to retrieve 
-	 * 			the associated VehicleSpecification.
+	 * 			the associated VehicleSpecification
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the specificationName is null or is empty
 	 */
 	public VehicleSpecification getVehicleSpecification(String specificationName) {
+		if(specificationName==null || specificationName.isEmpty()){
+			throw new IllegalArgumentException();
+		}
 		return partpicker.getSpecification(specificationName);
 	}
 
@@ -259,9 +305,15 @@ public class Company {
 	}
 
 	/**
-	 * Get a list of the completed Orders of the User that is currently logged in. 
+	 * Get a list of the completed Orders of the User that is currently logged in.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the name is null or is empty
 	 */
 	public List<IOrder> getCompletedOrders(String name) {
+		if(name==null || name.isEmpty()){
+			throw new IllegalArgumentException();
+		}
 		return Collections.unmodifiableList(new ArrayList<IOrder>(orderbook.getCompletedOrders().get(name)));
 	}
 
@@ -277,19 +329,43 @@ public class Company {
 	 * 
 	 * @param 	type
 	 * 			The type of the VehicleOption that has to be selected 
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the type is null
 	 */
 	public List<VehicleOption> getStillAvailableCarParts(VehicleOptionCategory type) {
+		if(type==null){
+			throw new IllegalArgumentException();
+		}
 		return Collections.unmodifiableList(partpicker.getStillAvailableCarParts(type));
 	}
 
 	/**
 	 * Get a list of pending Orders of the User that is currently logged in.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the name is null or is empty
 	 */
 	public List<IOrder> getPendingOrders(String name) {
+		if(name==null || name.isEmpty()){
+			throw new IllegalArgumentException();
+		}
 		return Collections.unmodifiableList(new ArrayList<IOrder>(orderbook.getPendingOrders().get(name)));
 	}
 
+	/**
+	 * Get the Custom tasks of a certain description.
+	 * 
+	 * @param 	taskDescription
+	 * 			The description that matches the custom tasks		
+	 * 	
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the taskDescription is null or is empty
+	 */
 	public Collection<CustomVehicle> getSpecificCustomTasks(String taskDescription) {
+		if(taskDescription==null || taskDescription.isEmpty()){
+			throw new IllegalArgumentException();
+		}
 		return Collections.unmodifiableCollection(customCatalogue.getCatalogue().get(taskDescription));
 	}
 
@@ -308,7 +384,7 @@ public class Company {
 	}
 
 	/**
-	 * Returns an unmodifiable list with how many Vehicles were produced for a certain amount of 
+	 * Get a list with how many Vehicles were produced for a certain amount of 
 	 * last days. This amount is decided by amountOfDetailedHistory, an 
 	 * attribute of the company.
 	 */
@@ -338,7 +414,7 @@ public class Company {
 	}
 
 	/**
-	 * Returns an unmodifiable list with the lastest Delays. The size of this list
+	 * Get the list with the latest Delays. The size of this list
 	 * is decided by amountOfDetailedHistory, an attribute of the company.
 	 */
 	public List<Delay> getDetailedDelays(){
@@ -352,6 +428,9 @@ public class Company {
 		return Collections.unmodifiableList(detailedList);
 	}
 
+	/**
+	 * Get the current time.
+	 */
 	public ImmutableClock getUnmodifiableClock() {
 		return clock.getImmutableClock();
 	}
@@ -360,9 +439,15 @@ public class Company {
 	 * Method that adds the given Order to the OrderBook.
 	 * 
 	 * @param 	order
-	 * 			Order that needs to be added to the OrderBook.
+	 * 			Order that needs to be added to the OrderBook
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the order is null
 	 */
 	public void addOrder(CustomOrder order) {
+		if(order==null){
+			throw new IllegalArgumentException();
+		}
 		orderbook.addOrder(order);
 	}
 
@@ -371,8 +456,14 @@ public class Company {
 	 * 
 	 * @param 	quantity
 	 * 			The amount of vehicles the user wants to order
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the quantity is less than or equal to zero
 	 */
 	public ImmutableClock processOrder(int quantity) {
+		if(quantity<=0){
+			throw new IllegalArgumentException();
+		}
 		Vehicle vehicle = partpicker.getModel();
 		if (!vehicle.isValid())
 			throw new IllegalStateException();
@@ -385,7 +476,7 @@ public class Company {
 	}
 
 	/**
-	 * Returns a immutable powerset with all the VehicleOptions 
+	 * Returns a powerset with all the VehicleOptions 
 	 * or sets of VehicleOptions that occur in three or more pending Orders.
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
