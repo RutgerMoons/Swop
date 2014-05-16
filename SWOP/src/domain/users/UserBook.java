@@ -7,7 +7,7 @@ import java.util.Map;
 import domain.exception.RoleNotYetAssignedException;
 
 /**
- * Class that is responsible for keeping track of all the users in the system.
+ * A class representing a book with all the Users. It's responsible for keeping track of all the Users in the system.
  */
 public class UserBook {
 	
@@ -18,10 +18,11 @@ public class UserBook {
 	public UserBook(){
 		factory = new UserFactory();
 	}
+	
 	/**
-	 * Returns the User Book
+	 * Returns the User Book.
 	 * 
-	 * @return A HashMap containing the values in the user book
+	 * @return A  unmodifiable HashMap containing the values in the user book
 	 */
 	public Map<String, User> getUserBook() {
 		return Collections.unmodifiableMap(userBook);
@@ -30,7 +31,8 @@ public class UserBook {
 	
 	/**
 	 * Method for creating a new user given his name and role.
-	 * @pre UserBook does not contain the combination of name and role.
+	 * 
+	 * @pre UserBook does not contain the combination of name and role
 	 */
 	public void createUser(String userName, String role){
 		User user = this.factory.createUser(userName, role);
@@ -38,8 +40,8 @@ public class UserBook {
 	}
 	
 	/**
-	 * Method for adding a new user to the hashmap. The method
-	 * checks if the user is a valid user. When the user is already in the hashmap/userbook,
+	 * Method for adding a new user to the UserBook. The method
+	 * checks if the user is a valid user. When the user is already in the UserBook,
 	 * nothing happens.
 	 */
 	public void addUser(User user) {
@@ -51,21 +53,21 @@ public class UserBook {
 	}
 	
 	/**
-	 * Returns the current user
+	 * Returns the current user.
 	 */
 	public User getCurrentUser() {
 		return currentUser;
 	}
 	
 	/**
-	 * Looks up the given name. If a user is found, it's returned,
+	 * Looks up the given name. If a User is found, it's returned,
 	 * else a RoleNotYetAssignedException is thrown.
 	 * 
-	 * @param name
+	 * @param 	name
 	 * 			The name of the user to look for
 	 * 
-	 * @throws RoleNotYetAssignedException
-	 * 			Thrown when the given name has no role asigned to it yet
+	 * @throws 	RoleNotYetAssignedException
+	 * 			Thrown when the given name has no role assigned to it yet
 	 */
 	public void login(String name) throws RoleNotYetAssignedException {
 		if (name == null) {
@@ -80,10 +82,9 @@ public class UserBook {
 	}
 	
 	/**
-	 * logs the user out
+	 * Logs the User out
 	 */
 	public void logout() {
 		this.currentUser = null;
 	}
-	
 }

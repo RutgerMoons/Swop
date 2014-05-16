@@ -4,8 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents a single User. 
- * 
+ * A class representing a single User. A User has a name and a list of AccessRights. 
  */
 public class User {
 
@@ -14,10 +13,16 @@ public class User {
 
 	/**
 	 * Each user has a name. This name is given when a new User is constructed. 
-	 * A user might also have some accessrights it can use to perform some use case.
+	 * A user might also have some AccessRights it can use to perform some use case.
 	 * 
-	 * @throws IllegalArgumentException
-	 *             if name == null or isEmpty or AccessRights == null
+	 * @param	name
+	 * 			The name of the new User
+	 * 
+	 * @param 	accessRights
+	 * 			List of AccessRights for the user 
+	 * 
+	 * @throws 	IllegalArgumentException
+	 *          Thrown when name is null or empty or thrown when accessRights is null
 	 */
 	public User(String name, List<AccessRight> accessRights)
 			throws IllegalArgumentException {
@@ -29,14 +34,14 @@ public class User {
 	}
 
 	/**
-	 * Retrieving the name of the user.
+	 * Returns the name of the user.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * returns the access rights
+	 * Returns an unmodifiable list of the AccessRights.
 	 */
 	public List<AccessRight> getAccessRights() {
 		return Collections.unmodifiableList(accessRights);
@@ -66,5 +71,4 @@ public class User {
 			return false;
 		return true;
 	}
-
 }
