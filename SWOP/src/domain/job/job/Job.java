@@ -13,11 +13,8 @@ import domain.order.order.IOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
-
 /**
- * 
- * Represents a Job. A Job is actually 1 car.
- * 
+ * Class representing a Job. A Job is an implementation of IJob.
  */
 public class Job implements IJob {
 
@@ -26,13 +23,13 @@ public class Job implements IJob {
 	private int minimalIndex;
 
 	/**
-	 * Construct a new Job
+	 * Construct a new Job given the parameter order.
 	 * 
 	 * @param 	order
-	 *            The order on which the Job is based
+	 *          The order on which the Job is based
 	 *            
 	 * @throws 	IllegalArgumentException
-	 *             if order==null
+	 *          Thrown when the given Order is null
 	 */
 	public Job(IOrder order) {
 		setOrder(order);
@@ -99,11 +96,11 @@ public class Job implements IJob {
 			return false;
 		IJob other;
 		try{
-			other = (IJob) obj; //IJob ipv Job
+			other = (IJob) obj;
 		} catch (ClassCastException e){
 			return false;
 		}
-		if (!order.equals(other.getOrder()))//other.getOrder()
+		if (!order.equals(other.getOrder()))
 			return false;
 		if(!getTasks().equals(other.getTasks()))
 			return false;

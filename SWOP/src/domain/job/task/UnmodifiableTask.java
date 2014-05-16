@@ -8,18 +8,17 @@ import domain.job.action.IAction;
 
 
 /**
- * Create an Immutable Task, only the getters are accessible.
- *
+ * Class representing an unmodifiable Task. It implements ITask where only the getters are accessible.
  */
 public class UnmodifiableTask implements ITask{
 
 	private ITask task;
 
 	/**
-	 * Create an Immutable Task
+	 * Create an unmodifiable task given an ITask.
 	 * 
 	 * @param 	task
-	 * 				The mutable Task
+	 * 			The mutable Task
 	 */
 	public UnmodifiableTask(ITask task){
 		if(task==null)

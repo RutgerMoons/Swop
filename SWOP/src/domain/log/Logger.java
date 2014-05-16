@@ -10,9 +10,11 @@ import domain.order.Delay;
 import domain.order.order.IOrder;
 
 /**
- * This object keeps track of completed orders and their delays. It also keeps track
- * of the amount of completed orders per day and provides the methods to calculate the mean and median
- * of all the accumulated data.
+ * Class representing an object who keeps track of completed orders and their delays. 
+ * It also keeps track of the amount of completed orders per day and the amount of delays. Moreover it
+ * provides the methods to calculate the mean and median of all the accumulated data. 
+ * Logger is subscribed on ObservesClock and on ObservesAssemblyLine and will be notified each time the Clock is 
+ * changed and each time an Job rolls of the AssemblyLine. 
  */
 public class Logger implements ObservesClock, ObservesAssemblyLine {
 
@@ -21,30 +23,30 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	private ImmutableClock currentTime;
 
 	/**
-	 * A new logger is constructed:
+	 * A new Logger is constructed.
 	 * 
-	 * @param 	numberOfDaysOfDetailedHistory
-	 * 				This number represents the degree of detail
+	 * @param 	amountOfDetails
+	 * 			This number represents the degree of detail
 	 *
 	 * @throws 	IllegalArgumentException
-	 * 				Exception is thrown when numbersOfDaysOfDetailedHistory is smaller than 1
+	 * 			Exception is thrown when amountOfDetails is smaller than 1
 	 */
-	public Logger(int numberOfDaysOfDetailedHistory) {
-		if(numberOfDaysOfDetailedHistory < 1 ){
+	public Logger(int amountOfDetails) {
+		if(amountOfDetails < 1 ){
 			throw new IllegalArgumentException();
 		}
-		this.logHistoryDays = new LogHistoryDays(numberOfDaysOfDetailedHistory);
-		this.logHistoryDelays = new LogHistoryDelays(numberOfDaysOfDetailedHistory);
+		this.logHistoryDays = new LogHistoryDays(amountOfDetails);
+		this.logHistoryDelays = new LogHistoryDelays(amountOfDetails);
 	}
 
 	/**
 	 * Method for updating the current time.
 	 * 
 	 * @param 	currentTime
-	 * 				The new value for the current time
+	 * 			The new value for the current time
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 				Exception is thrown when currentTime is null
+	 * 			Exception is thrown when currentTime is null
 	 */
 	@Override
 	public void advanceTime(ImmutableClock currentTime) {
@@ -54,6 +56,9 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 		this.currentTime = currentTime;
 	}
 
+	/**
+	 * Retrieves the current time of the logger.  
+	 */
 	public ImmutableClock getCurrentTime(){
 		return this.currentTime;
 	}
@@ -71,7 +76,12 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	/**
 	 * The delay of the order is calculated and the helper objects are notified of the newly completed order
 	 * and the associated delay.
-	 * This method throws an IllegalArgumentException when the parameter is null.
+	 * 
+	 * @param	order
+	 * 			The order of the Job that just has been completed
+	 * 
+	 * @throws 	IllegalArgumentException 
+	 * 			Thrown when the parameter is null.
 	 */
 	@Override
 	public void updateCompletedOrder(IOrder order) {
@@ -81,11 +91,11 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 		ImmutableClock estimatedTimeOfCompletion = order.getEstimatedTime();
 		Delay delay = new Delay(estimatedTimeOfCompletion, this.currentTime);
 		this.logHistoryDelays.addNewDelay(delay);
-		this.logHistoryDays.incrementAmountOfCarsProducedToday();
+		this.logHistoryDays.incrementAmountOfVehiclesProducedToday();
 	}
 
 	/**
-	 * Method for computing the median of completed orders in a day
+	 * Method for computing the median of completed Orders in a day.
 	 */
 	public int medianDays() {
 		List<Integer> completeDays = logHistoryDays.getCompleteHistory();
@@ -93,7 +103,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the median of delays
+	 * Method for computing the median of Delays.
 	 */
 	public int medianDelays() {
 		List<Integer> completeDelays = logHistoryDelays.getCompleteHistory();
@@ -113,7 +123,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the average of completed orders in a day
+	 * Method for computing the average of completed Orders in a day.
 	 */
 	public int averageDays() {
 		List<Integer> completeDays = logHistoryDays.getCompleteHistory();
@@ -121,7 +131,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Method for computing the average of delays
+	 * Method for computing the average of Delays.
 	 */
 	public int averageDelays() {
 		List<Integer> completeDelays = logHistoryDelays.getCompleteHistory();
@@ -140,12 +150,17 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 		return sum/list.size();
 	}
 
+	/**
+	 * Returns an unmodifiable list of all the detailed days.  
+	 */
 	public List<Integer> getDetailedDays() {
 		return Collections.unmodifiableList(logHistoryDays.getHistory());
 	}
 
+	/**
+	 * Returns an unmodifiable list of all the detailed Delays. 
+	 */
 	public List<Delay> getDetailedDelays() {
 		return Collections.unmodifiableList(logHistoryDelays.getHistory());
 	}
-
 }
