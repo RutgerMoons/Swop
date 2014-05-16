@@ -121,7 +121,7 @@ public class PartPicker {
 			}
 
 		}
-		return Collections.unmodifiableCollection(availableParts);
+		return availableParts;
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class PartPicker {
 				availableParts.add(option);
 			}
 		}
-		return Collections.unmodifiableCollection(availableParts);
+		return availableParts;
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class PartPicker {
 			}
 		}
 
-		return Collections.unmodifiableCollection(availableParts);
+		return availableParts;
 	}
 
 	/**
