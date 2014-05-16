@@ -84,14 +84,14 @@ public class Company {
 	}
 
 	/**
-	 * Add a Part to the CarModel that is being built.
+	 * Add a Part to the Vehicle that is being built.
 	 * 
 	 * @param 	part
-	 * 				The part you want to add to the model.
+	 * 			The part you want to add to the model.
 	 */
 	public void addPartToModel(VehicleOption part){
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
-		this.partpicker.getModel().addCarPart(option);
+		this.partpicker.getModel().addVehicleOption(option);
 	}
 
 	/**
@@ -99,16 +99,16 @@ public class Company {
 	 * automatically advances the AssemblyLine if it can advance.
 	 * 
 	 * @param 	assemblyLine
-	 * 			  The assemblyLine on which a certain task of a job is assembled
+	 * 			The assemblyLine on which a certain task of a job is assembled
 	 * 
 	 * @param 	workBench
-	 *            The workbench on which a certain task of a job is assembled
+	 *          The workbench on which a certain task of a job is assembled
 	 * 
 	 * @param 	task
-	 *            The Task in the Job on the Workbench.
+	 *          The Task in the Job on the Workbench.
 	 * 
 	 * @param 	time
-	 *            The time the clock has to be advanced.
+	 *          The time the clock has to be advanced.
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time){
 		this.workloadDivider.completeChosenTaskAtChosenWorkBench(assemblyLine, workbench, task);
@@ -121,10 +121,10 @@ public class Company {
 	 * logs the newly created user in.
 	 * 
 	 * @param 	userName
-	 *            The newly chosen userName
+	 *          The newly chosen userName
 	 * 
 	 * @param 	role
-	 *            The role of the User
+	 *          The role of the User
 	 */
 	public void createAndAddUser(String userName, String role){
 		this.userbook.createUser(userName, role);
@@ -134,15 +134,15 @@ public class Company {
 	 * Create a new Vehicle that has to be created from scratch.
 	 * 
 	 * @param 	realModel
-	 *            The specification the PartPicker has to take into account when
-	 *            creating the Vehicle
+	 *          The specification the PartPicker has to take into account when
+	 *          creating the Vehicle
 	 */
 	public void createNewVehicle(VehicleSpecification realModel) {
 		this.partpicker.setNewModel(realModel);
 	}
 
 	/**
-	 * Get the AccessRights of the User that is currently logged in.
+	 * Returns an unmodifiable list with the AccessRights of the User that is currently logged in.
 	 */
 	public List<AccessRight> getAccessRights() {
 		return Collections.unmodifiableList(this.userbook.getCurrentUser().getAccessRights());
@@ -152,71 +152,114 @@ public class Company {
 	 * Get the VehicleSpecification from the VehicleSpecificationCatalogue.
 	 * 
 	 * @param 	specificationName
-	 * 				The name of the specification needed to retrieve the VehicleSpecification from
-	 * 				the VehicleSpecificationCatalogue.
+	 * 			The name of the specification needed to retrieve the VehicleSpecification from
+	 * 			the VehicleSpecificationCatalogue.
 	 */
 	public VehicleSpecification getVehicleSpecificationFromCatalogue(String specificationName) {
 		return this.partpicker.getCatalogue().getCatalogue().get(specificationName);
 	}
 
+	/**
+	 * Returns the name of the currently used Scheduling Algorithm.
+	 */
 	public String getCurrentSchedulingAlgorithm() {
 		return this.workloadDivider.getCurrentSchedulingAlgorithm();
 	}
 
+	/**
+	 * Login with a userName.
+	 * 
+	 * @param 	userName
+	 * 			The name of the user
+	 * 
+	 * @throws 	RoleNotYetAssignedException
+	 * 			Thrown when it's the first time that this user logs in
+	 */
 	public void login(String userName) throws RoleNotYetAssignedException{
 		this.userbook.login(userName);
 	}
 
+	/**
+	 * Log the current user out.
+	 */
 	public void logout(){
 		this.userbook.logout();
 	}
 
+	/**
+	 * Advance the clock to the next day.
+	 */
 	public void startNewDay(){
 		this.clock.startNewDay();
 	}
 
+	/**
+	 * Switches the scheduling algorithm based on the information
+	 * given in the ScedulingAlgoritmeCreator object.
+	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
 		this.workloadDivider.switchToSchedulingAlgorithm(creator);
 	}
 
+	/**
+	 * Returns a list of unmodifiable AssemblyLines.
+	 */
 	public List<IAssemblyLine> getAssemblyLines() {
 		return Collections.unmodifiableList(workloadDivider.getAssemblyLines());
 	}
 
 	/**
-	 * Get the workbenches which are blocking the AssemblyLine from advancing.
-	 * @return
-	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
+	 * Get the VehicleSpecification from the VehicleSpecificationCatalogue.
+	 * 
+	 * @param 	specificationName
+	 * 			The name of the specification. This is needed to retrieve 
+	 * 			the associated VehicleSpecification.
 	 */
-	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
-		// workloadDivider returnt een lijst van UnmodifiableWorkbenches
-		return Collections.unmodifiableList(workloadDivider.getBlockingWorkBenches(assemblyLine));
-	}
-
 	public VehicleSpecification getVehicleSpecification(String specificationName) {
 		return partpicker.getSpecification(specificationName);
 	}
 
+	/**
+	 * Get a set of all the VehicleSpecifications that the VehicleSpecificationCatalogue has.
+	 */
 	public Set<String> getVehicleSpecifications() {
 		return Collections.unmodifiableSet(partpicker.getVehicleSpecifications());
 	}
 
+	/**
+	 * Returns the name of the current User.
+	 */
 	public String getCurrentUser() {
 		return userbook.getCurrentUser().getName();
 	}
 
+	/**
+	 * Get a list of the completed Orders of the User that is currently logged in. 
+	 */
 	public Collection<IOrder> getCompletedOrders(String name) {
 		return Collections.unmodifiableCollection(orderbook.getCompletedOrders().get(name));
 	}
 
+	/**
+	 * Get a list of available CustomTasks from the CustomVehicleCatalogue. 
+	 */
 	public Set<String> getCustomTasksDescription() {
 		return Collections.unmodifiableSet(customCatalogue.getCatalogue().keySet());
 	}
 
+	/**
+	 * Get the still available VehicleOptions for the model that is being built. 
+	 * 
+	 * @param 	type
+	 * 			The type of the VehicleOption that has to be selected 
+	 */
 	public List<VehicleOption> getStillAvailableCarParts(VehicleOptionCategory type) {
 		return Collections.unmodifiableList(partpicker.getStillAvailableCarParts(type));
 	}
 
+	/**
+	 * Get a list of pending Orders of the User that is currently logged in.
+	 */
 	public Collection<IOrder> getPendingOrders(String name) {
 		return Collections.unmodifiableCollection(orderbook.getPendingOrders().get(name));
 	}
@@ -225,14 +268,25 @@ public class Company {
 		return Collections.unmodifiableCollection(customCatalogue.getCatalogue().get(taskDescription));
 	}
 
+	/**
+	 * Returns the average amount of Vehicles produced.
+	 */
 	public int getAverageDays() {
 		return log.averageDays();
 	}
 
+	/**
+	 * Returns the median amount of Vehicles produced.
+	 */
 	public int getMedianDays(){
 		return log.medianDays();
 	}
 
+	/**
+	 * Returns an unmodifiable list with how many Vehicles were produced for a certain amount of 
+	 * last days. This amount is decided by amountOfDetailedHistory, an 
+	 * attribute of the company.
+	 */
 	public List<Integer> getDetailedDays(){
 		List<Integer> detailedList = new ArrayList<>();
 		detailedList.addAll(log.getDetailedDays());
@@ -244,14 +298,24 @@ public class Company {
 		return Collections.unmodifiableList(detailedList);
 	}
 
+	/**
+	 * Returns the average amount of Delays when Vehicles were produced.
+	 */
 	public int getAverageDelays(){
 		return log.averageDelays();
 	}
 
+	/**
+	 * Returns the median amount of Delays when Vehicles were produced.
+	 */
 	public int getMedianDelays(){
 		return log.medianDelays();
 	}
 
+	/**
+	 * Returns an unmodifiable list with the lastest Delays. The size of this list
+	 * is decided by amountOfDetailedHistory, an attribute of the company.
+	 */
 	public List<Delay> getDetailedDelays(){
 		List<Delay> detailedList = new ArrayList<>();
 		detailedList.addAll(log.getDetailedDelays());
@@ -283,10 +347,26 @@ public class Company {
 		return order.getEstimatedTime();
 	}
 
+	/**
+	 * Returns a immutable powerset with all the VehicleOptions 
+	 * or sets of VehicleOptions that occur in three or more pending Orders.
+	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		return Collections.unmodifiableSet(this.workloadDivider.getAllCarOptionsInPendingOrders());
 	}
 
+	/**
+	 * Changes the State of a given AssemblyLine to the given AssemblyLineState.
+	 * 
+	 * @param 	assemblyLine
+	 * 			The AssemblyLine which state needs to be changed by the user
+	 * 
+	 * @param 	state
+	 * 			This AssemblyLineState will be the new state of the given AssemblyLine
+	 * 
+	 * @param 	clock
+	 * 			The current time 
+	 */
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state, ImmutableClock clock) {
 		this.clock.advanceTime(clock.getTotalInMinutes());
 		if(state.equals(AssemblyLineState.MAINTENANCE)){

@@ -38,8 +38,8 @@ public class ImmutableCarModelTest {
 	
 	@Test
 	public void testGetters() throws AlreadyInMapException, UnmodifiableException, NotImplementedException {
-		car.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		car.addCarPart(new VehicleOption("break", VehicleOptionCategory.BODY));
+		car.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		car.addVehicleOption(new VehicleOption("break", VehicleOptionCategory.BODY));
 		
 		car.addForcedOptionalType(new VehicleOption("sport", VehicleOptionCategory.BODY), false);
 		
@@ -50,7 +50,7 @@ public class ImmutableCarModelTest {
 		assertTrue(car.equals(immutable));
 		assertEquals(car.hashCode(), immutable.hashCode());
 		
-		assertEquals(car.getSpecification(), immutable.getSpecification());
+		assertEquals(car.getVehicleSpecification(), immutable.getVehicleSpecification());
 		
 		
 		assertFalse(immutable.getForcedOptionalTypes().get(new VehicleOption("sport", VehicleOptionCategory.BODY)));
@@ -64,7 +64,7 @@ public class ImmutableCarModelTest {
 	
 	@Test(expected=UnmodifiableException.class)
 	public void testImmutable1() throws AlreadyInMapException, UnmodifiableException{
-		immutable.addCarPart(null);
+		immutable.addVehicleOption(null);
 	}
 	
 	@Test(expected=UnmodifiableException.class)
@@ -74,7 +74,7 @@ public class ImmutableCarModelTest {
 	
 	@Test(expected=UnmodifiableException.class)
 	public void testImmutable3() throws UnmodifiableException, NotImplementedException{
-		immutable.setSpecification(null);
+		immutable.setVehicleSpecification(null);
 	}
 	
 	@Test

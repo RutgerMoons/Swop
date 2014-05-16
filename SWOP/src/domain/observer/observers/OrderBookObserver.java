@@ -22,6 +22,9 @@ public class OrderBookObserver {
 	
 	/**
 	 * This logger will be added to the notify list and is subscribed for every notification.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	public void attachLogger(ObservesOrderBook logger) {
 		if (logger == null) {

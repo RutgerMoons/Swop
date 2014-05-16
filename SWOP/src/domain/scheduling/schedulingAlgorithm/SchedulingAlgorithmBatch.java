@@ -239,7 +239,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 		for(IJob job : standardJobs){
 			try {
-				if(job.getOrder().getDescription().getSpecification().getCarParts().values().containsAll(this.vehicleOptions)){
+				if(job.getOrder().getDescription().getVehicleSpecification().getVehicleOptions().values().containsAll(this.vehicleOptions)){
 					this.batchJobs.add(job);
 				}
 				else{

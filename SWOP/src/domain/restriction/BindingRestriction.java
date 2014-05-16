@@ -3,7 +3,7 @@ package domain.restriction;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Class representing a restriction of this kind: "If CarOption 'a' is chosen, CarOption 'b' also has to be chosen."
+ * A class representing a restriction of this kind: "If VehicleOption 'a' is chosen, VehicleOption 'b' also has to be chosen".
  *
  */
 public class BindingRestriction{
@@ -12,8 +12,8 @@ public class BindingRestriction{
 	private VehicleOption restrictedPart;
 	
 	/**
-	 * Create a new bindingrestriction between two CarOptions.
-	 * The restrictedPart is the part that surely has to be added to the CarModel.
+	 * Create a new BindingRestriction between two VehicleOptions.
+	 * The restrictedPart is the part that surely has to be added to the Vehicle.
 	 */
 	public BindingRestriction(VehicleOption chosenPart, VehicleOption restrictedPart){
 		this.chosenPart = chosenPart;
@@ -21,14 +21,14 @@ public class BindingRestriction{
 	}
 
 	/**
-	 * The CarOption that has to be chosen also, in case the other CarOption is chosen.
+	 * The VehicleOption that has to be chosen also, in case the other VehicleOption is chosen.
 	 */
 	public VehicleOption getRestrictedCarPart() {
 		return restrictedPart;
 	}
 
 	/**
-	 * 		The CarOption that, if it is chosen, makes it so that the other CarOption also has to be chosen.
+	 * The VehicleOption that, if it is chosen, makes it so that the other VehicleOption also has to be chosen.
 	 */
 	public VehicleOption getChosenCarPart(){
 		return chosenPart;

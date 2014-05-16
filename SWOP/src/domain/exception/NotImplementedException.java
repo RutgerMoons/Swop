@@ -1,5 +1,9 @@
 package domain.exception;
 
+/**
+ * Class representing an Exception thrown when an function is called on an object who is not supposed
+ * to be able to excecute that function.
+ */
 public class NotImplementedException extends IllegalStateException {
 
 	private static final long serialVersionUID = 1L;

@@ -6,60 +6,61 @@ import domain.exception.UnmodifiableException;
 import domain.job.action.IAction;
 
 /**
- * Interface for limiting access to standard Tasks.
+ * An interface used to represent an Task. An Task consists of an description and a
+ *  list of IActions.
  */
 public interface ITask {
 
 	/**
-	 * Get the Actions that this Task contains
+	 * Get all IActions that this ITask contains.
 	 * 
-	 * @return 	An Immutable list of Actions
+	 * @return 	An unmodifiable list of Actions
 	 */
 	public List<IAction> getActions();
 	
 	/**
-	 * Set the list of Actions that this Task contains
+	 * Set the list of IActions that this ITask contains.
 	 * 
 	 * @throws 	UnmodifiableException 
-	 * 		 	  	If the ITask is an unmodifiable Task
+	 * 		 	Thrown when the ITask is an unmodifiable Task
 	 * 
 	 * @throws 	IllegalArgumentException
-	 *             	If actions==null
+	 *          Thrown when the given list is null
 	 */
 	public void setActions(List<IAction> actions);
 	
 	/**
-	 * Add an Action to this Task
+	 * Add an IAction to this task.
 	 * 
 	 * @throws 	UnmodifiableException 
-	 * 		 	  	If the ITask is an unmodifiable Task
+	 * 		 	Thrown the ITask is an unmodifiable Task
 	 *
 	 * @throws 	IllegalArgumentException
-	 *             	If action==null
+	 *          Thrown when the given IAction is null
 	 */
 	public void addAction(IAction action);
 	
 	/**
-	 * Checks if the Task is completed
+	 * Checks if the ITask is completed.
 	 * 
-	 * @return True if all Actions are completed. False if one or more Actions
-	 *         are completed.
+	 * @return True if all IActions are completed. False if one or more IActions
+	 *         aren't completed.
 	 */
 	public boolean isCompleted();
 	
 	/**
-	 * Get the description of this Task
+	 * Returns the description of this task.
 	 */
 	public String getTaskDescription();
 	
 	/**
-	 * Set the description of this Task
-	 * .
+	 * Set the description of this task.
+	 * 
 	 * @throws 	UnmodifiableException 
-	 * 		 	  	If the ITask is an ImmutableTask
+	 * 		 	Thrown when the ITask is an unmodifiable Task
 	 * 
 	 * @throws 	IllegalArgumentException
-	 *             	If taskDescription==null or isEmpty
+	 *          Thrown when taskDescription is null or empty
 	 */
 	public void setTaskDescription(String taskDescription);
 }

@@ -30,7 +30,7 @@ public class CustomVehicleCatalogueFiller {
 		Multimap<String, CustomVehicle> models = HashMultimap.create();
 		CustomVehicle customSeats = new CustomVehicle();
 		try {
-			customSeats.addCarPart(new VehicleOption("custom", VehicleOptionCategory.SEATS));
+			customSeats.addVehicleOption(new VehicleOption("custom", VehicleOptionCategory.SEATS));
 		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		models.put("installing custom seats", customSeats);
@@ -42,37 +42,37 @@ public class CustomVehicleCatalogueFiller {
 		
 		CustomVehicle black = new CustomVehicle();
 		try {
-			black.addCarPart(new VehicleOption("black", VehicleOptionCategory.COLOR));
+			black.addVehicleOption(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle red = new CustomVehicle();
 		try {
-			red.addCarPart(new VehicleOption("red", VehicleOptionCategory.COLOR));
+			red.addVehicleOption(new VehicleOption("red", VehicleOptionCategory.COLOR));
 		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle blue = new CustomVehicle();
 		try {
-			blue.addCarPart(new VehicleOption("blue", VehicleOptionCategory.COLOR));
+			blue.addVehicleOption(new VehicleOption("blue", VehicleOptionCategory.COLOR));
 		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle white = new CustomVehicle();
 		try {
-			white.addCarPart(new VehicleOption("white", VehicleOptionCategory.COLOR));
+			white.addVehicleOption(new VehicleOption("white", VehicleOptionCategory.COLOR));
 		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle green = new CustomVehicle();
 		try {
-			green.addCarPart(new VehicleOption("green", VehicleOptionCategory.COLOR));
+			green.addVehicleOption(new VehicleOption("green", VehicleOptionCategory.COLOR));
 		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		
 		CustomVehicle yellow = new CustomVehicle();
 		try {
-			yellow.addCarPart(new VehicleOption("yellow", VehicleOptionCategory.COLOR));
+			yellow.addVehicleOption(new VehicleOption("yellow", VehicleOptionCategory.COLOR));
 		} catch (AlreadyInMapException | UnmodifiableException e) {
 		}
 		

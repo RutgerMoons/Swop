@@ -19,8 +19,8 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * TODO doc aanvullen en duidelijker maken
- * A PartPicker has all the tools to compose a Vehicle
+ * A class representing a tool for composing a Vehicle. It contains a list of BindingRestrictions,
+ * a list of OptionalRestrictions, the composed model and a VehicleSpecificationCatalogue.
  */
 public class PartPicker {
 	private Set<BindingRestriction> bindingRestrictions;
@@ -30,23 +30,27 @@ public class PartPicker {
 
 	/**
 	 * Creates a new PartPicker.
+	 *
+	 * @param	catalogue
+	 * 			The VehicleSpecificationCatalogue of the VehicleSpecifications that can be composed
+	 * 			with this PartPicker.
 	 * @param 	bindingRestrictions
-	 * 				The BindingRestrictions which this PartPicker takes into account
+	 * 			The BindingRestrictions which this PartPicker takes into account
 	 * @param 	optionalRestrictions
-	 * 				The OptionalRestrictions which this PartPicker takes into account
+	 * 			The OptionalRestrictions which this PartPicker takes into account
 	 */
 	public PartPicker(VehicleSpecificationCatalogue catalogue, Set<BindingRestriction> bindingRestrictions,
 			Set<OptionalRestriction> optionalRestrictions) {
-		this.setCatalogue(catalogue);
+		this.catalogue = catalogue;
 		setBindingRestrictions(bindingRestrictions);
 		setOptionalRestrictions(optionalRestrictions);
 	}
 
 	/**
-	 * Creates a new Vehicle that will be built according to the VehicleSpecification, by this PartPicker
+	 * Creates a new Vehicle that will be built according to the VehicleSpecification, by this PartPicker.
 	 * 
 	 * @param 	template
-	 * 				The VehicleSpecification according to which this CarModel will be built
+	 * 			The VehicleSpecification according to which this Vehicle will be built
 	 */
 	public void setNewModel(VehicleSpecification template) {
 		for (OptionalRestriction restriction : optionalRestrictions) {
@@ -56,26 +60,26 @@ public class PartPicker {
 	}
 
 	/**
-	 * Adds a VehicleOption to the Vehicle this PartPicker is currently building
+	 * Adds a VehicleOption to the Vehicle this PartPicker is currently building.
 	 * 
 	 * @param 	part
-	 * 				The VehicleOption to be added to the model
+	 * 			The VehicleOption to be added to the model
 	 * 
 	 * @throws 	AlreadyInMapException
-	 * 				If the Vehicle already contains a VehicleOption of the same type
+	 * 			Thrown when the Vehicle already contains a VehicleOption of the same type
 	 */
 	public void addCarPartToModel(VehicleOption part) throws AlreadyInMapException {
-		model.addCarPart(part);
+		model.addVehicleOption(part);
 	}
 
 	/**
-	 * Get the CarOptions of the given CarOptionCategory that can still be chosen for the model
+	 * Get the VehicleOptions of the given VehicleOptionCategory that can still be chosen for the Vehicle, that is being built.
 	 * 
 	 * @param 	type
-	 * 				The VehicleOptionCategory of which the still available VehicleOptions will be returned
+	 * 			The VehicleOptionCategory of which the still available VehicleOptions will be returned
 	 * 
 	 * @return
-	 * 				A Collection that contains the still available VehicleOptions of the given VehicleOptionCategory.
+	 * 			A Collection that contains the still available VehicleOptions of the given VehicleOptionCategory
 	 */
 	public List<VehicleOption> getStillAvailableCarParts(
 			VehicleOptionCategory type) {
@@ -91,9 +95,8 @@ public class PartPicker {
 	}
 
 	/**
-	 * TODO google optionality en vervang het door een beter woord
 	 * Makes sure that the optionality of the correct VehicleOptionCategories is overridden for the current Vehicle, 
-	 * according to the OptionalRestrictions.Also makes sure that if a restriction can't be fulfilled anymore due to 
+	 * according to the OptionalRestrictions. Also makes sure that if a restriction can't be fulfilled anymore due to 
 	 * already chosen parts, the VehicleOption in the first part of the restriction can't be chosen anymore. 
 	 */
 	private Collection<VehicleOption> checkOptionalRestrictions(
@@ -126,7 +129,7 @@ public class PartPicker {
 	 * has been checked with all the BindingRestrictions
 	 * 
 	 * @param 	type
-	 * 				The VehicleOptionCategory of which the still available VehicleOptions will be returned
+	 * 			The VehicleOptionCategory of which the still available VehicleOptions will be returned
 	 * 
 	 * @return  The still available VehicleOptions as a Collection.
 	 */
@@ -138,14 +141,14 @@ public class PartPicker {
 			if (model.getVehicleOptions().values()
 					.contains(restriction.getChosenCarPart())
 					&& restriction.getRestrictedCarPart().getType().equals(type)
-					&& model.getSpecification().getCarParts().values()
+					&& model.getVehicleSpecification().getVehicleOptions().values()
 					.contains(restriction.getRestrictedCarPart())) {
 				availableParts.add(restriction.getRestrictedCarPart());
 			}
 		}
 
 		if (availableParts.isEmpty()){
-			for(VehicleOption option: model.getSpecification().getCarParts().get(type)){
+			for(VehicleOption option: model.getVehicleSpecification().getVehicleOptions().get(type)){
 				availableParts.add(option);
 			}
 		}
@@ -154,18 +157,15 @@ public class PartPicker {
 
 	/**
 	 * Removes VehicleOptions from the Collection of still available VehicleOptions 
-	 * if, due to the already chosen parts in the model,
-	 * a BindingRestriction can't be fulfilled anymore. 
-	 * (If the second part of the  restriction can't be fulfilled anymore, the VehicleOption 
-	 * in the first part is removed from the Collection.)
+	 * if, due to the already chosen parts in the model, a BindingRestriction can't be fulfilled anymore. 
 	 * 
 	 * @param 	type
-	 * 				The VehicleOptionCategory of which the still available parts will be returned
+	 * 			The VehicleOptionCategory of which you want to retrieve the remaining parts of
 	 * @param 	availableParts
-	 * 				The VehicleOptions that were previously selected to still be available
-	 * @return
-	 * 				The VehicleOptions that are still available after the right VehicleOptions are 
-	 * 				removed from the given Collection
+	 * 			The VehicleOptions that were previously selected to still be available
+	 *
+	 * @return	The VehicleOptions that are still available after the right VehicleOptions are 
+	 * 			removed from the given Collection
 	 */
 	private Collection<VehicleOption> removeConflictingBindingParts(
 			VehicleOptionCategory type, Collection<VehicleOption> availableParts) {
@@ -192,14 +192,14 @@ public class PartPicker {
 	}
 
 	/**
-	 * Get the Vehicle that has been built or is being build by the PartPicker
+	 * Get the Vehicle that has been built or is being build by the PartPicker.
 	 */
 	public Vehicle getModel() {
 		return model;
 	}
 
 	/**
-	 * Add a BindingRestriction that the PartPicker has to take into account
+	 * Add a BindingRestriction that the PartPicker has to take into account.
 	 */
 	public void addBindingRestriction(BindingRestriction restriction) {
 		bindingRestrictions.add(restriction);
@@ -207,21 +207,21 @@ public class PartPicker {
 	}
 
 	/**
-	 * Add an OptionalRestriction that the PartPicker has to take into account
+	 * Add an OptionalRestriction that the PartPicker has to take into account.
 	 */
 	public void addOptionalRestriction(OptionalRestriction restriction) {
 		optionalRestrictions.add(restriction);
 	}
 
 	/**
-	 * Get the BindingRestrictions the PartPicker has to take into account
+	 * Get the BindingRestrictions the PartPicker has to take into account.
 	 */
 	public Set<BindingRestriction> getBindingRestrictions() {
 		return Collections.unmodifiableSet(bindingRestrictions);
 	}
 
 	/**
-	 * Set the BindingRestrictions the PartPicker has to take into account
+	 * Set the BindingRestrictions the PartPicker has to take into account.
 	 */
 	public void setBindingRestrictions(
 			Set<BindingRestriction> bindingRestrictions) {
@@ -229,20 +229,26 @@ public class PartPicker {
 	}
 
 	/**
-	 * Get the OptionalRestrictions the PartPicker has to take into account
+	 * Get the OptionalRestrictions the PartPicker has to take into account.
 	 */
 	public Set<OptionalRestriction> getOptionalRestrictions() {
 		return Collections.unmodifiableSet(optionalRestrictions);
 	}
 
 	/**
-	 * Set the OptionalRestrictions the PartPicker has to take into account
+	 * Set the OptionalRestrictions the PartPicker has to take into account.
 	 */
 	public void setOptionalRestrictions(
 			Set<OptionalRestriction> optionalRestrictions) {
 		this.optionalRestrictions = optionalRestrictions;
 	}
 
+	/**
+	 * Get the VehicleSpecification that belongs to the specificationName.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when there is no VehicleSpecification that belongs to the specificationName.
+	 */
 	public VehicleSpecification getSpecification(String specificationName) {
 		VehicleSpecification specification = getCatalogue().getCatalogue().get(specificationName);
 		if(specification==null){
@@ -251,15 +257,18 @@ public class PartPicker {
 		return specification;
 	}
 
+	/**
+	 * Get all the names of the VehicleSpecifications.
+	 */
 	public Set<String> getVehicleSpecifications() {
 		return Collections.unmodifiableSet(getCatalogue().getCatalogue().keySet());
 	}
 
+	/**
+	 * Get the VehicleSpecificationCatalogue.
+	 */
 	public VehicleSpecificationCatalogue getCatalogue() {
 		return catalogue;
 	}
-
-	public void setCatalogue(VehicleSpecificationCatalogue catalogue) {
-		this.catalogue = catalogue;
-	}
+	
 }

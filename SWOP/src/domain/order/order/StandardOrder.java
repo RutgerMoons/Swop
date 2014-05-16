@@ -209,7 +209,7 @@ public class StandardOrder implements IOrder {
 
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
-		return description.getSpecification();
+		return description.getVehicleSpecification();
 	}
 
 	@Override

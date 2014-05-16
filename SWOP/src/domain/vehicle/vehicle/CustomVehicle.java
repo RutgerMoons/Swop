@@ -14,13 +14,17 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * TODO doc
- * Represents a set of VehicleOptions used in the creation of Single Task Orders by Custom Car Shop Managers.
+ * A class representing a set of VehicleOptions, which can be used with CustomOrders. 
+ * It implements the interface IVehicle.  
  */
 public class CustomVehicle implements IVehicle {
 
 	private HashMap<VehicleOptionCategory, VehicleOption> vehicleOptions;
 	private Map<WorkbenchType, Integer> timeAtWorkbench;
+	
+	/**
+	 * Create a new CustomVehicle. 
+	 */
 	public CustomVehicle(){
 		vehicleOptions = new HashMap<>();
 		timeAtWorkbench = new HashMap<>();
@@ -36,7 +40,7 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException {
+	public void addVehicleOption(VehicleOption part) throws AlreadyInMapException {
 		if(part==null){
 			throw new IllegalArgumentException();
 		}
@@ -58,12 +62,12 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public VehicleSpecification getSpecification() {
+	public VehicleSpecification getVehicleSpecification() {
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void setSpecification(VehicleSpecification template) {
+	public void setVehicleSpecification(VehicleSpecification template) {
 		throw new NotImplementedException();
 	}
 

@@ -6,8 +6,7 @@ import domain.exception.NotImplementedException;
 import domain.job.job.IJob;
 
 /**
- * This comparator compares 2 Jobs on it's deadline.  
- *
+ * Class representing an comparator used to compare two IJobs on their deadlines.  
  */
 public class JobComparatorDeadLine implements Comparator<IJob> {
 
