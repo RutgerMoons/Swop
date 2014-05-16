@@ -360,7 +360,7 @@ public class Company {
 	 * 			Order that needs to be added to the OrderBook.
 	 */
 	public void addOrder(CustomOrder order) {
-		orderbook.addOrder(order, getUnmodifiableClock());
+		orderbook.addOrder(order);
 	}
 
 	/**
@@ -377,7 +377,7 @@ public class Company {
 		StandardOrder order = new StandardOrder(userbook.getCurrentUser()
 				.getName(), vehicle, quantity, clock.getImmutableClock());
 
-		orderbook.addOrder(order, clock.getImmutableClock());
+		orderbook.addOrder(order);
 		return order.getEstimatedTime();
 	}
 

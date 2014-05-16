@@ -13,7 +13,9 @@ import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Class representing an order from a Custom Car Shop Manager.
+ * A class representing a Single Task Order.
+ * It consists of a CustomVehicle, the garage holder who ordered the CustomVehicle, a quantity,
+ * the time when you ordered it, the deadline and the estimated time of completion.
  *
  */
 public class CustomOrder implements IOrder {
@@ -26,8 +28,25 @@ public class CustomOrder implements IOrder {
 	private ImmutableClock deadline;
 
 	/**
-	 * Create a new CustomOrder of CustomCarModels of 'description, with a quantity of 'quantity', placed by 'garageholder'.
-	 * The Order was placed at the time 'orderTime' and has 'deadline' as deadline.
+	 * Create a new CustomOrder.
+	 * 
+	 * @param 	garageholder
+	 * 			The garage holder that orders the CustomVehicle
+	 * 
+	 * @param 	description
+	 * 			The CustomVehicle that has to be created
+	 * 
+	 * @param 	quantity
+	 * 			How many CustomVehicles that have to be produced for this order
+	 * 
+	 * @param 	orderTime
+	 * 			The time when this order is placed
+	 * 
+	 * @param 	deadline
+	 * 			The deadline of the order
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the the arguments is null, the garageholder is empty or the quantity is less than or equal to zero
 	 */
 	public CustomOrder(String garageholder, CustomVehicle description,
 			int quantity, ImmutableClock orderTime,
@@ -56,11 +75,6 @@ public class CustomOrder implements IOrder {
 		return pendingCars;
 	}
 
-	/** Changing the amount of pendingCars to the given amount. That's how other
-	 * classes may check if the order is completed or not. The method checks if
-	 * the given amount is lower than zero. If so an IllegalArgumentException is
-	 * thrown.
-	 */
 	private void setPendingCars(int quantity) {
 		if (quantity < 0) {
 			throw new IllegalArgumentException();
@@ -85,11 +99,6 @@ public class CustomOrder implements IOrder {
 		return description;
 	}
 
-	/**
-	 * Assigning the type/name of the ordered carModel to the given description.
-	 * The method throws an IllegalArgumentException is the given name equals
-	 * null.s
-	 */
 	private void setDescription(IVehicle description) {
 		if (description == null) {
 			throw new IllegalArgumentException();
