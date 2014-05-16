@@ -7,8 +7,8 @@ import java.util.List;
 import domain.order.Delay;
 
 /**
- * This class keeps track of all the delays and offers a detailed view for 
- * a certain amount of latest delays. 
+ * Class representing to keeps track of all the Delays and offers a detailed view for 
+ * a certain amount of latest Delays. 
  */
 public class LogHistoryDelays extends LogHistory {
 
@@ -17,36 +17,36 @@ public class LogHistoryDelays extends LogHistory {
 	private ArrayList<Integer> completeHistory;
 	
 	/**
-	 * Constructs a new instance with a degree of detail
+	 * Constructs a new instance with a given degree of detail.
 	 * 
 	 * @param 	numberOfDetails
-	 * 				Amount of detailed delays to keep track off
+	 * 			Amount of detailed Delays to keep track off
 	 */
 	public LogHistoryDelays(int numberOfDetails) {
 		super(numberOfDetails);
-		history = new ArrayList<Delay>();
-		completeHistory = new ArrayList<Integer>();
+		this.history = new ArrayList<Delay>();
+		this.completeHistory = new ArrayList<Integer>();
 	}
 	
 	/**
-	 * Add the latest detailed delay at the back of the history queue
+	 * Add the latest detailed Delay at the back of the history queue
 	 * and remove at the front if the queue gets too long.  
 	 */
 	@Override
 	public void shift() {
-		history.add(latestDelay);
-		if (history.size() > numberOfDetails) {
-			completeHistory.add(history.remove(0).getDelay());
+		this.history.add(this.latestDelay);
+		if (this.history.size() > this.numberOfDetails) {
+			this.completeHistory.add(this.history.remove(0).getDelay());
 		}
 	}
 
 	/**
-	 * Returns an unmodifiable list of the complete history
+	 * Returns an unmodifiable list of the complete history.
 	 */
 	@Override
 	public List<Integer> getCompleteHistory() {
 		ArrayList<Integer> complete = new ArrayList<>();
-		for (Delay d : history) {
+		for (Delay d : this.history) {
 			complete.add(d.getDelay());
 		}
 		for (Integer i : completeHistory) {
@@ -57,20 +57,20 @@ public class LogHistoryDelays extends LogHistory {
 	}
 	
 	/**
-	 * Receives the newest delay and adds this to the history
+	 * Receives the newest Delay and adds this to the history.
 	 * 
 	 * @param 	newDelay
-	 * 				The delay to be added
+	 * 			The Delay to be added
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 				Thrown when the given delay is null
+	 * 			Thrown when the given Delay is null
 	 */
 	public void addNewDelay(Delay newDelay) {
 		if (newDelay == null) {
 			throw new IllegalArgumentException();
 		}
 		if (newDelay.getDelay() != 0) {
-			latestDelay = newDelay;
+			this.latestDelay = newDelay;
 			shift();
 		}
 	}
@@ -79,6 +79,6 @@ public class LogHistoryDelays extends LogHistory {
 	 * Returns an unmodifiable list of the detailed history.
 	 */
 	public List<Delay> getHistory() {
-		return Collections.unmodifiableList(history);
+		return Collections.unmodifiableList(this.history);
 	}
 }

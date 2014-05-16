@@ -6,25 +6,25 @@ import java.util.List;
 
 
 /**
- * This class keeps track of all the completed orders and offers a detailed view for 
+ * Class representing  to keeps track of all the completed Orders and offers a detailed view for 
  * a certain amount of latest days. 
  */
 public class LogHistoryDays extends LogHistory {
 	
-	private int carsProducedToday;
+	private int vehiclesProducedToday;
 	private ArrayList<Integer> history;
 	private ArrayList<Integer> completeHistory;
 	
 	/**
-	 * Constructs a new instance with a degree of detail
+	 * Constructs a new instance with a degree of detail.
 	 * 
 	 * @param 	numberOfDetails
-	 * 				Amount of detailed delays to keep track off
+	 * 			Amount of detailed days to keep track off
 	 */
 	public LogHistoryDays(int numberOfDetails) {
 		super(numberOfDetails);
-		history = new ArrayList<Integer>();
-		completeHistory = new ArrayList<Integer>();
+		this.history = new ArrayList<Integer>();
+		this.completeHistory = new ArrayList<Integer>();
 	}
 
 	/**
@@ -33,18 +33,18 @@ public class LogHistoryDays extends LogHistory {
 	 */
 	@Override
 	public void shift() {
-		history.add(carsProducedToday);
-		this.carsProducedToday = 0;
-		if (history.size() > numberOfDetails) {
-			completeHistory.add(history.remove(0));
+		this.history.add(this.vehiclesProducedToday);
+		this.vehiclesProducedToday = 0;
+		if (this.history.size() > this.numberOfDetails) {
+			completeHistory.add(this.history.remove(0));
 		}
 	}
 	
 	/**
-	 * The amount of cars produced to day is incremented with one
+	 * The amount of vehicle produced in a day is incremented with one
 	 */
-	public void incrementAmountOfCarsProducedToday() {
-		carsProducedToday++;
+	public void incrementAmountOfVehiclesProducedToday() {
+		this.vehiclesProducedToday++;
 	}
 
 	/**
@@ -53,10 +53,10 @@ public class LogHistoryDays extends LogHistory {
 	@Override
 	public List<Integer> getCompleteHistory() {
 		ArrayList<Integer> complete = new ArrayList<>();
-		for (Integer i : history) {
+		for (Integer i : this.history) {
 			complete.add(i);
 		}
-		for (Integer i : completeHistory) {
+		for (Integer i : this.completeHistory) {
 			complete.add(i);
 		}
 		Collections.sort(complete);
@@ -67,7 +67,6 @@ public class LogHistoryDays extends LogHistory {
 	 * Returns an unmodifiable list of the detailed history.
 	 */
 	public List<Integer> getHistory() {
-		return Collections.unmodifiableList(history);
+		return Collections.unmodifiableList(this.history);
 	}
-
 }
