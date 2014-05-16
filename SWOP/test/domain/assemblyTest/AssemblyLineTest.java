@@ -20,7 +20,7 @@ import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
@@ -57,9 +57,9 @@ public class AssemblyLineTest{
 
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
-		VehicleSpecification template2 = new VehicleSpecification("model B", parts, new HashMap<WorkbenchType, Integer>());
-		VehicleSpecification template3 = new VehicleSpecification("model C", parts, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template2 = new VehicleSpecification("model B", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template3 = new VehicleSpecification("model C", parts, new HashMap<WorkBenchType, Integer>());
 		Set<VehicleSpecification> specifications = new HashSet<VehicleSpecification>();
 		specifications.add(template);
 		specifications.add(template2);
@@ -80,19 +80,19 @@ public class AssemblyLineTest{
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("Body");
 		responsibilities.add("Color");
-		WorkBench body1 = new WorkBench(responsibilities, WorkbenchType.BODY);
+		WorkBench body1 = new WorkBench(responsibilities, WorkBenchType.BODY);
 
 		responsibilities = new HashSet<>();
 		responsibilities.add("Engine");
 		responsibilities.add("Gearbox");
-		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkbenchType.DRIVETRAIN);
+		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
 
 		responsibilities = new HashSet<>();
 		responsibilities.add("Seat");
 		responsibilities.add("Airco");
 		responsibilities.add("Spoiler");
 		responsibilities.add("Wheel");
-		WorkBench accessories1 = new WorkBench(responsibilities, WorkbenchType.ACCESSORIES);
+		WorkBench accessories1 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
 
 		line.addWorkBench(body1);
 		line.addWorkBench(drivetrain1);
@@ -118,7 +118,7 @@ public class AssemblyLineTest{
 		Set<String> resp1 = new HashSet<String>();
 		resp1.add("bla");
 		resp1.add("bleu");
-		IWorkBench workbench1 = new WorkBench(resp1, WorkbenchType.BODY);
+		IWorkBench workbench1 = new WorkBench(resp1, WorkBenchType.BODY);
 		line.addWorkBench(workbench1);
 		assertEquals(4, line.getWorkbenches().size());
 	}
@@ -297,7 +297,7 @@ public class AssemblyLineTest{
 	}
 	@Test
 	public void TestToString(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), WorkbenchType.ACCESSORIES);
+		WorkBench bench1 = new WorkBench(new HashSet<String>(), WorkBenchType.ACCESSORIES);
 		bench1.addResponsibility("Paint");
 		line.addWorkBench(bench1);
 		assertEquals("Responsibilities: model C, model B, model", line.toString());

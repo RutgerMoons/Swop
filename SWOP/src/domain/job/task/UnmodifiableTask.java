@@ -8,7 +8,7 @@ import domain.job.action.IAction;
 
 
 /**
- * Class representing an unmodifiable Task. It implements ITask where only the getters are accessible.
+ * A class representing an unmodifiable Task. It implements ITask where only the getters are accessible.
  */
 public class UnmodifiableTask implements ITask{
 

@@ -8,6 +8,7 @@ import java.util.PriorityQueue;
 
 import com.google.common.base.Optional;
 
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
@@ -27,8 +28,8 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
 	private List<VehicleOption> vehicleOptions;
 
-	public SchedulingAlgorithmBatch(List<VehicleOption> carParts, int amountOfWorkBenches) {
-		super(amountOfWorkBenches);
+	public SchedulingAlgorithmBatch(List<VehicleOption> carParts, List<WorkBenchType> workBenchTypes) {
+		super(workBenchTypes);
 		if (carParts == null) {
 			throw new IllegalArgumentException();
 		}
@@ -92,7 +93,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			else if(this.batchJobs.contains(job)){
 				addToList(Optional.fromNullable(j), previousJobs);
 				totalProductionTime += this.getMaximum(previousJobs);
-				for(int i = 0; i< this.amountOfWorkBenches-1;i++){
+				for(int i = 0; i< this.workBenchTypes.size() -1;i++){
 					Optional<IJob> absentJob = Optional.absent();
 					addToList(absentJob, previousJobs);
 					totalProductionTime += this.getMaximum(previousJobs);
@@ -112,7 +113,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			else{
 				addToList(Optional.fromNullable(j), previousJobs);
 				totalProductionTime += this.getMaximum(previousJobs);
-				for(int i = 0; i< this.amountOfWorkBenches-1;i++){
+				for(int i = 0; i< this.workBenchTypes.size() - 1 ;i++){
 					Optional<IJob> absentJob = Optional.absent();
 					addToList(absentJob, previousJobs);
 					totalProductionTime += this.getMaximum(previousJobs);
@@ -207,7 +208,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	@Override
 	public void startNewDay() {
 		this.jobsStartOfDay = new ArrayList<>();
-		for (int i = amountOfWorkBenches - 1; i >= 0; i--) {
+		for (int i = this.workBenchTypes.size() - 1; i >= 0; i--) {
 			Optional<IJob> toAdd = Optional.absent();
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();

@@ -20,7 +20,7 @@ public class WorkBench implements IWorkBench {
 	private Set<String> responsibilities;
 	private Optional<IJob> currentJob;
 	private List<ITask> currentTasks;
-	private final WorkbenchType workbenchType;
+	private final WorkBenchType workbenchType;
 
 	/**
 	 * Construct a new Workbench.
@@ -35,7 +35,7 @@ public class WorkBench implements IWorkBench {
 	 * @throws 	IllegalArgumentException
 	 *            Thrown when workbenchName==null or isEmpty -if responsibilities==null
 	 */
-	public WorkBench(Set<String> responsibilities, WorkbenchType type) {
+	public WorkBench(Set<String> responsibilities, WorkBenchType type) {
 		if (type == null || responsibilities==null) {
 			throw new IllegalArgumentException();
 		}
@@ -48,7 +48,7 @@ public class WorkBench implements IWorkBench {
 
 
 	@Override
-	public WorkbenchType getWorkbenchType() {
+	public WorkBenchType getWorkbenchType() {
 		return workbenchType;
 	}
 

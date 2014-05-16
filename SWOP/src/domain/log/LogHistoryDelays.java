@@ -7,7 +7,7 @@ import java.util.List;
 import domain.order.Delay;
 
 /**
- * Class representing to keeps track of all the Delays and offers a detailed view for 
+ * A class representing to keeps track of all the Delays and offers a detailed view for 
  * a certain amount of latest Delays. 
  */
 public class LogHistoryDelays extends LogHistory {

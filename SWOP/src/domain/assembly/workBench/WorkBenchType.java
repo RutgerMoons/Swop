@@ -1,6 +1,6 @@
 package domain.assembly.workBench;
 //TODO doc
-public enum WorkbenchType {
+public enum WorkBenchType {
 
 	ACCESSORIES, BODY, CARGO, CERTIFICATION, DRIVETRAIN;
 }

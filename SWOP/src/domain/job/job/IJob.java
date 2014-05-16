@@ -3,9 +3,8 @@ package domain.job.job;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
@@ -93,23 +92,18 @@ public interface IJob {
 	/**
 	 * Get the time the specification has to spend on a workbench.
 	 */
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
 
 	/**
 	 * Get the specification of the vehicle from the order
 	 */
 	public VehicleSpecification getVehicleSpecification();
-
-	/**
-	 * Check if the job can be handled by the responsibilities.
-	 * 
-	 * @param 	responsibilities
-	 * 			The responsibilities of the AssemblyLine
-	 * 
-	 * @return 	True if all TODO. False if one or more Tasks
-	 *         are not fully completed.
-	 */
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 	
-
+	/**
+	 * 
+	 * @param	workBenchType used to determine the time this job will take to complete
+	 * 
+	 * @return	The amount of minutes to complete this job at the given type of WorkBench
+	 */
+	public int getProductionTime(WorkBenchType workBenchType);
 }

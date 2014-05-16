@@ -29,7 +29,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * This class representing the layer between the Domain model and the controllers. The controllers can only
+ * A class representing the layer between the Domain model and the controllers. The controllers can only
  * call methods in this class to do something in the domain model.
  * 
  */

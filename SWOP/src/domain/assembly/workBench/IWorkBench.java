@@ -16,7 +16,7 @@ public interface IWorkBench {
 	/**
 	 * Get the type of the workbench.
 	 */
-	public WorkbenchType getWorkbenchType();
+	public WorkBenchType getWorkbenchType();
 	
 	/**
 	 * Get the current Job(Car) that is on this WorkBench.

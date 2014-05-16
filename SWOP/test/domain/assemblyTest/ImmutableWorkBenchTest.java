@@ -16,7 +16,7 @@ import com.google.common.base.Optional;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.assembly.workBench.WorkBench;
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
@@ -39,7 +39,7 @@ public class ImmutableWorkBenchTest {
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("paint");
 
-		bench = new WorkBench(responsibilities, WorkbenchType.BODY);
+		bench = new WorkBench(responsibilities, WorkBenchType.BODY);
 		immutable = new UnmodifiableWorkBench(bench);
 		
 	}
@@ -47,7 +47,7 @@ public class ImmutableWorkBenchTest {
 	public void test() throws AlreadyInMapException, UnmodifiableException {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
 		Vehicle model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -57,7 +57,7 @@ public class ImmutableWorkBenchTest {
 		model.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		
-		assertEquals(WorkbenchType.BODY, immutable.getWorkbenchType());
+		assertEquals(WorkBenchType.BODY, immutable.getWorkbenchType());
 		assertTrue(immutable.getResponsibilities().contains("paint"));
 		
 		IJob job = new Job(new StandardOrder("Stef", model, 1, new ImmutableClock(0,240)));

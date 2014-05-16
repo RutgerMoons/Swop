@@ -9,6 +9,7 @@ import com.google.common.base.Optional;
 
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NoSuitableJobFoundException;
 import domain.job.job.IJob;
@@ -245,7 +246,16 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	 * @param	creator is responsible for creating the correct SchedulingAlgorithm
 	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
-		this.scheduler.switchToAlgorithm(creator, this.workbenches.size());
+		List<WorkBenchType> workBenchTypes = getWorkBenchTypes();
+		this.scheduler.switchToAlgorithm(creator, workBenchTypes);
+	}
+
+	private List<WorkBenchType> getWorkBenchTypes() {
+		List<WorkBenchType> workBenchTypes = new ArrayList<>();
+		for (IWorkBench workBench : this.workbenches) {
+			workBenchTypes.add(workBench.getWorkbenchType());
+		}
+		return workBenchTypes;
 	}
 
 	/**

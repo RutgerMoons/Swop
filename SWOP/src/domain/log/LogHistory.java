@@ -3,7 +3,7 @@ package domain.log;
 import java.util.List;
 
 /**
- * This class represents an abstract class who provides functions necessary for every implementation
+ * A class representing an abstract class who provides functions necessary for every implementation
  * of LogHistory.
  */
 public abstract class LogHistory {

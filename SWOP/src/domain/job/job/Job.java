@@ -5,16 +5,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Class representing a Job. A Job is an implementation of IJob.
+ * A class representing a Job. A Job is an implementation of IJob.
  */
 public class Job implements IJob {
 
@@ -125,7 +124,7 @@ public class Job implements IJob {
 	}
 	
 	@Override
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(this.order.getTimeAtWorkBench());
 	}
 
@@ -135,7 +134,7 @@ public class Job implements IJob {
 	}
 
 	@Override
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
-		return order.canBeHandled(responsibilities);
+	public int getProductionTime(WorkBenchType workBenchType) {
+		return this.getVehicleSpecification().getProductionTime(workBenchType);
 	}
 }

@@ -21,7 +21,7 @@ import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.company.Company;
@@ -136,8 +136,13 @@ public class FacadeTest {
 		facade.createAndAddUser("test", "worker");
 		facade.login("test");
 		ImmutableClock time = new ImmutableClock(2, 30);
+<<<<<<< HEAD
 		Vehicle vehicle = new Vehicle(new VehicleSpecification("test",Collections.<VehicleOption> emptySet() , new HashMap<WorkbenchType, Integer>()));
 		vehicle.addVehicleOption(new VehicleOption("black", VehicleOptionCategory.COLOR));
+=======
+		Vehicle vehicle = new Vehicle(new VehicleSpecification("test",Collections.<VehicleOption> emptySet() , new HashMap<WorkBenchType, Integer>()));
+		vehicle.addCarPart(new VehicleOption("black", VehicleOptionCategory.COLOR));
+>>>>>>> 0fbc9f8f29bcd199f2bc75d53ce8160004a0229f
 		facade.processCustomOrder(vehicle, time);
 		
 		CustomVehicle custom = new CustomVehicle();
@@ -357,34 +362,34 @@ public class FacadeTest {
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("Body");
 		responsibilities.add("Color");
-		WorkBench body1 = new WorkBench(responsibilities, WorkbenchType.BODY);
-		WorkBench body2 = new WorkBench(responsibilities, WorkbenchType.BODY);
-		WorkBench body3 = new WorkBench(responsibilities, WorkbenchType.BODY);
+		WorkBench body1 = new WorkBench(responsibilities, WorkBenchType.BODY);
+		WorkBench body2 = new WorkBench(responsibilities, WorkBenchType.BODY);
+		WorkBench body3 = new WorkBench(responsibilities, WorkBenchType.BODY);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Engine");
 		responsibilities.add("Gearbox");
-		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkbenchType.DRIVETRAIN);
-		WorkBench drivetrain2 = new WorkBench(responsibilities, WorkbenchType.DRIVETRAIN);
-		WorkBench drivetrain3 = new WorkBench(responsibilities, WorkbenchType.DRIVETRAIN);
+		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain2 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain3 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Seat");
 		responsibilities.add("Airco");
 		responsibilities.add("Spoiler");
 		responsibilities.add("Wheel");
-		WorkBench accessories1 = new WorkBench(responsibilities, WorkbenchType.ACCESSORIES);
-		WorkBench accessories2 = new WorkBench(responsibilities, WorkbenchType.ACCESSORIES);
-		WorkBench accessories3 = new WorkBench(responsibilities, WorkbenchType.ACCESSORIES);
+		WorkBench accessories1 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
+		WorkBench accessories2 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
+		WorkBench accessories3 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Storage");
 		responsibilities.add("Protection");
-		WorkBench cargo = new WorkBench(responsibilities, WorkbenchType.CARGO);
+		WorkBench cargo = new WorkBench(responsibilities, WorkBenchType.CARGO);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Certification");
-		WorkBench certificiation = new WorkBench(responsibilities, WorkbenchType.CERTIFICATION);
+		WorkBench certificiation = new WorkBench(responsibilities, WorkBenchType.CERTIFICATION);
 		
 		line1.addWorkBench(body1);
 		line1.addWorkBench(drivetrain1);

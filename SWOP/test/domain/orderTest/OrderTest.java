@@ -12,7 +12,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
@@ -58,7 +58,7 @@ public class OrderTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
+		template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));
@@ -149,7 +149,7 @@ public class OrderTest {
 
 	@Test
 	public void TestEqualsAndHashcode() throws AlreadyInMapException {
-		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), new HashMap<WorkbenchType, Integer>());
+		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
 		Vehicle model2 = new Vehicle(template2);
 		model2.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model2.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));
@@ -200,7 +200,7 @@ public class OrderTest {
 	
 	@Test
 	public void testGetProductionTime() throws NotImplementedException{
-		model.getTimeAtWorkBench().put(WorkbenchType.BODY, 50);
+		model.getTimeAtWorkBench().put(WorkBenchType.BODY, 50);
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		
 		//TODO

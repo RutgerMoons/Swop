@@ -4,9 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
@@ -16,19 +15,19 @@ import domain.vehicle.vehicleOption.VehicleOption;
 
 
 /**
- * Class representing an unmodifiable Job. It implements IJob where only
+ * A class representing an unmodifiable Job. It implements IJob where only
  * the getters are accessible.
  */
 public class UnmodifiableJob implements IJob {
 
 	private IJob job;
 
-	/**
-	 * Create the unmodifiable version of the given Job.
-	 * 
-	 * @param 	job
-	 * 			The mutable Job
-	 */
+	 /**
+     * Create the unmodifiable version of the given Job.
+     *
+     * @param	job
+     *          The mutable Job
+     */
 	public UnmodifiableJob(IJob job) {
 		if (job == null)
 			throw new IllegalArgumentException();
@@ -96,7 +95,7 @@ public class UnmodifiableJob implements IJob {
 	}
 	
 	@Override
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(this.job.getTimeAtWorkBench());
 	}
 
@@ -106,7 +105,7 @@ public class UnmodifiableJob implements IJob {
 	}
 
 	@Override
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
-		return job.canBeHandled(responsibilities);
+	public int getProductionTime(WorkBenchType workBenchType) {
+		return this.job.getProductionTime(workBenchType);
 	}
 }

@@ -3,9 +3,8 @@ package domain.order.order;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
 import domain.order.orderVisitor.IOrderVisitor;
@@ -114,7 +113,7 @@ public class UnmodifiableOrder implements IOrder {
 	}
 	
 	@Override
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(this.order.getTimeAtWorkBench());
 	}
 
@@ -122,14 +121,10 @@ public class UnmodifiableOrder implements IOrder {
 	public VehicleSpecification getVehicleSpecification() {
 		return order.getVehicleSpecification();
 	}
-
-	@Override
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
-		return order.canBeHandled(responsibilities);
-	}
 	
 	@Override
 	public void acceptVisit(IOrderVisitor visitor) {
 		visitor.visit(this);
 	}
+	
 }

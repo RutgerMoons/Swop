@@ -8,7 +8,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -20,7 +20,7 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 public class VehicleSpecification {
 
 	private String description; 
-	private Map<WorkbenchType, Integer> timeAtWorkBench;
+	private Map<WorkBenchType, Integer> timeAtWorkBench;
 	private Multimap<VehicleOptionCategory, VehicleOption> parts;
 
 	/**
@@ -36,7 +36,7 @@ public class VehicleSpecification {
 	 * 			The time it has to spend on certain WorkBenches.
 	 */
 	public VehicleSpecification(String description, Set<VehicleOption> parts,
-			Map<WorkbenchType, Integer> timeAtWorkBench) {
+			Map<WorkBenchType, Integer> timeAtWorkBench) {
 		this.setDescription(description);
 		this.setTimeAtWorkBench(timeAtWorkBench);
 		this.parts = HashMultimap.create();
@@ -66,11 +66,14 @@ public class VehicleSpecification {
 	/**
 	 * Get the time the VehicleSpecification has to spend on each WorkBench with its WorkbenchType.
 	 */
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(timeAtWorkBench);
 	}
 
-	private void setTimeAtWorkBench(Map<WorkbenchType, Integer> timeAtWorkBench) {
+	/**
+	 * Set the time the specification has to spend on a workbench.
+	 */
+	private void setTimeAtWorkBench(Map<WorkBenchType, Integer> timeAtWorkBench) {
 		this.timeAtWorkBench = timeAtWorkBench;
 	}
 
@@ -125,6 +128,8 @@ public class VehicleSpecification {
 		return true;
 	}
 	
-	
+	public int getProductionTime(WorkBenchType workBenchType) {
+		return getTimeAtWorkBench().get(workBenchType);
+	}
 
 }

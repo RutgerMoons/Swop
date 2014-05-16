@@ -2,9 +2,8 @@ package domain.order.order;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
-import domain.assembly.workBench.WorkbenchType;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
@@ -92,7 +91,7 @@ public interface IOrder {
 	 * @throws 	UnmodifiableException 
 	 * 				If the IOrder is an unmodifiable Order
 	 */
-	public void completeCar() throws UnmodifiableException;
+	public void completeCar();
 	
 	/**
 	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
@@ -102,7 +101,7 @@ public interface IOrder {
 	/**
 	 * Get the time the specification has to spend on a workbench
 	 */
-	public Map<WorkbenchType, Integer> getTimeAtWorkBench();
+	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
 
 	/**
 	 * Get the specification of the vehicle from the order.
@@ -111,13 +110,6 @@ public interface IOrder {
 	 * 				If the order is a custom order
 	 */
 	public VehicleSpecification getVehicleSpecification();
-
-	/**
-	 * Check if the order can be handled by the responsibilities.
-	 * @param 	responsibilities
-	 * 			The responsibilities of the AssemblyLine
-	 */
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 	
 	/*-------------------------------------------------
 	 * 
