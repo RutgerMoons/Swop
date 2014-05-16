@@ -12,9 +12,8 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * An interface used to represent an Job. An Job consists of an iOrder, a list of
- * ITasks, an index, indicating which workbench it needs first, and a boolean 
- * for indicating if the Action is completed.
+ * An interface used to represent a Job. A Job consists of an iOrder, a list of
+ * ITasks and an index, indicating which workbench it needs first.
  */
 public interface IJob {
 

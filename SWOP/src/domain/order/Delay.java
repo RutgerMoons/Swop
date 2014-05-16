@@ -3,15 +3,23 @@ package domain.order;
 import domain.clock.ImmutableClock;
 
 /**
- * Object with attributes to calculate and represent the delay of an order.
- * TODO doc
+ * A class representing a delay between two points of time.
  */
 public class Delay {
 	
 	private final ImmutableClock estimated;
 	private final ImmutableClock completed;
 	private final int delay;
-	
+
+	/**
+	 * Create a new delay.
+	 * 
+	 * @param 	estimated
+	 * 			The estimated time something had to be completed
+	 * 
+	 * @param 	completed
+	 * 			The actual time something has been completed
+	 */
 	public Delay(ImmutableClock estimated, ImmutableClock completed) {
 		if (estimated == null || completed == null) {
 			throw new IllegalArgumentException();
@@ -25,6 +33,9 @@ public class Delay {
 		return this.completed.minus(this.estimated);
 	}
 	
+	/**
+	 * Get the delay in minutes.
+	 */
 	public int getDelay() {
 		return delay;
 	}
