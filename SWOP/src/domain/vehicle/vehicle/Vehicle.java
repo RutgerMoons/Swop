@@ -84,23 +84,26 @@ public class Vehicle implements IVehicle {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		IVehicle other;
+		try{
+			other = (IVehicle) obj;
+		} catch (ClassCastException e){
 			return false;
-		Vehicle other = (Vehicle) obj;
+		}
 		if (vehicleOptions == null) {
-			if (other.vehicleOptions != null)
+			if (other.getVehicleOptions() != null)
 				return false;
-		} else if (!vehicleOptions.equals(other.vehicleOptions))
+		} else if (!vehicleOptions.equals(other.getVehicleOptions()))
 			return false;
 		if (forcedOptionalTypes == null) {
-			if (other.forcedOptionalTypes != null)
+			if (other.getForcedOptionalTypes() != null)
 				return false;
-		} else if (!forcedOptionalTypes.equals(other.forcedOptionalTypes))
+		} else if (!forcedOptionalTypes.equals(other.getForcedOptionalTypes()))
 			return false;
 		if (specification == null) {
-			if (other.specification != null)
+			if (other.getVehicleSpecification() != null)
 				return false;
-		} else if (!specification.equals(other.specification))
+		} else if (!specification.equals(other.getVehicleSpecification()))
 			return false;
 		return true;
 	}
