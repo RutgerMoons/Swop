@@ -89,9 +89,9 @@ public class SchedulingAlgorithmBatchTest {
 		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		assertEquals(1, parts.size());
 		template = new VehicleSpecification("model", parts, 60);
-		assertEquals(1, template.getCarParts().size());
+		assertEquals(1, template.getVehicleOptions().size());
 		model = new Vehicle(template);
-		assertEquals(1, model.getSpecification().getCarParts().size());
+		assertEquals(1, model.getVehicleSpecification().getVehicleOptions().size());
 		assertEquals(0, model.getVehicleOptions().size());
 		ImmutableClock ordertime = new ImmutableClock(2, 30);
 		IOrder order = new StandardOrder("mario", model, 3, ordertime);

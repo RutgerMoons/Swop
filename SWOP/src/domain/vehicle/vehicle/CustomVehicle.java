@@ -40,7 +40,7 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException {
+	public void addVehicleOption(VehicleOption part) throws AlreadyInMapException {
 		if(part==null){
 			throw new IllegalArgumentException();
 		}
@@ -62,12 +62,12 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public VehicleSpecification getSpecification() {
+	public VehicleSpecification getVehicleSpecification() {
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void setSpecification(VehicleSpecification template) {
+	public void setVehicleSpecification(VehicleSpecification template) {
 		throw new NotImplementedException();
 	}
 

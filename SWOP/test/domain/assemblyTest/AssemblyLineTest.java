@@ -67,13 +67,13 @@ public class AssemblyLineTest{
 		model = new Vehicle(template);
 
 		try {
-			model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-			model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
-			model.addCarPart(new VehicleOption("red",  VehicleOptionCategory.COLOR));
-			model.addCarPart(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
-			model.addCarPart(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
-			model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
-			model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
+			model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+			model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
+			model.addVehicleOption(new VehicleOption("red",  VehicleOptionCategory.COLOR));
+			model.addVehicleOption(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
+			model.addVehicleOption(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
+			model.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+			model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		} catch (AlreadyInMapException e) {}
 		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0,240), AssemblyLineState.OPERATIONAL, specifications);
 

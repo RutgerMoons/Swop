@@ -37,13 +37,13 @@ public class ImmutableJobTest {
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkbenchType, Integer>());
 		model = new Vehicle(template);
-		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
-		model.addCarPart(new VehicleOption("red",  VehicleOptionCategory.COLOR));
-		model.addCarPart(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
-		model.addCarPart(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
-		model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
-		model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
+		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("red",  VehicleOptionCategory.COLOR));
+		model.addVehicleOption(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
+		model.addVehicleOption(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
+		model.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		
 		job = new Job(new StandardOrder("Stef", model, 1, new ImmutableClock(0,240)));
 		immutable = new UnmodifiableJob(job);

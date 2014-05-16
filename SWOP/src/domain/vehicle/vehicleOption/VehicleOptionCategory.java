@@ -1,8 +1,8 @@
 package domain.vehicle.vehicleOption;
 
 /**
- * Represents the possible CarOptionCategories to which a CarOption can belong.
- * Keeps track of whether the Category is mandatory or optional by default.
+ * An Enum representing the possible VehicleOptionCategories to which a VehicleOption can belong.
+ * Keeps track of whether the VehicleOptionCategory is mandatory or optional by default.
  */
 public enum VehicleOptionCategory {
 
@@ -54,6 +54,10 @@ public enum VehicleOptionCategory {
 		this.optional = optional;
 	}
 
+	/**
+	 * Confirms if the VehicleOptionCategory is mandatory or optional by default.
+	 * @return	True if and only if the VehicleSpecification is optional by default.
+	 */
 	public boolean isOptional() {
 		return optional;
 	}

@@ -282,7 +282,7 @@ public class Facade {
 	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline){
 		CustomVehicle vehicle = new CustomVehicle();
 		for(VehicleOption option: model.getVehicleOptions().values()){
-			vehicle.addCarPart(option);
+			vehicle.addVehicleOption(option);
 		}
 
 		CustomOrder order = new CustomOrder(

@@ -13,9 +13,9 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Class representing a CarModelSpecification.
- * Objects of this class represent a template according to which CarModels can be put together.
- *
+ * A class representing a template from which a Vehicle can be built. 
+ * It contains of a map of VehicleOptions, belonging to its VehicleOptionCategory. 
+ * It also knows how long it has to be on a WorkBench with its WorkbenchType.
  */
 public class VehicleSpecification {
 
@@ -24,8 +24,16 @@ public class VehicleSpecification {
 	private Multimap<VehicleOptionCategory, VehicleOption> parts;
 
 	/**
-	 * Creates a new CarModelSpecification, which consists of a number of CarOptions 
-	 * 	and contains the description (name) of this model and the time a CarModel of this type usually spends at a workbench.
+	 * Create a new VehicleSpecification.
+	 * 
+	 * @param 	description
+	 * 			The description of the VehicleSpecification, often a model name.
+	 * 
+	 * @param 	parts
+	 * 			The VehicleOptions that can be used to build a vehicle.
+	 * 
+	 * @param 	timeAtWorkBench
+	 * 			The time it has to spend on certain WorkBenches.
 	 */
 	public VehicleSpecification(String description, Set<VehicleOption> parts,
 			Map<WorkbenchType, Integer> timeAtWorkBench) {
@@ -42,37 +50,34 @@ public class VehicleSpecification {
 	}
 
 	/**
-	 * Get the name of the specification.
+	 * Get the name of this VehicleSpecification.
 	 */
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * Set the name of the specification.
+	 * Set the name of the VehicleSpecification.
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	
 	/**
-	 * Get the time the specification has to spend on a workbench.
+	 * Get the time the VehicleSpecification has to spend on each WorkBench with its WorkbenchType.
 	 */
 	public Map<WorkbenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(timeAtWorkBench);
 	}
 
-	/**
-	 * Set the time the specification has to spend on a workbench.
-	 */
 	private void setTimeAtWorkBench(Map<WorkbenchType, Integer> timeAtWorkBench) {
 		this.timeAtWorkBench = timeAtWorkBench;
 	}
 
 	/**
-	 * Get the CarParts that this model has to offer. 
+	 * Get the VehicleOptions that this VehicleSpecification has to offer. 
 	 */
-	public Multimap<VehicleOptionCategory, VehicleOption> getCarParts() {
+	public Multimap<VehicleOptionCategory, VehicleOption> getVehicleOptions() {
 		return new ImmutableMultimap.Builder<VehicleOptionCategory, VehicleOption>().putAll(parts).build();
 	}
 

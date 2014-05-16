@@ -49,7 +49,7 @@ public class UnmodifiableVehicle implements IVehicle {
 		return model.toString();
 	}
 	@Override
-	public void addCarPart(VehicleOption part){
+	public void addVehicleOption(VehicleOption part){
 		throw new UnmodifiableException();
 		
 	}
@@ -62,11 +62,11 @@ public class UnmodifiableVehicle implements IVehicle {
 		throw new UnmodifiableException();
 	}
 	@Override
-	public VehicleSpecification getSpecification() {
-		return model.getSpecification();
+	public VehicleSpecification getVehicleSpecification() {
+		return model.getVehicleSpecification();
 	}
 	@Override
-	public void setSpecification(VehicleSpecification template){
+	public void setVehicleSpecification(VehicleSpecification template){
 		throw new UnmodifiableException();
 	}
 	@Override

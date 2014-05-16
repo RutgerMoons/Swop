@@ -23,24 +23,24 @@ public class CustomVehicleTest {
 	@Test
 	public void testAddCarPart() throws AlreadyInMapException, UnmodifiableException {
 		VehicleOption sportBody = new VehicleOption("sport", VehicleOptionCategory.BODY);
-		model.addCarPart(sportBody);
+		model.addVehicleOption(sportBody);
 		assertEquals(sportBody, model.getVehicleOptions().get(VehicleOptionCategory.BODY));
 	}
 	
 	@Test(expected=AlreadyInMapException.class)
 	public void testAddInvalidCarparts() throws AlreadyInMapException, UnmodifiableException {
-		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		model.addCarPart(new VehicleOption("break", VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("break", VehicleOptionCategory.BODY));
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testAddNullCarPart() throws AlreadyInMapException, UnmodifiableException{
-		model.addCarPart(null);
+		model.addVehicleOption(null);
 	}
 	
 	@Test
 	public void testToString() throws AlreadyInMapException, UnmodifiableException{
-		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		assertEquals("Body: sport", model.toString());
 	}
 	
@@ -56,11 +56,11 @@ public class CustomVehicleTest {
 	
 	@Test(expected=NotImplementedException.class)
 	public void testGetSpecification() throws NotImplementedException{
-		model.getSpecification();
+		model.getVehicleSpecification();
 	}
 	
 	@Test(expected=NotImplementedException.class)
 	public void testsetSpecification() throws UnmodifiableException, NotImplementedException{
-		model.setSpecification(null);
+		model.setVehicleSpecification(null);
 	}
 }

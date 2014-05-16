@@ -33,7 +33,7 @@ public class CustomOrderTest {
 		deadline = new ImmutableClock(5, 20);
 
 		model = new CustomVehicle();
-		model.addCarPart(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+		model.addVehicleOption(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class CustomOrderTest {
 	@Test
 	public void TestEqualsAndHashcode() throws AlreadyInMapException, UnmodifiableException {
 		CustomVehicle model2 = new CustomVehicle();
-		model2.addCarPart(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+		model2.addVehicleOption(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		assertFalse(order1.equals(null));
@@ -160,7 +160,7 @@ public class CustomOrderTest {
 	@Test(expected = NotImplementedException.class)
 	public void testGetProductionTime() throws NotImplementedException{
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
-		assertEquals(order1.getProductionTime(), model.getSpecification().getTimeAtWorkBench());
+		assertEquals(order1.getProductionTime(), model.getVehicleSpecification().getTimeAtWorkBench());
 	}
 	
 	@Test

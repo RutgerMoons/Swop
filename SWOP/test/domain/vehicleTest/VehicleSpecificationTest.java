@@ -58,8 +58,8 @@ public class VehicleSpecificationTest {
 		int time = template.getTimeAtWorkBench().get(WorkbenchType.BODY);
 		assertEquals(60, time);
 		
-		assertEquals(8, template.getCarParts().keySet().size());
-		assertEquals(14, template.getCarParts().values().size());
+		assertEquals(8, template.getVehicleOptions().keySet().size());
+		assertEquals(14, template.getVehicleOptions().values().size());
 	}
 
 }

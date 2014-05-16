@@ -91,7 +91,7 @@ public class Company {
 	 */
 	public void addPartToModel(VehicleOption part){
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
-		this.partpicker.getModel().addCarPart(option);
+		this.partpicker.getModel().addVehicleOption(option);
 	}
 
 	/**

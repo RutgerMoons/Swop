@@ -33,7 +33,7 @@ public interface IVehicle {
 	 * @throws	NotImplementedException
 	 * 			Thrown when the IVehicle is a CustomVehicle
 	 */
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException;
+	public void addVehicleOption(VehicleOption part) throws AlreadyInMapException;
 	
 	/**
 	 * Get a map of VehicleOptions that needed to be forced into the IVehicle.
@@ -57,7 +57,7 @@ public interface IVehicle {
 	 * @throws	NotImplementedException
 	 * 			Thrown when the IVehicle is a CustomVehicle
 	 */
-	public VehicleSpecification getSpecification();
+	public VehicleSpecification getVehicleSpecification();
 	
 	/**
 	 * Set a new specification from which the IVehicle has to be build.
@@ -68,7 +68,7 @@ public interface IVehicle {
 	 *@throws	NotImplementedException
 	 * 			Thrown when the Vehicle is a CustomVehicle
 	 */
-	public void setSpecification(VehicleSpecification template);
+	public void setVehicleSpecification(VehicleSpecification template);
 
 	/**
 	 * Get a map of the times at each workbench.

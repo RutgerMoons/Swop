@@ -69,7 +69,7 @@ public class PartPicker {
 	 * 			Thrown when the Vehicle already contains a VehicleOption of the same type
 	 */
 	public void addCarPartToModel(VehicleOption part) throws AlreadyInMapException {
-		model.addCarPart(part);
+		model.addVehicleOption(part);
 	}
 
 	/**
@@ -141,14 +141,14 @@ public class PartPicker {
 			if (model.getVehicleOptions().values()
 					.contains(restriction.getChosenCarPart())
 					&& restriction.getRestrictedCarPart().getType().equals(type)
-					&& model.getSpecification().getCarParts().values()
+					&& model.getVehicleSpecification().getVehicleOptions().values()
 					.contains(restriction.getRestrictedCarPart())) {
 				availableParts.add(restriction.getRestrictedCarPart());
 			}
 		}
 
 		if (availableParts.isEmpty()){
-			for(VehicleOption option: model.getSpecification().getCarParts().get(type)){
+			for(VehicleOption option: model.getVehicleSpecification().getVehicleOptions().get(type)){
 				availableParts.add(option);
 			}
 		}
