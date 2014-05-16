@@ -186,4 +186,9 @@ public class RestrictionTest {
 		assertNotNull(picker.getVehicleSpecifications());
 		
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetIllegalSpecification(){
+		picker.getSpecification(null);
+	}
 }
