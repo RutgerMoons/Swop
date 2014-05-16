@@ -132,4 +132,9 @@ public class Job implements IJob {
 	public VehicleSpecification getVehicleSpecification() {
 		return order.getVehicleSpecification();
 	}
+
+	@Override
+	public int getProductionTime(WorkBenchType workBenchType) {
+		return this.getVehicleSpecification().getProductionTime(workBenchType);
+	}
 }
