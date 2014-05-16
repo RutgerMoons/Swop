@@ -7,7 +7,7 @@ import domain.facade.Facade;
 import domain.users.AccessRight;
 
 /**
- * This class is used to create all the necessary FlowControllers. 
+ * A class representing the a way to create all the necessary FlowControllers. 
  *
  */
 public class FlowControllerFactory {
@@ -17,21 +17,26 @@ public class FlowControllerFactory {
 	
 	/**
 	 * Create a new FlowControllerFactory.
-	 * @param iClientCommunication
-	 * 			The IClientCommunication that all the FlowControllers created by this factory will use to communicate with the  user.
-	 * @param facade
-	 * 			The Facade that all the FlowControllers created by this factory will use to access domain logic.
+	 * 
+	 * @param 	clientCommunication
+	 * 			The clientCommunication that all the FlowControllers created by this factory will use to communicate with the user
+	 * 
+	 * @param 	facade
+	 * 			The Facade that all the FlowControllers created by this factory will use to access domain logic
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when clientCommunication or facade is null
 	 */
-	public FlowControllerFactory(ClientCommunication iClientCommunication, Facade facade) {
-		if (iClientCommunication == null || facade == null) {
+	public FlowControllerFactory(ClientCommunication clientCommunication, Facade facade) {
+		if (clientCommunication == null || facade == null) {
 			throw new IllegalArgumentException();
 		}
-		this.iClientCommunication = iClientCommunication;
+		this.iClientCommunication = clientCommunication;
 		this.facade = facade;
 	}
 	
 	/**
-	 * Create all the necesarry FlowControllers and return them.
+	 * Create all the necessary FlowControllers and return them.
 	 */
 	public ArrayList<UseCaseFlowController> createFlowControllers() {
 		ArrayList<UseCaseFlowController> flowControllers = new ArrayList<UseCaseFlowController>();
@@ -47,6 +52,4 @@ public class FlowControllerFactory {
 				iClientCommunication, facade));
 		return flowControllers;
 	}
-	
-	
 }

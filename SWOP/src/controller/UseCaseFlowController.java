@@ -7,9 +7,7 @@ import domain.users.AccessRight;
 
 
 /**
- * 
- * Defines the program flow for a specific use case.
- *
+ * An abstract class representing the order of execution for a specific use case.
  */
 public abstract class UseCaseFlowController {
 	
@@ -21,13 +19,13 @@ public abstract class UseCaseFlowController {
 	 * Construct a new FlowController
 	 * 
 	 * @param 	accessRight
-	 * 				The accessRight needed to perform the use case
+	 * 			The AccessRight needed to perform this use case
 	 * 
 	 * @param 	clientCommunication
-	 * 				The IClientCommunication the FlowController uses to communicate with the user
+	 * 			The ClientCommunication this FlowController uses to communicate with the user
 	 * 
 	 * @param 	facade
-	 * 				The Facade the Flowcontroller uses to access the domain logic
+	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
 	 */
 	public UseCaseFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade){
 		if (accessRight == null || clientCommunication == null || facade == null) {
@@ -43,6 +41,9 @@ public abstract class UseCaseFlowController {
 	 */
 	public abstract void executeUseCase();
 
+	/**
+	 * Returns the AccesRight of this use case.
+	 */
 	public AccessRight getAccessRight() {
 		return accessRight;
 	}

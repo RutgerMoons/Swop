@@ -15,22 +15,22 @@ import domain.users.AccessRight;
 
 
 /**
- * Defines the program flow for the 'Perform Assembly Tasks' use case.
+ * A class representing the order of execution for the 'Perform Assembly Tasks' use case.
  *
  */
 public class AssembleFlowController extends UseCaseFlowController {
 
 	/**
-	 * Construct a new AssembleFlowController
+	 * Construct a new AssembleFlowController.
 	 * 
 	 * @param 	accessRight
-	 * 				The AccessRight needed to perform this use case
+	 * 			The AccessRight needed to perform this use case
 	 * 
 	 * @param 	clientCommunication
-	 * 				The ClientCommunication it has to use to communicate with the user
+	 * 			The ClientCommunication this FlowController uses to communicate with the user
 	 * 
-	 * @param facade 
-	 * 			The Facade it uses to access the domain logic
+	 * @param 	facade
+	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
 	 */
 	public AssembleFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
