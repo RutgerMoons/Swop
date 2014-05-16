@@ -7,26 +7,22 @@ import com.google.common.collect.Multimap;
 import domain.vehicle.vehicle.CustomVehicle;
 
 /**
- * This class represents a catalogue that consists of CustomCarModels. 
+ * A class representing a catalogue that consists of CustomVehicles. 
  *
  */
 public class CustomVehicleCatalogue {
 
-	// private HashMap<String, HashMap<Class<?>, CarPart>> data;
 		private Multimap<String, CustomVehicle> data;
 
 		/**
-		 * Default constructor. When a carModelCatalogue is constructed, a
-		 * carModelCatalogueFiller is created and the newly constructed
-		 * carModelCatalogue is filled with the basic carModels thanks to the
-		 * carModelCatalogueFiller.
+		 * Create a new CustomVehicleCatalogue.
 		 */
 		public CustomVehicleCatalogue() {
 			data = HashMultimap.create();
 		}
 
 		/**
-		 * Returns an immutable Map of carmodels with their names.
+		 * Get the catalogue with the CustomVehicles in.
 		 */
 		public Multimap<String, CustomVehicle> getCatalogue() {
 			return new ImmutableMultimap.Builder<String, CustomVehicle>().putAll(data).build();
@@ -36,10 +32,10 @@ public class CustomVehicleCatalogue {
 		/**
 		 * Add a new model to the catalogue.
 		 * 
-		 * @param model
-		 *            The model you want to add.
-		 * @throws IllegalArgumentException
-		 *             if model==null or not is valid
+		 * @param 	model
+		 * 			The model you want to add
+		 * @throws 	IllegalArgumentException
+		 *         	Thrown when the description is null or empty or the model is null
 		 */
 		public void addModel(String description, CustomVehicle model) {
 			if (description==null || description.isEmpty() || model == null)
