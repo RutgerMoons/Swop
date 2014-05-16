@@ -96,8 +96,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 			Optional<IJob> jobAtBench = bench.getCurrentJob();
 			if (jobAtBench.isPresent()) {
 				// if job is completed -> move as far as possible
-				// else move to the first IWorkBench that needs to complete tasks of this job
-				//		if that isn't possible -> move as far as possible
+				// else move until it can't go further (next workstation already has a job) 
+				// or to the first IWorkBench that needs to complete tasks of this job
 				IJob jobToMove = jobAtBench.get();
 				int indexOfFurthestEmptyWorkBench = getIndexOfFurthestEmptyWorkBench(i);	
 				if (jobToMove.isCompleted()) {

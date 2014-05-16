@@ -11,13 +11,17 @@ import domain.observer.observers.ClockObserver;
 public class Clock implements ObservableClock {
 	
 	public static final int MINUTESINADAY = 1440;
-	private final int MINUTESSTARTOFDAY= 360;
+	private final int MINUTESSTARTOFDAY;
 	private int minutes;
 	private int days;
 	private ArrayList<ClockObserver> observers;
 	
-	public Clock() {
+	public Clock(int minutesStartOfDay) {
 		observers = new ArrayList<ClockObserver>();
+		if (minutesStartOfDay < 0 || minutesStartOfDay >= MINUTESINADAY) {
+			throw new IllegalArgumentException();
+		}
+		this.MINUTESSTARTOFDAY = minutesStartOfDay;
 	}
 	
 	/**

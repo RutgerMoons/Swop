@@ -241,7 +241,6 @@ public class AssemblyLineTest{
 				task.addAction(action);
 				job.addTask(task);
 			}
-			
 			line.schedule(job);
 		}
 		line.advance();

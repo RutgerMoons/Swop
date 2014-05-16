@@ -72,7 +72,7 @@ public class AssemAssist {
 		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
 		
 		catalogue.initializeCatalogue(filler.getInitialModels());
-		Clock clock = new Clock();
+		Clock clock = new Clock(360);
 		clock.advanceTime(360);
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
