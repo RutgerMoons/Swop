@@ -87,10 +87,10 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		if (!canAdvance()) {
 			throw new IllegalStateException();
 		}
-		
+
 		// begin at the last workBench
 		// if you start at the front, it could be impossible to move a job multiple spots
-		
+
 		for (int i = this.workbenches.size() - 1; i >= 0; i--) {
 			IWorkBench bench = getWorkbenches().get(i);
 			Optional<IJob> jobAtBench = bench.getCurrentJob();
@@ -110,15 +110,18 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 				} else {
 					int index = i;
 					boolean hasToAssemble = false;
-					while (!hasToAssemble) {
+					while (!hasToAssemble && index<(workbenches.size()-1)) {
 						index++;
 						hasToAssemble = workbenchHasToAssembleJob(this.workbenches.get(index), jobToMove);
 					}
-					moveJobToWorkBench(i, index, jobAtBench);
+					
+					if(index<workbenches.size()){
+						moveJobToWorkBench(i, index, jobAtBench);
+					}
 				}
 			}
 		}
-		
+
 		ArrayList<Optional<IJob>> jobsOnAssemblyLine = getCurrentJobsOnAssemblyLine();
 		Optional<IJob> nextJob = this.scheduler.retrieveNextJob(jobsOnAssemblyLine);
 		this.workbenches.get(0).setCurrentJob(nextJob);
@@ -132,7 +135,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		}
 		return jobsOnAssemblyLine;
 	}
-	
+
 	/**
 	 * If the job has a production greater than 0 at that workBench it returns true 
 	 * Else the workBench has no tasks from this job to complete, so it returns false 
@@ -159,7 +162,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		this.workbenches.get(indexOfFurthestEmptyWorkBench).setCurrentJob(jobToMove);
 		this.workbenches.get(indexOfFurthestEmptyWorkBench).chooseTasksOutOfJob();
 	}
-	
+
 	/**
 	 * Finds and returns the index of the furthest empty workbench given an index. It goes over all the workbenches starting
 	 * with the workbench one index further than the given index and stops when it finds a Job on a workbench. 
@@ -277,8 +280,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		for(VehicleSpecification specification: getResponsibilities()){
 			result += ", " + specification.getDescription();
 		}
-		
-		
+
+
 		return result.replaceFirst(", ", "");
 	}
 
