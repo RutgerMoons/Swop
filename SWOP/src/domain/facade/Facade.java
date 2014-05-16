@@ -55,7 +55,7 @@ public class Facade {
 	}
 
 	/**
-	 * Add a Part to the VehicleModel that is being ordered.
+	 * Add a Part to the Vehicle that is being ordered.
 	 * 
 	 * @param 	part
 	 * 			The VehicleOption you want to add to the model
