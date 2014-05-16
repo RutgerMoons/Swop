@@ -77,7 +77,7 @@ public class VehicleSpecification {
 		}
 		this.description = description;
 	}
-	
+
 	/**
 	 * Get the time the VehicleSpecification has to spend on each WorkBench with its WorkbenchType.
 	 */
@@ -139,7 +139,7 @@ public class VehicleSpecification {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * 
 	 * @param	workBenchType used to determine the time this job will take to complete
@@ -147,7 +147,9 @@ public class VehicleSpecification {
 	 * @return	The amount of minutes to complete this VehicleSpecification at the given type of WorkBench
 	 */
 	public int getProductionTime(WorkBenchType workBenchType) {
-		return getTimeAtWorkBench().get(workBenchType);
+		if(getTimeAtWorkBench().containsKey(workBenchType)){
+			return getTimeAtWorkBench().get(workBenchType);
+		}else return 0;
 	}
 
 }

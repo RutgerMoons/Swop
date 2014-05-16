@@ -171,37 +171,41 @@ public class CustomOrder implements IOrder {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		IOrder other = null;
+		try{
+			other = (IOrder) obj;
+		} catch (ClassCastException e){
 			return false;
-		CustomOrder other = (CustomOrder) obj;
+		}
+		
 		if (deadline == null) {
-			if (other.deadline != null)
+			if (other.getDeadline() != null)
 				return false;
-		} else if (!deadline.equals(other.deadline))
+		} else if (!deadline.equals(other.getDeadline()))
 			return false;
 		if (description == null) {
-			if (other.description != null)
+			if (other.getDescription() != null)
 				return false;
-		} else if (!description.equals(other.description))
+		} else if (!description.equals(other.getDescription()))
 			return false;
 		if (estimatedTime == null) {
-			if (other.estimatedTime != null)
+			if (other.getEstimatedTime() != null)
 				return false;
-		} else if (!estimatedTime.equals(other.estimatedTime))
+		} else if (!estimatedTime.equals(other.getEstimatedTime()))
 			return false;
 		if (garageholder == null) {
-			if (other.garageholder != null)
+			if (other.getGarageHolder() != null)
 				return false;
-		} else if (!garageholder.equals(other.garageholder))
+		} else if (!garageholder.equals(other.getGarageHolder()))
 			return false;
 		if (orderTime == null) {
-			if (other.orderTime != null)
+			if (other.getOrderTime() != null)
 				return false;
-		} else if (!orderTime.equals(other.orderTime))
+		} else if (!orderTime.equals(other.getOrderTime()))
 			return false;
-		if (pendingCars != other.pendingCars)
+		if (pendingCars != other.getPendingCars())
 			return false;
-		if (quantity != other.quantity)
+		if (quantity != other.getQuantity())
 			return false;
 		return true;
 	}
@@ -236,7 +240,7 @@ public class CustomOrder implements IOrder {
 
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
-		throw new NotImplementedException();
+		return getDescription().getVehicleSpecification();
 	}
 	
 	@Override

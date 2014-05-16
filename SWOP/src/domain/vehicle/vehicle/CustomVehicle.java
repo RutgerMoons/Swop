@@ -2,6 +2,7 @@ package domain.vehicle.vehicle;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import domain.assembly.workBench.WorkBenchType;
@@ -20,19 +21,24 @@ public class CustomVehicle implements IVehicle {
 
 	private HashMap<VehicleOptionCategory, VehicleOption> vehicleOptions;
 	private Map<WorkBenchType, Integer> timeAtWorkbench;
-	
+	private VehicleSpecification specification;
 	/**
 	 * Create a new CustomVehicle. 
 	 */
 	public CustomVehicle(){
 		vehicleOptions = new HashMap<>();
 		timeAtWorkbench = new HashMap<>();
-		
+		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		for(WorkBenchType type: WorkBenchType.values()){
+			timeAtWorkBench.put(type, 60);
+		}
+		specification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench);
+
 		for(WorkBenchType type: WorkBenchType.values()){
 			timeAtWorkbench.put(type, 60);
 		}
 	}
-	
+
 	@Override
 	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableMap(vehicleOptions);
@@ -62,12 +68,15 @@ public class CustomVehicle implements IVehicle {
 
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
-		throw new NotImplementedException();
+		return specification;
 	}
 
 	@Override
 	public void setVehicleSpecification(VehicleSpecification template) {
-		throw new NotImplementedException();
+		if(template==null){
+			throw new IllegalArgumentException();
+		}
+		this.specification = template;
 	}
 
 	@Override
@@ -86,5 +95,50 @@ public class CustomVehicle implements IVehicle {
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(timeAtWorkbench);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((specification == null) ? 0 : specification.hashCode());
+		result = prime * result
+				+ ((timeAtWorkbench == null) ? 0 : timeAtWorkbench.hashCode());
+		result = prime * result
+				+ ((vehicleOptions == null) ? 0 : vehicleOptions.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		IVehicle other = null;
+		try{
+			other = (IVehicle) obj;
+		} catch (ClassCastException e){
+			return false;
+		}
+		if (specification == null) {
+			if (other.getVehicleSpecification()!= null)
+				return false;
+		} else if (!specification.equals(other.getVehicleSpecification()))
+			return false;
+		if (timeAtWorkbench == null) {
+			if (other.getTimeAtWorkBench() != null)
+				return false;
+		} else if (!timeAtWorkbench.equals(other.getTimeAtWorkBench()))
+			return false;
+		if (vehicleOptions == null) {
+			if (other.getVehicleOptions() != null)
+				return false;
+		} else if (!vehicleOptions.equals(other.getVehicleOptions()))
+			return false;
+		return true;
+	}
+
+
 }
 

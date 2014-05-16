@@ -60,8 +60,6 @@ public interface IVehicle {
 	/**
 	 * Get the VehicleSpecification where the IVehicle is built from.
 	 * 
-	 * @throws	NotImplementedException
-	 * 			Thrown when the IVehicle is a CustomVehicle
 	 */
 	public VehicleSpecification getVehicleSpecification();
 	
@@ -73,9 +71,6 @@ public interface IVehicle {
 	 * 
 	 *@throws	UnmodifiableException
 	 * 			Thrown when it is an UnmodifiableVehicle
-	 * 
-	 *@throws	NotImplementedException
-	 * 			Thrown when the Vehicle is a CustomVehicle
 	 */
 	public void setVehicleSpecification(VehicleSpecification template);
 
