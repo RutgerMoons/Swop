@@ -61,10 +61,10 @@ public class OrderBookTest {
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
 		StandardOrder order = new StandardOrder("Mario", model1,1, new ImmutableClock(0,0));
-		orderBook.addOrder(order, new ImmutableClock(0, 0));
+		orderBook.addOrder(order);
 		assertFalse(orderBook.getPendingOrders().isEmpty());
 		StandardOrder order2 = new StandardOrder("Mario",model2,2, new ImmutableClock(0,0));
-		orderBook.addOrder(order2, new ImmutableClock(0, 0));
+		orderBook.addOrder(order2);
 		order2.completeCar();
 		order2.completeCar();
 		
@@ -80,13 +80,29 @@ public class OrderBookTest {
 		
 	}
 	
-	@Test
-	public void testAddCustomOrder() throws UnmodifiableException, NotImplementedException {
+	@Test (expected = IllegalArgumentException.class)
+	public void test2a(){
 		assertNotNull(orderBook.getCompletedOrders());
 		assertNotNull(orderBook.getPendingOrders());
 		CustomVehicle customModel = new CustomVehicle();
 		CustomOrder order = new CustomOrder("Mario", customModel,1, new ImmutableClock(0,20), new ImmutableClock(1, 420));
-		orderBook.addOrder(order, new ImmutableClock(0, 0));
+		orderBook.updateOrderBook(order);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test2b(){
+		assertNotNull(orderBook.getCompletedOrders());
+		assertNotNull(orderBook.getPendingOrders());
+		orderBook.updateOrderBook(null);
+	}
+	
+	@Test
+	public void testAddCustomOrder() {
+		assertNotNull(orderBook.getCompletedOrders());
+		assertNotNull(orderBook.getPendingOrders());
+		CustomVehicle customModel = new CustomVehicle();
+		CustomOrder order = new CustomOrder("Mario", customModel,1, new ImmutableClock(0,20), new ImmutableClock(1, 420));
+		orderBook.addOrder(order);
 		
 		assertFalse(orderBook.getPendingOrders().isEmpty());
 		assertEquals(1,orderBook.getPendingOrders().keySet().size());
@@ -99,21 +115,17 @@ public class OrderBookTest {
 		assertEquals(1, order.getDeadline().getDays());
 		assertEquals(420, order.getDeadline().getMinutes());
 	}
-
-	@Test
-	public void test2(){
-		orderBook.initializeBook();
-		assertNotNull(orderBook.getCompletedOrders());
-		assertNotNull(orderBook.getPendingOrders());
-	}
-	
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test3(){
-		orderBook.initializeBook();
-		StandardOrder order = new StandardOrder(null,null,0, new ImmutableClock(0,20));
-		orderBook.updateOrderBook(order);
-		
+		OrderBookObserver o1 = new OrderBookObserver();
+		AssemblyLineObserver o2 = new AssemblyLineObserver();
+		new WorkloadDivider(new ArrayList<AssemblyLine>(), o1, o2);
+		orderBook.attachObserver(o1);
+		StandardOrder order = new StandardOrder("mario", model1, 5, new ImmutableClock(0, 0));
+		order.completeCar();
+		orderBook.addOrder(order);
+		orderBook.updateCompletedOrder(order);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -127,9 +139,10 @@ public class OrderBookTest {
 		AssemblyLineObserver o2 = new AssemblyLineObserver();
 		new WorkloadDivider(new ArrayList<AssemblyLine>(), o1, o2);
 		orderBook.attachObserver(o1);
-		
-		orderBook.updatePlacedOrder(new StandardOrder("mario", model1, 1, new ImmutableClock(0, 0)));
-		orderBook.updateCompletedOrder(new StandardOrder("mario", model1, 1, new ImmutableClock(0, 0)));
+		StandardOrder order = new StandardOrder("mario", model1, 1, new ImmutableClock(0, 0));
+		orderBook.addOrder(order);
+		order.completeCar();
+		orderBook.updateCompletedOrder(order);
 		
 		orderBook.detachObserver(o1);
 	}

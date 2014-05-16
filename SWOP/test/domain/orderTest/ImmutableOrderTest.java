@@ -141,11 +141,6 @@ public class ImmutableOrderTest {
 		assertEquals(order.getVehicleOptions(), immutable.getVehicleOptions());
 	}
 	
-	@Test (expected = UnmodifiableException.class)
-	public void testaddToSchedulingAlgorithm(){
-		immutable.addToSchedulingAlgorithm(null, null);
-	}
-	
 	@Test
 	public void testGetTimeAtWorkBench(){
 		assertEquals(order.getTimeAtWorkBench(), immutable.getTimeAtWorkBench());

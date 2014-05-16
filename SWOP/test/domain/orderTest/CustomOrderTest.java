@@ -13,11 +13,7 @@ import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
 import domain.exception.UnmodifiableException;
 import domain.job.action.Action;
-import domain.job.job.IJob;
-import domain.job.job.Job;
 import domain.order.order.CustomOrder;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
@@ -194,21 +190,6 @@ public class CustomOrderTest {
 	public void testVehicleOptions(){
 		CustomOrder order = new CustomOrder("jos", model, 1, orderTime, deadline);
 		assertEquals(order.getVehicleOptions(), model.getVehicleOptions().values());
-	}
-	
-	@Test
-	public void testAddToSchedulingAlgorithm(){
-		CustomOrder order = new CustomOrder("jos", model, 1, orderTime, deadline);
-		SchedulingAlgorithm algorithm = new SchedulingAlgorithmFifo(3);
-		IJob job = new Job(order);
-		order.addToSchedulingAlgorithm(algorithm, job);
-		assertTrue(algorithm.getCustomJobs().contains(job));
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void testIllegalAddToSchedulingAlgorithm(){
-		CustomOrder order = new CustomOrder("jos", model, 1, orderTime, deadline);
-		order.addToSchedulingAlgorithm(null, null);
 	}
 	
 	@Test

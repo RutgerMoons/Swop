@@ -26,7 +26,9 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	 * Create a new OrderBook.
 	 */
 	public OrderBook() {
-		initializeBook();
+		pendingOrders =  ArrayListMultimap.create();
+		completedOrders = ArrayListMultimap.create();
+		this.observers = new ArrayList<>();
 	}
 
 	/**
@@ -52,24 +54,17 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	 * 			The order that needs to be updated
 	 * 
 	 * @throws	IllegalArgumentException
-	 * 			Thrown when the order is null or the order isn't fully completed
+	 * 			Thrown when the order is null or the order isn't fully completed or the pendingOrders doesn't 
+	 * 			have the given order
 	 */
 	public void updateOrderBook(IOrder order) {
-		if (order == null || order.getPendingCars()>0) {
+		if (order == null || order.getPendingCars()>0 || !this.pendingOrders.containsValue(order)) {
 			throw new IllegalArgumentException();
 		}
 
 		Collection<IOrder> pending = this.pendingOrders.get(order.getGarageHolder());
-		if (order.getPendingCars()<=0 && pending.contains(order)) {
-			pending.remove(order);
-			this.completedOrders.put(order.getGarageHolder(), order);
-		}
-	}
-
-	private void initializeBook() {
-		pendingOrders =  ArrayListMultimap.create();
-		completedOrders = ArrayListMultimap.create();
-		this.observers = new ArrayList<>();
+		pending.remove(order);
+		this.completedOrders.put(order.getGarageHolder(), order);
 	}
 
 	/**
@@ -85,7 +80,7 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 		this.pendingOrders.put(order.getGarageHolder(), order);
 		updatePlacedOrder(order);
 	}
-	
+
 	@Override
 	public void updateCompletedOrder(IOrder order) {
 		if(order==null)
