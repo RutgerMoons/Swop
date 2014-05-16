@@ -6,7 +6,6 @@ import java.util.Map;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.NotImplementedException;
 import domain.order.orderVisitor.IOrderVisitor;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
@@ -46,7 +45,7 @@ public class CustomOrder implements IOrder {
 			throw new IllegalArgumentException();
 		this.garageholder = garageholder;
 	}
-	
+
 	@Override
 	public String getGarageHolder() {
 		return garageholder;
@@ -56,7 +55,7 @@ public class CustomOrder implements IOrder {
 	public int getPendingCars() {
 		return pendingCars;
 	}
-	
+
 	/** Changing the amount of pendingCars to the given amount. That's how other
 	 * classes may check if the order is completed or not. The method checks if
 	 * the given amount is lower than zero. If so an IllegalArgumentException is
@@ -80,7 +79,7 @@ public class CustomOrder implements IOrder {
 		}
 		this.quantity = quantity;
 	}
-	
+
 	@Override
 	public IVehicle getDescription() {
 		return description;
@@ -97,7 +96,7 @@ public class CustomOrder implements IOrder {
 		}
 		this.description = description;
 	}
-	
+
 	@Override
 	public ImmutableClock getDeadline() {
 		return deadline;
@@ -177,7 +176,7 @@ public class CustomOrder implements IOrder {
 		} catch (ClassCastException e){
 			return false;
 		}
-		
+
 		if (deadline == null) {
 			if (other.getDeadline() != null)
 				return false;
@@ -220,19 +219,21 @@ public class CustomOrder implements IOrder {
 					+ this.getDeadline().getMinutes() / 60 + " hours and "
 					+ this.getDeadline().getMinutes() % 60 + " minutes"
 					+ line;
-			orderInString += " Estimated completion time: "
-					+ this.getEstimatedTime().getDays() + " days and "
-					+ this.getEstimatedTime().getMinutes() / 60 + " hours and "
-					+ this.getEstimatedTime().getMinutes() % 60 + " minutes";
+			if(estimatedTime!=null){
+				orderInString += " Estimated completion time: "
+						+ this.getEstimatedTime().getDays() + " days and "
+						+ this.getEstimatedTime().getMinutes() / 60 + " hours and "
+						+ this.getEstimatedTime().getMinutes() % 60 + " minutes";
+			}
 		}
 		return orderInString;
 	}
-	
+
 	@Override
 	public Collection<VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableCollection(this.getDescription().getVehicleOptions().values());
 	}
-	
+
 	@Override
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
 		return Collections.unmodifiableMap(this.getDescription().getTimeAtWorkBench());
@@ -242,10 +243,10 @@ public class CustomOrder implements IOrder {
 	public VehicleSpecification getVehicleSpecification() {
 		return getDescription().getVehicleSpecification();
 	}
-	
+
 	@Override
 	public void acceptVisit(IOrderVisitor visitor) {
 		visitor.visit(this);
 	}
-	
+
 }
