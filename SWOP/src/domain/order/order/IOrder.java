@@ -13,101 +13,104 @@ import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Interface for limiting access to standard Orders
+ * An interface used to represent an Order. All types of order need to implement this interface. 
  */
 public interface IOrder {
 
 	/**
-	 * Returns the name of the garageholder
+	 * Returns the name of the garage holder.
 	 */
 	public String getGarageHolder();
 	
 	/**
-	 * Method for retrieving the amount of cars still to be completed
+	 * Method for retrieving the amount of cars still to be completed.
 	 */
 	public int getPendingCars();
 	
 	/**
-	 * Method for retrieving the amount of cars ordered
+	 * Method for retrieving the amount of cars ordered.
 	 */
 	public int getQuantity();
 	
 	/**
-	 * Returns an unmodifiable Vehicle for encapsulation
+	 * Get the IVehicle that belongs to this IOrder.
 	 */
 	public IVehicle getDescription();
 	
 	/**
-	 * Get the production time of the order, so how long it takes to produce all the cars 
+	 * Get the production time of the order, so how long it takes to produce all the cars. 
 	 */
 	public int getProductionTime();
 	
 	/**
-	 * Get the deadline of a CustomOrder
+	 * Get the deadline of a CustomOrder.
 	 *  
-	 * @throws 	NotImplementedException
-	 * 				if the Order isn't a CustomOrder
+	 * @throws	NotImplementedException
+	 * 			Thrown when the Order isn't a CustomOrder
 	 */
 	public ImmutableClock getDeadline();
 	
 	/**
 	 * Set the deadline of the CustomOrder
 	 * 
-	 * @throws 	NotImplementedException
-	 * 				if the Order isn't a CustomOrder
+	 * @throws	NotImplementedException
+	 * 			Thrown when the Order isn't a CustomOrder
 	 * 
 	 * @throws 	UnmodifiableException
-	 * 				if the IOrder is an unmodifiable Order
+	 * 			Thrown when the IOrder is an unmodifiable Order
 	 */
 	public void setDeadline(ImmutableClock clock);
 	
 	/**
-	 * Get the estimated time until completion
+	 * Get the estimated time until completion.
 	 */
 	public ImmutableClock getEstimatedTime();
 	
 	/**
-	 * Set the estimated time of completion of the Order
+	 * Set the estimated time of completion of the Order.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the clock is null
 	 */
 	public void setEstimatedTime(ImmutableClock clock);
 	 
 	/**
-	 * Get the time when the Order is ordered
+	 * Get the time when the IOrder is ordered.
 	 */
 	public ImmutableClock getOrderTime();
 
 	/**
-	 * Set the time when the Order is ordered 
+	 * Set the time when the IOrder is ordered.
 	 * 
 	 * @throws 	UnmodifiableException
-	 * 				if the IOrder is an unmodifiable Orde
+	 * 			Thrown when the IOrder is an unmodifiable order
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the clock is null
 	 */
 	public void setOrderTime(ImmutableClock clock) ;
 	
 	/**
-	 * Method for decreasing the amount of pendingCars each time an car of the
-	 * order is completed
+	 * Method for decreasing the amount of pendingCars each time a car of the
+	 * IOrder is completed.
 	 * 
-	 * @throws 	UnmodifiableException 
-	 * 				If the IOrder is an unmodifiable Order
+	 * @throws	UnmodifiableException 
+	 * 			If the IOrder is an unmodifiable Order
 	 */
 	public void completeCar();
 	
 	/**
-	 * @return	Collection of all the VehicleOptions of which the ordered cars consist
+	 * @return	Collection of all the VehicleOptions of which the ordered IVehicles consist
 	 */
 	public Collection<VehicleOption> getVehicleOptions();
 	
 	/**
-	 * Get the time the specification has to spend on a workbench
+	 * Get the time the specification has to spend on a >orkBench.
 	 */
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
 
 	/**
-	 * Get the specification of the vehicle from the order.
-	 * 
-	 * @throws	NotImplementedException
-	 * 				If the order is a custom order
+	 * Get the VehicleSpecification of the IVehicle from the IOrder.
 	 */
 	public VehicleSpecification getVehicleSpecification();
 	
@@ -116,5 +119,11 @@ public interface IOrder {
 	 * VISITABLE
 	 * 
 	 * ----------------------------------------------*/
+	/**
+	 * Let the IOrderVisitor visit the IOrder and the IOrder decides what to do.
+	 * 
+	 * @param 	visitor
+	 * 			The visitor that visits the IOrder
+	 */
 	public void acceptVisit(IOrderVisitor visitor);
 }

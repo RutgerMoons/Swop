@@ -14,22 +14,22 @@ import domain.vehicle.vehicle.UnmodifiableVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Create an Immutable Order, only the getters are accessible.
+ * A class representing an unmodifiable order. It has a reference to its IOrder.
  *
  */
 public class UnmodifiableOrder implements IOrder {
 
 	IOrder order;
 	/**
-	 * Create an Immutable Order.
+	 * Create an UnmodifiableOrder.
 	 * 
-	 * @param iOrder
+	 * @param order
 	 * 			The mutable Order.
 	 */
-	public UnmodifiableOrder(IOrder iOrder){
-		if(iOrder==null)
+	public UnmodifiableOrder(IOrder order){
+		if(order==null)
 			throw new IllegalArgumentException();
-		this.order = iOrder;
+		this.order = order;
 	}
 	
 	@Override
