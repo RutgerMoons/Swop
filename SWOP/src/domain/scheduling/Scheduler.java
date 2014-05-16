@@ -78,7 +78,6 @@ public class Scheduler implements ObservesClock {
 
 	/**
 	 * Passes the next job to the assemblyLine.
-	 * 
 	 */
 	public Optional<IJob> retrieveNextJob(ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
