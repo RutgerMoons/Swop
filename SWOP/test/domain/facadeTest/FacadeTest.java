@@ -54,7 +54,7 @@ public class FacadeTest {
 	@Before
 	public void initialize() {
 		ClockObserver observer = new ClockObserver();
-		Clock clock = new Clock();
+		Clock clock = new Clock(360);
 		clock.attachObserver(observer);
 		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
 		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
@@ -66,7 +66,7 @@ public class FacadeTest {
 			for(CustomVehicle vehicle: customFiller.getInitialModels().get(str))
 			customCatalogue.addModel(str, vehicle);
 		}
-		company = new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), customCatalogue, catalogue, lines, new Clock());
+		company = new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), customCatalogue, catalogue, lines, new Clock(360));
 		facade = new Facade(company);
 	}
 	

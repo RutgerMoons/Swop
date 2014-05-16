@@ -16,7 +16,7 @@ public class ClockTest {
 
 	@Before
 	public void setup() {
-		this.clock = new Clock();
+		this.clock = new Clock(360);
 	}
 
 	@Test

@@ -243,8 +243,7 @@ public class AssemblyLineTest{
 				task.addAction(action);
 				job.addTask(task);
 			}
-			
-			line.getCurrentScheduler().addJobToAlgorithm(job);
+			line.schedule(job);
 		}
 		line.advance();
 		for(IWorkBench bench : line.getWorkbenches()){
