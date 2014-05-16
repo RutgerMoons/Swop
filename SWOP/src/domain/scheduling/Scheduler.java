@@ -29,7 +29,7 @@ public class Scheduler implements ObservesClock {
 
 	private SchedulingAlgorithm schedulingAlgorithm;
 	private List<Shift> shifts;
-	private ImmutableClock clock;
+	private ImmutableClock internalClock;
 
 	/**
 	 * Constructs a scheduler and initializes the shifts.
@@ -48,7 +48,7 @@ public class Scheduler implements ObservesClock {
 			throw new IllegalArgumentException();
 		}
 		clockObserver.attachLogger(this);
-		this.clock = clock;
+		this.internalClock = clock;
 		shifts = new ArrayList<>();
 		Shift shift1 = new Shift(360, 840, 0); 	//shift van 06:00 tot 14:00
 		Shift shift2 = new Shift(840, 1320, 0);	//shift van 14:00 tot 22:00
@@ -63,7 +63,7 @@ public class Scheduler implements ObservesClock {
 	 */
 	public void addJobToAlgorithm(IJob job) {
 		this.schedulingAlgorithm.addJobToAlgorithm(job);
-		schedulingAlgorithm.setEstimatedTime(job, clock);
+		schedulingAlgorithm.setEstimatedTime(job, internalClock);
 	}
 
 	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, List<WorkBenchType> workBenchTypes) {
@@ -87,8 +87,8 @@ public class Scheduler implements ObservesClock {
 	public Optional<IJob> retrieveNextJob() throws NoSuitableJobFoundException{
 		// (einduur laatste shift - beginuur eerste shift) - currentTime
 		int minutesTillEndOfDay = shifts.get(shifts.size() - 1).getEndOfShift()
-				- this.clock.getMinutes();
-		return this.schedulingAlgorithm.retrieveNext(minutesTillEndOfDay, clock);
+				- this.internalClock.getMinutes();
+		return this.schedulingAlgorithm.retrieveNext(minutesTillEndOfDay, internalClock);
 	}
 
 	/**
@@ -101,12 +101,7 @@ public class Scheduler implements ObservesClock {
 	 * 			Exception is thrown when currentTime is null
 	 */
 	@Override
-	public void advanceTime(ImmutableClock currentTime) {
-		if(currentTime == null){
-			throw new IllegalArgumentException();
-		}
-		this.clock = currentTime;
-	}
+	public void advanceTime(ImmutableClock currentTime) {}
 
 	/**
 	 * Method called on the start of a new day. The time is updated
@@ -118,9 +113,9 @@ public class Scheduler implements ObservesClock {
 		if (newDay == null) {
 			throw new IllegalArgumentException();
 		}
-		int newOvertime = Math.max(this.clock.getMinutes() - this.shifts.get(this.shifts.size() - 1).getEndOfShift(), 0);
+		int newOvertime = Math.max(this.internalClock.getMinutes() - this.shifts.get(this.shifts.size() - 1).getEndOfShift(), 0);
 		this.shifts.get(this.shifts.size() - 1).setNewOvertime(newOvertime);
-		this.clock = newDay;
+		this.internalClock = newDay;
 		this.schedulingAlgorithm.startNewDay();
 	}
 
@@ -191,5 +186,16 @@ public class Scheduler implements ObservesClock {
 
 	public List<IJob> removeUnscheduledJobs() {
 		return Collections.unmodifiableList(schedulingAlgorithm.removeUnscheduledJobs());
+	}
+
+	public void advanceInternalClock(ImmutableClock elapsed) {
+		if (elapsed == null) {
+			throw new IllegalArgumentException();
+		}
+		this.internalClock = this.internalClock.getImmutableClockPlusExtraMinutes(elapsed.getTotalInMinutes());
+	}
+
+	public int getTotalMinutesOfInternalClock() {
+		return this.internalClock.getMinutes();
 	}
 }

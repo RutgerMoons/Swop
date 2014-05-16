@@ -111,9 +111,12 @@ public class Company {
 	 *          The time the clock has to be advanced.
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time){
-		this.workloadDivider.completeChosenTaskAtChosenWorkBench(assemblyLine, workbench, task);
-
-		clock.advanceTime(time.getTotalInMinutes());
+		int currentAmountOfMinutesAtScheduler = this.workloadDivider.completeChosenTaskAtChosenWorkBench(
+																		assemblyLine, workbench, task, time);
+		int difference = currentAmountOfMinutesAtScheduler - this.clock.getMinutes();
+		if (difference > 0) {
+			clock.advanceTime(difference);
+		}
 	}
 
 	/**

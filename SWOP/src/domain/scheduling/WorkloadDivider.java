@@ -194,13 +194,13 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 	 * 
 	 * @param	assemblyLine to be matched
 	 */
-	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task){
+	public int completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock elapsed) {
 		for (AssemblyLine line : this.assemblyLines) {
 			if (line.equals(assemblyLine)) {
-				line.completeChosenTaskAtChosenWorkBench(workbench, task);
-				break;
+				return line.completeChosenTaskAtChosenWorkBench(workbench, task, elapsed);
 			}
 		}
+		throw new IllegalStateException();
 	}
 
 	/**

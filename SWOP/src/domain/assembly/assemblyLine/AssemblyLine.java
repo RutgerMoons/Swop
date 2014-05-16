@@ -272,13 +272,15 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	 * 
 	 * @param	workbench to be matched
 	 */
-	public void completeChosenTaskAtChosenWorkBench(IWorkBench workbench, ITask task){
+	public int completeChosenTaskAtChosenWorkBench(IWorkBench workbench, ITask task, ImmutableClock elapsed) {
 		for (IWorkBench wb : this.workbenches) {
 			if (wb.equals(workbench)) {
 				wb.completeChosenTaskAtChosenWorkBench(task);
-				break;
+				this.scheduler.advanceInternalClock(elapsed);
+				return this.scheduler.getTotalMinutesOfInternalClock();
 			}
 		}
+		throw new IllegalStateException();
 	}
 
 	/**
