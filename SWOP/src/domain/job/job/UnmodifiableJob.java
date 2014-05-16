@@ -107,4 +107,9 @@ public class UnmodifiableJob implements IJob {
 	public VehicleSpecification getVehicleSpecification() {
 		return job.getVehicleSpecification();
 	}
+
+	@Override
+	public int getProductionTime(WorkBenchType workBenchType) {
+		return this.job.getProductionTime(workBenchType);
+	}
 }

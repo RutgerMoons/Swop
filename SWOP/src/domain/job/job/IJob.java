@@ -96,5 +96,12 @@ public interface IJob {
 	 * Get the specification of the vehicle from the order
 	 */
 	public VehicleSpecification getVehicleSpecification();
-
+	
+	/**
+	 * 
+	 * @param	workBenchType used to determine the time this job will take to complete
+	 * 
+	 * @return	The amount of minutes to complete this job at the given type of WorkBench
+	 */
+	public int getProductionTime(WorkBenchType workBenchType);
 }

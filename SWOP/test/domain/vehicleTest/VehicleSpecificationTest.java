@@ -46,8 +46,8 @@ public class VehicleSpecificationTest {
 		timeAtWorkBench.put(WorkBenchType.ACCESSORIES, 60);
 		timeAtWorkBench.put(WorkBenchType.BODY, 60);
 		timeAtWorkBench.put(WorkBenchType.CARGO, 60);
-		timeAtWorkBench.put(WorkBenchType.CERTIFICATION, 60);
-		timeAtWorkBench.put(WorkBenchType.DRIVETRAIN, 60);
+		timeAtWorkBench.put(WorkBenchType.CERTIFICATION, 120);
+		timeAtWorkBench.put(WorkBenchType.DRIVETRAIN, 30);
 		template = new VehicleSpecification("model", parts, timeAtWorkBench);
 	}
 
@@ -60,6 +60,13 @@ public class VehicleSpecificationTest {
 		
 		assertEquals(8, template.getCarParts().keySet().size());
 		assertEquals(14, template.getCarParts().values().size());
+	}
+	
+	@Test
+	public void getProductionTime() {
+		assertEquals(60, this.template.getProductionTime(WorkBenchType.ACCESSORIES));
+		assertEquals(120, this.template.getProductionTime(WorkBenchType.CERTIFICATION));
+		assertEquals(30, this.template.getProductionTime(WorkBenchType.DRIVETRAIN));
 	}
 
 }

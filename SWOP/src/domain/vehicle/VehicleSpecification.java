@@ -120,6 +120,8 @@ public class VehicleSpecification {
 		return true;
 	}
 	
-	
+	public int getProductionTime(WorkBenchType workBenchType) {
+		return getTimeAtWorkBench().get(workBenchType);
+	}
 
 }

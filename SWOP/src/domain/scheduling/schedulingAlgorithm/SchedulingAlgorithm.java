@@ -140,16 +140,18 @@ public abstract class SchedulingAlgorithm {
 		return null;
 	}
 	
+	//TODO: List of workBenchTypes meegeven
 	protected int getMaximum(List<Optional<IJob>> list) {
 		int biggest = 0;
-		for(Optional<IJob> job : list){
-			if(job.isPresent()){
-				//TODO weten op welke assemblyline de job staat om de productiontime te berekenen
-				int currentTimeAtWorkbenchForThisJob = job.get().getProductionTime();
-				if(currentTimeAtWorkbenchForThisJob >= biggest){
+		int index = 0;
+		for (Optional<IJob> job : list) {
+			if (job.isPresent()) {
+				int currentTimeAtWorkbenchForThisJob = job.get().getProductionTime(workBenchTypes.get(index));
+				if (currentTimeAtWorkbenchForThisJob >= biggest) {
 					biggest = currentTimeAtWorkbenchForThisJob;
 				}
 			}
+			index++;
 		}
 		return biggest;
 	}
