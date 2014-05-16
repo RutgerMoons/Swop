@@ -6,7 +6,7 @@ import domain.observer.observable.ObservableClock;
 import domain.observer.observers.ClockObserver;
 
 /**
- * Represents a clock that stores the current time (in minutes) and the current day.
+ * A class representing a clock that stores the current time (in minutes) and the current day.
  */
 public class Clock implements ObservableClock {
 	
@@ -21,24 +21,24 @@ public class Clock implements ObservableClock {
 	}
 	
 	/**
-	 * Get the current time (in minutes).
-	 * 
-	 * @return 	An integer that represents the current time, expressed in minutes
+	 * Get the amount of minutes of this day (in minutes).
 	 */
 	public int getMinutes(){
 		return minutes;
 	}
-	
+
 	private void setMinutes(int min) {
 		this.minutes = min % MINUTESINADAY;
 	}
 	
 	/**
 	 * Advance the clock.
+	 * 
 	 * @param 	elapsedTime
-	 * 				An integer that represents how much the clock has to be advanced, expressed in minutes
+	 * 			An integer that represents how much the clock has to be advanced, expressed in minutes
+	 * 
 	 * @throws 	IllegalArgumentException
-	 * 				If elapsedTime<0
+	 * 			Thrown if elapsedTime is smaller than zero.
 	 */
 	public void advanceTime(int elapsedTime) throws IllegalArgumentException{
 		if (elapsedTime < 0) {
@@ -65,15 +65,15 @@ public class Clock implements ObservableClock {
 	}
 	
 	/**
-	 * the amount of days is incremented with one
+	 * @post The amount of days is incremented with one.
 	 */
 	private void incrementDay() {
 		this.days++;
 	}
 	
 	/**
-	 * if it is before midnight increment the day with one
-	 * set the minutes to MINUTESSTARTOFDAY
+	 * If it's before midnight, the day attribute will be incremented with one and
+	 * the minutes will be set to MINUTESSTARTOFDAY.
 	 */
 	public void startNewDay() {
 		incrementDay();
@@ -81,12 +81,15 @@ public class Clock implements ObservableClock {
 		notifyObserversStartNewDay();
 	}
 	
+	/**
+	 * Returns an immutable snapshot of this clock.
+	 */
 	public ImmutableClock getImmutableClock() {
 		return new ImmutableClock(getDays(), getMinutes());
 	}
 	
 	/**
-	 * Add an observer to this clock's observers
+	 * Add an observer to this clock's observers;
 	 */
 	@Override
 	public void attachObserver(ClockObserver observer) {

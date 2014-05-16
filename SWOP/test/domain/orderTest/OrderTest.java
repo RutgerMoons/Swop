@@ -60,15 +60,15 @@ public class OrderTest {
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
 		model = new Vehicle(template);
-		model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		model.addCarPart(new VehicleOption("sedan", VehicleOptionCategory.BODY));
-		model.addCarPart(new VehicleOption("red", VehicleOptionCategory.COLOR));
-		model.addCarPart(new VehicleOption("standard 2l 4 cilinders",
+		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("red", VehicleOptionCategory.COLOR));
+		model.addVehicleOption(new VehicleOption("standard 2l 4 cilinders",
 				VehicleOptionCategory.ENGINE));
-		model.addCarPart(new VehicleOption("6 speed manual",
+		model.addVehicleOption(new VehicleOption("6 speed manual",
 				VehicleOptionCategory.GEARBOX));
-		model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
-		model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
+		model.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 	}
 
 	@Test
@@ -151,15 +151,15 @@ public class OrderTest {
 	public void TestEqualsAndHashcode() throws AlreadyInMapException {
 		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
 		Vehicle model2 = new Vehicle(template2);
-		model2.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		model2.addCarPart(new VehicleOption("sedan", VehicleOptionCategory.BODY));
-		model2.addCarPart(new VehicleOption("red", VehicleOptionCategory.COLOR));
-		model2.addCarPart(new VehicleOption("standard 2l 4 cilinders",
+		model2.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model2.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));
+		model2.addVehicleOption(new VehicleOption("red", VehicleOptionCategory.COLOR));
+		model2.addVehicleOption(new VehicleOption("standard 2l 4 cilinders",
 				VehicleOptionCategory.ENGINE));
-		model2.addCarPart(new VehicleOption("6 speed manual",
+		model2.addVehicleOption(new VehicleOption("6 speed manual",
 				VehicleOptionCategory.GEARBOX));
-		model2.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
-		model2.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
+		model2.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model2.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		assertFalse(order1.equals(null));
@@ -246,7 +246,7 @@ public class OrderTest {
 	@Test
 	public void testGetVehicleSpecification(){
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
-		assertEquals(model.getSpecification(), order1.getVehicleSpecification());
+		assertEquals(model.getVehicleSpecification(), order1.getVehicleSpecification());
 	}
 	
 }

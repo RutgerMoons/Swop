@@ -13,7 +13,7 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Class representing a Job. A Job is an implementation of IJob.
+ * A class representing a Job. A Job is an implementation of IJob.
  */
 public class Job implements IJob {
 

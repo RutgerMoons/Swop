@@ -10,7 +10,7 @@ import domain.order.Delay;
 import domain.order.order.IOrder;
 
 /**
- * Class representing an object who keeps track of completed orders and their delays. 
+ * A class representing an object who keeps track of completed orders and their delays. 
  * It also keeps track of the amount of completed orders per day and the amount of delays. Moreover it
  * provides the methods to calculate the mean and median of all the accumulated data. 
  * Logger is subscribed on ObservesClock and on ObservesAssemblyLine and will be notified each time the Clock is 

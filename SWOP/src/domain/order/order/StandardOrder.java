@@ -160,14 +160,17 @@ public class StandardOrder implements IOrder {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		IOrder other;
+		try{
+		other = (IOrder) obj;
+		} catch (ClassCastException e){
 			return false;
-		StandardOrder other = (StandardOrder) obj;
-		if (!description.equals(other.description))
+		}
+		if (!description.equals(other.getDescription()))
 			return false;
-		if (!garageholder.equals(other.garageholder))
+		if (!garageholder.equals(other.getGarageHolder()))
 			return false;
-		if (quantity != other.quantity)
+		if (quantity != other.getQuantity())
 			return false;
 		return true;
 	}
@@ -208,7 +211,7 @@ public class StandardOrder implements IOrder {
 
 	@Override
 	public VehicleSpecification getVehicleSpecification() {
-		return description.getSpecification();
+		return description.getVehicleSpecification();
 	}
 	
 	@Override

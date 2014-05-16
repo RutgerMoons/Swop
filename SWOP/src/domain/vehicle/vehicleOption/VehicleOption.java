@@ -2,13 +2,27 @@ package domain.vehicle.vehicleOption;
 
 
 /**
- * Abstract class representing a part of a car.
+ * A class representing a part of a vehicle, that can be added to an IVehicle.
+ * It consists of a small description of what it is and which VehicleOptionCategory it belongs to.
  */
 public class VehicleOption {
 
 	private final String description;
 	private final VehicleOptionCategory type;
 
+	/**
+	 * Create a new VehicleOption.
+	 * 
+	 * @param 	description
+	 * 			A small description of what the VehicleOption is
+	 * 
+	 * @param 	type
+	 * 			The type the VehicleOption has to belong to
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the parameters are null or the description is empty
+	 * 
+	 */
 	public VehicleOption(String description, VehicleOptionCategory type) {
 		if (description == null || description.isEmpty() || type == null) {
 			throw new IllegalArgumentException();
@@ -18,7 +32,7 @@ public class VehicleOption {
 	}
 
 	/**
-	 * Returns the description of this type.
+	 * Get the description of this VehicleOption.
 	 */
 	public String getDescription() {
 		return description;
@@ -30,23 +44,21 @@ public class VehicleOption {
 	}
 
 	/**
-	 * Get the type of part this option represents.
+	 * Get the type where this VehicleOption belongs to.
 	 */
 	public VehicleOptionCategory getType() {
 		return this.type;
 	}
 
 	/**
-	 * Get the string representation of what the description of the task looks like.
-	 * @return
+	 * Get the description of the task that has to be completed for this VehicleOption on the WorkBenches.
 	 */
 	public String getTaskDescription() {
 		return this.getType().toString();
 	}
 	
 	/**
-	 * Get the string representation of what the description of the task looks like.
-	 * @return
+	 * Get the description of the action that has to be completed for this VehicleOption on the WorkBenches.
 	 */
 	public String getActionDescription() {
 		return "Put on " + this.getDescription() + " " + this.getType().toString().toLowerCase();

@@ -3,7 +3,6 @@ package domain.vehicle.vehicle;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
@@ -13,10 +12,9 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 /**
- * Class representing a certain CarModel. 
- * Each CarModel has specifically chosen CarOptions, 
- * which are chosen from the Options offered by the Specification according to which this Model will be built.
- * A CarModel also keeps track of which 'optional-properties' of the CarPartTypes need to be overwritten for this specific CarModel.
+ * A class representing a vehicle, which consist of a set of VehicleOptions. 
+ * The vehicle is being built on the basis of a VehicleSpecification.
+ * A Vehicle also keeps track of forcedOptionalTypes, which need to be forced into the Vehicle, when it's being built.
  */
 public class Vehicle implements IVehicle {
 
@@ -25,15 +23,19 @@ public class Vehicle implements IVehicle {
 	private Map<VehicleOption, Boolean> forcedOptionalTypes;
 	
 	/**
-	 * Creates a new CarModel, which consists of zero CarOptions at this point.
-	 * @param template
-	 * 			The Specification according to which this CarModel will be built.
+	 * Creates a new Vehicle, which consists of zero VehicleOptions at this point.
+	 * 
+	 * @param 	template
+	 * 			The VehicleSpecification according to which this Vehicle will be built
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the template is null
 	 */
 	public Vehicle(VehicleSpecification template) {
 		if(template==null)
 			throw new IllegalArgumentException();
 		vehicleOptions = new HashMap<>();
-		this.setSpecification(template);
+		this.setVehicleSpecification(template);
 		forcedOptionalTypes = new HashMap<>();
 	}
 
@@ -45,7 +47,7 @@ public class Vehicle implements IVehicle {
 
 	
 	@Override
-	public void addCarPart(VehicleOption part) {
+	public void addVehicleOption(VehicleOption part) {
 		if (part == null)
 			throw new IllegalArgumentException();
 		if (vehicleOptions.containsKey(part.getType())
@@ -82,23 +84,26 @@ public class Vehicle implements IVehicle {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		IVehicle other;
+		try{
+			other = (IVehicle) obj;
+		} catch (ClassCastException e){
 			return false;
-		Vehicle other = (Vehicle) obj;
+		}
 		if (vehicleOptions == null) {
-			if (other.vehicleOptions != null)
+			if (other.getVehicleOptions() != null)
 				return false;
-		} else if (!vehicleOptions.equals(other.vehicleOptions))
+		} else if (!vehicleOptions.equals(other.getVehicleOptions()))
 			return false;
 		if (forcedOptionalTypes == null) {
-			if (other.forcedOptionalTypes != null)
+			if (other.getForcedOptionalTypes() != null)
 				return false;
-		} else if (!forcedOptionalTypes.equals(other.forcedOptionalTypes))
+		} else if (!forcedOptionalTypes.equals(other.getForcedOptionalTypes()))
 			return false;
 		if (specification == null) {
-			if (other.specification != null)
+			if (other.getVehicleSpecification() != null)
 				return false;
-		} else if (!specification.equals(other.specification))
+		} else if (!specification.equals(other.getVehicleSpecification()))
 			return false;
 		return true;
 	}
@@ -112,25 +117,30 @@ public class Vehicle implements IVehicle {
 	
 	@Override
 	public void addForcedOptionalType(VehicleOption type, boolean bool){
+		if(type==null){
+			throw new IllegalArgumentException();
+		}
 		forcedOptionalTypes.put(type, bool);
 	}
 
 	
 	@Override
-	public VehicleSpecification getSpecification() {
+	public VehicleSpecification getVehicleSpecification() {
 		return specification;
 	}
 
 	
 	@Override
-	public void setSpecification(VehicleSpecification template) {
+	public void setVehicleSpecification(VehicleSpecification template) {
+		if(template==null){
+			throw new IllegalArgumentException();
+		}
 		this.specification = template;
 	}
 
 	/**
-	 * Checks if this model is valid.
-	 * @return
-	 * 		True if the model contains a CarOption of each mandatory CarOptionCategory.
+	 * Checks if this Vehicle is a valid Vehicle.
+	 * @return	True if and only if the Vehicle contains all the mandatory VehicleOptions and the forced VehicleOptions.
 	 */
 	public boolean isValid() {
 		for(VehicleOptionCategory type: VehicleOptionCategory.values()){
@@ -143,12 +153,6 @@ public class Vehicle implements IVehicle {
 	
 	@Override
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench() {
-		return Collections.unmodifiableMap(this.getSpecification().getTimeAtWorkBench());
-	}
-
-
-	@Override
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
-		return responsibilities.contains(specification);
+		return Collections.unmodifiableMap(this.getVehicleSpecification().getTimeAtWorkBench());
 	}
 }

@@ -7,7 +7,6 @@ import domain.order.order.IOrder;
 
 /**
  * A class representing an observer that notifies every subscriber when a new Order arrives. 
- *
  */
 public class OrderBookObserver {
 

@@ -1,8 +1,10 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
@@ -89,9 +91,17 @@ public class AssemAssist {
 	private static List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
 		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
 		
+		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		for(WorkBenchType type: WorkBenchType.values()){
+			timeAtWorkBench.put(type, 60);
+		}
+		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench);
+		
+		
 		Set<VehicleSpecification> specifications = new HashSet<>();
 		specifications.add(catalogue.getCatalogue().get("model A"));
 		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(customSpecification);
 		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
 		
 		
@@ -99,6 +109,7 @@ public class AssemAssist {
 		specifications.add(catalogue.getCatalogue().get("model A"));
 		specifications.add(catalogue.getCatalogue().get("model B"));
 		specifications.add(catalogue.getCatalogue().get("model C"));
+		specifications.add(customSpecification);
 		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
 		
 		specifications = new HashSet<>();
@@ -107,6 +118,7 @@ public class AssemAssist {
 		specifications.add(catalogue.getCatalogue().get("model C"));
 		specifications.add(catalogue.getCatalogue().get("model X"));
 		specifications.add(catalogue.getCatalogue().get("model Y"));
+		specifications.add(customSpecification);
 		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
 		
 		Set<String> responsibilities = new HashSet<>();

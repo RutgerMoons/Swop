@@ -2,8 +2,8 @@ package domain.vehicle.vehicle;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
@@ -14,29 +14,38 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * TODO doc
- * Represents a set of VehicleOptions used in the creation of Single Task Orders by Custom Car Shop Managers.
+ * A class representing a set of VehicleOptions, which can be used with CustomOrders. 
+ * It implements the interface IVehicle.  
  */
 public class CustomVehicle implements IVehicle {
 
 	private HashMap<VehicleOptionCategory, VehicleOption> vehicleOptions;
 	private Map<WorkBenchType, Integer> timeAtWorkbench;
+	private VehicleSpecification specification;
+	/**
+	 * Create a new CustomVehicle. 
+	 */
 	public CustomVehicle(){
 		vehicleOptions = new HashMap<>();
 		timeAtWorkbench = new HashMap<>();
-		
+		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		for(WorkBenchType type: WorkBenchType.values()){
+			timeAtWorkBench.put(type, 60);
+		}
+		specification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench);
+
 		for(WorkBenchType type: WorkBenchType.values()){
 			timeAtWorkbench.put(type, 60);
 		}
 	}
-	
+
 	@Override
 	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions() {
 		return Collections.unmodifiableMap(vehicleOptions);
 	}
 
 	@Override
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException {
+	public void addVehicleOption(VehicleOption part) throws AlreadyInMapException {
 		if(part==null){
 			throw new IllegalArgumentException();
 		}
@@ -58,13 +67,16 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public VehicleSpecification getSpecification() {
-		throw new NotImplementedException();
+	public VehicleSpecification getVehicleSpecification() {
+		return specification;
 	}
 
 	@Override
-	public void setSpecification(VehicleSpecification template) {
-		throw new NotImplementedException();
+	public void setVehicleSpecification(VehicleSpecification template) {
+		if(template==null){
+			throw new IllegalArgumentException();
+		}
+		this.specification = template;
 	}
 
 	@Override
@@ -85,8 +97,48 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities) {
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((specification == null) ? 0 : specification.hashCode());
+		result = prime * result
+				+ ((timeAtWorkbench == null) ? 0 : timeAtWorkbench.hashCode());
+		result = prime * result
+				+ ((vehicleOptions == null) ? 0 : vehicleOptions.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		IVehicle other = null;
+		try{
+			other = (IVehicle) obj;
+		} catch (ClassCastException e){
+			return false;
+		}
+		if (specification == null) {
+			if (other.getVehicleSpecification()!= null)
+				return false;
+		} else if (!specification.equals(other.getVehicleSpecification()))
+			return false;
+		if (timeAtWorkbench == null) {
+			if (other.getTimeAtWorkBench() != null)
+				return false;
+		} else if (!timeAtWorkbench.equals(other.getTimeAtWorkBench()))
+			return false;
+		if (vehicleOptions == null) {
+			if (other.getVehicleOptions() != null)
+				return false;
+		} else if (!vehicleOptions.equals(other.getVehicleOptions()))
+			return false;
 		return true;
 	}
+
+
 }
 

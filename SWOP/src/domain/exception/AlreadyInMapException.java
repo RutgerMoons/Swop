@@ -1,7 +1,7 @@
 package domain.exception;
 
 /**
- * Class representing an Exception thrown when an object is already in a map.
+ * A class representing an Exception thrown when an object is already in a map.
  */
 public class AlreadyInMapException extends IllegalStateException {
 

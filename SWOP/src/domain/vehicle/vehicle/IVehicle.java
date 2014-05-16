@@ -1,7 +1,6 @@
 package domain.vehicle.vehicle;
 
 import java.util.Map;
-import java.util.Set;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
@@ -12,65 +11,71 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Interface for limiting access to standard Vehicles.
+ * An interface describing every function that a vehicle can have.
  */
 public interface IVehicle {
 
 	/**
-	 * Returns all the VehicleOptions of which this model currently consists.
+	 * Returns a map of all the VehicleOptions of which this model currently consists, 
+	 * with the VehicleOptionCategory as key.
 	 */
 	public Map<VehicleOptionCategory, VehicleOption> getVehicleOptions();
 	
 	/**
 	 * Adds a VehicleOption to this IVehicle. 
 	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the part is null
+	 * 
 	 * @throws 	AlreadyInMapException
-	 * 				Thrown when the model already has a VehicleOption of this Category.
+	 * 			Thrown when the model already has a VehicleOption of this Category.
 	 * 
 	 * @throws	UnmodifiableException
-	 * 				Thrown when it is an UnmodifiableVehicle
+	 * 			Thrown when it is an UnmodifiableVehicle
+	 * 
+	 * @throws	NotImplementedException
+	 * 			Thrown when the IVehicle is a CustomVehicle
 	 */
-	public void addCarPart(VehicleOption part) throws AlreadyInMapException;
+	public void addVehicleOption(VehicleOption part) throws AlreadyInMapException;
 	
 	/**
-	 * Get the VehicleOptions that need to be forced into the IVehicle.
+	 * Get a map of VehicleOptions that needed to be forced into the IVehicle.
 	 */
 	public Map<VehicleOption, Boolean> getForcedOptionalTypes();
 	
 	/**
-	 * Add a forced Optional type, so it has to be in the model
+	 * Add a forced Optional type, so it has to be in the IVehicle.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the type is null
 	 * 
 	 * @throws	UnmodifiableException
-	 * 				Thrown when it is an UnmodifiableVehicle
+	 * 			Thrown when it is an UnmodifiableVehicle
+	 * 
+	 * @throws	NotImplementedException
+	 * 			Thrown when the IVehicle is a CustomVehicle
 	 */
 	public void addForcedOptionalType(VehicleOption type, boolean bool);
 	
 	/**
-	 * Get the specification where the CarModel is built from.
+	 * Get the VehicleSpecification where the IVehicle is built from.
+	 * 
 	 */
-	public VehicleSpecification getSpecification();
+	public VehicleSpecification getVehicleSpecification();
 	
 	/**
 	 * Set a new specification from which the IVehicle has to be build.
 	 * 
-	 *@throws	UnmodifiableException
-	 * 				Thrown when it is an UnmodifiableVehicle
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the template is null
 	 * 
-	 *@throws	NotImplementedException
-	 * 				Thrown when the Vehicle is a CustomVehicle
+	 *@throws	UnmodifiableException
+	 * 			Thrown when it is an UnmodifiableVehicle
 	 */
-	public void setSpecification(VehicleSpecification template);
+	public void setVehicleSpecification(VehicleSpecification template);
 
 	/**
-	 * Get the time at each workbench of this IVehicle.
+	 * Get a map of the times at each workbench.
 	 */
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
-
-	/**
-	 * Check if the vehicle can be handled by the responsibilities
-	 * 
-	 * @param 	responsibilities
-	 * 				The responsibilities of the AssemblyLine
-	 */
-	public boolean canBeHandled(Set<VehicleSpecification> responsibilities);
 }

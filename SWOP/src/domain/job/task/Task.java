@@ -7,7 +7,7 @@ import java.util.List;
 import domain.job.action.IAction;
 
 /**
- * This class represents a single task that contains a certain amount
+ * A class representing a single task that contains a certain amount
  * of IActions. Task is an implementation of ITask.
  */
 public class Task implements ITask {
@@ -20,6 +20,7 @@ public class Task implements ITask {
 	 * 
 	 * @param 	taskDescription
 	 *          The description you want to give to this Task
+	 * 
 	 * @throws 	IllegalArgumentException
 	 *          Thrown when taskDescription is null or is empty
 	 */

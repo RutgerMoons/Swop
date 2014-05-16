@@ -1,7 +1,7 @@
 package domain.users;
 
 /**
- * Respresents an AccessRight thta might be necessary to perform some use case (execute flowcontroller) 
+ * A class representing an access right that might be necessary to perform some use case
  *
  */
 public enum AccessRight {

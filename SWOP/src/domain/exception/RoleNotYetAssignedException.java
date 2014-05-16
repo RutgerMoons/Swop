@@ -1,7 +1,7 @@
 package domain.exception;
 
 /**
- * Class representing an Exception thrown when a client logs in for the first time.
+ * A class representing an Exception thrown when a client logs in for the first time.
  */
 public class RoleNotYetAssignedException extends IllegalStateException {
 

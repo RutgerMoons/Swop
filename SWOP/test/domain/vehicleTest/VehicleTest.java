@@ -57,7 +57,7 @@ public class VehicleTest {
 	@Test
 	public void testConstructor() {
 		Vehicle model = new Vehicle(template);
-		assertEquals(template, model.getSpecification());
+		assertEquals(template, model.getVehicleSpecification());
 		assertNotNull(model.getVehicleOptions());
 		assertNotNull(model.getForcedOptionalTypes());
 	}
@@ -71,7 +71,7 @@ public class VehicleTest {
 	public void testAdd() throws AlreadyInMapException {
 		Vehicle car = new Vehicle(template);
 		VehicleOption part = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
-		car.addCarPart(part);
+		car.addVehicleOption(part);
 		assertEquals(part, car.getVehicleOptions().get(part.getType()));
 	}
 
@@ -79,7 +79,7 @@ public class VehicleTest {
 	public void testIllegalAdd1() throws AlreadyInMapException {
 		Vehicle car = new Vehicle(template);
 
-		car.addCarPart(null);
+		car.addVehicleOption(null);
 
 	}
 
@@ -89,8 +89,8 @@ public class VehicleTest {
 		VehicleOption part1 = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
 		VehicleOption part2 = new VehicleOption("automatic", VehicleOptionCategory.AIRCO);
 
-		car.addCarPart(part1);
-		car.addCarPart(part2);
+		car.addVehicleOption(part1);
+		car.addVehicleOption(part2);
 
 	}
 
@@ -105,8 +105,8 @@ public class VehicleTest {
 		Vehicle car1 = new Vehicle(template);
 		VehicleOption part1 = new VehicleOption("manual", VehicleOptionCategory.AIRCO);
 		VehicleOption part2 = new VehicleOption("break", VehicleOptionCategory.BODY);
-		car1.addCarPart(part1);
-		car1.addCarPart(part2);
+		car1.addVehicleOption(part1);
+		car1.addVehicleOption(part2);
 
 		Vehicle car2 = new Vehicle(template);
 		assertNotEquals(car1, car2);
@@ -115,11 +115,11 @@ public class VehicleTest {
 		assertNotEquals(car1, car3);
 		assertNotEquals(car1.hashCode(), car3.hashCode());
 
-		car3.addCarPart(part1);
+		car3.addVehicleOption(part1);
 		assertNotEquals(car1, car3);
 		assertNotEquals(car1.hashCode(), car3.hashCode());
 
-		car3.addCarPart(part2);
+		car3.addVehicleOption(part2);
 		assertEquals(car1, car3);
 		assertEquals(car1.hashCode(), car3.hashCode());
 
@@ -129,8 +129,8 @@ public class VehicleTest {
 				parts, new HashMap<WorkBenchType, Integer>());
 
 		Vehicle car4 = new Vehicle(template2);
-		car4.addCarPart(part1);
-		car4.addCarPart(part2);
+		car4.addVehicleOption(part1);
+		car4.addVehicleOption(part2);
 		assertNotEquals(car1, car4);
 		assertNotEquals(part1.hashCode(), part2.hashCode());
 
@@ -155,19 +155,19 @@ public class VehicleTest {
 		Vehicle model = new Vehicle(template);
 		assertFalse(model.isValid());
 
-		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("sport", VehicleOptionCategory.BODY));
 
-		model.addCarPart(new VehicleOption("white", VehicleOptionCategory.COLOR));
+		model.addVehicleOption(new VehicleOption("white", VehicleOptionCategory.COLOR));
 
-		model.addCarPart(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
+		model.addVehicleOption(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 
-		model.addCarPart(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
+		model.addVehicleOption(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
 		
-		model.addCarPart(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
+		model.addVehicleOption(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
 
-		model.addCarPart(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
+		model.addVehicleOption(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 
-		model.addCarPart(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
+		model.addVehicleOption(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
 		assertTrue(model.isValid());
 	}
 	
@@ -176,20 +176,25 @@ public class VehicleTest {
 		Vehicle model = new Vehicle(template);
 		assertFalse(model.isValid());
 
-		model.addCarPart(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("sport", VehicleOptionCategory.BODY));
 
-		model.addCarPart(new VehicleOption("white", VehicleOptionCategory.COLOR));
+		model.addVehicleOption(new VehicleOption("white", VehicleOptionCategory.COLOR));
 
-		model.addCarPart(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
+		model.addVehicleOption(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
 
-		model.addCarPart(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
+		model.addVehicleOption(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
 		
-		model.addCarPart(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
+		model.addVehicleOption(new VehicleOption("Leather Black", VehicleOptionCategory.SEATS));
 
-		model.addCarPart(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
+		model.addVehicleOption(new VehicleOption("Automatic", VehicleOptionCategory.AIRCO));
 
+<<<<<<< HEAD
+		model.addVehicleOption(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
+		int time = model.getTimeAtWorkBench().get(WorkbenchType.BODY);
+=======
 		model.addCarPart(new VehicleOption("Sports", VehicleOptionCategory.WHEEL));
 		int time = model.getTimeAtWorkBench().get(WorkBenchType.BODY);
+>>>>>>> 0fbc9f8f29bcd199f2bc75d53ce8160004a0229f
 		assertEquals(50, time);
 	}
 }

@@ -137,12 +137,12 @@ public class FacadeTest {
 		facade.login("test");
 		ImmutableClock time = new ImmutableClock(2, 30);
 		Vehicle vehicle = new Vehicle(new VehicleSpecification("test",Collections.<VehicleOption> emptySet() , new HashMap<WorkBenchType, Integer>()));
-		vehicle.addCarPart(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		vehicle.addVehicleOption(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		facade.processCustomOrder(vehicle, time);
 		
 		CustomVehicle custom = new CustomVehicle();
 		for(VehicleOption option: vehicle.getVehicleOptions().values()){
-			custom.addCarPart(option);
+			custom.addVehicleOption(option);
 		}
 
 		CustomOrder order = new CustomOrder(
@@ -181,7 +181,7 @@ public class FacadeTest {
 		IVehicle vehicle = order.getDescription();
 		
 		assertTrue(vehicle.getVehicleOptions().containsValue(option));
-		assertEquals(specification, vehicle.getSpecification());
+		assertEquals(specification, vehicle.getVehicleSpecification());
 		IAssemblyLine assemblyLine = facade.getAssemblyLines().get(0);
 		IWorkBench bench = assemblyLine.getWorkbenches().get(0);
 		
@@ -319,7 +319,7 @@ public class FacadeTest {
 	
 	@Test
 	public void testChangeState(){
-		facade.changeState(facade.getAssemblyLines().get(0), AssemblyLineState.BROKEN);
+		facade.changeState(facade.getAssemblyLines().get(0), AssemblyLineState.BROKEN, new ImmutableClock(0,0));
 		assertEquals(AssemblyLineState.BROKEN, facade.getAssemblyLines().get(0).getState());
 	}
 	

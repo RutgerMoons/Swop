@@ -29,7 +29,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * This class representing the layer between the Domain model and the controllers. The controllers can only
+ * A class representing the layer between the Domain model and the controllers. The controllers can only
  * call methods in this class to do something in the domain model.
  * 
  */
@@ -282,7 +282,7 @@ public class Facade {
 	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline){
 		CustomVehicle vehicle = new CustomVehicle();
 		for(VehicleOption option: model.getVehicleOptions().values()){
-			vehicle.addCarPart(option);
+			vehicle.addVehicleOption(option);
 		}
 
 		CustomOrder order = new CustomOrder(
