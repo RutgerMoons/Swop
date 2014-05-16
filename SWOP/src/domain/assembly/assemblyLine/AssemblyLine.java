@@ -80,32 +80,105 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	 * completed. It shifts the jobs to it's next workstation.
 	 * It notifies its observers when an order is completed.
 	 * 
-	 * @throws 	NoSuitableJobFoundException
-	 * 			Thrown when no job can be scheduled by the scheduler
+	 * @throws 	IllegalStateException()
+	 * 			Thrown when the assemblyLine can not advance
+	 * 
 	 */
-	public void advance() throws NoSuitableJobFoundException {
+	public void advance() {
 		if (!canAdvance()) {
 			throw new IllegalStateException();
 		}
-
-		Optional<IJob> lastJob = Optional.absent();
-		for (int i = 0; i < getWorkbenches().size(); i++) {
+		
+		// begin at the last workBench
+		// if you start at the front, it could be impossible to move a job multiple spots
+		
+		for (int i = this.workbenches.size() - 1; i > 0; i--) {
 			IWorkBench bench = getWorkbenches().get(i);
-			if (i == 0) {
-				lastJob = bench.getCurrentJob();
-				bench.setCurrentJob(this.scheduler.retrieveNextJob());
-			} else {
-				Optional<IJob> prev = bench.getCurrentJob();
-				bench.setCurrentJob(lastJob);
-				lastJob = prev;
+			Optional<IJob> jobAtBench = bench.getCurrentJob();
+			if (jobAtBench.isPresent()) {
+				// if job is completed -> move as far as possible
+				// else move to the first IWorkBench that needs to complete tasks of this job
+				//		if that isn't possible -> move as far as possible
+				IJob jobToMove = jobAtBench.get();
+				int indexOfFurthestEmptyWorkBench = getIndexOfFurthestEmptyWorkBench(i);	
+				if (jobToMove.isCompleted()) {
+					if (indexOfFurthestEmptyWorkBench < 0) {
+						emptyWorkbench(i);
+						completeJob(jobToMove);
+					} else {
+						moveJobToWorkBench(i, indexOfFurthestEmptyWorkBench, jobAtBench);
+					}
+				} else {
+					int index = i;
+					boolean hasToAssemble = false;
+					while (!hasToAssemble) {
+						index++;
+						hasToAssemble = workbenchHasToAssembleJob(this.workbenches.get(index), jobToMove);
+					}
+					moveJobToWorkBench(i, index, jobAtBench);
+				}
 			}
-			bench.chooseTasksOutOfJob(); 
 		}
-		if (lastJob.isPresent()	&& lastJob.get().isCompleted()) {
-			currentJobs.remove(lastJob.get());
-			lastJob.get().getOrder().completeCar();
-			updateCompletedOrder(lastJob.get().getOrder());
+		
+		IWorkBench bench = getWorkbenches().get(0);
+		try {
+			Optional<IJob> nextJob = this.scheduler.retrieveNextJob();
+			bench.setCurrentJob(nextJob);
+		} catch (NoSuitableJobFoundException noSuitableJobFoundException) {
+			Optional<IJob> absentJob = Optional.absent();
+			bench.setCurrentJob(absentJob);
 		}
+		
+		//update schedulingAlgorithm met een lijst van IJobs op de correcte positie
+		ArrayList<Optional<IJob>> jobsOnAssemblyLine = new ArrayList<>();
+		for (int i = 0; i < this.workbenches.size(); i++) {
+			jobsOnAssemblyLine.add(this.workbenches.get(i).getCurrentJob());
+		}
+		//TODO: implement that shit! I pity the fool!!
+		this.scheduler.passCurrentJobsOnAssemblyLineToAlgorithm(jobsOnAssemblyLine);
+	}
+	
+	private boolean workbenchHasToAssembleJob(IWorkBench workBench, IJob jobToMove) {
+		return jobToMove.getProductionTime(workBench.getWorkbenchType()) > 0;
+	}
+
+	private void emptyWorkbench(int index) {
+		Optional<IJob> absentJob = Optional.absent();
+		this.workbenches.get(index).setCurrentJob(absentJob);
+	}
+
+	private void moveJobToWorkBench(int currentWorkBenchIndex, int indexOfFurthestEmptyWorkBench, Optional<IJob> jobToMove) {
+		emptyWorkbench(currentWorkBenchIndex);
+		this.workbenches.get(indexOfFurthestEmptyWorkBench).setCurrentJob(jobToMove);
+		this.workbenches.get(indexOfFurthestEmptyWorkBench).chooseTasksOutOfJob();
+	}
+	
+	/**
+	 * Find and returns the index of the furthest empty workbench given an index. It goes over all the workbenches starting
+	 * with the workbench one index further than the given index and stops when it finds a Job on an workbench. 
+	 * 
+	 * @param 	currentIndex
+	 * 			Index of a workBench
+	 */
+	private int getIndexOfFurthestEmptyWorkBench(int currentIndex) {
+		int workBenchIndex = currentIndex + 1;
+		try {
+			Optional<IJob> nextJob = this.workbenches.get(workBenchIndex).getCurrentJob();
+			while (!nextJob.isPresent()) {
+				workBenchIndex++;
+				nextJob = this.workbenches.get(workBenchIndex).getCurrentJob();
+			}
+		} 
+		catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+			return -1;
+		}
+		return workBenchIndex - 1;
+	}
+
+	private void completeJob(IJob lastJob) {
+		currentJobs.remove(lastJob);
+		lastJob.getOrder().completeCar();
+		updateCompletedOrder(lastJob.getOrder());
 	}
 
 	@Override
