@@ -14,9 +14,14 @@ public class VehicleOption {
 	 * Create a new VehicleOption.
 	 * 
 	 * @param 	description
-	 * 			A small description of what it is
+	 * 			A small description of what the VehicleOption is
+	 * 
 	 * @param 	type
-	 * 			The type the VehicleOption has to belong to.
+	 * 			The type the VehicleOption has to belong to
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the parameters are null or the description is empty
+	 * 
 	 */
 	public VehicleOption(String description, VehicleOptionCategory type) {
 		if (description == null || description.isEmpty() || type == null) {
