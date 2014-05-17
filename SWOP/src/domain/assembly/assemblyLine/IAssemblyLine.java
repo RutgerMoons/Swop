@@ -52,6 +52,9 @@ public interface IAssemblyLine {
 	 * 
 	 * @param	state
 	 * 			The state the assemblyLine has to be in
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when state is null
 	 */
 	public void setState(AssemblyLineState state);
 	

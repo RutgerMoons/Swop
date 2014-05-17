@@ -25,10 +25,12 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * A class representing an assembly line. It contains the workbenches and the current jobs on these workbenches.
- * It notifies the attached observers when an order is completed. Each AssemblyLine has a scheduler.
+ * A class representing an assembly line. It contains the workbenches and the
+ * current jobs on these workbenches. It notifies the attached observers when an
+ * order is completed. Each AssemblyLine has a scheduler.
  */
-public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, ObservableAssemblyLineState {
+public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
+		ObservableAssemblyLineState {
 
 	private List<IJob> currentJobs;
 	private List<IWorkBench> workbenches;
@@ -37,17 +39,21 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	private AssemblyLineState assemblyLineState;
 	private Set<VehicleSpecification> responsibilities;
 	private List<AssemblyLineStateObserver> assemblyLineStateObservers;
+
 	/**
 	 * Construct a new AssemblyLine. Initializes a scheduler.
 	 * 
-	 * @param 	clock
-	 *          The clock that has to be accessed by this AssemblyLine
-	 *            
-	 * @throws 	IllegalArgumentException
+	 * @param clock
+	 *            The clock that has to be accessed by this AssemblyLine
+	 * 
+	 * @throws IllegalArgumentException
 	 *             Thrown when one or both of the parameters are null
 	 */
-	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock, AssemblyLineState assemblyLineState, Set<VehicleSpecification> responsiblities) {
-		if (clockObserver == null || clock == null || assemblyLineState == null || responsiblities==null) {
+	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock,
+			AssemblyLineState assemblyLineState,
+			Set<VehicleSpecification> responsiblities) {
+		if (clockObserver == null || clock == null || assemblyLineState == null
+				|| responsiblities == null) {
 			throw new IllegalArgumentException();
 		}
 		workbenches = new ArrayList<IWorkBench>();
@@ -62,11 +68,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	/**
 	 * Add a workbench to the assemblyLine.
 	 * 
-	 * @param 	bench
-	 *          The workbench you want to add
-	 *          
-	 * @throws 	IllegalArgumentException
-	 *          Thrown when the parameter is null
+	 * @param bench
+	 *            The workbench you want to add
+	 * 
+	 * @throws IllegalArgumentException
+	 *             Thrown when the parameter is null
 	 */
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
@@ -76,11 +82,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 
 	/**
 	 * This method advances the workbenches if all the workbenches are
-	 * completed. It shifts the jobs to it's next workstation.
-	 * It notifies its observers when an order is completed.
+	 * completed. It shifts the jobs to it's next workstation. It notifies its
+	 * observers when an order is completed.
 	 * 
-	 * @throws 	IllegalStateException()
-	 * 			Thrown when the assemblyLine can not advance
+	 * @throws IllegalStateException
+	 *             () Thrown when the assemblyLine can not advance
 	 * 
 	 */
 	public void advance() {
@@ -89,33 +95,38 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		}
 
 		// begin at the last workBench
-		// if you start at the front, it could be impossible to move a job multiple spots
+		// if you start at the front, it could be impossible to move a job
+		// multiple spots
 
 		for (int i = this.workbenches.size() - 1; i >= 0; i--) {
 			IWorkBench bench = getWorkbenches().get(i);
 			Optional<IJob> jobAtBench = bench.getCurrentJob();
 			if (jobAtBench.isPresent()) {
 				// if job is completed -> move as far as possible
-				// else move until it can't go further (next workstation already has a job) 
-				// or to the first IWorkBench that needs to complete tasks of this job
+				// else move until it can't go further (next workstation already
+				// has a job)
+				// or to the first IWorkBench that needs to complete tasks of
+				// this job
 				IJob jobToMove = jobAtBench.get();
-				int indexOfFurthestEmptyWorkBench = getIndexOfFurthestEmptyWorkBench(i);	
+				int indexOfFurthestEmptyWorkBench = getIndexOfFurthestEmptyWorkBench(i);
 				if (jobToMove.isCompleted()) {
 					if (indexOfFurthestEmptyWorkBench < 0) {
 						emptyWorkbench(i);
 						completeJob(jobToMove);
 					} else {
-						moveJobToWorkBench(i, indexOfFurthestEmptyWorkBench, jobAtBench);
+						moveJobToWorkBench(i, indexOfFurthestEmptyWorkBench,
+								jobAtBench);
 					}
 				} else {
 					int index = i;
 					boolean hasToAssemble = false;
-					while (!hasToAssemble && index<(workbenches.size()-1)) {
+					while (!hasToAssemble && index < (workbenches.size() - 1)) {
 						index++;
-						hasToAssemble = workbenchHasToAssembleJob(this.workbenches.get(index), jobToMove);
+						hasToAssemble = workbenchHasToAssembleJob(
+								this.workbenches.get(index), jobToMove);
 					}
-					
-					if(index<workbenches.size()){
+
+					if (index < workbenches.size()) {
 						moveJobToWorkBench(i, index, jobAtBench);
 					}
 				}
@@ -123,7 +134,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		}
 
 		ArrayList<Optional<IJob>> jobsOnAssemblyLine = getCurrentJobsOnAssemblyLine();
-		Optional<IJob> nextJob = this.scheduler.retrieveNextJob(jobsOnAssemblyLine);
+		Optional<IJob> nextJob = this.scheduler
+				.retrieveNextJob(jobsOnAssemblyLine);
 		this.workbenches.get(0).setCurrentJob(nextJob);
 		this.workbenches.get(0).chooseTasksOutOfJob();
 	}
@@ -137,10 +149,12 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * If the job has a production greater than 0 at that workBench it returns true 
-	 * Else the workBench has no tasks from this job to complete, so it returns false 
+	 * If the job has a production greater than 0 at that workBench it returns
+	 * true Else the workBench has no tasks from this job to complete, so it
+	 * returns false
 	 */
-	private boolean workbenchHasToAssembleJob(IWorkBench workBench, IJob jobToMove) {
+	private boolean workbenchHasToAssembleJob(IWorkBench workBench,
+			IJob jobToMove) {
 		return jobToMove.getProductionTime(workBench.getWorkbenchType()) > 0;
 	}
 
@@ -153,41 +167,46 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * Empties the workBench at CurrentWorkBenchIndex,
-	 * moves the job to the workBench at indexOfFurthestEmptyWorkBench
-	 * and this workBench chooses its tasks out of the job
+	 * Empties the workBench at CurrentWorkBenchIndex, moves the job to the
+	 * workBench at indexOfFurthestEmptyWorkBench and this workBench chooses its
+	 * tasks out of the job
 	 */
-	private void moveJobToWorkBench(int currentWorkBenchIndex, int indexOfFurthestEmptyWorkBench, Optional<IJob> jobToMove) {
+	private void moveJobToWorkBench(int currentWorkBenchIndex,
+			int indexOfFurthestEmptyWorkBench, Optional<IJob> jobToMove) {
 		emptyWorkbench(currentWorkBenchIndex);
-		this.workbenches.get(indexOfFurthestEmptyWorkBench).setCurrentJob(jobToMove);
-		this.workbenches.get(indexOfFurthestEmptyWorkBench).chooseTasksOutOfJob();
+		this.workbenches.get(indexOfFurthestEmptyWorkBench).setCurrentJob(
+				jobToMove);
+		this.workbenches.get(indexOfFurthestEmptyWorkBench)
+				.chooseTasksOutOfJob();
 	}
 
 	/**
-	 * Finds and returns the index of the furthest empty workbench given an index. It goes over all the workbenches starting
-	 * with the workbench one index further than the given index and stops when it finds a Job on a workbench. 
+	 * Finds and returns the index of the furthest empty workbench given an
+	 * index. It goes over all the workbenches starting with the workbench one
+	 * index further than the given index and stops when it finds a Job on a
+	 * workbench.
 	 * 
-	 * @param 	currentIndex
-	 * 			Index of a workBench
+	 * @param currentIndex
+	 *            Index of a workBench
 	 */
 	private int getIndexOfFurthestEmptyWorkBench(int currentIndex) {
 		int workBenchIndex = currentIndex + 1;
 		try {
-			Optional<IJob> nextJob = this.workbenches.get(workBenchIndex).getCurrentJob();
+			Optional<IJob> nextJob = this.workbenches.get(workBenchIndex)
+					.getCurrentJob();
 			while (!nextJob.isPresent()) {
 				workBenchIndex++;
 				nextJob = this.workbenches.get(workBenchIndex).getCurrentJob();
 			}
-		} 
-		catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+		} catch (IndexOutOfBoundsException indexOutOfBoundsException) {
 			return -1;
 		}
 		return workBenchIndex - 1;
 	}
 
 	/**
-	 * Remove the job from this.currentjobs and completes the order.
-	 * Then the observers are notified of the completed Job.
+	 * Remove the job from this.currentjobs and completes the order. Then the
+	 * observers are notified of the completed Job.
 	 */
 	private void completeJob(IJob lastJob) {
 		currentJobs.remove(lastJob);
@@ -205,33 +224,35 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * This method first sets the index of the first workbench that has to complete some tasks
-	 * of the job. Then the job is passed to the scheduler.
+	 * This method first sets the index of the first workbench that has to
+	 * complete some tasks of the job. Then the job is passed to the scheduler.
 	 * 
-	 * @param	job 
-	 * 			The job that needs to be scheduled
+	 * @param job
+	 *            The job that needs to be scheduled
 	 * 
-	 * @throws	IllegalArgumentException 
-	 * 			Thrown when the given parameter is null
+	 * @throws IllegalArgumentException
+	 *             Thrown when the given parameter is null
 	 */
 	public void schedule(IJob job) {
 		if (job == null) {
 			throw new IllegalArgumentException();
 		}
 		job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
-		this.scheduler.addJobToAlgorithm(job, this.getCurrentJobsOnAssemblyLine());
-
+		this.scheduler.addJobToAlgorithm(job,
+				this.getCurrentJobsOnAssemblyLine());
 
 	}
 
 	/**
-	 * Method for returning the index of the first workbench needed to complete the
-	 * given job. It returns a value of -1 when there's no workbench found to complete this job.
+	 * Method for returning the index of the first workbench needed to complete
+	 * the given job. It returns a value of -1 when there's no workbench found
+	 * to complete this job.
 	 */
 	private int getMinimalIndexOfWorkbench(IJob job) {
 		for (int i = 0; i < getWorkbenches().size(); i++) {
 			for (ITask task : job.getTasks()) {
-				if (getWorkbenches().get(i).getResponsibilities().contains(task.getTaskDescription())) {
+				if (getWorkbenches().get(i).getResponsibilities()
+						.contains(task.getTaskDescription())) {
 					return i;
 				}
 			}
@@ -245,7 +266,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		List<IWorkBench> workBenches = getWorkbenches();
 		for (int i = 0; i < workBenches.size(); i++)
 			if (!workBenches.get(i).isCompleted())
-				notCompletedBenches.add(new UnmodifiableWorkBench(this.workbenches.get(i)));
+				notCompletedBenches.add(new UnmodifiableWorkBench(
+						this.workbenches.get(i)));
 		return Collections.unmodifiableList(notCompletedBenches);
 	}
 
@@ -258,7 +280,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	/**
-	 * Returns the current Scheduling Algorithm used by the Scheduler used by this AssemblyLine.
+	 * Returns the current Scheduling Algorithm used by the Scheduler used by
+	 * this AssemblyLine.
 	 */
 	public String getCurrentSchedulingAlgorithm() {
 		return this.scheduler.getCurrentSchedulingAlgorithm();
@@ -277,10 +300,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	@Override
 	public String toString() {
 		String result = "Responsibilities: ";
-		for(VehicleSpecification specification: getResponsibilities()){
+		for (VehicleSpecification specification : getResponsibilities()) {
 			result += ", " + specification.getDescription();
 		}
-
 
 		return result.replaceFirst(", ", "");
 	}
@@ -310,13 +332,16 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 
 	@Override
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
-		return Collections.unmodifiableSet(this.scheduler.getAllCarOptionsInPendingOrders());
+		return Collections.unmodifiableSet(this.scheduler
+				.getAllCarOptionsInPendingOrders());
 	}
 
 	/**
-	 * Method for asking the Scheduler to switch to the algorithm the given creator can create.
+	 * Method for asking the Scheduler to switch to the algorithm the given
+	 * creator can create.
 	 * 
-	 * @param	creator is responsible for creating the correct SchedulingAlgorithm
+	 * @param creator
+	 *            is responsible for creating the correct SchedulingAlgorithm
 	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
 		List<WorkBenchType> workBenchTypes = getWorkBenchTypes();
@@ -339,13 +364,25 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		return assemblyLineState;
 	}
 
+	@Override
+	public void setState(AssemblyLineState state) {
+		if (state == null) {
+			throw new IllegalArgumentException();
+		}
+		AssemblyLineState previousState = assemblyLineState;
+		this.assemblyLineState = state;
+		updatAssemblyLineState(previousState, state);
+	}
+
 	/**
-	 * Matches the given workbench to one of its own. If a match is found, 
-	 * the request is passed on.
+	 * Matches the given workbench to one of its own. If a match is found, the
+	 * request is passed on.
 	 * 
-	 * @param	workbench to be matched
+	 * @param workbench
+	 *            to be matched
 	 */
-	public int completeChosenTaskAtChosenWorkBench(IWorkBench workbench, ITask task, ImmutableClock elapsed) {
+	public int completeChosenTaskAtChosenWorkBench(IWorkBench workbench,
+			ITask task, ImmutableClock elapsed) {
 		for (IWorkBench wb : this.workbenches) {
 			if (wb.equals(workbench)) {
 				wb.completeChosenTaskAtChosenWorkBench(task);
@@ -364,13 +401,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	}
 
 	@Override
-	public void setState(AssemblyLineState state) {
-		AssemblyLineState previousState = assemblyLineState;
-		this.assemblyLineState = state;
-		updatAssemblyLineState(previousState, state);
-	}
-
-	@Override
 	public Set<VehicleSpecification> getResponsibilities() {
 		return Collections.unmodifiableSet(responsibilities);
 	}
@@ -379,21 +409,12 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime
-				* result
-				+ ((assemblyLineState == null) ? 0 : assemblyLineState
-						.hashCode());
-		result = prime * result
-				+ ((currentJobs == null) ? 0 : currentJobs.hashCode());
-		result = prime * result
-				+ ((observers == null) ? 0 : observers.hashCode());
-		result = prime
-				* result
-				+ ((responsibilities == null) ? 0 : responsibilities.hashCode());
-		result = prime * result
-				+ ((scheduler == null) ? 0 : scheduler.hashCode());
-		result = prime * result
-				+ ((workbenches == null) ? 0 : workbenches.hashCode());
+		result = prime * result + assemblyLineState.hashCode();
+		result = prime * result + currentJobs.hashCode();
+		result = prime * result + observers.hashCode();
+		result = prime * result + responsibilities.hashCode();
+		result = prime * result + scheduler.hashCode();
+		result = prime * result + workbenches.hashCode();
 		return result;
 	}
 
@@ -404,27 +425,18 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		if (obj == null)
 			return false;
 		IAssemblyLine other = null;
-		try{
+		try {
 			other = (IAssemblyLine) obj;
-		} catch (ClassCastException e){
+		} catch (ClassCastException e) {
 			return false;
 		}
 		if (assemblyLineState != other.getState())
 			return false;
-		if (currentJobs == null) {
-			if (other.getCurrentJobs() != null)
-				return false;
-		} else if (!currentJobs.equals(other.getCurrentJobs()))
+		if (!currentJobs.equals(other.getCurrentJobs()))
 			return false;
-		if (responsibilities == null) {
-			if (other.getResponsibilities() != null)
-				return false;
-		} else if (!responsibilities.equals(other.getResponsibilities()))
+		if (!responsibilities.equals(other.getResponsibilities()))
 			return false;
-		if (workbenches == null) {
-			if (other.getWorkbenches() != null)
-				return false;
-		} else if (!workbenches.equals(other.getWorkbenches()))
+		if (!workbenches.equals(other.getWorkbenches()))
 			return false;
 		return true;
 	}
@@ -435,7 +447,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 
 	@Override
 	public void attachObserver(AssemblyLineStateObserver observer) {
-		if(observer==null){
+		if (observer == null) {
 			throw new IllegalArgumentException();
 		}
 		assemblyLineStateObservers.add(observer);
@@ -443,7 +455,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 
 	@Override
 	public void detachObserver(AssemblyLineStateObserver observer) {
-		if(observer==null){
+		if (observer == null) {
 			throw new IllegalArgumentException();
 		}
 		assemblyLineStateObservers.remove(observer);
@@ -452,7 +464,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	@Override
 	public void updatAssemblyLineState(AssemblyLineState previousState,
 			AssemblyLineState currentState) {
-		for(AssemblyLineStateObserver observer: assemblyLineStateObservers){
+		for (AssemblyLineStateObserver observer : assemblyLineStateObservers) {
 			observer.updateAssemblyLineState(previousState, currentState);
 		}
 	}
