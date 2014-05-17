@@ -20,6 +20,7 @@ import com.google.common.base.Optional;
 
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
@@ -108,7 +109,6 @@ public class AssemblyLineTest{
 	@Test
 	public void TestConstructor() {
 		assertNotNull(line);
-		assertNotNull(line.getCurrentJobs());
 		assertNotNull(line.getWorkbenches());
 	}
 
@@ -320,15 +320,11 @@ public class AssemblyLineTest{
 		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
 		IJob job = new Job(order);
 		line.schedule(job);
-		assertEquals(-1, job.getMinimalIndex());
-		
-		List<ITask> tasks = new ArrayList<>();
-		tasks.add(new Task("Paint"));
-		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
-		line.addWorkBench(bench);
-		job.setTasks(tasks);
-		line.schedule(job);
 		assertEquals(0, job.getMinimalIndex());
+		AssemblyLine assemblyLine = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.OPERATIONAL, line.getResponsibilities());
+		assemblyLine.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		assemblyLine.schedule(job);
+		assertEquals(-1, job.getMinimalIndex());
 	}
 	
 	@Test
@@ -361,8 +357,7 @@ public class AssemblyLineTest{
 		List<ITask> tasks = new ArrayList<>();
 		ITask task = new Task("Paint");
 		tasks.add(task);
-		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
-		line.addWorkBench(bench);
+		IWorkBench bench = line.getWorkbenches().get(0);
 		job.setTasks(tasks);
 		
 		bench.setCurrentJob(Optional.fromNullable(job));
@@ -453,10 +448,23 @@ public class AssemblyLineTest{
 		assertNotEquals(line, AssemblyLineState.BROKEN);
 		
 		AssemblyLine line2 = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.BROKEN, new HashSet<VehicleSpecification>());
+		line2.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		assertNotEquals(line, line2);
 		assertNotEquals(line.hashCode(), line2.hashCode());
 		
 		line2.setState(AssemblyLineState.OPERATIONAL);
+		assertNotEquals(line, line2);
+		assertNotEquals(line.hashCode(), line2.hashCode());
+		line2 = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.OPERATIONAL, line.getResponsibilities());
+		assertNotEquals(line, line2);
+		assertNotEquals(line.hashCode(), line2.hashCode());
+		
+		for(IWorkBench bench: line.getWorkbenches()){
+			line2.addWorkBench(bench);
+		}
+		
+		assertEquals(line, line2);
+		assertEquals(line.hashCode(), line2.hashCode());
 		
 		
 	}

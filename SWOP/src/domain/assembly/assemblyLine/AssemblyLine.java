@@ -32,7 +32,6 @@ import domain.vehicle.vehicleOption.VehicleOption;
 public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 		ObservableAssemblyLineState {
 
-	private List<IJob> currentJobs;
 	private List<IWorkBench> workbenches;
 	private List<AssemblyLineObserver> observers;
 	private Scheduler scheduler;
@@ -57,7 +56,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 			throw new IllegalArgumentException();
 		}
 		workbenches = new ArrayList<IWorkBench>();
-		currentJobs = new ArrayList<IJob>();
 		observers = new ArrayList<>();
 		assemblyLineStateObservers = new ArrayList<AssemblyLineStateObserver>();
 		this.scheduler = new Scheduler(clockObserver, clock);
@@ -212,7 +210,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	 * observers are notified of the completed Job.
 	 */
 	private void completeJob(IJob lastJob) {
-		currentJobs.remove(lastJob);
 		lastJob.getOrder().completeCar();
 		updateCompletedOrder(lastJob.getOrder());
 	}
@@ -271,14 +268,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 				notCompletedBenches.add(new UnmodifiableWorkBench(
 						this.workbenches.get(i)));
 		return Collections.unmodifiableList(notCompletedBenches);
-	}
-
-	/**
-	 * Returns an unmodifiable list of the current Jobs on the AssemblyLine.
-	 */
-	@Override
-	public List<IJob> getCurrentJobs() {
-		return Collections.unmodifiableList(currentJobs);
 	}
 
 	/**
@@ -412,10 +401,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + assemblyLineState.hashCode();
-		result = prime * result + currentJobs.hashCode();
-		result = prime * result + observers.hashCode();
 		result = prime * result + responsibilities.hashCode();
-		result = prime * result + scheduler.hashCode();
 		result = prime * result + workbenches.hashCode();
 		return result;
 	}
@@ -433,8 +419,6 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 			return false;
 		}
 		if (assemblyLineState != other.getState())
-			return false;
-		if (!currentJobs.equals(other.getCurrentJobs()))
 			return false;
 		if (!responsibilities.equals(other.getResponsibilities()))
 			return false;

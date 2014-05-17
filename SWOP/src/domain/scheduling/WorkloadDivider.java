@@ -169,7 +169,7 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 			//Checken: Operational && kan job verwerken.
 			if(line.getState().equals(AssemblyLineState.OPERATIONAL) && canBeHandled(job, line) ){
 				//kijken naar workload
-				if(scheduleHere!=null && scheduleHere.getCurrentJobs().size()<line.getCurrentJobs().size()){
+				if(scheduleHere!=null && scheduleHere.getStandardJobs().size()<line.getStandardJobs().size()){
 					scheduleHere = line;
 				}else if(scheduleHere==null){
 					scheduleHere = line;
