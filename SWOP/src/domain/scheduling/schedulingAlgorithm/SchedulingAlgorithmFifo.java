@@ -80,21 +80,20 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	 * If a custom job has to be forced, return the most urgent
 	 * return null if no job has to be forced.
 	 */
-	private IJob hasToForceCustomJob(ImmutableClock currentTime) {
+	private Optional<IJob> hasToForceCustomJob(ImmutableClock currentTime) {
 		int idx = 0;
 		for (IJob job : customJobs) {
 			try{
 				if (job.getOrder().getDeadline().minus(currentTime) - ((idx + job.getMinimalIndex() +1) * job.getOrder().getProductionTime()) <= 0) {
-					return job;
+					return Optional.fromNullable(job);
 				}
 			} catch (NotImplementedException e) {
 				// verkeerde queue, komt niet voor..
 			}
 			idx++;
 		}
-		
-		//TODO niet return null
-		return null;
+		Optional<IJob> absentJob = Optional.absent();
+		return absentJob;
 	}
 
 
@@ -114,27 +113,26 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			return toReturn;
 		}
 
-		IJob toSchedule = hasToForceCustomJob(currentTime);
+		Optional<IJob> toSchedule = hasToForceCustomJob(currentTime);
 		int currentTotalProductionTime = getCurrentTotalProductionTime(jobsOnAssemblyLine);
 		//Step 1:
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(toSchedule);
-			Optional<IJob> toReturn = Optional.fromNullable(toSchedule);
+			Optional<IJob> toReturn = toSchedule;
 			return toReturn;
 		}
 
 		//Step 2:
-		if (canAssembleJobInTime(standardJobs.peek(), currentTotalProductionTime, minutesTillEndOfDay)) {
+		if (canAssembleJobInTime(Optional.fromNullable(standardJobs.peek()), currentTotalProductionTime, minutesTillEndOfDay)) {
 			Optional<IJob> toReturn = Optional.fromNullable(standardJobs.poll());
 			return toReturn;
 		}
 
 		//Step 3:
-		IJob jobWithHighestWorkBenchIndex = getJobWithHighestWorkBenchIndex();
+		Optional<IJob> jobWithHighestWorkBenchIndex = getJobWithHighestWorkBenchIndex();
 		if (canAssembleJobInTime(jobWithHighestWorkBenchIndex, currentTotalProductionTime, minutesTillEndOfDay)) {
 			customJobs.remove(jobWithHighestWorkBenchIndex);
-			Optional<IJob> toReturn = Optional.fromNullable(jobWithHighestWorkBenchIndex);
-			return toReturn;
+			return jobWithHighestWorkBenchIndex;
 		}
 		return Optional.absent();
 	}
