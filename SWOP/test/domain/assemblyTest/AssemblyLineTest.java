@@ -313,14 +313,37 @@ public class AssemblyLineTest{
 	
 	@Test
 	public void testGetMinimalIndex(){
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		line.schedule(job);
+		assertEquals(-1, job.getMinimalIndex());
+		
 		List<ITask> tasks = new ArrayList<>();
 		tasks.add(new Task("Paint"));
 		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
 		line.addWorkBench(bench);
-		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
-		IJob job = new Job(order);
+		job.setTasks(tasks);
 		line.schedule(job);
-		
 		assertEquals(0, job.getMinimalIndex());
+	}
+	
+	@Test
+	public void testGetCurrentSchedulingAlgorithm(){
+		assertEquals("Fifo", line.getCurrentSchedulingAlgorithm());
+	}
+	
+	@Test
+	public void testGetAllCarOptionsInPendingOrders(){
+		assertEquals(0, line.getAllCarOptionsInPendingOrders().size());
+	}
+	
+	@Test
+	public void testGetState(){
+		assertEquals(AssemblyLineState.OPERATIONAL, line.getState());
+	}
+	
+	@Test
+	public void testCompleteChosenTaskAtWorkbench(){
+		
 	}
 }
