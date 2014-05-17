@@ -72,6 +72,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 		if (bench == null)
 			throw new IllegalArgumentException();
 		workbenches.add(bench);
+		try {
+			this.scheduler.addWorkBenchType(bench.getWorkbenchType());
+		} catch (IllegalStateException illegalState) { }
 	}
 
 	/**
@@ -229,12 +232,12 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine, Obse
 	 * given job. It returns a value of -1 when there's no workbench found to complete this job.
 	 */
 	private int getMinimalIndexOfWorkbench(IJob job) {
-		for (int i = 0; i < getWorkbenches().size(); i++) {
-			for (ITask task : job.getTasks()) {
-				if (getWorkbenches().get(i).getResponsibilities().contains(task.getTaskDescription())) {
-					return i;
-				}
+		int i = 0;
+		for (IWorkBench workBench : this.workbenches) {
+			if (job.getProductionTime(workBench.getWorkbenchType()) > 0) {
+				return i;
 			}
+			i++;
 		}
 		return -1;
 	}

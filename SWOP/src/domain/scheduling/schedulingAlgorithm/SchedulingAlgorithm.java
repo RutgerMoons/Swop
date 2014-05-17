@@ -182,6 +182,13 @@ public abstract class SchedulingAlgorithm {
 		return Collections.unmodifiableList(allJobs);
 	}
 	
+	public void addWorkBenchType(WorkBenchType type) {
+		if (type == null) {
+			throw new IllegalArgumentException();
+		} 
+		this.workBenchTypes.add(type);
+	}
+	
 	public void addJobToAlgorithm(IJob job) {
 		if (job == null) {
 			throw new IllegalArgumentException();
