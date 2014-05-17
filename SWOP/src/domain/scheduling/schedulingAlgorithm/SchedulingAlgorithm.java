@@ -131,7 +131,7 @@ public abstract class SchedulingAlgorithm {
 					biggest = currentTimeAtWorkbenchForThisJob;
 				}
 			}
-			index++;
+			index++; //TODO fout met index out of bounds
 		}
 		return biggest;
 	}

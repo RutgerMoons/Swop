@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -303,5 +304,23 @@ public class AssemblyLineTest{
 		assertTrue(line.toString().contains("model C"));
 		assertTrue(line.toString().contains("model B"));
 		assertTrue(line.toString().contains("model"));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testInvalidSchedule(){
+		line.schedule(null);
+	}
+	
+	@Test
+	public void testGetMinimalIndex(){
+		List<ITask> tasks = new ArrayList<>();
+		tasks.add(new Task("Paint"));
+		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
+		line.addWorkBench(bench);
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		line.schedule(job);
+		
+		assertEquals(0, job.getMinimalIndex());
 	}
 }
