@@ -37,17 +37,17 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 	}
 
 	@Override
-	public List<IWorkBench> getWorkbenches() {
+	public List<IWorkBench> getWorkBenches() {
 		List<IWorkBench> unmodifiables = new ArrayList<>();
-		for(IWorkBench bench: assemblyLine.getWorkbenches()){
+		for(IWorkBench bench: assemblyLine.getWorkBenches()){
 			unmodifiables.add(new UnmodifiableWorkBench(bench));
 		}
 		return Collections.unmodifiableList(unmodifiables);
 	}
 
 	@Override
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
-		return this.assemblyLine.getAllCarOptionsInPendingOrders();
+	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
+		return this.assemblyLine.getAllVehicleOptionsInPendingOrders();
 	}
 
 	@Override

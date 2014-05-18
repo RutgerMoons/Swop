@@ -26,12 +26,12 @@ public interface IAssemblyLine {
 	 * 
 	 * @return	A list of IWorkBenches
 	 */
-	public List<IWorkBench> getWorkbenches();
+	public List<IWorkBench> getWorkBenches();
 	
 	/**
 	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
 	 */
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders();
+	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders();
 
 	/**
 	 * 

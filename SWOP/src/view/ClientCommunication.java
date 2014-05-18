@@ -462,7 +462,7 @@ public class ClientCommunication{
 
 		assemblyLineStrings.add(0, "current assemblyline:");
 
-		List<IWorkBench> allWorkbenches = assemblyLine.getWorkbenches();
+		List<IWorkBench> allWorkbenches = assemblyLine.getWorkBenches();
 
 		for(IWorkBench workbench: allWorkbenches){
 			assemblyLineStrings.add("Workbench: " + workbench.toString());

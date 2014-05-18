@@ -1,12 +1,9 @@
-package domain.assemblyTest;
+package domain.assembly.workBench;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
-
-import domain.assembly.workBench.WorkBenchType;
-import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class WorkBenchTypeTest {
 

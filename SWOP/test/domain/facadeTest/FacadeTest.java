@@ -183,7 +183,7 @@ public class FacadeTest {
 		assertTrue(vehicle.getVehicleOptions().containsValue(option));
 		assertEquals(specification, vehicle.getVehicleSpecification());
 		IAssemblyLine assemblyLine = facade.getAssemblyLines().get(0);
-		IWorkBench bench = assemblyLine.getWorkbenches().get(0);
+		IWorkBench bench = assemblyLine.getWorkBenches().get(0);
 		
 		assertNotNull(bench.getCurrentTasks());
 		

@@ -100,7 +100,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 		// multiple spots
 
 		for (int i = this.workbenches.size() - 1; i >= 0; i--) {
-			IWorkBench bench = getWorkbenches().get(i);
+			IWorkBench bench = getWorkBenches().get(i);
 			Optional<IJob> jobAtBench = bench.getCurrentJob();
 			if (jobAtBench.isPresent()) {
 				// if job is completed -> move as far as possible
@@ -216,7 +216,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 
 	@Override
 	public boolean canAdvance() {
-		List<IWorkBench> workBenches = getWorkbenches();
+		List<IWorkBench> workBenches = getWorkBenches();
 		for (int i = 0; i < workBenches.size(); i++)
 			if (!workBenches.get(i).isCompleted())
 				return false;
@@ -262,7 +262,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	@Override
 	public List<IWorkBench> getBlockingWorkBenches() {
 		ArrayList<IWorkBench> notCompletedBenches = new ArrayList<>();
-		List<IWorkBench> workBenches = getWorkbenches();
+		List<IWorkBench> workBenches = getWorkBenches();
 		for (int i = 0; i < workBenches.size(); i++)
 			if (!workBenches.get(i).isCompleted())
 				notCompletedBenches.add(new UnmodifiableWorkBench(
@@ -284,7 +284,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	 * @return An unmodifiable list of IWorkBenches.
 	 */
 	@Override
-	public List<IWorkBench> getWorkbenches() {
+	public List<IWorkBench> getWorkBenches() {
 		return Collections.unmodifiableList(workbenches);
 	}
 
@@ -322,7 +322,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	}
 
 	@Override
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
 		return Collections.unmodifiableSet(this.scheduler
 				.getAllCarOptionsInPendingOrders());
 	}
@@ -422,7 +422,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 			return false;
 		if (!responsibilities.equals(other.getResponsibilities()))
 			return false;
-		if (!workbenches.equals(other.getWorkbenches()))
+		if (!workbenches.equals(other.getWorkBenches()))
 			return false;
 		return true;
 	}

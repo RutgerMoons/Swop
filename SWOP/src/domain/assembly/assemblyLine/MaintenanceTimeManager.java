@@ -27,6 +27,9 @@ public class MaintenanceTimeManager implements ObservesClock{
 
 	@Override
 	public void startNewDay(ImmutableClock newDay) {
+		if(finishTime.isEarlierThan(newDay)){
+			line.setState(AssemblyLineState.OPERATIONAL);
+		}
 	}
 	
 }

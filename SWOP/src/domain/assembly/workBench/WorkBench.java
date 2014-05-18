@@ -170,14 +170,14 @@ public class WorkBench implements IWorkBench {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((currentJob == null) ? 0 : currentJob.hashCode());
+				+ currentJob.hashCode();
 		result = prime * result
-				+ ((currentTasks == null) ? 0 : currentTasks.hashCode());
+				+ currentTasks.hashCode();
 		result = prime
 				* result
-				+ ((responsibilities == null) ? 0 : responsibilities.hashCode());
+				+ responsibilities.hashCode();
 		result = prime * result
-				+ ((workbenchType == null) ? 0 : workbenchType.hashCode());
+				+ workbenchType.hashCode();
 		return result;
 	}
 
@@ -194,20 +194,11 @@ public class WorkBench implements IWorkBench {
 		} catch (ClassCastException e){
 			return false;
 		}
-		if (currentJob == null) {
-			if (other.getCurrentJob() != null)
-				return false;
-		} else if (!currentJob.equals(other.getCurrentJob()))
+		if (!currentJob.equals(other.getCurrentJob()))
 			return false;
-		if (currentTasks == null) {
-			if (other.getCurrentTasks() != null)
-				return false;
-		} else if (!currentTasks.equals(other.getCurrentTasks()))
+		if (!currentTasks.equals(other.getCurrentTasks()))
 			return false;
-		if (responsibilities == null) {
-			if (other.getResponsibilities() != null)
-				return false;
-		} else if (!responsibilities.equals(other.getResponsibilities()))
+		if (!responsibilities.equals(other.getResponsibilities()))
 			return false;
 		if (workbenchType != other.getWorkbenchType())
 			return false;

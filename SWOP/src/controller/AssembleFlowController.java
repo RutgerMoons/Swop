@@ -68,7 +68,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * Get the workbench at which the user wants to perform tasks
 	 */
 	public IWorkBench chooseWorkBench(IAssemblyLine chosenAssemblyLine){
-		IWorkBench chosenWorkbench = clientCommunication.chooseWorkBench(chosenAssemblyLine.getWorkbenches());
+		IWorkBench chosenWorkbench = clientCommunication.chooseWorkBench(chosenAssemblyLine.getWorkBenches());
 		return chosenWorkbench;
 	}
 
