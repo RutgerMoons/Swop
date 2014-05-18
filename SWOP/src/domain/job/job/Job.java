@@ -104,8 +104,6 @@ public class Job implements IJob {
 			return false;
 		if(!getTasks().equals(other.getTasks()))
 			return false;
-		if(!getTimeAtWorkBench().equals(other.getTimeAtWorkBench()))
-			return false;
 		return true;
 	}
 

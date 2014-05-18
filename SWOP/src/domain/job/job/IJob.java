@@ -83,12 +83,12 @@ public interface IJob {
 	 * at which some Tasks of this Job will need to be completed.
 	 */
 	public int getMinimalIndex();
-	
+
 	/**
 	 * Returns a collection of all the VehicleOptions of which the ordered cars consist.
 	 */
 	public Collection<VehicleOption> getVehicleOptions();
-	
+
 	/**
 	 * Get the time the specification has to spend on a workbench.
 	 */
@@ -98,7 +98,7 @@ public interface IJob {
 	 * Get the specification of the vehicle from the order
 	 */
 	public VehicleSpecification getVehicleSpecification();
-	
+
 	/**
 	 * 
 	 * @param	workBenchType used to determine the time this job will take to complete
@@ -106,7 +106,7 @@ public interface IJob {
 	 * @return	The amount of minutes to complete this job at the given type of WorkBench
 	 */
 	public int getProductionTime(WorkBenchType workBenchType);
-	
+
 	/**
 	 * Get the total production time for the Job to finish.
 	 */
@@ -114,6 +114,9 @@ public interface IJob {
 
 	/**
 	 * Visit the order.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when visitor is null
 	 */
 	public void acceptVisit(IOrderVisitor visitor);
 }

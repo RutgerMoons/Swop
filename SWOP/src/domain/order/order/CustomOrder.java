@@ -255,6 +255,9 @@ public class CustomOrder implements IOrder {
 
 	@Override
 	public void acceptVisit(IOrderVisitor visitor) {
+		if(visitor==null){
+			throw new IllegalArgumentException();
+		}
 		visitor.visit(this);
 	}
 

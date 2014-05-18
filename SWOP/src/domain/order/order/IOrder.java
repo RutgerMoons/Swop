@@ -124,6 +124,9 @@ public interface IOrder {
 	 * 
 	 * @param 	visitor
 	 * 			The visitor that visits the IOrder
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when visitor is null
 	 */
 	public void acceptVisit(IOrderVisitor visitor);
 }

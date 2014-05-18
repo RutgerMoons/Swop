@@ -2,6 +2,7 @@ package domain.assemblyTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -34,7 +36,9 @@ public class JobTest {
 	public void initializeModel() throws AlreadyInMapException{
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		Map<WorkBenchType, Integer> time = new HashMap<WorkBenchType, Integer>();
+		time.put(WorkBenchType.ACCESSORIES, 10);
+		VehicleSpecification template = new VehicleSpecification("model", parts, time);
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -166,8 +170,12 @@ public class JobTest {
 		job2 = new Job(order);
 		
 		List<ITask> tasks = new ArrayList<>();
-		job.setTasks(tasks);
+		tasks.add(new Task("blabla"));
 		job2.setTasks(tasks);
+		assertFalse(job.equals(job2));
+		assertNotEquals(job2.hashCode(), job.hashCode());
+		
+		job.setTasks(tasks);
 		assertTrue(job.equals(job2));
 		assertEquals(job2.hashCode(), job.hashCode());
 		
@@ -180,5 +188,42 @@ public class JobTest {
 		Job job = new Job(order);
 		job.setMinimalIndex(5);
 		assertEquals(5, job.getMinimalIndex());
+	}
+	
+	@Test
+	public void testGetVehicleOptions(){
+		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
+		Job job = new Job(order);
+		assertEquals(order.getDescription().getVehicleOptions().size(), job.getVehicleOptions().size());
+	}
+	
+	@Test
+	public void testGetVehicleSpecification(){
+		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
+		Job job = new Job(order);
+		assertEquals(order.getDescription().getVehicleSpecification(), job.getVehicleSpecification());
+	}
+	
+	@Test
+	public void testGetProductionTime(){
+		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
+		Job job = new Job(order);
+		Integer expected = order.getDescription().getTimeAtWorkBench().get(WorkBenchType.ACCESSORIES);
+		Integer actual = job.getProductionTime(WorkBenchType.ACCESSORIES);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testGetTotalProductionTime(){
+		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
+		Job job = new Job(order);
+		assertEquals(order.getProductionTime(), job.getTotalProductionTime());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAcceptVisit(){
+		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
+		Job job = new Job(order);
+		job.acceptVisit(null);
 	}
 }
