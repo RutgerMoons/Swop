@@ -14,13 +14,6 @@ import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Class representing an order from a garageholder. There are 5 attributes
- * specifying a certain order : the description/type of carModel the
- * garageholder order, the name of the garageholder. Moreover the amount of cars
- * ordered and the amount of cars yet to be completed, are specific attributes
- * of an order. Each order also has an estimated time. This is an estimation of
- * when the order will be completed. This time is expressed in days and minutes.
- * 
  * A class representing an order of a Vehicle.
  * It consists of a Vehicle, the garage holder who ordered the Vehicle, a quantity,
  * the time when you ordered it and the estimated time of completion.

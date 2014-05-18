@@ -17,11 +17,7 @@ import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
 import domain.job.action.Action;
-import domain.job.job.IJob;
-import domain.job.job.Job;
 import domain.order.order.StandardOrder;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -31,6 +27,7 @@ public class OrderTest {
 
 	private Vehicle model;
 	private VehicleSpecification template;
+	private VehicleSpecification template2;
 	private ImmutableClock clock;
 
 	@Before
@@ -59,6 +56,9 @@ public class OrderTest {
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		HashMap<WorkBenchType,Integer> timeAtWorkbench = new HashMap<WorkBenchType,Integer>();
+		timeAtWorkbench.put(WorkBenchType.BODY, 50);
+		template2 = new VehicleSpecification("model2", parts, timeAtWorkbench);
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));
@@ -94,7 +94,7 @@ public class OrderTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetGarageHolder1() {
-		new StandardOrder(" ", model, 3, clock);
+		new StandardOrder("", model, 3, clock);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -148,7 +148,7 @@ public class OrderTest {
 	}
 
 	@Test
-	public void TestEqualsAndHashcode() throws AlreadyInMapException {
+	public void TestEqualsAndHashcode() {
 		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
 		Vehicle model2 = new Vehicle(template2);
 		model2.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
@@ -187,23 +187,21 @@ public class OrderTest {
 	}
 	
 	@Test(expected=NotImplementedException.class)
-	public void testGetDeadline() throws NotImplementedException{
+	public void testGetDeadline() {
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		order1.getDeadline();
 	}
 	
 	@Test(expected=NotImplementedException.class)
-	public void testSetDeadline() throws NotImplementedException{
+	public void testSetDeadline(){
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
 		order1.setDeadline(new ImmutableClock(0, 0));
 	}
 	
 	@Test
-	public void testGetProductionTime() throws NotImplementedException{
-		model.getTimeAtWorkBench().put(WorkBenchType.BODY, 50);
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
-		
-		//TODO
+	public void testGetProductionTime() {
+		Vehicle model1 = new Vehicle(template2);
+		StandardOrder order1 = new StandardOrder("Jan", model1, 2, clock);
 		assertEquals(50, order1.getProductionTime());
 	}
 	
@@ -225,22 +223,9 @@ public class OrderTest {
 	@Test
 	public void testGetVehicleOptions(){
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
-		assertEquals(model.getVehicleOptions().values(), order1.getVehicleOptions());
-	}
-	
-	@Test
-	public void testAddToSchedulingAlgorithm(){
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
-		SchedulingAlgorithm algorithm = new SchedulingAlgorithmFifo(3);
-		IJob job = new Job(order1);
-		order1.addToSchedulingAlgorithm(algorithm, job);
-		assertTrue(algorithm.getStandardJobs().contains(job));
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
-	public void testAddIllegalToSchedulingAlgorithm(){
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
-		order1.addToSchedulingAlgorithm(null, null);
+		assertTrue(order1.getVehicleOptions().containsAll(model.getVehicleOptions().values()));
+		assertTrue(model.getVehicleOptions().values().containsAll(order1.getVehicleOptions()));
+		
 	}
 	
 	@Test

@@ -26,12 +26,12 @@ public class Vehicle implements IVehicle {
 	 * Creates a new Vehicle, which consists of zero VehicleOptions at this
 	 * point.
 	 * 
-	 * @param template
-	 *            The VehicleSpecification according to which this Vehicle will
-	 *            be built
+	 * @param 	template
+	 *          The VehicleSpecification according to which this Vehicle will
+	 *          be built
 	 * 
-	 * @throws IllegalArgumentException
-	 *             Thrown when the template is null
+	 * @throws 	IllegalArgumentException
+	 *          Thrown when the template is null
 	 */
 	public Vehicle(VehicleSpecification template) {
 		if (template == null)
