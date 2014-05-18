@@ -8,6 +8,7 @@ import domain.assembly.workBench.WorkBenchType;
 import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
+import domain.order.orderVisitor.IOrderVisitor;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -105,4 +106,14 @@ public interface IJob {
 	 * @return	The amount of minutes to complete this job at the given type of WorkBench
 	 */
 	public int getProductionTime(WorkBenchType workBenchType);
+	
+	/**
+	 * Get the total production time for the Job to finish.
+	 */
+	public int getTotalProductionTime();
+
+	/**
+	 * Visit the order.
+	 */
+	public void acceptVisit(IOrderVisitor visitor);
 }

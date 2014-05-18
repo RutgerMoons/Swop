@@ -9,6 +9,7 @@ import java.util.Map;
 import domain.assembly.workBench.WorkBenchType;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
+import domain.order.orderVisitor.IOrderVisitor;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -136,5 +137,15 @@ public class Job implements IJob {
 	@Override
 	public int getProductionTime(WorkBenchType workBenchType) {
 		return this.getVehicleSpecification().getProductionTime(workBenchType);
+	}
+
+	@Override
+	public int getTotalProductionTime() {
+		return order.getProductionTime();
+	}
+
+	@Override
+	public void acceptVisit(IOrderVisitor visitor) {
+		order.acceptVisit(visitor);
 	}
 }

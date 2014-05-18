@@ -10,6 +10,7 @@ import domain.exception.UnmodifiableException;
 import domain.job.task.ITask;
 import domain.order.order.IOrder;
 import domain.order.order.UnmodifiableOrder;
+import domain.order.orderVisitor.IOrderVisitor;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -107,5 +108,15 @@ public class UnmodifiableJob implements IJob {
 	@Override
 	public int getProductionTime(WorkBenchType workBenchType) {
 		return this.job.getProductionTime(workBenchType);
+	}
+
+	@Override
+	public int getTotalProductionTime() {
+		return job.getTotalProductionTime();
+	}
+
+	@Override
+	public void acceptVisit(IOrderVisitor visitor) {
+		job.acceptVisit(visitor);
 	}
 }
