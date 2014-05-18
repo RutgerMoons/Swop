@@ -27,6 +27,7 @@ public class OrderTest {
 
 	private Vehicle model;
 	private VehicleSpecification template;
+	private VehicleSpecification template2;
 	private ImmutableClock clock;
 
 	@Before
@@ -55,6 +56,9 @@ public class OrderTest {
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		HashMap<WorkBenchType,Integer> timeAtWorkbench = new HashMap<WorkBenchType,Integer>();
+		timeAtWorkbench.put(WorkBenchType.BODY, 50);
+		template2 = new VehicleSpecification("model2", parts, timeAtWorkbench);
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));
@@ -196,10 +200,8 @@ public class OrderTest {
 	
 	@Test
 	public void testGetProductionTime() {
-		model.getTimeAtWorkBench().put(WorkBenchType.BODY, 50);
-		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
-		System.out.println(order1.getProductionTime());
-		//TODO
+		Vehicle model1 = new Vehicle(template2);
+		StandardOrder order1 = new StandardOrder("Jan", model1, 2, clock);
 		assertEquals(50, order1.getProductionTime());
 	}
 	
@@ -221,13 +223,8 @@ public class OrderTest {
 	@Test
 	public void testGetVehicleOptions(){
 		StandardOrder order1 = new StandardOrder("Jan", model, 2, clock);
-		//TODO equals methode van vehicleOptions checken -> werkt
-		System.out.println(model.getVehicleOptions().values().getClass());
-		System.out.println(model.getVehicleOptions().values().hashCode());
-		System.out.println(order1.getVehicleOptions().hashCode());
-		System.out.println(order1.getVehicleOptions().getClass());
-		
-		assertEquals(model.getVehicleOptions().values(), order1.getVehicleOptions());
+		assertTrue(order1.getVehicleOptions().containsAll(model.getVehicleOptions().values()));
+		assertTrue(model.getVehicleOptions().values().containsAll(order1.getVehicleOptions()));
 		
 	}
 	
