@@ -153,8 +153,8 @@ public class CustomOrderTest {
 		assertEquals(0, order1.getDeadline().getMinutes());
 	}
 	
-	@Test(expected = NotImplementedException.class)
-	public void testGetProductionTime() throws NotImplementedException{
+	@Test
+	public void testGetProductionTime(){
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		assertEquals(order1.getProductionTime(), model.getVehicleSpecification().getTimeAtWorkBench());
 	}

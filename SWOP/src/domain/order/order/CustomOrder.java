@@ -151,7 +151,12 @@ public class CustomOrder implements IOrder {
 
 	@Override
 	public int getProductionTime() {
-		return 60;
+		//return 60;
+		int time = 0;
+		for(WorkBenchType type: getTimeAtWorkBench().keySet()){
+			time += getTimeAtWorkBench().get(type);
+		}
+		return time;
 	}
 
 	@Override

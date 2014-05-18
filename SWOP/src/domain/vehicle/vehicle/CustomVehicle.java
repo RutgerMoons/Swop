@@ -61,8 +61,7 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public void addForcedOptionalType(VehicleOption type, boolean bool)
-			throws UnmodifiableException, NotImplementedException {
+	public void addForcedOptionalType(VehicleOption type, boolean bool){
 		throw new NotImplementedException();
 	}
 
@@ -127,7 +126,4 @@ public class CustomVehicle implements IVehicle {
 			return false;
 		return true;
 	}
-
-
 }
-
