@@ -193,4 +193,14 @@ public class Scheduler implements ObservesClock {
 	public int getTotalMinutesOfInternalClock() {
 		return this.internalClock.getMinutes();
 	}
+	
+	public void addWorkBenchType(WorkBenchType type) {
+		if (type == null) {
+			throw new IllegalArgumentException();
+		}
+		if (this.schedulingAlgorithm == null) {
+			throw new IllegalStateException();
+		}
+		this.schedulingAlgorithm.addWorkBenchType(type);
+	}
 }

@@ -3,11 +3,13 @@ package domain.assemblyTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ import com.google.common.base.Optional;
 
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
@@ -31,9 +34,12 @@ import domain.job.task.ITask;
 import domain.job.task.Task;
 import domain.log.Logger;
 import domain.observer.observers.AssemblyLineObserver;
+import domain.observer.observers.AssemblyLineStateObserver;
 import domain.observer.observers.ClockObserver;
+import domain.observer.observers.OrderBookObserver;
 import domain.order.order.IOrder;
 import domain.order.order.StandardOrder;
+import domain.scheduling.WorkloadDivider;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
@@ -103,7 +109,6 @@ public class AssemblyLineTest{
 	@Test
 	public void TestConstructor() {
 		assertNotNull(line);
-		assertNotNull(line.getCurrentJobs());
 		assertNotNull(line.getWorkbenches());
 	}
 
@@ -303,5 +308,164 @@ public class AssemblyLineTest{
 		assertTrue(line.toString().contains("model C"));
 		assertTrue(line.toString().contains("model B"));
 		assertTrue(line.toString().contains("model"));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testInvalidSchedule(){
+		line.schedule(null);
+	}
+	
+	@Test
+	public void testGetMinimalIndex(){
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		line.schedule(job);
+		assertEquals(0, job.getMinimalIndex());
+		AssemblyLine assemblyLine = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.OPERATIONAL, line.getResponsibilities());
+		assemblyLine.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		assemblyLine.schedule(job);
+		assertEquals(-1, job.getMinimalIndex());
+	}
+	
+	@Test
+	public void testGetCurrentSchedulingAlgorithm(){
+		assertEquals("Fifo", line.getCurrentSchedulingAlgorithm());
+	}
+	
+	@Test
+	public void testGetAllCarOptionsInPendingOrders(){
+		assertEquals(0, line.getAllCarOptionsInPendingOrders().size());
+	}
+	
+	@Test
+	public void testGetAndSetState(){
+		assertEquals(AssemblyLineState.OPERATIONAL, line.getState());
+		line.setState(AssemblyLineState.BROKEN);
+		assertEquals(AssemblyLineState.BROKEN, line.getState());
+		
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalState(){
+		line.setState(null);
+	}
+	
+	@Test
+	public void testCompleteChosenTaskAtWorkbench(){
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		List<ITask> tasks = new ArrayList<>();
+		ITask task = new Task("Paint");
+		tasks.add(task);
+		IWorkBench bench = line.getWorkbenches().get(0);
+		job.setTasks(tasks);
+		
+		bench.setCurrentJob(Optional.fromNullable(job));
+		bench.chooseTasksOutOfJob();
+		
+		line.completeChosenTaskAtChosenWorkBench(bench, task, new ImmutableClock(0, 0));
+		assertTrue(task.isCompleted());
+	}
+	
+	@Test (expected = IllegalStateException.class)
+	public void testCompleteChosenTaskAtIllegalWorkbench(){
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		List<ITask> tasks = new ArrayList<>();
+		ITask task = new Task("Paint");
+		tasks.add(task);
+		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
+		job.setTasks(tasks);
+		
+		bench.setCurrentJob(Optional.fromNullable(job));
+		bench.chooseTasksOutOfJob();
+		
+		line.completeChosenTaskAtChosenWorkBench(bench, task, new ImmutableClock(0, 0));
+		assertTrue(task.isCompleted());
+	}
+	
+	@Test
+	public void testGetStandardJobs(){
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		List<ITask> tasks = new ArrayList<>();
+		ITask task = new Task("Paint");
+		tasks.add(task);
+		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
+		line.addWorkBench(bench);
+		job.setTasks(tasks);
+		
+		
+		line.schedule(job);
+		assertTrue(line.getStandardJobs().contains(job));
+	}
+	
+	@Test
+	public void testRemoveUnscheduledJobs(){
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		List<ITask> tasks = new ArrayList<>();
+		ITask task = new Task("Paint");
+		tasks.add(task);
+		job.setTasks(tasks);
+		line.schedule(job);
+		
+		assertTrue(line.removeUnscheduledJobs().contains(job));
+		assertFalse(line.getStandardJobs().contains(job));
+		
+	}
+	
+	
+	@Test
+	public void observerTest(){
+		AssemblyLineStateObserver observer = new AssemblyLineStateObserver();
+		WorkloadDivider divider = new WorkloadDivider(new ArrayList<AssemblyLine>(), new OrderBookObserver(), new AssemblyLineObserver());
+		observer.attachLogger(divider);
+		line.attachObserver(observer);
+		
+		line.setState(AssemblyLineState.BROKEN);
+		line.detachObserver(observer);
+		
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalAttachObserver(){
+		AssemblyLineStateObserver observer = null;
+		line.attachObserver(observer);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalDetachObserver(){
+		AssemblyLineStateObserver observer = null;
+		line.detachObserver(observer);
+	}
+	
+	@Test
+	public void testEqualsAndHashcode(){
+		assertEquals(line, line);
+		assertEquals(line.hashCode(), line.hashCode());
+		assertNotEquals(line, null);
+		assertNotEquals(line, AssemblyLineState.BROKEN);
+		
+		AssemblyLine line2 = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.BROKEN, new HashSet<VehicleSpecification>());
+		line2.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		assertNotEquals(line, line2);
+		assertNotEquals(line.hashCode(), line2.hashCode());
+		
+		line2.setState(AssemblyLineState.OPERATIONAL);
+		assertNotEquals(line, line2);
+		assertNotEquals(line.hashCode(), line2.hashCode());
+		line2 = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.OPERATIONAL, line.getResponsibilities());
+		assertNotEquals(line, line2);
+		assertNotEquals(line.hashCode(), line2.hashCode());
+		
+		for(IWorkBench bench: line.getWorkbenches()){
+			line2.addWorkBench(bench);
+		}
+		
+		assertEquals(line, line2);
+		assertEquals(line.hashCode(), line2.hashCode());
+		
+		
 	}
 }

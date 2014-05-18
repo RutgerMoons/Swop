@@ -76,11 +76,11 @@ public abstract class SchedulingAlgorithm {
 		}
 	}
 	
-	protected boolean canAssembleJobInTime(IJob job, int currentTotalProductionTime, int minutesTillEndOfDay)  {
-		if(job == null) {
+	protected boolean canAssembleJobInTime(Optional<IJob> job, int currentTotalProductionTime, int minutesTillEndOfDay)  {
+		if(job == null || !job.isPresent()) {
 			return false;
 		}
-		return job.getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
+		return job.get().getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 	
 	/**
@@ -106,19 +106,20 @@ public abstract class SchedulingAlgorithm {
 	 */
 	public abstract void setEstimatedTime(IJob job, ImmutableClock currentTime, ArrayList<Optional<IJob>> jobsOnAssemblyLine) ;
 	
-	protected IJob getJobWithHighestWorkBenchIndex() {
+	protected Optional<IJob> getJobWithHighestWorkBenchIndex() {
 		int index = this.workBenchTypes.size() - 1;
 		while (index >= 0) {
 			for (Iterator<IJob> iterator = customJobs.iterator(); iterator.hasNext();) {
 				IJob job = iterator.next();
 				if (job.getMinimalIndex() == index) {
-					return job;
+					return Optional.fromNullable(job);
 				}
 			}
 
 			index--;
 		}
-		return null;
+		Optional<IJob> absentJob = Optional.absent();
+		return absentJob;
 	}
 	
 	protected int getMaximum(List<Optional<IJob>> list) {
@@ -131,7 +132,7 @@ public abstract class SchedulingAlgorithm {
 					biggest = currentTimeAtWorkbenchForThisJob;
 				}
 			}
-			index++;
+			index++; //TODO fout met index out of bounds
 		}
 		return biggest;
 	}
@@ -180,6 +181,13 @@ public abstract class SchedulingAlgorithm {
 		this.customJobs = new PriorityQueue<>(10, new JobComparatorDeadLine());
 		this.standardJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
 		return Collections.unmodifiableList(allJobs);
+	}
+	
+	public void addWorkBenchType(WorkBenchType type) {
+		if (type == null) {
+			throw new IllegalArgumentException();
+		} 
+		this.workBenchTypes.add(type);
 	}
 	
 	public void addJobToAlgorithm(IJob job) {

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import domain.assembly.workBench.IWorkBench;
-import domain.job.job.IJob;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
@@ -21,13 +20,6 @@ public interface IAssemblyLine {
 	 * Method for retrieving the workbenches with unfinished tasks.
 	 */
 	public List<IWorkBench> getBlockingWorkBenches();
-	
-	/**
-	 * Get all the pending jobs for this AssemblyLine
-	 * 
-	 * @return 	A list representing the current jobs
-	 */
-	public List<IJob> getCurrentJobs();
 	
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
@@ -52,6 +44,9 @@ public interface IAssemblyLine {
 	 * 
 	 * @param	state
 	 * 			The state the assemblyLine has to be in
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when state is null
 	 */
 	public void setState(AssemblyLineState state);
 	
