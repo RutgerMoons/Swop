@@ -80,7 +80,7 @@ public abstract class SchedulingAlgorithm {
 		if(job == null || !job.isPresent()) {
 			return false;
 		}
-		return job.get().getOrder().getProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
+		return job.get().getTotalProductionTime() <= minutesTillEndOfDay - currentTotalProductionTime;
 	}
 	
 	/**
@@ -195,7 +195,7 @@ public abstract class SchedulingAlgorithm {
 			throw new IllegalArgumentException();
 		}
 		OrderVisitor visitor = new OrderVisitor(job);
-		job.getOrder().acceptVisit(visitor);
+		job.acceptVisit(visitor);
 	}
 	
 	private class OrderVisitor implements IOrderVisitor {

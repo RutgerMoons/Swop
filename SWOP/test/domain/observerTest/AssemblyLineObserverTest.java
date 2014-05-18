@@ -56,9 +56,9 @@ public class AssemblyLineObserverTest {
 	@Test
 	public void updateCompletedOrderTest(){
 		Logger logger = new Logger(3);
-		observer.attachLogger(book);
 		logger.advanceTime(new ImmutableClock(1,200));
 		StandardOrder order = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("jos", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 1, new ImmutableClock(0, 0));
+		book.addOrder(order);
 		order.setEstimatedTime(new ImmutableClock(1, 1));
 		order.completeCar();
 		observer.updateCompletedOrder(order);

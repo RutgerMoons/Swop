@@ -102,12 +102,6 @@ public class TaskTest {
 	
 	@Test
 	public void TestToString(){
-		assertEquals("Paint,Required actions:", task.toString());
-		Action action = new Action("Paint car blue");
-		task.addAction(action);
-		assertEquals("Paint,Required actions: 1.Paint car blue", task.toString());
-		Action action2 = new Action("Paint car red");
-		task.addAction(action2);
-		assertEquals("Paint,Required actions: 1.Paint car blue, 2.Paint car red", task.toString());
+		assertEquals("Paint", task.toString());
 	}
 }
