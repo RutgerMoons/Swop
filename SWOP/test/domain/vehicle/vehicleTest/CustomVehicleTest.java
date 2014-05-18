@@ -1,4 +1,4 @@
-package domain.vehicleTest;
+package domain.vehicle.vehicleTest;
 
 import static org.junit.Assert.*;
 

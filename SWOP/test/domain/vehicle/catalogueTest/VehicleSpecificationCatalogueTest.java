@@ -1,4 +1,4 @@
-package domain.vehicleTest;
+package domain.vehicle.catalogueTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
