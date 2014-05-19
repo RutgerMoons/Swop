@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.base.Optional;
 
 import view.IClientCommunication;
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
@@ -48,6 +49,12 @@ public class AssembleFlowController extends UseCaseFlowController {
 	public void executeUseCase(){
 		//choose assembly Line
 		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
+		for(IAssemblyLine assemblyLine: allAssemblyLines){
+			if(assemblyLine.getState().equals(AssemblyLineState.BROKEN) || assemblyLine.getState().equals(AssemblyLineState.IDLE)){
+				allAssemblyLines.remove(assemblyLine);
+			}
+		}
+		
 		//naar clientcommunication
 		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
 		// choose workbench
