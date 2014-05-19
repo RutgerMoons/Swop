@@ -25,6 +25,10 @@ public class UnmodifiableActionTest {
 		action.setCompleted(true);
 		assertTrue(immutable.isCompleted());
 		assertEquals(action.toString(), immutable.toString());
+		
+		assertEquals(action, immutable);
+		assertEquals(immutable, action);
+		assertEquals(action.hashCode(), immutable.hashCode());
 	}
 
 	@Test(expected=IllegalArgumentException.class)

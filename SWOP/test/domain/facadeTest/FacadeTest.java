@@ -80,7 +80,7 @@ public class FacadeTest {
 		assertNotNull(facade);
 		facade.startNewDay();
 		assertNotNull(facade);
-		assertEquals(new ImmutableClock(1, 360), company.getUnmodifiableClock());
+		assertEquals(new ImmutableClock(1, 360), company.getImmutableClock());
 	}
 	
 	@Test
@@ -147,7 +147,7 @@ public class FacadeTest {
 
 		CustomOrder order = new CustomOrder(
 				company.getCurrentUser(), custom, 1,
-				company.getUnmodifiableClock(), time);
+				company.getImmutableClock(), time);
 		company.addOrder(order);
 		assertTrue(facade.getPendingOrders().contains(order));
 	
@@ -230,7 +230,6 @@ public class FacadeTest {
 		
 		facade.processOrder(1);
 		
-		
 		assertEquals(company.getCompletedOrders("test"), facade.getCompletedOrders());
 	}
 	
@@ -271,7 +270,7 @@ public class FacadeTest {
 	@Test
 	public void testGetRemainingVehicleOptions(){
 		facade.createNewVehicle(company.getVehicleSpecification("model A"));
-		assertEquals(company.getStillAvailableCarParts(VehicleOptionCategory.COLOR), facade.getRemainingVehicleOptions(VehicleOptionCategory.COLOR));
+		assertEquals(company.getStillAvailableVehicleOptions(VehicleOptionCategory.COLOR), facade.getRemainingVehicleOptions(VehicleOptionCategory.COLOR));
 	}
 	
 	@Test

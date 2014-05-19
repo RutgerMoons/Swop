@@ -178,7 +178,7 @@ public class Facade {
 	 * 			The type of the VehicleOption that has to be selected 
 	 */
 	public List<VehicleOption> getRemainingVehicleOptions(VehicleOptionCategory type) {
-		return Collections.unmodifiableList(company.getStillAvailableCarParts(type));
+		return Collections.unmodifiableList(company.getStillAvailableVehicleOptions(type));
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class Facade {
 	 * @throws 	RoleNotYetAssignedException
 	 * 			Thrown when it's the first time that this user logs in
 	 */
-	public void login(String userName) throws RoleNotYetAssignedException {
+	public void login(String userName) {
 		this.company.login(userName);
 	}
 
@@ -286,7 +286,7 @@ public class Facade {
 
 		CustomOrder order = new CustomOrder(
 				company.getCurrentUser(), vehicle, 1,
-				company.getUnmodifiableClock(), deadline);
+				company.getImmutableClock(), deadline);
 		company.addOrder(order);
 		return order.getEstimatedTime();
 	}
@@ -321,7 +321,7 @@ public class Facade {
 	 * or sets of VehicleOptions that occur in three or more pending Orders.
 	 */
 	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
-		return Collections.unmodifiableSet(this.company.getAllCarOptionsInPendingOrders());
+		return Collections.unmodifiableSet(this.company.getAllVehicleOptionsInPendingOrders());
 	}
 
 	/**

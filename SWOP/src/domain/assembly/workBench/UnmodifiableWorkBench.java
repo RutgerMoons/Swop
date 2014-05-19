@@ -91,4 +91,14 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	public void completeChosenTaskAtChosenWorkBench(ITask task) {
 		throw new UnmodifiableException();		
 	}
+	
+	@Override
+	public int hashCode(){
+		return bench.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		return bench.equals(obj);
+	}
 }

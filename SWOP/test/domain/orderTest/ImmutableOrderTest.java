@@ -138,7 +138,9 @@ public class ImmutableOrderTest {
 	
 	@Test
 	public void testGetVehicleOptions(){
-		assertEquals(order.getVehicleOptions(), immutable.getVehicleOptions());
+		assertEquals(order.getVehicleOptions().size(), immutable.getVehicleOptions().size());
+		assertTrue(immutable.getVehicleOptions().containsAll(order.getVehicleOptions()));
+		
 	}
 	
 	@Test

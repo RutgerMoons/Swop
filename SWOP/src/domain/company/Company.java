@@ -234,7 +234,7 @@ public class Company {
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the userName is null or is empty
 	 */
-	public void login(String userName) throws RoleNotYetAssignedException{
+	public void login(String userName) {
 		if(userName==null || userName.isEmpty()){
 			throw new IllegalArgumentException();
 		}
@@ -263,6 +263,9 @@ public class Company {
 	 * 			Thrown when the creator is null
 	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
+		if(creator==null){
+			throw new IllegalArgumentException();
+		}
 		this.workloadDivider.switchToSchedulingAlgorithm(creator);
 	}
 
@@ -333,7 +336,7 @@ public class Company {
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the type is null
 	 */
-	public List<VehicleOption> getStillAvailableCarParts(VehicleOptionCategory type) {
+	public List<VehicleOption> getStillAvailableVehicleOptions(VehicleOptionCategory type) {
 		if(type==null){
 			throw new IllegalArgumentException();
 		}
@@ -431,7 +434,7 @@ public class Company {
 	/**
 	 * Get the current time.
 	 */
-	public ImmutableClock getUnmodifiableClock() {
+	public ImmutableClock getImmutableClock() {
 		return clock.getImmutableClock();
 	}
 
@@ -479,7 +482,7 @@ public class Company {
 	 * Returns a powerset with all the VehicleOptions 
 	 * or sets of VehicleOptions that occur in three or more pending Orders.
 	 */
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
 		return Collections.unmodifiableSet(this.workloadDivider.getAllCarOptionsInPendingOrders());
 	}
 
@@ -494,8 +497,14 @@ public class Company {
 	 * 
 	 * @param 	clock
 	 * 			The current time 
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one or more of the arguments are null
 	 */
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state, ImmutableClock clock) {
+		if(assemblyLine == null || state == null || clock == null){
+			throw new IllegalArgumentException();
+		}
 		this.clock.advanceTime(clock.getTotalInMinutes());
 		if(state.equals(AssemblyLineState.MAINTENANCE)){
 			ClockObserver observer = new ClockObserver();

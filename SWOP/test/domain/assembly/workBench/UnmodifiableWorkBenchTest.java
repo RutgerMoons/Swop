@@ -100,4 +100,11 @@ public class UnmodifiableWorkBenchTest {
 	public void testCompleteChosenTaskAtWorkBench(){
 		immutable.completeChosenTaskAtChosenWorkBench(null);
 	}
+	
+	@Test
+	public void testEquals(){
+		assertEquals(bench, immutable);
+		assertEquals(immutable, bench);
+		assertEquals(bench.hashCode(), immutable.hashCode());
+	}
 }

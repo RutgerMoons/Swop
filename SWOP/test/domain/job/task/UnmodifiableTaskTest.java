@@ -52,4 +52,11 @@ public class UnmodifiableTaskTest {
 	public void testImmutable3() throws UnmodifiableException{
 		immutable.setTaskDescription(null);
 	}
+	
+	@Test
+	public void testEquals(){
+		assertEquals(task, immutable);
+		assertEquals(immutable, task);
+		assertEquals(task.hashCode(), immutable.hashCode());
+	}
 }
