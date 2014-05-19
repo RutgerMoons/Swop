@@ -269,3 +269,4 @@ public class SchedulingAlgorithmTest {
 	}
 	*/
 } 
+>>>>>>> branch 'master' of https://github.com/RutgerMoons/Swop.git

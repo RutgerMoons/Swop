@@ -34,8 +34,7 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 /**
- * This is the class where the program starts running.
- * 
+ * A class responsible for the main program.
  */
 public class AssemAssist {
 
@@ -44,7 +43,6 @@ public class AssemAssist {
 	private static ArrayList<UseCaseFlowController> flowControllers;
 	private static UserFlowController userFlowController;
 	private static IClientCommunication clientCommunication;
-
 
 	/**
 	 * Initializes all data structures that the program needs from the start.
@@ -76,8 +74,7 @@ public class AssemAssist {
 		clock.advanceTime(360);
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
-
-		//TODO clockobserver
+		
 		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);
 
 		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);

@@ -358,4 +358,15 @@ public class Facade {
 	public List<AssemblyLineState> getAssemblyLineStates() {
 		return Collections.unmodifiableList(Arrays.asList(AssemblyLineState.values()));
 	}
+	
+	/**
+	 * Returns an immutable list of the possible scheduling algorithms.
+	 * @return
+	 */
+	public List<String> getPossibleSchedulingAlgorithms() {
+		List<String> listOfAlgorithms = new ArrayList<String>();
+		listOfAlgorithms.add("Fifo");
+		listOfAlgorithms.add("Batch");
+		return Collections.unmodifiableList(listOfAlgorithms);
+	}
 }

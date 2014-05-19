@@ -35,10 +35,6 @@ public class ClientCommunication implements IClientCommunication{
 		this.inputReader = new Scanner(System.in);
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#askAdvance()
-	 */
-
 	@Override
 	public boolean askAdvance() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
@@ -46,20 +42,12 @@ public class ClientCommunication implements IClientCommunication{
 				expected).equals("Y");
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#askContinue()
-	 */
-
 	@Override
 	public boolean askContinue() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want to continue? Y/N", expected)
 				.equals("Y");
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#askDeadline()
-	 */
 
 	@Override
 	public int askDeadline() {
@@ -77,10 +65,6 @@ public class ClientCommunication implements IClientCommunication{
 		return days*Clock.MINUTESINADAY + minutes;
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#askFinished()
-	 */
-
 	@Override
 	public String askFinished() {
 		return askQuestion("Press enter when you're finished");
@@ -89,8 +73,10 @@ public class ClientCommunication implements IClientCommunication{
 	/**
 	 * Ask a question for which the answer is expected to be an integer.
 	 * 
-	 * @param question
-	 * @return An integer which represents the users's answer.
+	 * @param 	question
+	 * 			Question needed to be asked
+	 * 
+	 * @return 	An integer which represents the users answer.
 	 */
 	private int askNumber(String question) {
 		while (true) {
@@ -102,11 +88,12 @@ public class ClientCommunication implements IClientCommunication{
 	}
 
 	/**
-	 * Ask the question, give the answer of the user
+	 * Ask the question, give the answer of the user.
 	 * 
-	 * @param question
-	 *            the question the user has to answer
-	 * @return answer of the user
+	 * @param 	question
+	 *          the question the user has to answer
+	 * 
+	 * @return 	answer of the user
 	 */
 	private String askQuestion(String question) {
 		System.out.println(question);
@@ -116,13 +103,15 @@ public class ClientCommunication implements IClientCommunication{
 
 	/**
 	 * Keep asking the same question, until a valid (expected) response is given
-	 * by the user note: inputReader is only constructed once
+	 * by the user.
 	 * 
-	 * @param question
-	 *            the question the user has to answer
-	 * @param expected
-	 *            possible answers
-	 * @return answer of the user, this answer is an expected one
+	 * @param 	question
+	 *          the question the user has to answer
+	 * 
+	 * @param 	expected
+	 *          possible answers
+	 *          
+	 * @return 	answer of the user, this answer is an expected one
 	 */
 	private String askQuestionLoop(String question, ArrayList<String> expected) {
 		while (true) {
@@ -134,10 +123,6 @@ public class ClientCommunication implements IClientCommunication{
 			invalidAnswerPrompt();
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#chooseModel(java.util.Set)
-	 */
 
 	@Override
 	public String chooseModel(Set<String> catalogue) {
@@ -152,10 +137,6 @@ public class ClientCommunication implements IClientCommunication{
 		return askQuestionLoop("Which model do you want to order?",
 				catalogueInString);
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#chooseOrder(java.util.List, java.util.List)
-	 */
 
 	@Override
 	public Optional<IOrder> chooseOrder(List<IOrder> pendingOrders, List<IOrder> completedOrders) {
@@ -195,10 +176,6 @@ public class ClientCommunication implements IClientCommunication{
 		return Optional.absent();
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#choosePart(java.util.List)
-	 */
-
 	@Override
 	public Optional<VehicleOption> choosePart(List<VehicleOption> parts) {
 		ArrayList<String> partsString = new ArrayList<String>();
@@ -212,10 +189,7 @@ public class ClientCommunication implements IClientCommunication{
 				partsString.add(i + ".Select Nothing" );
 			}
 		}
-
-
 		show(partsString);
-
 
 		int partNumber = askNumber("Which Part Number do you choose?")-1;
 		if (partNumber >=0  && partNumber < parts.size()) {
@@ -226,12 +200,7 @@ public class ClientCommunication implements IClientCommunication{
 			invalidAnswerPrompt();
 			return choosePart(parts);
 		}
-
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#chooseRole()
-	 */
 
 	@Override
 	public String chooseRole() {
@@ -240,10 +209,6 @@ public class ClientCommunication implements IClientCommunication{
 		return askQuestionLoop(
 				"What's your role: manager, garageholder, worker or custom car shop manager?", expected);
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#chooseTask(java.util.List)
-	 */
 
 	@Override
 	public ITask chooseTask(List<ITask> tasksAtWorkbench) {
@@ -263,13 +228,7 @@ public class ClientCommunication implements IClientCommunication{
 			invalidAnswerPrompt();
 			return chooseTask(tasksAtWorkbench);
 		}
-
-
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#chooseWorkBench(int, java.util.ArrayList)
-	 */
 
 	@Override
 	public int chooseWorkBench(int numberOfWorkBenches,
@@ -291,18 +250,10 @@ public class ClientCommunication implements IClientCommunication{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#getElapsedTime()
-	 */
-
 	@Override
 	public int getElapsedTime() {
 		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)");
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#getFlowControllerIndex(java.util.List)
-	 */
 
 	@Override
 	public int getFlowControllerIndex(List<String> accessRights) {
@@ -321,9 +272,6 @@ public class ClientCommunication implements IClientCommunication{
 		return index;
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#getIndex(int)
-	 */
 	@Override
 	public int getIndex(int maxValue) {
 		int answer = askNumber("Please enter an integer greater than 0 and lesser than or equal to " + Integer.toString(maxValue));
@@ -333,10 +281,6 @@ public class ClientCommunication implements IClientCommunication{
 		}
 		return answer;
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#getName()
-	 */
 
 	@Override
 	public String getName() {
@@ -348,10 +292,6 @@ public class ClientCommunication implements IClientCommunication{
 		return answer;
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#getQuantity()
-	 */
-
 	@Override
 	public int getQuantity() {
 		int quantity = askNumber("How many cars do you want to order?");
@@ -362,28 +302,17 @@ public class ClientCommunication implements IClientCommunication{
 		return quantity;
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#invalidAnswerPrompt()
-	 */
-
 	@Override
 	public void invalidAnswerPrompt() {
 		show(new ArrayList<String>(
 				Arrays.asList("Sorry, that's not a valid response")));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#invalidUserPrompt()
-	 */
 
 	@Override
 	public void invalidUserPrompt() {
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#logout()
-	 */
 
 	@Override
 	public void logout() {
@@ -401,9 +330,7 @@ public class ClientCommunication implements IClientCommunication{
 			System.out.println(message.get(i));
 		}
 	}
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showAlgorithms(java.lang.String, java.util.List)
-	 */
+
 	@Override
 	public void showAlgorithms(String current, List<String> possible) {
 		List<String> currentAlgorithm = new ArrayList<String>();
@@ -412,17 +339,11 @@ public class ClientCommunication implements IClientCommunication{
 		this.showAlgorithms(possible);
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showAlgorithmSwitched(java.lang.String)
-	 */
 	@Override
 	public void showAlgorithmSwitched(String schedulingAlgorithmType) {
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + schedulingAlgorithmType));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showAlgorithmSwitched(java.lang.String, java.util.List)
-	 */
 	@Override
 	public void showAlgorithmSwitched(String schedulingAlgorithmType, List<VehicleOption> vehicleOptionsChosenForBatch) {
 		String batchToString = "";
@@ -433,10 +354,6 @@ public class ClientCommunication implements IClientCommunication{
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + schedulingAlgorithmType + 
 				" with batch: " + batchToString));
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showAssemblyLine(domain.assembly.assemblyLine.IAssemblyLine)
-	 */
 
 	@Override
 	public void showAssemblyLine(IAssemblyLine assemblyLine) {
@@ -481,21 +398,6 @@ public class ClientCommunication implements IClientCommunication{
 		return pendingTaskList;
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showBlockingBenches(java.util.ArrayList)
-	 */
-
-	@Override
-	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches) {
-		show(new ArrayList<String>(
-				Arrays.asList("AssemblyLine can't be advanced because of workbench "
-						+ notCompletedBenches.toString())));
-	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showChosenTask(domain.job.task.ITask)
-	 */
-
 	@Override
 	public void showChosenTask(ITask chosenTask) {
 		ArrayList<String> taskStrings = new ArrayList<String>();
@@ -511,10 +413,6 @@ public class ClientCommunication implements IClientCommunication{
 		show(taskStrings);
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showCompletedOrders(java.util.List)
-	 */
-
 	@Override
 	public void showCompletedOrders(List<IOrder> completedOrders) {
 		List<String> completedOrdersList = new ArrayList<String>();
@@ -529,18 +427,10 @@ public class ClientCommunication implements IClientCommunication{
 					Arrays.asList("You have no completed Orders")));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showCustomOrder(domain.clock.ImmutableClock)
-	 */
-
 	@Override
 	public void showCustomOrder(ImmutableClock time) {
 		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showSpecificCustomTasks(java.util.List)
-	 */
 
 	@Override
 	public IVehicle showSpecificCustomTasks(List<IVehicle> vehicles) {
@@ -563,27 +453,16 @@ public class ClientCommunication implements IClientCommunication{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showInvalidModel()
-	 */
-
 	@Override
 	public void showInvalidModel() {
 		show(new ArrayList<String>(
 				Arrays.asList("You created an invalid model, try again!")));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showNoBatchesAvailable()
-	 */
 	@Override
 	public void showNoBatchesAvailable() {
 		show(new ArrayList<String>(Arrays.asList("No batches available")));
 	}
-
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showOrder(int, domain.vehicle.VehicleSpecification, java.util.List, domain.clock.ImmutableClock)
-	 */
 
 	@Override
 	public void showOrder(int quantity, VehicleSpecification model, List<VehicleOption> chosenParts,
@@ -593,9 +472,6 @@ public class ClientCommunication implements IClientCommunication{
 		show(Arrays.asList("Estimated time of completion :" + estimatedTime.toString() ));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showOrder(int, domain.vehicle.VehicleSpecification, java.util.List)
-	 */
 	@Override
 	public void showOrder(int quantity, VehicleSpecification realModel, List<VehicleOption> chosenParts){
 		show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
@@ -607,9 +483,6 @@ public class ClientCommunication implements IClientCommunication{
 		}
 		show(chosenPartsInString);
 	}
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showOrderDetails(domain.order.order.IOrder)
-	 */
 
 	@Override
 	public void showOrderDetails(IOrder order) {
@@ -639,10 +512,6 @@ public class ClientCommunication implements IClientCommunication{
 		show(orderDetails);
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showPendingOrders(java.util.List)
-	 */
-
 	@Override
 	public void showPendingOrders(List<IOrder> pendingOrders) {
 		List<String> pendingOrdersList = new ArrayList<String>();
@@ -657,19 +526,12 @@ public class ClientCommunication implements IClientCommunication{
 					Arrays.asList("You have no pending Orders")));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showWorkBenchCompleted()
-	 */
-
 	@Override
 	public void showWorkBenchCompleted() {
 		show(new ArrayList<String>(
 				Arrays.asList("All the tasks at this workbench are completed")));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#chooseAssemblyLine(java.util.List)
-	 */
 	@Override
 	public IAssemblyLine chooseAssemblyLine(List<IAssemblyLine> allAssemblyLines) {
 		List<String> strings = new ArrayList<>();
@@ -691,9 +553,6 @@ public class ClientCommunication implements IClientCommunication{
 
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#chooseWorkBench(java.util.List)
-	 */
 	@Override
 	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches) {
 		List<String> strings = new ArrayList<>();
@@ -714,9 +573,6 @@ public class ClientCommunication implements IClientCommunication{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showCustomTasks(java.util.Set)
-	 */
 	@Override
 	public String showCustomTasks(Set<String> customTasks) {
 		ArrayList<String> customString = new ArrayList<String>();
@@ -730,7 +586,7 @@ public class ClientCommunication implements IClientCommunication{
 
 		int customNumber = askNumber("Which Task do you choose?") -1;
 		if (customNumber >=0 && customNumber < customTasks.size()) {
-			return customString.get(customNumber+1).substring(	//TODO check of het werkt
+			return customString.get(customNumber+1).substring(	
 					customString.get(customNumber+1).indexOf(".") + 1);
 		} else {
 			invalidAnswerPrompt();
@@ -738,25 +594,16 @@ public class ClientCommunication implements IClientCommunication{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showAverageDays(int)
-	 */
 	@Override
 	public void showAverageDays(int averageDays) {
 		show(Arrays.asList("Average vehicles produced: " + averageDays));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showMedianDays(int)
-	 */
 	@Override
 	public void showMedianDays(int medianDays) {
 		show(Arrays.asList("Median vehicles produced: " + medianDays));
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showDetailsDays(java.util.List)
-	 */
 	@Override
 	public void showDetailsDays(List<Integer> detailedDays) {
 		List<String> details = new ArrayList<>();
@@ -768,27 +615,18 @@ public class ClientCommunication implements IClientCommunication{
 
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showAverageDelays(int)
-	 */
 	@Override
 	public void showAverageDelays(int averageDelays) {
 		show(Arrays.asList("Average delays: " + averageDelays));
 
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showMedianDelays(int)
-	 */
 	@Override
 	public void showMedianDelays(int medianDelays) {
 		show(Arrays.asList("Median delays: " + medianDelays));
 
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showDetailedDelays(java.util.List)
-	 */
 	@Override
 	public void showDetailedDelays(List<Delay> detailedDelays) {
 		List<String> details = new ArrayList<>();
@@ -799,9 +637,6 @@ public class ClientCommunication implements IClientCommunication{
 		show(details);
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showAlgorithms(java.util.List)
-	 */
 	@Override
 	public void showAlgorithms(List<String> possible) {
 		List<String> showAlgorithms = new ArrayList<String>();
@@ -812,9 +647,6 @@ public class ClientCommunication implements IClientCommunication{
 
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#indexList(java.util.List)
-	 */
 	@Override
 	public List<String> indexList(List<String> listToBeIndexed){
 		List<String> finalResult = new ArrayList<String>();
@@ -826,9 +658,6 @@ public class ClientCommunication implements IClientCommunication{
 		return finalResult;
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showBatches(java.util.Set)
-	 */
 	@Override
 	public void showBatches(Set<Set<VehicleOption>> batches) {
 		List<String> sets = new ArrayList<String>();
@@ -847,9 +676,6 @@ public class ClientCommunication implements IClientCommunication{
 		this.show(sets);
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#chooseStatus(java.util.List, domain.assembly.assemblyLine.AssemblyLineState)
-	 */
 	@Override
 	public AssemblyLineState chooseStatus(List<AssemblyLineState> states, AssemblyLineState assemblyLineState) {
 		showStatus(assemblyLineState);
@@ -866,9 +692,6 @@ public class ClientCommunication implements IClientCommunication{
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see view.IClientCommunication#showStatus(domain.assembly.assemblyLine.AssemblyLineState)
-	 */
 	@Override
 	public void showStatus(AssemblyLineState assemblyLineState) {
 		AssemblyLineState[] states = AssemblyLineState.values();
