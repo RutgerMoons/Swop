@@ -1,12 +1,14 @@
 package domain.job.action;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.job.action.Action;
 
 
@@ -45,5 +47,29 @@ public class ActionTest {
 	@Test
 	public void TestToString(){
 		assertEquals("Spray Colour", action.toString());
+	}
+	
+	@Test
+	public void testEquals(){
+		assertEquals(action, action);
+		assertEquals(action.hashCode(), action.hashCode());
+		
+		assertNotEquals(action, null);
+		assertNotEquals(action, AssemblyLineState.BROKEN);
+		
+		Action action2 = new Action("Put on body");
+		assertNotEquals(action, action2);
+		assertNotEquals(action.hashCode(), action2.hashCode());
+		
+		action2.setDescription("Spray Colour");
+		action2.setCompleted(true);
+		
+		assertNotEquals(action, action2);
+		assertNotEquals(action.hashCode(), action2.hashCode());
+		
+		action.setCompleted(true);
+		
+		assertEquals(action, action2);
+		assertEquals(action.hashCode(), action2.hashCode());
 	}
 }
