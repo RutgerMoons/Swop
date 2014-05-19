@@ -147,7 +147,7 @@ public abstract class SchedulingAlgorithm {
 					biggest = currentTimeAtWorkbenchForThisJob;
 				}
 			}
-			index++; //TODO fout met index out of bounds
+			index++;
 		}
 		return biggest;
 	}
@@ -228,41 +228,33 @@ public abstract class SchedulingAlgorithm {
 		if (job == null) {
 			throw new IllegalArgumentException();
 		}
-		OrderVisitor visitor = new OrderVisitor(job);
+		final IJob jobToAdd = job;
+		IOrderVisitor visitor = new IOrderVisitor() {
+			
+			/**
+			 * Add the job as the custom order
+			 */
+			@Override
+			public void visit(CustomOrder order) {
+				addCustomJob(jobToAdd);
+			}
+
+			/**
+			 * Add the job as the standard order
+			 */
+			@Override
+			public void visit(StandardOrder order) {
+				addStandardJob(jobToAdd);
+			}
+
+			/**
+			 * Throws an IllegalArgumentException
+			 */
+			@Override
+			public void visit(UnmodifiableOrder order) {
+				throw new IllegalArgumentException();
+			}
+		};
 		job.acceptVisit(visitor);
 	}
-	
-	private class OrderVisitor implements IOrderVisitor {
-		
-		private IJob jobToAdd;
-		
-		public OrderVisitor(IJob job) {
-			this.jobToAdd = job;
-		}
-
-		/**
-		 * Add the job as the custom order
-		 */
-		@Override
-		public void visit(CustomOrder order) {
-			addCustomJob(this.jobToAdd);
-		}
-
-		/**
-		 * Add the job as the standard order
-		 */
-		@Override
-		public void visit(StandardOrder order) {
-			addStandardJob(this.jobToAdd);
-		}
-
-		/**
-		 * Throws an IllegalArgumentException
-		 */
-		@Override
-		public void visit(UnmodifiableOrder order) {
-			throw new IllegalArgumentException();
-		}
-	}
-	
 }

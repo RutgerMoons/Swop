@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.clock.ImmutableClock;
 import domain.facade.Facade;
 import domain.order.order.IOrder;
@@ -33,7 +33,7 @@ public class OrderFlowController extends UseCaseFlowController {
 	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic.
 	 */
 	public OrderFlowController(AccessRight accessRight,
-			ClientCommunication clientCommunication, Facade facade) {
+			IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 

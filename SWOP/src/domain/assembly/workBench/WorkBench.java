@@ -10,6 +10,7 @@ import com.google.common.base.Optional;
 import domain.job.action.IAction;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  *  A class representing a workbench. Each WorkBench has a WorkBenchType and it contains 
@@ -19,7 +20,6 @@ import domain.job.task.ITask;
  */
 public class WorkBench implements IWorkBench {
 
-	private Set<String> responsibilities;
 	private Optional<IJob> currentJob;
 	private List<ITask> currentTasks;
 	private final WorkBenchType workbenchType;
@@ -37,12 +37,11 @@ public class WorkBench implements IWorkBench {
 	 * @throws 	IllegalArgumentException
 	 *          Thrown when workbenchName is null or empty or when the WorkBenchType is null
 	 */
-	public WorkBench(Set<String> responsibilities, WorkBenchType type) {
-		if (type == null || responsibilities==null) {
+	public WorkBench(WorkBenchType type) {
+		if (type == null) {
 			throw new IllegalArgumentException();
 		}
 		this.workbenchType = type;
-		this.setResponsibilities(responsibilities);
 		setCurrentTasks(new ArrayList<ITask>());
 		Optional<IJob> nullJob = Optional.absent();
 		setCurrentJob(nullJob);
@@ -69,40 +68,9 @@ public class WorkBench implements IWorkBench {
 
 
 	@Override
-	public Set<String> getResponsibilities() {
-		return Collections.unmodifiableSet(responsibilities);
+	public Set<VehicleOptionCategory> getResponsibilities() {
+		return Collections.unmodifiableSet(workbenchType.getResponsibilities());
 	}
-
-	/**
-	 * Set a new list of responsibilities for this WorkBench
-	 * 
-	 * @param 	responsibilities
-	 *          A list of responsibilities
-	 *            
-	 * @throws 	IllegalArgumentException
-	 *          Thrown when the given parameter is null
-	 */
-	public void setResponsibilities(Set<String> responsibilities) {
-		if (responsibilities == null)
-			throw new IllegalArgumentException();
-		this.responsibilities = responsibilities;
-	}
-
-	/**
-	 * Add a responsibility to this WorkBench.
-	 * 
-	 * @param 	responibility
-	 *          The responsibility you want to add
-	 *            
-	 * @throws 	IllegalArgumentException
-	 *          Thrown when responsibility is null or empty
-	 */
-	public void addResponsibility(String responibility) {
-		if (responibility == null || responibility.isEmpty())
-			throw new IllegalArgumentException();
-		responsibilities.add(responibility);
-	}
-
 
 	@Override
 	public List<ITask> getCurrentTasks() {
@@ -132,7 +100,7 @@ public class WorkBench implements IWorkBench {
 		}
 		List<ITask> tasks = new ArrayList<>();
 		for (ITask task : getCurrentJob().get().getTasks())
-			if (getResponsibilities().contains(task.getTaskDescription())
+			if (getResponsibilities().contains(VehicleOptionCategory.valueOf(task.getTaskDescription().toUpperCase()))
 					&& !task.isCompleted()) {
 				tasks.add(task);
 			}
@@ -173,9 +141,6 @@ public class WorkBench implements IWorkBench {
 				+ currentJob.hashCode();
 		result = prime * result
 				+ currentTasks.hashCode();
-		result = prime
-				* result
-				+ responsibilities.hashCode();
 		result = prime * result
 				+ workbenchType.hashCode();
 		return result;
@@ -196,8 +161,6 @@ public class WorkBench implements IWorkBench {
 		if (!currentJob.equals(other.getCurrentJob()))
 			return false;
 		if (!currentTasks.equals(other.getCurrentTasks()))
-			return false;
-		if (!responsibilities.equals(other.getResponsibilities()))
 			return false;
 		if (workbenchType != other.getWorkbenchType())
 			return false;

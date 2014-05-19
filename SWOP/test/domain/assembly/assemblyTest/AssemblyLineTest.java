@@ -60,9 +60,9 @@ public class AssemblyLineTest{
 		map.put(WorkBenchType.ACCESSORIES, 20);
 		map.put(WorkBenchType.BODY, 20);
 		map.put(WorkBenchType.DRIVETRAIN, 20);
-		VehicleSpecification template = new VehicleSpecification("model", parts, map);
-		VehicleSpecification template2 = new VehicleSpecification("model B", parts, new HashMap<WorkBenchType, Integer>());
-		VehicleSpecification template3 = new VehicleSpecification("model C", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
+		VehicleSpecification template2 = new VehicleSpecification("model B", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
+		VehicleSpecification template3 = new VehicleSpecification("model C", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		Set<VehicleSpecification> specifications = new HashSet<VehicleSpecification>();
 		specifications.add(template);
 		specifications.add(template2);
@@ -78,22 +78,11 @@ public class AssemblyLineTest{
 		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0,240), AssemblyLineState.OPERATIONAL, specifications);
 
-		Set<String> responsibilities = new HashSet<>();
-		responsibilities.add("Body");
-		responsibilities.add("Color");
-		WorkBench body1 = new WorkBench(responsibilities, WorkBenchType.BODY);
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
 
-		responsibilities = new HashSet<>();
-		responsibilities.add("Engine");
-		responsibilities.add("Gearbox");
-		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain1 = new WorkBench(WorkBenchType.DRIVETRAIN);
 
-		responsibilities = new HashSet<>();
-		responsibilities.add("Seat");
-		responsibilities.add("Airco");
-		responsibilities.add("Spoiler");
-		responsibilities.add("Wheel");
-		WorkBench accessories1 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
+		WorkBench accessories1 = new WorkBench(WorkBenchType.ACCESSORIES);
 
 		line.addWorkBench(body1);
 		line.addWorkBench(drivetrain1);
@@ -115,10 +104,7 @@ public class AssemblyLineTest{
 
 	@Test
 	public void addWorkBenchTest(){
-		Set<String> resp1 = new HashSet<String>();
-		resp1.add("bla");
-		resp1.add("bleu");
-		IWorkBench workbench1 = new WorkBench(resp1, WorkBenchType.BODY);
+		IWorkBench workbench1 = new WorkBench(WorkBenchType.BODY);
 		line.addWorkBench(workbench1);
 		assertEquals(4, line.getWorkBenches().size());
 	}
@@ -297,8 +283,7 @@ public class AssemblyLineTest{
 	}
 	@Test
 	public void TestToString(){
-		WorkBench bench1 = new WorkBench(new HashSet<String>(), WorkBenchType.ACCESSORIES);
-		bench1.addResponsibility("Paint");
+		WorkBench bench1 = new WorkBench(WorkBenchType.BODY);
 		line.addWorkBench(bench1);
 		assertTrue(line.toString().contains("Responsibilities"));
 		assertTrue(line.toString().contains("model C"));
@@ -329,7 +314,7 @@ public class AssemblyLineTest{
 	}
 
 	@Test
-	public void testGetAllCarOptionsInPendingOrders(){
+	public void testGetAllVehicleOptionsInPendingOrders(){
 		assertEquals(0, line.getAllVehicleOptionsInPendingOrders().size());
 	}
 
@@ -351,7 +336,7 @@ public class AssemblyLineTest{
 		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
 		IJob job = new Job(order);
 		List<ITask> tasks = new ArrayList<>();
-		ITask task = new Task("Paint");
+		ITask task = new Task(VehicleOptionCategory.COLOR.toString());
 		tasks.add(task);
 		IWorkBench bench = line.getWorkBenches().get(0);
 		job.setTasks(tasks);
@@ -368,9 +353,9 @@ public class AssemblyLineTest{
 		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
 		IJob job = new Job(order);
 		List<ITask> tasks = new ArrayList<>();
-		ITask task = new Task("Paint");
+		ITask task = new Task(VehicleOptionCategory.COLOR.toString());
 		tasks.add(task);
-		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
+		WorkBench bench = new WorkBench(WorkBenchType.BODY);
 		job.setTasks(tasks);
 
 		bench.setCurrentJob(Optional.fromNullable(job));
@@ -387,7 +372,7 @@ public class AssemblyLineTest{
 		List<ITask> tasks = new ArrayList<>();
 		ITask task = new Task("Paint");
 		tasks.add(task);
-		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
+		WorkBench bench = new WorkBench(WorkBenchType.BODY);
 		line.addWorkBench(bench);
 		job.setTasks(tasks);
 

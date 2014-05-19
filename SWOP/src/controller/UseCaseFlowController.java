@@ -1,6 +1,6 @@
 package controller;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -12,7 +12,7 @@ import domain.users.AccessRight;
 public abstract class UseCaseFlowController {
 	
 	protected final AccessRight accessRight;
-	protected ClientCommunication clientCommunication;
+	protected IClientCommunication clientCommunication;
 	protected Facade facade;
 	
 	/**
@@ -27,7 +27,7 @@ public abstract class UseCaseFlowController {
 	 * @param 	facade
 	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
 	 */
-	public UseCaseFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade){
+	public UseCaseFlowController(AccessRight accessRight, IClientCommunication clientCommunication, Facade facade){
 		if (accessRight == null || clientCommunication == null || facade == null) {
 			throw new NullPointerException();
 		}

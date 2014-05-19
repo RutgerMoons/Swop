@@ -1,12 +1,10 @@
 package domain.assembly.assemblyTest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -15,7 +13,6 @@ import org.junit.Test;
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.UnmodifiableAssemblyLine;
-import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
@@ -41,15 +38,15 @@ public class UnmodifiableAssemblyLineTest {
 	@Before
 	public void initialise(){
 		Set<VehicleSpecification> responsibilities = new HashSet<VehicleSpecification>();
-		responsibilities.add(new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>()));
+		responsibilities.add(new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>()));
 		
 		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.OPERATIONAL, responsibilities);
 		line.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		Set<String> responsibilities2 = new HashSet<>();
 		responsibilities2.add("Color");
 		responsibilities2.add("test2");
-		line.addWorkBench(new WorkBench(responsibilities2, WorkBenchType.BODY));
-		line.addWorkBench(new WorkBench(new HashSet<String>(), WorkBenchType.DRIVETRAIN));
+		line.addWorkBench(new WorkBench(WorkBenchType.BODY));
+		line.addWorkBench(new WorkBench(WorkBenchType.DRIVETRAIN));
 		unmodifiable = new UnmodifiableAssemblyLine(line);
 	}
 	
@@ -68,7 +65,7 @@ public class UnmodifiableAssemblyLineTest {
 		assertEquals(line.getBlockingWorkBenches(), unmodifiable.getBlockingWorkBenches());
 		
 		
-		VehicleSpecification template = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		Vehicle model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -78,22 +75,11 @@ public class UnmodifiableAssemblyLineTest {
 		model.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		
-		Set<String> responsibilities = new HashSet<>();
-		responsibilities.add("Body");
-		responsibilities.add("Color");
-		WorkBench body1 = new WorkBench(responsibilities, WorkBenchType.BODY);
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
 
-		responsibilities = new HashSet<>();
-		responsibilities.add("Engine");
-		responsibilities.add("Gearbox");
-		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain1 = new WorkBench(WorkBenchType.DRIVETRAIN);
 
-		responsibilities = new HashSet<>();
-		responsibilities.add("Seat");
-		responsibilities.add("Airco");
-		responsibilities.add("Spoiler");
-		responsibilities.add("Wheel");
-		WorkBench accessories1 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
+		WorkBench accessories1 = new WorkBench(WorkBenchType.ACCESSORIES);
 
 		line.addWorkBench(body1);
 		line.addWorkBench(drivetrain1);

@@ -6,7 +6,7 @@ package domain.vehicle.vehicleOption;
  */
 public enum VehicleOptionCategory {
 
-	 BODY(false) {
+	BODY(false) {
 		@Override
 		public String toString() {
 			return "Body";
@@ -29,7 +29,7 @@ public enum VehicleOptionCategory {
 	}, SEATS(false) {
 		@Override
 		public String toString() {
-			return "Seat";
+			return "Seats";
 		}
 	}, AIRCO(true) {
 		@Override
@@ -46,10 +46,20 @@ public enum VehicleOptionCategory {
 		public String toString() {
 			return "Spoiler";
 		}
+	}, CARGO(true){
+		@Override
+		public String toString() {
+			return "Cargo";
+		}
+	}, CERTIFICATION(true){
+		@Override
+		public String toString() {
+			return "Certification";
+		}
 	};
-	
+
 	private boolean optional;
-	
+
 	private VehicleOptionCategory(boolean optional){
 		this.optional = optional;
 	}

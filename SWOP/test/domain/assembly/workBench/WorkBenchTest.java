@@ -41,10 +41,10 @@ public class WorkBenchTest {
 	private ImmutableClock clock;
 	@Before
 	public void initialize() throws AlreadyInMapException{
-		workBench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
+		workBench = new WorkBench(WorkBenchType.BODY);
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -78,62 +78,6 @@ public class WorkBenchTest {
 	}
 	
 	@Test
-	public void TestSetType(){
-		Set<String> list = new HashSet<>();
-		workBench.setResponsibilities(list);
-		assertEquals(list, workBench.getResponsibilities());
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void TestSetInvalidType(){
-		workBench.setResponsibilities(null);
-		assertEquals(null, workBench.getResponsibilities());
-	}
-	
-	@Test
-	public void TestAddOneResponsibility(){
-		workBench.addResponsibility("Montage");
-		assertEquals(1, workBench.getResponsibilities().size());
-		assertTrue(workBench.getResponsibilities().contains("Montage"));
-	}
-	
-	@Test
-	public void TestAddOneResponsibilities(){
-		workBench.addResponsibility("Montage");
-		workBench.addResponsibility("Chassis");
-		assertEquals(2, workBench.getResponsibilities().size());
-		assertTrue(workBench.getResponsibilities().contains("Montage"));
-		assertTrue(workBench.getResponsibilities().contains("Chassis"));
-	
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void TestAddOneInvalidResponsibility(){
-		workBench.addResponsibility("");
-		assertEquals(1, workBench.getResponsibilities().size());
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void TestAddOneNullResponsibility(){
-		workBench.addResponsibility(null);
-		assertEquals(1, workBench.getResponsibilities().size());
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void TestAddOneValidOneInvalidResponsibilities(){
-		workBench.addResponsibility("Montage");
-		workBench.addResponsibility("");
-		assertEquals(2, workBench.getResponsibilities().size());
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void TestAddOneValidOneNullResponsibilities(){
-		workBench.addResponsibility("Montage");
-		workBench.addResponsibility(null);
-		assertEquals(2, workBench.getResponsibilities().size());
-	}
-	
-	@Test
 	public void TestSetCurrentTasks(){
 		List<ITask> tasks = new ArrayList<ITask>();
 		workBench.setCurrentTasks(tasks);
@@ -148,26 +92,23 @@ public class WorkBenchTest {
 
 	@Test
 	public void TestChooseNextTasks(){
-		workBench.addResponsibility("Paint");
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
-		Task task = new Task("Paint");
+		Task task = new Task(VehicleOptionCategory.COLOR.toString());
 		task.addAction(new Action("Spray Colour"));
 		job.addTask(task);
 		workBench.setCurrentJob(Optional.fromNullable(job));
-		workBench.chooseTasksOutOfJob();;
+		workBench.chooseTasksOutOfJob();
 		assertEquals(1, workBench.getCurrentTasks().size());
 		assertEquals(task, workBench.getCurrentTasks().get(0));
 	}
 	
 	@Test
 	public void TestChooseNextTasksTwoCompatibleTasks(){
-		workBench.addResponsibility("Paint");
-		workBench.addResponsibility("Body");
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
-		ITask task1 = new Task("Paint");
+		ITask task1 = new Task(VehicleOptionCategory.COLOR.toString());
 		
 		((Task) task1).addAction(new Action("Spray Colour"));
-		ITask task2 = new Task("Body");
+		ITask task2 = new Task(VehicleOptionCategory.BODY.toString());
 		((Task) task2).addAction(new Action("Spray Colour"));
 		
 		job.addTask(task1);
@@ -181,18 +122,17 @@ public class WorkBenchTest {
 	
 	@Test
 	public void TestChooseNextTasksOneCompatibleOneInCompatibleTask(){
-		workBench.addResponsibility("Paint");
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
-		Task task1 = new Task("Paint");
+		Task task1 = new Task(VehicleOptionCategory.COLOR.toString());
 		task1.addAction(new Action("Spray Colour"));
-		Task task2 = new Task("Body");
+		Task task2 = new Task(VehicleOptionCategory.BODY.toString());
 		task2.addAction(new Action("Spray Colour"));
 		
 		job.addTask(task1);
 		job.addTask(task2);
 		workBench.setCurrentJob(Optional.fromNullable(job));
 		workBench.chooseTasksOutOfJob();
-		assertEquals(1, workBench.getCurrentTasks().size());
+		assertEquals(2, workBench.getCurrentTasks().size());
 		assertEquals(task1, workBench.getCurrentTasks().get(0));
 	}
 	
@@ -203,12 +143,10 @@ public class WorkBenchTest {
 	}
 	@Test
 	public void TestNotCompleted(){
-		workBench.addResponsibility("Paint");
-		workBench.addResponsibility("Body");
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
-		Task task1 = new Task("Paint");
+		Task task1 = new Task(VehicleOptionCategory.COLOR.toString());
 		task1.addAction(new Action("Spray Colour"));
-		Task task2 = new Task("Body");
+		Task task2 = new Task(VehicleOptionCategory.BODY.toString());
 		task2.addAction(new Action("Spray Colour"));
 		
 		job.addTask(task1);
@@ -220,13 +158,11 @@ public class WorkBenchTest {
 	
 	@Test
 	public void TestOneCompletedOneIncompleted(){
-		workBench.addResponsibility("Paint");
-		workBench.addResponsibility("Body");
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
-		Task task1 = new Task("Paint");
+		Task task1 = new Task(VehicleOptionCategory.COLOR.toString());
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
-		Task task2 = new Task("Body");
+		Task task2 = new Task(VehicleOptionCategory.BODY.toString());
 		task2.addAction(new Action("Spray Colour"));
 		
 		job.addTask(task1);
@@ -239,13 +175,11 @@ public class WorkBenchTest {
 	
 	@Test
 	public void TestTwoCompleted(){
-		workBench.addResponsibility("Paint");
-		workBench.addResponsibility("Body");
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
-		Task task1 = new Task("Paint");
+		Task task1 = new Task(VehicleOptionCategory.COLOR.toString());
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
-		Task task2 = new Task("Body");
+		Task task2 = new Task(VehicleOptionCategory.BODY.toString());
 		Action action2 = new Action("Spray Colour");
 		task2.addAction(action2);
 		
@@ -260,25 +194,21 @@ public class WorkBenchTest {
 	
 	@Test
 	public void TestToString(){
-		workBench.addResponsibility("Paint");
-		workBench.addResponsibility("Body");
 		assertEquals(WorkBenchType.BODY.toString(), workBench.toString());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void TestInvalidConstructor(){
-		new WorkBench(new HashSet<String>(), null);
+		new WorkBench(null);
 	}
 	
 	@Test
 	public void completeChosenTaskAtWorkBench(){
-		workBench.addResponsibility("Paint");
-		workBench.addResponsibility("Body");
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
-		Task task1 = new Task("Paint");
+		Task task1 = new Task(VehicleOptionCategory.COLOR.toString());
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
-		Task task2 = new Task("Body");
+		Task task2 = new Task(VehicleOptionCategory.BODY.toString());
 		Action action2 = new Action("Spray Colour");
 		task2.addAction(action2);
 		
@@ -298,7 +228,7 @@ public class WorkBenchTest {
 		assertNotEquals(workBench, null);
 		assertNotEquals(workBench, WorkBenchType.ACCESSORIES);
 		
-		WorkBench bench = new WorkBench(new HashSet<String>(), WorkBenchType.ACCESSORIES);
+		WorkBench bench = new WorkBench(WorkBenchType.ACCESSORIES);
 		assertNotEquals(workBench, bench);
 		assertNotEquals(workBench.hashCode(), bench.hashCode());
 		
@@ -312,19 +242,16 @@ public class WorkBenchTest {
 		assertNotEquals(workBench.hashCode(), bench.hashCode());
 		
 		workBench.setCurrentJob(Optional.fromNullable(job));
-		bench.addResponsibility("Body");
 		assertNotEquals(workBench, bench);
 		assertNotEquals(workBench.hashCode(), bench.hashCode());
 		
-		workBench.addResponsibility("Body");
 		bench.chooseTasksOutOfJob();
 		assertNotEquals(workBench, bench);
 		assertNotEquals(workBench.hashCode(), bench.hashCode());
 		
 		workBench.chooseTasksOutOfJob();
-		bench = new WorkBench(new HashSet<String>(), WorkBenchType.BODY);
+		bench = new WorkBench(WorkBenchType.BODY);
 		bench.setCurrentJob(Optional.fromNullable(job));
-		bench.addResponsibility("Body");
 		bench.chooseTasksOutOfJob();
 		
 		assertEquals(workBench, bench);

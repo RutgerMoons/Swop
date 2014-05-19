@@ -54,7 +54,7 @@ public class OrderBookObserverTest {
 	@Test
 	public void testUpdateOrder(){
 		observer.attachLogger(divider);
-		VehicleSpecification template = new VehicleSpecification("jos", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("jos", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		Vehicle description = new Vehicle(template);
 		IOrder order = new StandardOrder("jef", description, 1, new ImmutableClock(0, 0));
 		observer.notifyNewOrder(order);

@@ -2,7 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
@@ -12,7 +12,7 @@ import domain.users.AccessRight;
  */
 public class FlowControllerFactory {
 
-	private final ClientCommunication iClientCommunication;
+	private final IClientCommunication iClientCommunication;
 	private final Facade facade;
 	
 	/**
@@ -27,7 +27,7 @@ public class FlowControllerFactory {
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when clientCommunication or facade is null
 	 */
-	public FlowControllerFactory(ClientCommunication clientCommunication, Facade facade) {
+	public FlowControllerFactory(IClientCommunication clientCommunication, Facade facade) {
 		if (clientCommunication == null || facade == null) {
 			throw new IllegalArgumentException();
 		}

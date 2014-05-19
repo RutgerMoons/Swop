@@ -2,7 +2,6 @@ package domain.assembly.workBench;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,10 +12,6 @@ import org.junit.Test;
 
 import com.google.common.base.Optional;
 
-import domain.assembly.workBench.IWorkBench;
-import domain.assembly.workBench.UnmodifiableWorkBench;
-import domain.assembly.workBench.WorkBench;
-import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
@@ -36,10 +31,7 @@ public class UnmodifiableWorkBenchTest {
 	IWorkBench immutable;
 	@Before
 	public void initialize(){
-		Set<String> responsibilities = new HashSet<>();
-		responsibilities.add("paint");
-
-		bench = new WorkBench(responsibilities, WorkBenchType.BODY);
+		bench = new WorkBench(WorkBenchType.BODY);
 		immutable = new UnmodifiableWorkBench(bench);
 		
 	}
@@ -47,7 +39,7 @@ public class UnmodifiableWorkBenchTest {
 	public void test() throws AlreadyInMapException, UnmodifiableException {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		Vehicle model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -58,10 +50,9 @@ public class UnmodifiableWorkBenchTest {
 		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
 		
 		assertEquals(WorkBenchType.BODY, immutable.getWorkbenchType());
-		assertTrue(immutable.getResponsibilities().contains("paint"));
 		
 		IJob job = new Job(new StandardOrder("Stef", model, 1, new ImmutableClock(0,240)));
-		Task task= new Task("paint");
+		Task task= new Task(VehicleOptionCategory.COLOR.toString());
 		task.addAction(new Action("paint blue"));
 		((Job) job).addTask(task);
 		Optional<IJob> jobOptional = Optional.fromNullable(job);
@@ -72,6 +63,8 @@ public class UnmodifiableWorkBenchTest {
 		assertEquals(task, immutable.getCurrentTasks().get(0));
 		assertEquals(bench.toString(), immutable.toString());
 		assertFalse(immutable.isCompleted());
+		
+		assertEquals(bench.getResponsibilities(), immutable.getResponsibilities());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

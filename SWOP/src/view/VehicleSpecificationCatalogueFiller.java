@@ -63,7 +63,12 @@ public class VehicleSpecificationCatalogueFiller {
 		timesAtWorkbench.put(WorkBenchType.CARGO, 45);
 		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 45);
 		
-		return new VehicleSpecification("model Y", parts, timesAtWorkbench);
+		Set<VehicleOption> options = new HashSet<>();
+		options.add(new VehicleOption("Cargo", VehicleOptionCategory.CARGO));
+		options.add(new VehicleOption("Certification", VehicleOptionCategory.CERTIFICATION));
+		
+		
+		return new VehicleSpecification("model Y", parts, timesAtWorkbench, options);
 	}
 	
 	private VehicleSpecification getModelX(){
@@ -96,7 +101,10 @@ public class VehicleSpecificationCatalogueFiller {
 		timesAtWorkbench.put(WorkBenchType.CARGO, 30);
 		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 30);
 		
-		return new VehicleSpecification("model X", parts, timesAtWorkbench);
+		Set<VehicleOption> options = new HashSet<>();
+		options.add(new VehicleOption("Cargo", VehicleOptionCategory.CARGO));
+		options.add(new VehicleOption("Certification", VehicleOptionCategory.CERTIFICATION));
+		return new VehicleSpecification("model X", parts, timesAtWorkbench, options);
 	}
 	
 	
@@ -132,7 +140,7 @@ public class VehicleSpecificationCatalogueFiller {
 		timesAtWorkbench.put(WorkBenchType.CARGO, 0);
 		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 0);
 		
-		return new VehicleSpecification("model C", parts, timesAtWorkbench);
+		return new VehicleSpecification("model C", parts, timesAtWorkbench, new HashSet<VehicleOption>());
 	}
 
 	private VehicleSpecification getModelB() {
@@ -173,7 +181,7 @@ public class VehicleSpecificationCatalogueFiller {
 		timesAtWorkbench.put(WorkBenchType.CARGO, 0);
 		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 0);
 		
-		return new VehicleSpecification("model B", parts, timesAtWorkbench);
+		return new VehicleSpecification("model B", parts, timesAtWorkbench, new HashSet<VehicleOption>());
 	}
 
 	private VehicleSpecification getModelA() {
@@ -210,7 +218,7 @@ public class VehicleSpecificationCatalogueFiller {
 		timesAtWorkbench.put(WorkBenchType.CARGO, 0);
 		timesAtWorkbench.put(WorkBenchType.CERTIFICATION, 0);
 		
-		return new VehicleSpecification("model A", parts, timesAtWorkbench);
+		return new VehicleSpecification("model A", parts, timesAtWorkbench, new HashSet<VehicleOption>());
 	}
 
 }

@@ -27,14 +27,7 @@ public class CustomVehicle implements IVehicle {
 	public CustomVehicle(){
 		vehicleOptions = new HashMap<>();
 		timeAtWorkbench = new HashMap<>();
-		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
-		for(WorkBenchType type: WorkBenchType.values()){
-			if(!type.equals(WorkBenchType.CARGO) && !type.equals(WorkBenchType.CERTIFICATION)){
-				timeAtWorkBench.put(type, 60);
-			}
-		}
-		this.timeAtWorkbench = timeAtWorkBench;
-		specification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench);
+		specification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), this.timeAtWorkbench, new HashSet<VehicleOption>());
 
 	}
 
@@ -52,6 +45,16 @@ public class CustomVehicle implements IVehicle {
 			throw new AlreadyInMapException();
 		}
 		vehicleOptions.put(part.getType(), part);
+		
+		WorkBenchType type = null;
+		for(WorkBenchType wbType: WorkBenchType.values()){
+			if(wbType.getResponsibilities().contains(part.getType())){
+				type = wbType;
+				break;
+			}
+		}
+		
+		timeAtWorkbench.put(type, 60);
 	}
 
 	@Override

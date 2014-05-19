@@ -3,7 +3,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.exception.RoleNotYetAssignedException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
@@ -17,7 +17,7 @@ public class UserFlowController {
 	
 	private ArrayList<UseCaseFlowController> useCaseFlowControllers;
 	private Facade facade;
-	private ClientCommunication clientCommunication;
+	private IClientCommunication clientCommunication;
 	
 	/**
 	 * Creates a new UserHandler.
@@ -31,7 +31,7 @@ public class UserFlowController {
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when one of the given arguments is null
 	 */
-	public UserFlowController(ClientCommunication clientCommunication, Facade facade, ArrayList<UseCaseFlowController> useCaseFlowControllers){
+	public UserFlowController(IClientCommunication clientCommunication, Facade facade, ArrayList<UseCaseFlowController> useCaseFlowControllers){
 		if(clientCommunication == null || facade == null || useCaseFlowControllers == null) {
 			throw new IllegalArgumentException();
 		}

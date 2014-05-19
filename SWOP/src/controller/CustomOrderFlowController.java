@@ -2,7 +2,7 @@ package controller;
 
 import java.util.List;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.facade.Facade;
@@ -28,7 +28,7 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
 	 */
 	public CustomOrderFlowController(AccessRight accessRight,
-			ClientCommunication clientCommunication, Facade facade) {
+			IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 

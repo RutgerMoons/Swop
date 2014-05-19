@@ -35,7 +35,7 @@ public class UnmodifiableJobTest {
 	public void initialize() throws AlreadyInMapException{
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
@@ -61,7 +61,6 @@ public class UnmodifiableJobTest {
 		assertEquals(job.toString(), immutable.toString());
 		assertEquals(job.hashCode(), immutable.hashCode());
 		assertTrue(immutable.equals(job));
-		//TODO
 		assertTrue(job.equals(immutable));
 		assertTrue(immutable.isCompleted());
 	}

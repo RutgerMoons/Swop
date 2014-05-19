@@ -73,9 +73,9 @@ public class LoggerTest {
 		ImmutableClock estimatedTimeOfCompletion1 = new ImmutableClock(4,550);
 		ImmutableClock estimatedTimeOfCompletion2 = new ImmutableClock(4,650);
 		ImmutableClock estimatedTimeOfCompletion3 = new ImmutableClock(4,750);
-		StandardOrder order1 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
-		StandardOrder order2 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
-		StandardOrder order3 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order1 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order2 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order3 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
 		
 		order1.setEstimatedTime(estimatedTimeOfCompletion1);
 		order2.setEstimatedTime(estimatedTimeOfCompletion2);
@@ -86,8 +86,8 @@ public class LoggerTest {
 		logger.startNewDay(new ImmutableClock(5,600));
 		ImmutableClock estimatedTimeOfCompletion4 = new ImmutableClock(5,250);
 		ImmutableClock estimatedTimeOfCompletion5 = new ImmutableClock(5,350);
-		StandardOrder order4 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
-		StandardOrder order5 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order4 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order5 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
 		order4.setEstimatedTime(estimatedTimeOfCompletion4);
 		order5.setEstimatedTime(estimatedTimeOfCompletion5);
 		
@@ -95,7 +95,7 @@ public class LoggerTest {
 		logger.updateCompletedOrder(order5);
 		logger.startNewDay(new ImmutableClock(6,300));
 		ImmutableClock estimatedTimeOfCompletion6 = new ImmutableClock(6,150);
-		StandardOrder order6 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order6 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
 		order6.setEstimatedTime(estimatedTimeOfCompletion6);
 		logger.updateCompletedOrder(order6);
 		logger.startNewDay(new ImmutableClock(7, 0));
@@ -108,9 +108,9 @@ public class LoggerTest {
 		ImmutableClock estimatedTimeOfCompletion1 = new ImmutableClock(4,550);
 		ImmutableClock estimatedTimeOfCompletion2 = new ImmutableClock(4,650);
 		ImmutableClock estimatedTimeOfCompletion3 = new ImmutableClock(4,750);
-		StandardOrder order1 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
-		StandardOrder order2 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
-		StandardOrder order3 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order1 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order2 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order3 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
 		
 		order1.setEstimatedTime(estimatedTimeOfCompletion1);
 		order2.setEstimatedTime(estimatedTimeOfCompletion2);
@@ -121,8 +121,8 @@ public class LoggerTest {
 		logger.startNewDay(new ImmutableClock(5,600));
 		ImmutableClock estimatedTimeOfCompletion4 = new ImmutableClock(5,250);
 		ImmutableClock estimatedTimeOfCompletion5 = new ImmutableClock(5,350);
-		StandardOrder order4 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
-		StandardOrder order5 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order4 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order5 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
 		order4.setEstimatedTime(estimatedTimeOfCompletion4);
 		order5.setEstimatedTime(estimatedTimeOfCompletion5);
 		
@@ -130,7 +130,7 @@ public class LoggerTest {
 		logger.updateCompletedOrder(order5);
 		logger.startNewDay(new ImmutableClock(6,300));
 		ImmutableClock estimatedTimeOfCompletion6 = new ImmutableClock(6,150);
-		StandardOrder order6 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>())), 5, new ImmutableClock(0, 0));
+		StandardOrder order6 = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("null", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 5, new ImmutableClock(0, 0));
 		order6.setEstimatedTime(estimatedTimeOfCompletion6);
 		logger.updateCompletedOrder(order6);
 		logger.startNewDay(new ImmutableClock(7, 0));

@@ -2,7 +2,7 @@ package controller;
 
 import java.util.List;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.order.Delay;
@@ -25,7 +25,7 @@ public class CheckStatisticsFlowController extends UseCaseFlowController {
 	 * @param 	facade
 	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic.
 	 */
-	public CheckStatisticsFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
+	public CheckStatisticsFlowController(AccessRight accessRight, IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 

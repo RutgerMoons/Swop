@@ -51,7 +51,7 @@ public class VehicleTest {
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
 		map.put(WorkBenchType.BODY, 50);
-		template = new VehicleSpecification("model", parts, map);
+		template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class VehicleTest {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		VehicleSpecification template2 = new VehicleSpecification("modelb",
-				parts, new HashMap<WorkBenchType, Integer>());
+				parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 
 		Vehicle car4 = new Vehicle(template2);
 		car4.addVehicleOption(part1);

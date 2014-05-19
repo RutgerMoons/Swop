@@ -55,10 +55,10 @@ public class OrderTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		HashMap<WorkBenchType,Integer> timeAtWorkbench = new HashMap<WorkBenchType,Integer>();
 		timeAtWorkbench.put(WorkBenchType.BODY, 50);
-		template2 = new VehicleSpecification("model2", parts, timeAtWorkbench);
+		template2 = new VehicleSpecification("model2", parts, timeAtWorkbench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));
@@ -149,7 +149,7 @@ public class OrderTest {
 
 	@Test
 	public void TestEqualsAndHashcode() {
-		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template2 = new VehicleSpecification("abc", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		Vehicle model2 = new Vehicle(template2);
 		model2.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model2.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));
