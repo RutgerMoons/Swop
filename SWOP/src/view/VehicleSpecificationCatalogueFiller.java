@@ -12,17 +12,16 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
-
 /**
- * This class is used to initialize the CarModelCatalogue.
+ * This class is used to initialize the VehicleSpecificationCatalogue.
  */
 public class VehicleSpecificationCatalogueFiller {
 
 
 	/**
-	 * Method that returns all the initial models. It checks for every car model
-	 * if the model is valid. If not, the car model isn't added to the list.
-	 * When every car model is checked, the ArrayList is returned as result.
+	 * Method that returns all the initial models. It checks for every Vehicle
+	 * if the model is valid. If not, the Vehicle isn't added to the list.
+	 * When every Vehicle is checked, the ArrayList is returned as result.
 	 */
 	public Set<VehicleSpecification> getInitialModels() {
 		Set<VehicleSpecification> models = new HashSet<VehicleSpecification>();
@@ -220,5 +219,4 @@ public class VehicleSpecificationCatalogueFiller {
 		
 		return new VehicleSpecification("model A", parts, timesAtWorkbench, new HashSet<VehicleOption>());
 	}
-
 }

@@ -11,13 +11,12 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * This class is used to fill the CustomCarModelCatalogue.  
- *
+ * This class is used to fill the CustomVehicleCatalogue.  
  */
 public class CustomVehicleCatalogueFiller {
 
 	/**
-	 * Get the initial CustomCarModels that can be added to the catalogue. 
+	 * Get the initial Vehicles that can be added to the catalogue. 
 	 */
 	public Multimap<String, CustomVehicle> getInitialModels(){
 		Multimap<String, CustomVehicle> models = HashMultimap.create();
