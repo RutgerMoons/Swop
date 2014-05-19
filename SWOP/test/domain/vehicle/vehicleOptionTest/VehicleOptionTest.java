@@ -28,6 +28,11 @@ public class VehicleOptionTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidArgument2() {
+		new VehicleOption(null, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidArgument3() {
 		new VehicleOption("", VehicleOptionCategory.AIRCO);
 	}
 	
