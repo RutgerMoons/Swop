@@ -42,11 +42,17 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	/**
 	 * Construct a new AssemblyLine. Initializes a scheduler.
 	 * 
-	 * @param clock
-	 *            The clock that has to be accessed by this AssemblyLine
+	 * @param 	clock
+	 *          The clock that has to be accessed by this AssemblyLine
+	 *          
+	 * @param	clockObserver
+	 * 			The ClockObserver that has to be accessed by this AssemblyLine
 	 * 
-	 * @throws IllegalArgumentException
-	 *             Thrown when one or both of the parameters are null
+	 * @param	assemblyLineState
+	 * 			The state the AssemblyLine has when it's initialised
+	 * 
+	 * @throws 	IllegalArgumentException
+	 *          Thrown when one or both of the parameters are null
 	 */
 	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock,
 			AssemblyLineState assemblyLineState,
@@ -66,11 +72,11 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	/**
 	 * Add a workbench to the assemblyLine.
 	 * 
-	 * @param bench
-	 *            The workbench you want to add
+	 * @param 	bench
+	 *          The workbench you want to add
 	 * 
-	 * @throws IllegalArgumentException
-	 *             Thrown when the parameter is null
+	 * @throws 	IllegalArgumentException
+	 *          Thrown when the parameter is null
 	 */
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
@@ -86,8 +92,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	 * completed. It shifts the jobs to it's next workstation. It notifies its
 	 * observers when an order is completed.
 	 * 
-	 * @throws IllegalStateException
-	 *             () Thrown when the assemblyLine can not advance
+	 * @throws 	IllegalStateException
+	 *          Thrown when the assemblyLine can not advance
 	 * 
 	 */
 	public void advance() {
@@ -187,8 +193,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	 * index further than the given index and stops when it finds a Job on a
 	 * workbench.
 	 * 
-	 * @param currentIndex
-	 *            Index of a workBench
+	 * @param 	currentIndex
+	 *          Index of a workBench
 	 */
 	private int getIndexOfFurthestEmptyWorkBench(int currentIndex) {
 		int workBenchIndex = currentIndex + 1;
@@ -206,8 +212,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	}
 
 	/**
-	 * Remove the job from this.currentjobs and completes the order. Then the
-	 * observers are notified of the completed Job.
+	 * Remove the Job from the list with all the current jobs on the AssemblyLine
+	 *  and completes the order. Then the observers are notified of the completed Job.
 	 */
 	private void completeJob(IJob lastJob) {
 		lastJob.getOrder().completeCar();
@@ -225,13 +231,13 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 
 	/**
 	 * This method first sets the index of the first workbench that has to
-	 * complete some tasks of the job. Then the job is passed to the scheduler.
+	 * complete some tasks of the Job. Then the Job is passed to the scheduler.
 	 * 
-	 * @param job
-	 *            The job that needs to be scheduled
+	 * @param 	job
+	 *          The Job that needs to be scheduled
 	 * 
-	 * @throws IllegalArgumentException
-	 *             Thrown when the given parameter is null
+	 * @throws 	IllegalArgumentException
+	 *          Thrown when the given parameter is null
 	 */
 	public void schedule(IJob job) {
 		if (job == null) {
@@ -331,8 +337,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	 * Method for asking the Scheduler to switch to the algorithm the given
 	 * creator can create.
 	 * 
-	 * @param creator
-	 *            is responsible for creating the correct SchedulingAlgorithm
+	 * @param 	creator
+	 *          It's responsible for creating the correct SchedulingAlgorithm
 	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
 		List<WorkBenchType> workBenchTypes = getWorkBenchTypes();
@@ -369,8 +375,8 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	 * Matches the given workbench to one of its own. If a match is found, the
 	 * request is passed on.
 	 * 
-	 * @param workbench
-	 *            to be matched
+	 * @param 	workbench
+	 *          The WorkBench at which an Task is completed and it needs to be matched
 	 */
 	public int completeChosenTaskAtChosenWorkBench(IWorkBench workbench,
 			ITask task, ImmutableClock elapsed) {

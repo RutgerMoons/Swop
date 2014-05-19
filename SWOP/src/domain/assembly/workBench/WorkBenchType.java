@@ -1,5 +1,7 @@
 package domain.assembly.workBench;
-//TODO doc
+/**
+ * A class representing the type of a WorkBench.
+ */
 public enum WorkBenchType {
 
 	ACCESSORIES, BODY, CARGO, CERTIFICATION, DRIVETRAIN;

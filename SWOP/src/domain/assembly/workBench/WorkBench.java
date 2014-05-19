@@ -12,7 +12,9 @@ import domain.job.job.IJob;
 import domain.job.task.ITask;
 
 /**
- * Represents a WorkBench from an assemblyLine.
+ *  A class representing a workbench. Each WorkBench has a WorkBenchType and it contains 
+ *  a list with responsibilities and the Job it currently has to work on. 
+ *  Based on the current Job, the WorkBench retrieves all the Tasks it has to complete.
  * 
  */
 public class WorkBench implements IWorkBench {
@@ -26,14 +28,14 @@ public class WorkBench implements IWorkBench {
 	 * Construct a new Workbench.
 	 * 
 	 * @param 	responsibilities
-	 *            A list of strings. The types of Tasks that have to be
-	 *            performed by this WorkBench.
+	 *          A list of strings. The types of Tasks that have to be
+	 *          performed by this WorkBench.
 	 * 
 	 * @param 	workbenchType
-	 *            A name for this workbench
+	 *          A name for this workbench
 	 * 
 	 * @throws 	IllegalArgumentException
-	 *            Thrown when workbenchName==null or isEmpty -if responsibilities==null
+	 *          Thrown when workbenchName is null or empty or when the WorkBenchType is null
 	 */
 	public WorkBench(Set<String> responsibilities, WorkBenchType type) {
 		if (type == null || responsibilities==null) {
@@ -75,10 +77,10 @@ public class WorkBench implements IWorkBench {
 	 * Set a new list of responsibilities for this WorkBench
 	 * 
 	 * @param 	responsibilities
-	 *            A list of responsibilities
+	 *          A list of responsibilities
 	 *            
 	 * @throws 	IllegalArgumentException
-	 *             If responsibilities==null
+	 *          Thrown when the given parameter is null
 	 */
 	public void setResponsibilities(Set<String> responsibilities) {
 		if (responsibilities == null)
@@ -90,10 +92,10 @@ public class WorkBench implements IWorkBench {
 	 * Add a responsibility to this WorkBench.
 	 * 
 	 * @param 	responibility
-	 *            The responsibility you want to add
+	 *          The responsibility you want to add
 	 *            
 	 * @throws 	IllegalArgumentException
-	 *             If responsibility==null or isEmpty
+	 *          Thrown when responsibility is null or empty
 	 */
 	public void addResponsibility(String responibility) {
 		if (responibility == null || responibility.isEmpty())
@@ -111,10 +113,10 @@ public class WorkBench implements IWorkBench {
 	 * Set the tasks that have to be completed by this WorkBench.
 	 * 
 	 * @param 	list
-	 *            A list of tasks.
+	 *          A list of tasks
 	 *            
 	 * @throws 	IllegalArgumentException
-	 *             If currentTasks==null
+	 *          Thrown when currentTasks is null
 	 */
 	public void setCurrentTasks(List<ITask> list) {
 		if (list == null)
@@ -151,7 +153,6 @@ public class WorkBench implements IWorkBench {
 		return this.getWorkbenchType().toString();
 	}
 
-	//TODO doc
 	@Override
 	public void completeChosenTaskAtChosenWorkBench(ITask task){
 		for (ITask t : this.currentTasks) {
@@ -163,7 +164,6 @@ public class WorkBench implements IWorkBench {
 			}
 		}
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -180,7 +180,6 @@ public class WorkBench implements IWorkBench {
 				+ workbenchType.hashCode();
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
