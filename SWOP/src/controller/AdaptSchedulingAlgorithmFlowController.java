@@ -49,16 +49,9 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 	private void showAlgorithms() {
 		// show current algorithm
 		// show possible algorithms
-		List<String> possible = this.getPossibleSchedulingAlgorithms();
+		List<String> possible = facade.getPossibleSchedulingAlgorithms();
 		this.clientCommunication.showAlgorithms(facade.getCurrentSchedulingAlgorithm(), possible);
 		chooseAlgorithm(possible);
-	}
-	
-	private List<String> getPossibleSchedulingAlgorithms() {
-		List<String> listOfAlgorithms = new ArrayList<String>();
-		listOfAlgorithms.add("Fifo");
-		listOfAlgorithms.add("Batch");
-		return listOfAlgorithms;
 	}
 
 	/**
