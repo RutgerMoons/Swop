@@ -19,8 +19,8 @@ import domain.order.order.UnmodifiableOrder;
 import domain.order.orderVisitor.IOrderVisitor;
 
 /**
- * Abstract class that represents a possible scheduling algorithm used for 
- * scheduling Jobs on an AssemblyLine
+ * An abstract class representing a possible scheduling algorithm used for 
+ * scheduling Jobs on an AssemblyLine.
  */
 public abstract class SchedulingAlgorithm {
 	
@@ -29,6 +29,15 @@ public abstract class SchedulingAlgorithm {
 	protected PriorityQueue<IJob> standardJobs;
 	protected List<WorkBenchType> workBenchTypes;
 	
+	/**
+	 * Creates a scheduling algorithm.
+	 * 
+	 * @param 	workBenchTypes
+	 * 			A list of WorkBenchTypes representing all the types the AssemblyLine consists off
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the list is null
+	 */
 	public SchedulingAlgorithm(List<WorkBenchType> workBenchTypes) {
 		if (workBenchTypes == null) {
 			throw new IllegalArgumentException();
@@ -40,10 +49,13 @@ public abstract class SchedulingAlgorithm {
 	}
 	
 	/**
-	 * The scheduling algorithm will add the given custom job to it's internal data structure
+	 * The scheduling algorithm will add the given custom job to it's internal data structure.
 	 * 
-	 * @throws IllegalArgumentException
-	 * 			thrown when the job is null
+	 * @param	customJob
+	 * 			The Job needed to be added
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the job is null
 	 */
 	public void addCustomJob(IJob customjob) {
 		if (customjob == null) {
@@ -53,10 +65,13 @@ public abstract class SchedulingAlgorithm {
 	}
 	
 	/**
-	 * The scheduling algorithm will add the given standard job to it's internal data structure
+	 * The scheduling algorithm will add the given standard Job to it's internal data structure.
 	 * 
-	 * @throws IllegalArgumentException
-	 * 			thrown when the job is null
+	 * @param	standardjob
+	 * 			The Job needed to be added
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the Job is null
 	 */
 	public void addStandardJob(IJob standardjob) {
 		if (standardjob == null) {
@@ -84,7 +99,7 @@ public abstract class SchedulingAlgorithm {
 	}
 	
 	/**
-	 * returns a priorityQueue containing all the pending custom jobs (sorted on deadline)
+	 * Returns a priorityQueue containing all the pending custom jobs (sorted on deadline).
 	 */
 	public PriorityQueue<IJob> getCustomJobs() {
 		PriorityQueue<IJob> pq;
@@ -99,10 +114,10 @@ public abstract class SchedulingAlgorithm {
 	}
 	
 	/**
-	 * Calculates and returns the estimated time (at this moment) for the given Job
+	 * Calculates and returns the estimated time (at this moment) for the given Job.
 	 * 
-	 * @throws IllegalArgumentException
-	 * 			thrown when one or more of the parameters are null
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when one or more of the parameters are null
 	 */
 	public abstract void setEstimatedTime(IJob job, ImmutableClock currentTime, ArrayList<Optional<IJob>> jobsOnAssemblyLine) ;
 	
@@ -138,7 +153,7 @@ public abstract class SchedulingAlgorithm {
 	}
 	
 	/**
-	 * returns a list containing all the pending standard jobs (no specific order)
+	 * Returns a list containing all the pending standard jobs (no specific order).
 	 */
 	public List<IJob> getStandardJobs() {
 		ArrayList<IJob> list = new ArrayList<>();
@@ -147,33 +162,34 @@ public abstract class SchedulingAlgorithm {
 	}
 
 	/**
-	 * The scheduling algorithm tries to find the best job in the circumstances to be scheduled at the current time
-	 * this Job is returned, if no job is found an error is thrown.
+	 * The scheduling algorithm tries to find the best Job in the circumstances to be scheduled at the current time.
+	 * This Job is returned, if no Job is found an error is thrown.
 	 */
 	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
 												ArrayList<Optional<IJob>> jobsOnAssemblyLine);
 	
 	/**
-	 * The scheduling algorithm will look for custom jobs that can be placed in a time saving way.
-	 * When a next job is retrieved, one of these custom jobs, (if any) will be returned.
+	 * The scheduling algorithm will look for custom Jobs that can be placed in a time saving way.
+	 * When a next Job is retrieved, one of these custom Jobs, (if any) will be returned.
 	 */
 	public abstract void startNewDay();	
-	/**
-	 * Returns the name.
-	 */
+	
 	@Override
 	public abstract String toString();
 	
 	/**
-	 * The scheduling algorithm gets all the internal data used to schedule jobs and will initialize its
+	 * The scheduling algorithm gets all the internal data used to schedule Jobs and will initialize its
 	 * internal data structures with the given parameters. This method should be used when switching
 	 * from one scheduling algorithm to another one.
 	 * 
-	 * @throws IllegalArgumentException
+	 * @throws 	IllegalArgumentException
 	 * 			Thrown when one or more of the parameters are null
 	 */
 	public abstract void transform(PriorityQueue<IJob> customjobs, List<IJob> standardjobs);
 
+	/**
+	 * Returns all the Jobs the SchedulingAlgorithm has in an unmodifiable list.
+	 */
 	public List<IJob> removeUnscheduledJobs() {
 		List<IJob> allJobs = new ArrayList<>();
 		allJobs.addAll(customJobs);
@@ -183,6 +199,15 @@ public abstract class SchedulingAlgorithm {
 		return Collections.unmodifiableList(allJobs);
 	}
 	
+	/**
+	 * Add a WorkBenchType to the list.
+	 *  
+	 * @param 	type
+	 * 			The new WorkBenchType to be added
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown the parameter is null
+	 */
 	public void addWorkBenchType(WorkBenchType type) {
 		if (type == null) {
 			throw new IllegalArgumentException();
@@ -190,6 +215,15 @@ public abstract class SchedulingAlgorithm {
 		this.workBenchTypes.add(type);
 	}
 	
+	/**
+	 * The given Job will be scheduled by the SchedulingAlgorithm.
+	 * 
+	 * @param 	job
+	 * 			The Job needed to be scheduled
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the given parameter is null
+	 */
 	public void addJobToAlgorithm(IJob job) {
 		if (job == null) {
 			throw new IllegalArgumentException();
@@ -207,7 +241,7 @@ public abstract class SchedulingAlgorithm {
 		}
 
 		/**
-		 * add the job as the custom order
+		 * Add the job as the custom order
 		 */
 		@Override
 		public void visit(CustomOrder order) {
@@ -215,7 +249,7 @@ public abstract class SchedulingAlgorithm {
 		}
 
 		/**
-		 * add the job as the standard order
+		 * Add the job as the standard order
 		 */
 		@Override
 		public void visit(StandardOrder order) {
@@ -223,7 +257,7 @@ public abstract class SchedulingAlgorithm {
 		}
 
 		/**
-		 * throws an IllegalArgumentException
+		 * Throws an IllegalArgumentException
 		 */
 		@Override
 		public void visit(UnmodifiableOrder order) {

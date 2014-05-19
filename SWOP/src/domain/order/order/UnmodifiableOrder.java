@@ -15,7 +15,6 @@ import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * A class representing an unmodifiable order. It has a reference to its IOrder.
- *
  */
 public class UnmodifiableOrder implements IOrder {
 

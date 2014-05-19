@@ -10,15 +10,20 @@ import com.google.common.base.Optional;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
-import domain.exception.NotImplementedException;
 import domain.job.job.IJob;
 
 /**
- * Represents a scheduling algorithm used for scheduling Jobs on an AssemblyLine.
+ * A class representing a scheduling algorithm used for scheduling Jobs on an AssemblyLine.
  * Uses the time of ordering and gives a higher priority to Jobs that are ordered first.
  */
 public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
+	/**
+	 * Creates a SchedulingAlgorithm which has as scheduling policy : "First come, first served".
+	 * 
+	 * @param 	workBenchTypes
+	 * 			A list of WorkBenchTypes representing all the types the AssemblyLine consists off
+	 */
 	public SchedulingAlgorithmFifo(List<WorkBenchType> workBenchTypes) {
 		super(workBenchTypes);
 	}
@@ -44,14 +49,12 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		}
 
 		if(customJobs.contains(job)) {
-			try {
-				int total = job.getOrder().getDeadline().minus(currentTime);
-				int days = total/Clock.MINUTESINADAY;
-				int minutes = total%Clock.MINUTESINADAY;
-				
-				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
-			} 
-			catch (NotImplementedException e) {	}
+
+			int total = job.getOrder().getDeadline().minus(currentTime);
+			int days = total/Clock.MINUTESINADAY;
+			int minutes = total%Clock.MINUTESINADAY;
+
+			job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
 		}
 		List<Optional<IJob>> previousJobs = new ArrayList<>(jobsOnAssemblyLine);
 		int totalProductionTime = 0;
@@ -83,12 +86,8 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	private Optional<IJob> hasToForceCustomJob(ImmutableClock currentTime) {
 		int idx = 0;
 		for (IJob job : customJobs) {
-			try{
-				if (job.getOrder().getDeadline().minus(currentTime) - ((idx + job.getMinimalIndex() +1) * job.getOrder().getProductionTime()) <= 0) {
-					return Optional.fromNullable(job);
-				}
-			} catch (NotImplementedException e) {
-				// verkeerde queue, komt niet voor..
+			if (job.getOrder().getDeadline().minus(currentTime) - ((idx + job.getMinimalIndex() +1) * job.getOrder().getProductionTime()) <= 0) {
+				return Optional.fromNullable(job);
 			}
 			idx++;
 		}
@@ -99,7 +98,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 	@Override
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
-									   ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
+			ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		/* 
 		 * step 0: check if jobsStartOfDay contains any jobs..
 		 * step 1: check if you have to force some custom jobs
@@ -162,7 +161,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	public String toString() {
 		return "Fifo";
 	}
-	
+
 	@Override
 	public void transform(PriorityQueue<IJob> customJobs, List<IJob> standardJobs) {
 		if(customJobs == null || standardJobs == null) {

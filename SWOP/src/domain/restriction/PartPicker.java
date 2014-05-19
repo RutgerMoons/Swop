@@ -33,9 +33,11 @@ public class PartPicker {
 	 *
 	 * @param	catalogue
 	 * 			The VehicleSpecificationCatalogue of the VehicleSpecifications that can be composed
-	 * 			with this PartPicker.
+	 * 			with this PartPicker
+	 * 
 	 * @param 	bindingRestrictions
 	 * 			The BindingRestrictions which this PartPicker takes into account
+	 * 
 	 * @param 	optionalRestrictions
 	 * 			The OptionalRestrictions which this PartPicker takes into account
 	 */

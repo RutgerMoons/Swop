@@ -7,15 +7,27 @@ import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmBatch;
 import domain.vehicle.vehicleOption.VehicleOption;
 
+/**
+ * A class representing the creation of a SchedulingAlgorithmBatch.
+ */
 public class SchedulingAlgorithmCreatorBatch extends SchedulingAlgorithmCreator {
 	
 	private final List<VehicleOption> carParts;
 	
-	public SchedulingAlgorithmCreatorBatch(List<VehicleOption> carParts) {
-		if (carParts == null) {
+	/**
+	 * Constructs a creator for SchedulingAlgorithmBatch.
+	 * 
+	 * @param 	vehicleOptions
+	 * 			The list off VehicleOptions that will be prioritized by SchedulingAlgorithmBatch
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the given parameter is null
+	 */
+	public SchedulingAlgorithmCreatorBatch(List<VehicleOption> vehicleOptions) {
+		if (vehicleOptions == null) {
 			throw new IllegalArgumentException();
 		}
-		this.carParts = carParts;
+		this.carParts = vehicleOptions;
 	}
 
 	@Override

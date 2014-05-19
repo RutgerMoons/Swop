@@ -16,7 +16,6 @@ import domain.assembly.assemblyLine.MaintenanceTimeManager;
 import domain.assembly.assemblyLine.UnmodifiableAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.ImmutableClock;
-import domain.exception.UnmodifiableException;
 import domain.job.action.Action;
 import domain.job.action.IAction;
 import domain.job.job.IJob;
@@ -32,11 +31,30 @@ import domain.observer.observes.ObservesOrderBook;
 import domain.order.order.IOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.vehicleOption.VehicleOption;
-
+/**
+ * A class representing a mechanism to divide the incoming Orders over the AssemblyLines. 
+ * It tries to evenly divide the workload over the different AssemblyLines.
+ */
 public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineState {
 
 	private List<AssemblyLine> assemblyLines;
 
+	/**
+	 * Creates a workload divider.
+	 * 
+	 * @param 	listOfAssemblyLines
+	 * 			A list of AssemblyLines the WorkloadDivider will be working with
+	 * 
+	 * @param 	orderBookObserver
+	 * 			An OrderBookObserver. It will notify the WorkloadDivider each time there's a new Order
+	 * 
+	 * @param 	assemblyLineObserver
+	 * 			An AssemblyLineObserver. It is used to attach all the AssemblyLines
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one or more parameters is null
+	 * 
+	 */
 	public WorkloadDivider(	List<AssemblyLine> listOfAssemblyLines, OrderBookObserver orderBookObserver, AssemblyLineObserver assemblyLineObserver) {
 		if (	listOfAssemblyLines == null || orderBookObserver == null || assemblyLineObserver == null) {
 			throw new IllegalArgumentException();
@@ -52,6 +70,9 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		}
 	}
 
+	/**
+	 * Returns the name of the current SchedulingAlgorithm used by every AssemblyLine.
+	 */
 	public String getCurrentSchedulingAlgorithm() {
 		if (this.assemblyLines.size() <= 0) {
 			return "There are no assemblyLines at the moment.";
@@ -60,12 +81,29 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		}
 	}
 
+	/**
+	 * Lets all the AssemblyLines switch their SchedulingAlgorithms.
+	 * 
+	 * @param 	creator
+	 * 			The creator representing the SchedulingAlgorithm that will be used by all the AssemblyLines.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the parameter is null
+	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
-		for (AssemblyLine assemblyLine : this.assemblyLines) {
-			assemblyLine.switchToSchedulingAlgorithm(creator);
-		}	
+		if (creator == null){
+			throw new IllegalArgumentException();
+		}
+		else {
+			for (AssemblyLine assemblyLine : this.assemblyLines) {
+				assemblyLine.switchToSchedulingAlgorithm(creator);
+			}	
+		}
 	}
 
+	/**
+	 * Returns a list with all the IAssemblyLines.
+	 */
 	public List<IAssemblyLine> getAssemblyLines() {
 		ArrayList<IAssemblyLine> assemblyLines = new ArrayList<>();
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
@@ -84,6 +122,9 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		return Collections.unmodifiableList(operational);
 	}
 
+	/**
+	 * Returns all the operational AssemblyLines. 
+	 */
 	public List<IAssemblyLine> getOperationalUnmodifiableAssemblyLines() {
 		List<AssemblyLine> operational = getAssemblyLines(AssemblyLineState.OPERATIONAL);
 		ArrayList<IAssemblyLine> unmodifiable = new ArrayList<>();
@@ -93,6 +134,9 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		return Collections.unmodifiableList(unmodifiable);
 	}
 
+	/**
+	 * Returns all the AssemblyLines who are in maintenance.
+	 */
 	public List<IAssemblyLine> getMaintenanceUnmodifiableAssemblyLines() {
 		List<AssemblyLine> maintenance = getAssemblyLines(AssemblyLineState.MAINTENANCE);
 		ArrayList<IAssemblyLine> unmodifiable = new ArrayList<>();
@@ -102,6 +146,9 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		return Collections.unmodifiableList(unmodifiable);
 	}
 
+	/**
+	 * Returns all the broken AssemblyLines in a list.
+	 */
 	public List<IAssemblyLine> getBrokenUnmodifiableAssemblyLines() {
 		List<AssemblyLine> broken = getAssemblyLines(AssemblyLineState.BROKEN);
 		ArrayList<IAssemblyLine> unmodifiable = new ArrayList<>();
@@ -112,18 +159,15 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 	}
 
 	/**
-	 * This method converts an order to a list of Jobs, 1 for each car and sets
-	 * the minimal index for each job. This index refers to the first workbench that is
-	 * needed to complete the job. The method returns a list of Jobs.
+	 * This method converts an order to a list of Jobs, 1 for each Vehicle and sets
+	 * the minimal index for each Job. This index refers to the first WorkBench that is
+	 * needed to complete the Job. The method returns a list of Jobs.
 	 * 
-	 * @param order
-	 *            The order that needs to be converted to a list of jobs.
+	 * @param 	order
+	 *          The Order that needs to be converted to a list of jobs.
 	 * 
-	 * @throws UnmodifiableException 
-	 * 		Thrown when an IOrder has no deadline yet.
-	 * 
-	 * @throws IllegalArgumentException
-	 *       Thrown when the given parameter is null
+	 * @throws 	IllegalArgumentException
+	 *       	Thrown when the given parameter is null
 	 */
 	private List<IJob> convertOrderToJobs(IOrder order) {
 		List<IJob> jobs = new ArrayList<>();
@@ -141,10 +185,14 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 	}
 
 	/**
-	 * This method receives an order, let another method convert it to jobs
-	 * then distributes these jobs amongst its AssemblyLines.
+	 * This method receives an Order, let another method convert it to Jobs
+	 * then distributes these Jobs amongst its AssemblyLines.
 	 * 
-	 * @param	order to be converted into jobs
+	 * @param	order 
+	 * 			The Order needed to be converted into jobs
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	@Override
 	public void processNewOrder(IOrder order) {
@@ -183,28 +231,47 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 			}
 		}
 	}
-	
+
 	private boolean canBeHandled(IJob job, AssemblyLine line) {
 		return line.getResponsibilities().contains(job.getVehicleSpecification());
 	}
 
 	/**
-	 * Matches the given assemblyLine to one of its own. If a match is found, 
+	 * Matches the given AssemblyLine to one of its own. If a match is found, 
 	 * the request is passed on.
 	 * 
-	 * @param	assemblyLine to be matched
+	 * @param	assemblyLine 
+	 * 			The AssemblyLine needed to be matched
+	 * 
+	 * @param	workbench
+	 * 			The WorkBench at which the given Task is completed
+	 * 
+	 * @param	task
+	 * 			The Task that has been completed
+	 * 
+	 * @param	elapsed
+	 * 			A representation of how much time it took to complete the given Task
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one or more of the given parameters is null
 	 */
 	public int completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock elapsed) {
-		for (AssemblyLine line : this.assemblyLines) {
-			if (line.equals(assemblyLine)) {
-				return line.completeChosenTaskAtChosenWorkBench(workbench, task, elapsed);
-			}
+		if(assemblyLine == null || workbench == null || task == null || elapsed == null){
+			throw new IllegalArgumentException();
 		}
-		throw new IllegalStateException();
+		else{
+			for (AssemblyLine line : this.assemblyLines) {
+				if (line.equals(assemblyLine)) {
+					return line.completeChosenTaskAtChosenWorkBench(workbench, task, elapsed);
+				}
+			}
+			throw new IllegalStateException();
+		}
 	}
 
 	/**
-	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
+	 * Returns a powerset with all the VehicleOptions or sets of 
+	 * VehicleOptions that occur in three or more pending Orders.
 	 */
 	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
 		HashSet<VehicleOption> set = new HashSet<>();
@@ -254,14 +321,52 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		return Collections.unmodifiableSet(toReturn);
 	}
 
+	/**
+	 * Method to change the AssemblyLineState of the given AssemblyLine to the given 
+	 * AssemblyLineState.
+	 * 
+	 * @param 	assemblyLine
+	 * 			The AssemblyLine that needs to have its state changed
+	 * 
+	 * @param 	state
+	 * 			The AssemblyLineState that an AssemblyLine will be having
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one or both parameters are null
+	 */
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state){
-		for(AssemblyLine line: assemblyLines){
-			if(assemblyLine.equals(line)){
-				line.setState(state);
+		if (assemblyLine == null || state == null){
+			throw new IllegalArgumentException();
+		}
+		else{
+			for(AssemblyLine line: assemblyLines){
+				if(assemblyLine.equals(line)){
+					line.setState(state);
+				}
 			}
 		}
 	}
 
+	/**
+	 * Method to change the AssemblyLineState of the given AssemblyLine to the given 
+	 * AssemblyLineState when the given AssemblyLineState is maintenance. A MaintenanceTimeManager will
+	 * be constructed to deal with the maintenance.
+	 * 
+	 * @param 	assemblyLine
+	 * 			The AssemblyLine that needs to have its state changed
+	 * 
+	 * @param 	state
+	 * 			The AssemblyLineState that an AssemblyLine will be having
+	 * 
+	 * @param	observer
+	 * 			The ClockObserver that needs to be attached on the MaintenanceTimeManager that will be created
+	 * 
+	 * @param 	clock
+	 * 			The snapshot of the current time.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one or both parameters are null
+	 */
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state, ClockObserver observer, ImmutableClock clock) {
 		Optional<AssemblyLine> finalLine = getModifiableAssemblyLine(assemblyLine);
 
@@ -280,8 +385,10 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		}
 		return Optional.absent();
 	}
+
 	/**
-	 * Get the workbenches which are blocking the AssemblyLine from advancing.
+	 * Get the IWorkBenches which are blocking the AssemblyLine from advancing.
+
 	 * @return
 	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
 	 */

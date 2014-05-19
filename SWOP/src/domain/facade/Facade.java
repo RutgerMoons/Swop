@@ -31,7 +31,6 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 /**
  * A class representing the layer between the Domain model and the controllers. The controllers can only
  * call methods in this class to do something in the domain model.
- * 
  */
 public class Facade {
 

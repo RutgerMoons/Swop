@@ -7,7 +7,6 @@ import domain.order.order.UnmodifiableOrder;
 /**
  * An interface used to represent an OrderVisitor. 
  * It consists of methods what to do with each type of order. 
- *
  */
 public interface IOrderVisitor {
 

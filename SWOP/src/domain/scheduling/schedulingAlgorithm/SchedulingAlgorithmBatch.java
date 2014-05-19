@@ -11,15 +11,14 @@ import com.google.common.base.Optional;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
-import domain.exception.NotImplementedException;
 import domain.job.job.IJob;
 import domain.job.jobComparator.JobComparatorOrderTime;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * Represents a scheduling algorithm used for scheduling Jobs on an AssemblyLine.
- * Uses a set of CarOptions and gives a higher priority to Jobs that contain
- * all of these CarOptions.
+ * A class representing a scheduling algorithm used for scheduling Jobs on an AssemblyLine.
+ * Uses a set of VehicleOptions and gives a higher priority to Jobs that contain
+ * all of these VehicleOptions.
  */
 public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
@@ -27,12 +26,21 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	private ArrayList<Optional<IJob>> jobsStartOfDay;
 	private List<VehicleOption> vehicleOptions;
 
-	public SchedulingAlgorithmBatch(List<VehicleOption> carParts, List<WorkBenchType> workBenchTypes) {
+	/**
+	 * Creates a SchedulingAlgorithmBatch given certain parameters.
+	 * 
+	 * @param 	vehicleOptions
+	 * 			The list of VehicleOptions which have priority
+	 *  
+	 * @param 	workBenchTypes
+	 * 			A list of WorkBenchTypes representing all the types the AssemblyLine consists off
+	 */
+	public SchedulingAlgorithmBatch(List<VehicleOption> vehicleOptions, List<WorkBenchType> workBenchTypes) {
 		super(workBenchTypes);
-		if (carParts == null) {
+		if (vehicleOptions == null) {
 			throw new IllegalArgumentException();
 		}
-		this.vehicleOptions = carParts;
+		this.vehicleOptions = vehicleOptions;
 		batchJobs = new PriorityQueue<IJob>(10, new JobComparatorOrderTime());
 	}
 
@@ -41,14 +49,12 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		if (standardJob == null) {
 			throw new IllegalArgumentException();
 		}
-		try {
-			if (standardJob.getVehicleOptions().containsAll(this.vehicleOptions)) {
-				this.batchJobs.add(standardJob);
-			}
-			else{
-				this.standardJobs.add(standardJob);
-			}
-		} catch (NotImplementedException e) {}
+		if (standardJob.getVehicleOptions().containsAll(this.vehicleOptions)) {
+			this.batchJobs.add(standardJob);
+		}
+		else{
+			this.standardJobs.add(standardJob);
+		}
 	}
 
 	private int getCurrentTotalProductionTime(ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
@@ -72,14 +78,11 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		}
 
 		if(customJobs.contains(job)) {
-			try {
-				int total = job.getOrder().getDeadline().minus(currentTime);
-				int days = total/Clock.MINUTESINADAY;
-				int minutes = total%Clock.MINUTESINADAY;
-				
-				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
-			} 
-			catch (NotImplementedException e) {	}
+			int total = job.getOrder().getDeadline().minus(currentTime);
+			int days = total/Clock.MINUTESINADAY;
+			int minutes = total%Clock.MINUTESINADAY;
+
+			job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes)); 
 		}
 		List<Optional<IJob>> previousJobs = jobsOnAssemblyLine;
 		int totalProductionTime = 0;
@@ -134,18 +137,14 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 
 	/**
-	 * If a custom job has to be forced, return the most urgent
-	 * return null if no job has to be forced.
+	 * If a custom Job has to be forced, return the most urgent one.
+	 * Returns null if no Job has to be forced.
 	 */
 	private Optional<IJob> hasToForceCustomJob(ImmutableClock currentTime) {
 		int idx = 0;
 		for (IJob job : customJobs) {
-			try {
-				if (job.getOrder().getDeadline().minus(currentTime) - ((idx + job.getMinimalIndex() +1) * job.getOrder().getProductionTime()) <= 0) {
-					return Optional.fromNullable(job);
-				}
-			} catch (NotImplementedException e) {
-				// verkeerde queue, komt niet voor..
+			if (job.getOrder().getDeadline().minus(currentTime) - ((idx + job.getMinimalIndex() +1) * job.getOrder().getProductionTime()) <= 0) {
+				return Optional.fromNullable(job);
 			}
 			idx++;
 		}
@@ -155,7 +154,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	@Override
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
-									   ArrayList<Optional<IJob>> jobsOnAssemblyLine) { 
+			ArrayList<Optional<IJob>> jobsOnAssemblyLine) { 
 		/*
 		 * step 0: check in the beginning of the day if custom jobs can be executed
 		 * step 1: check if you have to force some custom jobs
@@ -183,7 +182,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			Optional<IJob> toReturn = Optional.fromNullable(batchJobs.poll());
 			return toReturn;
 		}
-		
+
 		if (canAssembleJobInTime(Optional.fromNullable(standardJobs.peek()), currentTotalProductionTime, minutesTillEndOfDay)) {
 			Optional<IJob> toReturn = Optional.fromNullable(standardJobs.poll());
 			return toReturn;
@@ -221,7 +220,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	public String toString() {
 		return "Batch";
 	}
-	
+
 	@Override
 	public void transform(PriorityQueue<IJob> customJobs, List<IJob> standardJobs) {
 		if(customJobs == null || standardJobs == null){
@@ -231,18 +230,12 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		//split jobs into the two remaining queues based on carParts
 
 		for(IJob job : standardJobs){
-			try {
-				if(job.getOrder().getDescription().getVehicleSpecification().getVehicleOptions().values().containsAll(this.vehicleOptions)){
-					this.batchJobs.add(job);
-				}
-				else{
-					this.standardJobs.add(job);
-				}
-			} catch (NotImplementedException n) {
-				continue;
-				// this error can't occur
+			if(job.getOrder().getDescription().getVehicleSpecification().getVehicleOptions().values().containsAll(this.vehicleOptions)){
+				this.batchJobs.add(job);
 			}
+			else{
+				this.standardJobs.add(job);
+			} 
 		}
 	}
-
 }

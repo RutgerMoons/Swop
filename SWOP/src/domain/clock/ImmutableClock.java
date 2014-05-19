@@ -2,7 +2,6 @@ package domain.clock;
 
 /**
  * A class representing a snapshot of a clock at some point in time.
- *
  */
 public class ImmutableClock implements Comparable<ImmutableClock> {
 

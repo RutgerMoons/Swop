@@ -4,7 +4,6 @@ import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * A class representing a restriction of this kind: "If VehicleOption 'a' is chosen, VehicleOption 'b' also has to be chosen".
- *
  */
 public class BindingRestriction{
 

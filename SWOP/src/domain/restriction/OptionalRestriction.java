@@ -4,8 +4,8 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * A class representing a restriction of this kind: "If VehicleOption 'a' is chosen, VehicleOptionCategory 'b' becomes mandatory/optional".
- *
+ * A class representing a restriction of this kind: "If VehicleOption 'a' is chosen, 
+ * VehicleOptionCategory 'b' becomes mandatory/optional".
  */
 public class OptionalRestriction{
 	
