@@ -7,6 +7,7 @@ import com.google.common.base.Optional;
 
 import domain.job.job.IJob;
 import domain.job.task.ITask;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * An interface representing a workbench. A WorkBench
@@ -34,7 +35,7 @@ public interface IWorkBench {
 	 * 
 	 * @return 	A list of responsibilities.
 	 */
-	public Set<String> getResponsibilities();
+	public Set<VehicleOptionCategory> getResponsibilities();
 	
 	/**
 	 * Get the current Tasks that have to be completed by this WorkBench.

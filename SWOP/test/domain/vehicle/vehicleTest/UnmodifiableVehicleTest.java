@@ -22,7 +22,7 @@ import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
-public class ImmutableCarModelTest {
+public class UnmodifiableVehicleTest {
 
 	private IVehicle car;
 	private IVehicle immutable;
@@ -30,7 +30,7 @@ public class ImmutableCarModelTest {
 	public void initialize(){
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		car = new Vehicle(template);
 		immutable = new UnmodifiableVehicle(car);
 	}

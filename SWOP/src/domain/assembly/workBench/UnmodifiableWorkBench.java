@@ -12,6 +12,7 @@ import domain.job.job.IJob;
 import domain.job.job.UnmodifiableJob;
 import domain.job.task.ITask;
 import domain.job.task.UnmodifiableTask;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 /**
@@ -54,7 +55,7 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	}
 
 	@Override
-	public Set<String> getResponsibilities() {
+	public Set<VehicleOptionCategory> getResponsibilities() {
 		return Collections.unmodifiableSet(bench.getResponsibilities());
 	}
 

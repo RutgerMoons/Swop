@@ -65,7 +65,7 @@ public class CustomVehicleTest {
 	
 	@Test
 	public void testSetSpecification(){
-		VehicleSpecification specification = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification specification = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		model.setVehicleSpecification(specification);
 	}
 	
@@ -76,7 +76,10 @@ public class CustomVehicleTest {
 	
 	@Test
 	public void testGetTimeAtWorkBench(){
-		assertTrue(model.getTimeAtWorkBench().containsValue(60));
+		assertFalse(model.getTimeAtWorkBench().containsValue(60));
+		model.addVehicleOption(new VehicleOption("test", VehicleOptionCategory.BODY));
+		Integer test = model.getTimeAtWorkBench().get(WorkBenchType.BODY);
+		assertEquals(new Integer(60), test);
 	}
 	
 	@Test
@@ -89,7 +92,7 @@ public class CustomVehicleTest {
 		
 		
 		CustomVehicle vehicle2 = new CustomVehicle();
-		VehicleSpecification specification = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification specification = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		vehicle2.setVehicleSpecification(specification);
 		assertNotEquals(model, vehicle2);
 		assertNotEquals(model.hashCode(), vehicle2.hashCode());

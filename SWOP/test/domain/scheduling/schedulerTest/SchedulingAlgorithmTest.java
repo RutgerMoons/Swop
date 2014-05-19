@@ -12,7 +12,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 
 import com.google.common.base.Optional;
 
@@ -42,7 +42,7 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 public class SchedulingAlgorithmTest {
 
 	private Facade facade;
-	private ClientCommunication clientCommunication;
+	private IClientCommunication clientCommunication;
 	private Scheduler scheduler;
 	private ClockObserver clock;
 	private Vehicle model;

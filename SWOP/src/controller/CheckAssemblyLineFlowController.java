@@ -2,7 +2,7 @@ package controller;
 
 import java.util.List;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
@@ -25,7 +25,7 @@ public class CheckAssemblyLineFlowController extends UseCaseFlowController{
 	 * @param 	facade
 	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
 	 */
-	public CheckAssemblyLineFlowController(AccessRight accessRight,ClientCommunication clientCommunication, Facade facade) {
+	public CheckAssemblyLineFlowController(AccessRight accessRight,IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 

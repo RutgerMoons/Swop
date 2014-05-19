@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
@@ -32,7 +32,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * @param 	facade
 	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
 	 */
-	public AssembleFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
+	public AssembleFlowController(AccessRight accessRight, IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 

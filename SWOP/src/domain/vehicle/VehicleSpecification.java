@@ -1,6 +1,7 @@
 package domain.vehicle;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,29 +23,35 @@ public class VehicleSpecification {
 	private String description;
 	private Map<WorkBenchType, Integer> timeAtWorkBench;
 	private Multimap<VehicleOptionCategory, VehicleOption> parts;
+	private Map<VehicleOptionCategory, VehicleOption> obligatoryVehicleOptions;
 
 	/**
 	 * Create a new VehicleSpecification.
 	 * 
-	 * @param description
-	 *            The description of the VehicleSpecification, often a model
-	 *            name
+	 * @param 	description
+	 * 			The description of the VehicleSpecification, often a model
+	 *			name
 	 * 
-	 * @param parts
-	 *            The VehicleOptions that can be used to build a vehicle
+	 * @param 	parts
+	 *    		The VehicleOptions that can be used to build a vehicle
 	 * 
-	 * @param timeAtWorkBench
-	 *            The time it has to spend on certain WorkBenches
+	 * @param 	timeAtWorkBench
+	 *         	The time it has to spend on certain WorkBenches
 	 * 
-	 * @throws IllegalArgumentException
-	 *             Thrown when one of the parameters is null or if the
-	 *             description is empty
+	 * @param	obligatoryVehicleOptions
+	 * 			The VehicleOptions that have to be in the Vehicle
+	 * 
+	 * @throws 	IllegalArgumentException
+	 *         	Thrown when one of the parameters is null or if the
+	 *         	description is empty
 	 */
 	public VehicleSpecification(String description, Set<VehicleOption> parts,
-			Map<WorkBenchType, Integer> timeAtWorkBench) {
+			Map<WorkBenchType, Integer> timeAtWorkBench, Set<VehicleOption> obligatoryVehicleOptions) {
 		this.setDescription(description);
 		this.setTimeAtWorkBench(timeAtWorkBench);
 		this.parts = HashMultimap.create();
+		setObligatoryVehicleOptions(obligatoryVehicleOptions);
+		
 		addAll(parts);
 	}
 
@@ -67,11 +74,11 @@ public class VehicleSpecification {
 	/**
 	 * Set the name of the VehicleSpecification.
 	 * 
-	 * @param description
-	 *            The name to give the VehicleSpecification
+	 * @param 	description
+	 *    		The name to give the VehicleSpecification
 	 * 
-	 * @throws IllegalArgumentException
-	 *             Thrown when the description is null or is empty
+	 * @throws 	IllegalArgumentException
+	 *        	Thrown when the description is null or is empty
 	 */
 	public void setDescription(String description) {
 		if (description == null || description.isEmpty()) {
@@ -138,17 +145,34 @@ public class VehicleSpecification {
 
 	/**
 	 * 
-	 * @param workBenchType
-	 *            used to determine the time this job will take to complete
+	 * @param 	workBenchType
+	 *        	used to determine the time this job will take to complete
 	 * 
-	 * @return The amount of minutes to complete this VehicleSpecification at
-	 *         the given type of WorkBench
+	 * @return 	The amount of minutes to complete this VehicleSpecification at
+	 *         	the given type of WorkBench
 	 */
 	public int getProductionTime(WorkBenchType workBenchType) {
 		if (getTimeAtWorkBench().containsKey(workBenchType)) {
 			return getTimeAtWorkBench().get(workBenchType);
 		} else
 			return 0;
+	}
+
+	/**
+	 * Get the VehicleOptions that are obligated to be in the Vehicle.
+	 */
+	public Map<VehicleOptionCategory, VehicleOption> getObligatoryVehicleOptions() {
+		return obligatoryVehicleOptions;
+	}
+
+	private void setObligatoryVehicleOptions(Set<VehicleOption> obligatoryVehicleOptions) {
+		if(obligatoryVehicleOptions==null){
+			throw new IllegalArgumentException();
+		}
+		this.obligatoryVehicleOptions = new HashMap<>();
+		for(VehicleOption option : obligatoryVehicleOptions){
+			this.obligatoryVehicleOptions.put(option.getType(), option);
+		}
 	}
 
 }

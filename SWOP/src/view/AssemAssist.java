@@ -43,7 +43,7 @@ public class AssemAssist {
 	private static Company company;
 	private static ArrayList<UseCaseFlowController> flowControllers;
 	private static UserFlowController userFlowController;
-	private static ClientCommunication clientCommunication;
+	private static IClientCommunication clientCommunication;
 	
 
 	/**
@@ -95,7 +95,7 @@ public class AssemAssist {
 		for(WorkBenchType type: WorkBenchType.values()){
 			timeAtWorkBench.put(type, 60);
 		}
-		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench);
+		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench, new HashSet<VehicleOption>());
 		
 		
 		Set<VehicleSpecification> specifications = new HashSet<>();

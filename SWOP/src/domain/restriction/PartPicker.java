@@ -59,6 +59,10 @@ public class PartPicker {
 			restriction.setRestrictedPartAlreadyChosen(false);
 		}
 		model = new Vehicle(template);
+		
+		for(VehicleOption option: template.getObligatoryVehicleOptions().values()){
+			model.addVehicleOption(option);
+		}
 	}
 
 	/**

@@ -76,10 +76,10 @@ public class Scheduler implements ObservesClock {
 	 * 			A list of WorkBenchTypes representing all the types the AssemblyLine consists off
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 			Thrown when one or both parameters are null or when workBenchTypes is empty
+	 * 			Thrown when one or both parameters are null
 	 */
 	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, List<WorkBenchType> workBenchTypes) {
-		if( creator == null || workBenchTypes == null || workBenchTypes.isEmpty()){
+		if( creator == null || workBenchTypes == null){
 			throw new IllegalArgumentException();
 		}
 		else{

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
@@ -31,7 +31,7 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 	 * @param 	facade
 	 * 			The Facade this UseCaseFlowController uses to access the domain logic
 	 */
-	public AdaptSchedulingAlgorithmFlowController(AccessRight accessRight, ClientCommunication clientCommunication, Facade facade) {
+	public AdaptSchedulingAlgorithmFlowController(AccessRight accessRight, IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 

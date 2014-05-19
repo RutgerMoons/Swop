@@ -1,6 +1,6 @@
 package controller;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.clock.Clock;
@@ -27,7 +27,7 @@ UseCaseFlowController {
 	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic
 	 */
 	public ChangeOperationalStatusFlowController(AccessRight accessRight,
-			ClientCommunication clientCommunication, Facade facade) {
+			IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 
