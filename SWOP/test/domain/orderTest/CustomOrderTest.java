@@ -24,7 +24,7 @@ public class CustomOrderTest {
 	private ImmutableClock deadline;
 	
 	@Before
-	public void initializeModel() throws AlreadyInMapException, UnmodifiableException {
+	public void initializeModel() {
 		orderTime = new ImmutableClock(1, 10);
 		deadline = new ImmutableClock(5, 20);
 
@@ -71,7 +71,7 @@ public class CustomOrderTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testPendingCars2() throws UnmodifiableException {
+	public void testPendingCars2(){
 		CustomOrder order = new CustomOrder("Mario", model, 1, orderTime, deadline);
 		order.completeCar();
 		assertEquals(0, order.getPendingCars());
@@ -100,7 +100,7 @@ public class CustomOrderTest {
 	}
 
 	@Test
-	public void testCarCompleted() throws UnmodifiableException {
+	public void testCarCompleted() {
 		CustomOrder order = new CustomOrder("Mario", model, 3, orderTime, deadline);
 		assertEquals(3, order.getPendingCars());
 		order.completeCar();
@@ -109,7 +109,7 @@ public class CustomOrderTest {
 	}
 
 	@Test
-	public void TestEqualsAndHashcode() throws AlreadyInMapException, UnmodifiableException {
+	public void TestEqualsAndHashcode(){
 		CustomVehicle model2 = new CustomVehicle();
 		model2.addVehicleOption(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 
@@ -140,13 +140,13 @@ public class CustomOrderTest {
 	}
 	
 	@Test
-	public void testGetDeadline() throws NotImplementedException{
+	public void testGetDeadline(){
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		assertNotNull(order1.getDeadline());
 	}
 	
 	@Test
-	public void testSetDeadline() throws NotImplementedException{
+	public void testSetDeadline() {
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		order1.setDeadline(new ImmutableClock(0, 0));
 		assertEquals(0, order1.getDeadline().getDays());

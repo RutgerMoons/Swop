@@ -9,7 +9,9 @@ import domain.job.job.IJob;
 import domain.job.task.ITask;
 
 /**
- * Interface for limiting access to standard WorkBenches.
+ * An interface representing a workbench. A WorkBench
+ * is responsible for completing Task. Each WorkBench has a WorkBenchType and has
+ * an amount of responsibilities.
  */
 public interface IWorkBench {
 
@@ -19,7 +21,7 @@ public interface IWorkBench {
 	public WorkBenchType getWorkbenchType();
 	
 	/**
-	 * Get the current Job(Car) that is on this WorkBench.
+	 * Get the current Job that is on this WorkBench.
 	 * 
 	 * @return 	The current Job this WorkBench is working on. If there is no Job
 	 *         	available, the Job is represented by Optional.absent().
@@ -35,9 +37,9 @@ public interface IWorkBench {
 	public Set<String> getResponsibilities();
 	
 	/**
-	 * Get the current tasks that have to be completed by this WorkBench.
+	 * Get the current Tasks that have to be completed by this WorkBench.
 	 * 
-	 * @return 	An Immutable list of tasks.
+	 * @return 	An unmodifiable list of Tasks.
 	 */
 	public List<ITask> getCurrentTasks();
 	
@@ -53,15 +55,16 @@ public interface IWorkBench {
 	 * Allocate a new Job(Car) to this WorkBench.
 	 * 
 	 * @param 	optional
-	 *            The job you want to allocate to the WorkBench.
+	 *          The job you want to allocate to the WorkBench
+	 *          
 	 * @throws 	IllegalArgumentException
-	 *             if currentJob == null
+	 *          Thrown when the parameter is null
 	 */
 	public void setCurrentJob(Optional<IJob> retrieveNextJob);
 
 	/**
-	 * Selects the Tasks that are valid for this Workbench. The taskDescription
-	 * is checked against the responsibilities from the Workbench.
+	 * Selects the Tasks that are valid for this Workbench. The description of
+	 * the Task is checked against the responsibilities from the Workbench.
 	 */
 	public void chooseTasksOutOfJob();
 
@@ -69,7 +72,8 @@ public interface IWorkBench {
 	 * Matches the given task to one of its own. If a match is found, 
 	 * all the actions will be set to completed.
 	 * 
-	 * @param	task to be matched and set to completed
+	 * @param	task 
+	 * 			The Task to be matched and set to completed
 	 */
 	void completeChosenTaskAtChosenWorkBench(ITask task);
 }

@@ -10,7 +10,10 @@ import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.exception.UnmodifiableException;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
-
+/**
+ * A class representing an unmodifiable AssemblyLine. It implements IAssemblyLine but only
+ * the getters are accessible.
+ */
 public class UnmodifiableAssemblyLine implements IAssemblyLine {
 
 	private IAssemblyLine assemblyLine;

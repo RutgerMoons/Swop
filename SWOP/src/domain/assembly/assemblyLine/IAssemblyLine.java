@@ -6,41 +6,47 @@ import java.util.Set;
 import domain.assembly.workBench.IWorkBench;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
-
+/**
+ * An interface representing an assembly line. An AssemblyLine 
+ * is responsible for completing Jobs and advancing Jobs when a certain
+ * Task of the Job is completed.
+ */
 public interface IAssemblyLine {
 
 	
 	/**
-	 * Method for checking if the assemblyLine can advance or certain tasks
+	 * Method for checking if the AssemblyLine can advance or certain tasks
 	 * have to be finished first.
 	 */
 	public boolean canAdvance();
 	
 	/**
-	 * Method for retrieving the workbenches with unfinished tasks.
+	 * Method for retrieving the IWorkBenches with unfinished Tasks.
+	 * 
+	 * @return	An unmodifiable list of IWorkBenches
 	 */
 	public List<IWorkBench> getBlockingWorkBenches();
 	
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
 	 * 
-	 * @return	A list of IWorkBenches
+	 * @return	An unmodifiable list of IWorkBenches
 	 */
 	public List<IWorkBench> getWorkBenches();
 	
 	/**
-	 * returns a powerset with all the CarOptions or sets of CarOptions that occur in three or more pending orders.
+	 * Returns a powerset with all the VehicleOptions or sets 
+	 * of VehicleOptions that occur in three or more pending Orders.
 	 */
 	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders();
 
 	/**
-	 * 
-	 * @return	the state of the AssemblyLine
+	 * Returns the current state of the AssemblyLine.
 	 */
 	public AssemblyLineState getState();
 
 	/**
-	 * Change the operational state of the assemblyLine
+	 * Change the operational state of the AssemblyLine.
 	 * 
 	 * @param	state
 	 * 			The state the assemblyLine has to be in

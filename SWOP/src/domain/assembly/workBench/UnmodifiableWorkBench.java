@@ -15,8 +15,8 @@ import domain.job.task.UnmodifiableTask;
 
 
 /**
- * Create an Immutable WorkBench, only the getters are accessible.
- *
+ * A class representing an unmodifiable WorkBench. It implements IWorkBench but only
+ * the getters are accessible.
  */
 public class UnmodifiableWorkBench implements IWorkBench {
 
@@ -37,13 +37,11 @@ public class UnmodifiableWorkBench implements IWorkBench {
 		this.bench = bench;
 	}
 	
-	//TODO doc
 	@Override
 	public WorkBenchType getWorkbenchType() {
 		return bench.getWorkbenchType();
 	}
 
-	//TODO doc
 	@Override
 	public Optional<IJob> getCurrentJob() {
 		Optional<IJob> currentJob = bench.getCurrentJob();
@@ -55,13 +53,11 @@ public class UnmodifiableWorkBench implements IWorkBench {
 		return currentJob;
 	}
 
-	//TODO doc
 	@Override
 	public Set<String> getResponsibilities() {
 		return Collections.unmodifiableSet(bench.getResponsibilities());
 	}
 
-	//TODO doc
 	@Override
 	public List<ITask> getCurrentTasks() {
 		List<ITask> unmodifiable = new ArrayList<>();
@@ -71,7 +67,6 @@ public class UnmodifiableWorkBench implements IWorkBench {
 		return Collections.unmodifiableList(unmodifiable);
 	}
 
-	//TODO doc
 	@Override
 	public boolean isCompleted() {
 		return bench.isCompleted();

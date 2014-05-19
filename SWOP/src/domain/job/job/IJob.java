@@ -13,7 +13,7 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * An interface used to represent a Job. A Job consists of an iOrder, a list of
+ * An interface used to represent a Job. A Job consists of an IOrder, a list of
  * ITasks and an index, indicating which workbench it needs first.
  */
 public interface IJob {
@@ -79,7 +79,7 @@ public interface IJob {
 	public void setMinimalIndex(int index);
 
 	/**
-	 * Returns an integer that represents the index of the first workbench 
+	 * Returns an integer that represents the index of the first WorkBench 
 	 * at which some Tasks of this Job will need to be completed.
 	 */
 	public int getMinimalIndex();
@@ -95,13 +95,15 @@ public interface IJob {
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
 
 	/**
-	 * Get the specification of the vehicle from the order
+	 * Get the specification of the Vehicle from the Order.
 	 */
 	public VehicleSpecification getVehicleSpecification();
 
 	/**
+	 * Retrieving the production time to complete this Job at the given type of WorkBench.
 	 * 
-	 * @param	workBenchType used to determine the time this job will take to complete
+	 * @param	workBenchType 
+	 * 			It's used to determine the time this job will take to complete
 	 * 
 	 * @return	The amount of minutes to complete this job at the given type of WorkBench
 	 */

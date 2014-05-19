@@ -4,7 +4,7 @@ import domain.clock.ImmutableClock;
 import domain.observer.observes.ObservesClock;
 /**
  * A class representing the manager of turning an AssemblyLine back on when 4 hours have passed.
- * It's subscribed
+ * It's subscribed to the Clock and because of this, it's notified each time the Clock advances in time.
  */
 public class MaintenanceTimeManager implements ObservesClock{
 
