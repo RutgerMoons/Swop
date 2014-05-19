@@ -483,7 +483,7 @@ public class Company {
 	 * or sets of VehicleOptions that occur in three or more pending Orders.
 	 */
 	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
-		return Collections.unmodifiableSet(this.workloadDivider.getAllCarOptionsInPendingOrders());
+		return Collections.unmodifiableSet(this.workloadDivider.getAllVehicleOptionsInPendingOrders());
 	}
 
 	/**

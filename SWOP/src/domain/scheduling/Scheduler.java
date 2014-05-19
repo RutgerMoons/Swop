@@ -155,7 +155,7 @@ public class Scheduler implements ObservesClock {
 	 * Returns a powerset with all the VehicleOptions or 
 	 * sets of VehicleOptions that occur in three or more pending Orders.
 	 */
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
 		HashSet<VehicleOption> set = new HashSet<>();
 		List<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
 

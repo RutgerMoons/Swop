@@ -230,7 +230,7 @@ public class SchedulingAlgorithmTest {
 	
 	/*
 	@Test
-	public void getAllCarOptionsInPendingOrdersTest() {
+	public void getAllVehicleOptionsInPendingOrdersTest() {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		VehicleSpecification template = new VehicleSpecification("model", parts, this.timeAtWorkBench);
@@ -254,7 +254,7 @@ public class SchedulingAlgorithmTest {
 			line.convertStandardOrderToJob(order);
 		} catch (UnmodifiableException e) { }
 		
-		Set<Set<VehicleOption>> powerSet = line.getAllCarOptionsInPendingOrders();
+		Set<Set<VehicleOption>> powerSet = line.getAllVehicleOptionsInPendingOrders();
 		assertEquals(127, powerSet.size());
 	}
 	*/

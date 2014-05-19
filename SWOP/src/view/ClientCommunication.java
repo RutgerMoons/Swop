@@ -199,7 +199,7 @@ public class ClientCommunication{
 	}
 
 	/**
-	 * Lets the user choose a CarOption when he is putting his model together.
+	 * Lets the user choose a VehicleOption when he is putting his model together.
 	 */
 
 	public Optional<VehicleOption> choosePart(List<VehicleOption> parts) {
@@ -640,7 +640,7 @@ public class ClientCommunication{
 		orderDetails.add(order.getQuantity() + " "
 				+ order.getDescription());
 
-		String carDetails = "Chosen carOptions: ";
+		String carDetails = "Chosen vehicle options: ";
 		for (VehicleOptionCategory category : order.getDescription()
 				.getVehicleOptions().keySet()) {
 			carDetails += order.getDescription().getVehicleOptions()
