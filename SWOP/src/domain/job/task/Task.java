@@ -7,8 +7,8 @@ import java.util.List;
 import domain.job.action.IAction;
 
 /**
- * A class representing a single task that contains a certain amount
- * of IActions. Task is an implementation of ITask.
+ * A class representing a single task that contains a certain amount of
+ * IActions. Task is an implementation of ITask.
  */
 public class Task implements ITask {
 
@@ -18,11 +18,11 @@ public class Task implements ITask {
 	/**
 	 * Construct a new Task.
 	 * 
-	 * @param 	taskDescription
-	 *          The description you want to give to this Task
+	 * @param taskDescription
+	 *            The description you want to give to this Task
 	 * 
-	 * @throws 	IllegalArgumentException
-	 *          Thrown when taskDescription is null or is empty
+	 * @throws IllegalArgumentException
+	 *             Thrown when taskDescription is null or is empty
 	 */
 	public Task(String taskDescription) {
 		setActions(new ArrayList<IAction>());
@@ -50,7 +50,6 @@ public class Task implements ITask {
 			actionList.add(action);
 	}
 
-
 	@Override
 	public boolean isCompleted() {
 		for (IAction action : getActions())
@@ -58,7 +57,6 @@ public class Task implements ITask {
 				return false;
 		return true;
 	}
-
 
 	@Override
 	public String getTaskDescription() {
@@ -81,10 +79,8 @@ public class Task implements ITask {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((actionList == null) ? 0 : actionList.hashCode());
-		result = prime * result
-				+ ((taskDescription == null) ? 0 : taskDescription.hashCode());
+		result = prime * result + actionList.hashCode();
+		result = prime * result + taskDescription.hashCode();
 		return result;
 	}
 
@@ -94,21 +90,15 @@ public class Task implements ITask {
 			return true;
 		if (obj == null)
 			return false;
-		ITask other=null;
-		try{
+		ITask other = null;
+		try {
 			other = (ITask) obj;
-		} catch (ClassCastException e){
+		} catch (ClassCastException e) {
 			return false;
 		}
-		if (actionList == null) {
-			if (other.getActions() != null)
-				return false;
-		} else if (!actionList.equals(other.getActions()))
+		if (!actionList.equals(other.getActions()))
 			return false;
-		if (taskDescription == null) {
-			if (other.getTaskDescription() != null)
-				return false;
-		} else if (!taskDescription.equals(other.getTaskDescription()))
+		if (!taskDescription.equals(other.getTaskDescription()))
 			return false;
 		return true;
 	}

@@ -1,6 +1,7 @@
 package domain.job.task;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -11,6 +12,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.job.action.Action;
 import domain.job.action.IAction;
 import domain.job.task.Task;
@@ -103,5 +105,30 @@ public class TaskTest {
 	@Test
 	public void TestToString(){
 		assertEquals("Paint", task.toString());
+	}
+	
+	@Test
+	public void testEquals(){
+		assertEquals(task, task);
+		assertEquals(task.hashCode(), task.hashCode());
+		assertNotEquals(task, null);
+		assertNotEquals(task, AssemblyLineState.BROKEN);
+		
+		Task task2 = new Task("test");
+		assertNotEquals(task, task2);
+		assertNotEquals(task.hashCode(), task2.hashCode());
+		
+		task2 = new Task("Paint");
+		task2.addAction(new Action("Spray Colour"));
+		
+		assertNotEquals(task, task2);
+		assertNotEquals(task.hashCode(), task2.hashCode());
+		
+		assertNotEquals(task, task2);
+		assertNotEquals(task.hashCode(), task2.hashCode());
+		
+		task.addAction(new Action("Spray Colour"));
+		assertEquals(task, task2);
+		assertEquals(task.hashCode(), task2.hashCode());
 	}
 }

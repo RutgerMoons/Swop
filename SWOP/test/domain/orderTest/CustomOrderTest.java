@@ -9,9 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.clock.ImmutableClock;
-import domain.exception.AlreadyInMapException;
-import domain.exception.NotImplementedException;
-import domain.exception.UnmodifiableException;
 import domain.job.action.Action;
 import domain.order.order.CustomOrder;
 import domain.vehicle.vehicle.CustomVehicle;
@@ -156,7 +153,11 @@ public class CustomOrderTest {
 	@Test
 	public void testGetProductionTime(){
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
-		assertEquals(order1.getProductionTime(), model.getVehicleSpecification().getTimeAtWorkBench());
+		int time = 0;
+		for(Integer integer: model.getTimeAtWorkBench().values()){
+			time+=integer;
+		}
+		assertEquals(order1.getProductionTime(), time);
 	}
 	
 	@Test
@@ -189,7 +190,8 @@ public class CustomOrderTest {
 	@Test
 	public void testVehicleOptions(){
 		CustomOrder order = new CustomOrder("jos", model, 1, orderTime, deadline);
-		assertEquals(order.getVehicleOptions(), model.getVehicleOptions().values());
+		assertEquals(order.getVehicleOptions().size(), model.getVehicleOptions().values().size());
+		assertTrue(order.getVehicleOptions().containsAll(model.getVehicleOptions().values()));
 	}
 	
 	@Test
@@ -198,9 +200,9 @@ public class CustomOrderTest {
 		assertEquals(model.getTimeAtWorkBench(), order.getTimeAtWorkBench());
 	}
 	
-	@Test (expected=NotImplementedException.class)
+	@Test
 	public void testGetVehicleSpecification(){
 		CustomOrder order = new CustomOrder("jos", model, 1, orderTime, deadline);
-		order.getVehicleSpecification();
+		assertEquals("custom", order.getVehicleSpecification().getDescription());
 	}
 }

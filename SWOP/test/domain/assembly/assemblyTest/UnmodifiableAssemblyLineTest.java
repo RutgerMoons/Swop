@@ -1,9 +1,12 @@
 package domain.assembly.assemblyTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -12,14 +15,24 @@ import org.junit.Test;
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.UnmodifiableAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
 import domain.exception.UnmodifiableException;
+import domain.job.action.Action;
+import domain.job.job.IJob;
+import domain.job.job.Job;
+import domain.job.task.ITask;
+import domain.job.task.Task;
 import domain.observer.observers.ClockObserver;
+import domain.order.order.IOrder;
+import domain.order.order.StandardOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class UnmodifiableAssemblyLineTest {
 
@@ -33,7 +46,7 @@ public class UnmodifiableAssemblyLineTest {
 		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.OPERATIONAL, responsibilities);
 		line.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		Set<String> responsibilities2 = new HashSet<>();
-		responsibilities2.add("test");
+		responsibilities2.add("Color");
 		responsibilities2.add("test2");
 		line.addWorkBench(new WorkBench(responsibilities2, WorkBenchType.BODY));
 		line.addWorkBench(new WorkBench(new HashSet<String>(), WorkBenchType.DRIVETRAIN));
@@ -52,6 +65,57 @@ public class UnmodifiableAssemblyLineTest {
 	
 	@Test
 	public void testGetBlockingWorkBenches(){
+		assertEquals(line.getBlockingWorkBenches(), unmodifiable.getBlockingWorkBenches());
+		
+		
+		VehicleSpecification template = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		Vehicle model = new Vehicle(template);
+		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("red",  VehicleOptionCategory.COLOR));
+		model.addVehicleOption(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
+		model.addVehicleOption(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
+		model.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
+		
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(responsibilities, WorkBenchType.BODY);
+
+		responsibilities = new HashSet<>();
+		responsibilities.add("Engine");
+		responsibilities.add("Gearbox");
+		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
+
+		responsibilities = new HashSet<>();
+		responsibilities.add("Seat");
+		responsibilities.add("Airco");
+		responsibilities.add("Spoiler");
+		responsibilities.add("Wheel");
+		WorkBench accessories1 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
+
+		line.addWorkBench(body1);
+		line.addWorkBench(drivetrain1);
+		line.addWorkBench(accessories1);
+		
+		line.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		
+		
+		
+		
+		Action action1 = new Action("paint");
+		action1.setCompleted(false);
+		Task task1 = new Task("Color");
+		task1.addAction(action1);
+		ArrayList<ITask> list = new ArrayList<ITask>();
+		list.add(task1);
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		job.setTasks(list);
+		
+		line.schedule(job);
+		line.advance();
 		assertEquals(line.getBlockingWorkBenches(), unmodifiable.getBlockingWorkBenches());
 	}
 
