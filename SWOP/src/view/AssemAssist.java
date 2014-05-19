@@ -43,7 +43,7 @@ public class AssemAssist {
 	private static Company company;
 	private static ArrayList<UseCaseFlowController> flowControllers;
 	private static UserFlowController userFlowController;
-	private static ClientCommunication clientCommunication;
+	private static IClientCommunication clientCommunication;
 	
 
 	/**
@@ -77,7 +77,6 @@ public class AssemAssist {
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
 		
-		//TODO clockobserver
 		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);
 		
 		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);

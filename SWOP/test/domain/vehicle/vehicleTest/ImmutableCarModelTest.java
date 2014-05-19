@@ -46,7 +46,6 @@ public class ImmutableCarModelTest {
 		assertEquals(car.getVehicleOptions(), immutable.getVehicleOptions());
 		assertEquals(car.toString(), immutable.toString());
 		assertTrue(immutable.equals(car));
-		//TODO
 		assertTrue(car.equals(immutable));
 		assertEquals(car.hashCode(), immutable.hashCode());
 		

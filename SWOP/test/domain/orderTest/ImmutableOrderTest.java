@@ -77,7 +77,6 @@ public class ImmutableOrderTest {
 		assertEquals(order.getPendingCars(), immutable.getPendingCars());
 		assertEquals(order.getQuantity(), immutable.getQuantity());
 		assertTrue(immutable.equals(order));
-		//TODO
 		assertTrue(order.equals(immutable));
 		
 		assertEquals(order.hashCode(), immutable.hashCode());

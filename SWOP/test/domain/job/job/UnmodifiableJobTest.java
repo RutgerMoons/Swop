@@ -61,7 +61,6 @@ public class UnmodifiableJobTest {
 		assertEquals(job.toString(), immutable.toString());
 		assertEquals(job.hashCode(), immutable.hashCode());
 		assertTrue(immutable.equals(job));
-		//TODO
 		assertTrue(job.equals(immutable));
 		assertTrue(immutable.isCompleted());
 	}

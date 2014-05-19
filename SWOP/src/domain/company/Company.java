@@ -57,7 +57,7 @@ public class Company {
 	private int amountOfDetailedHistory;
 
 	/**
-	 * Create a new Company. It receives all its defining datastructures to initialise everything properly. TODO veranderen later
+	 * Create a new Company. It receives all its defining data structures to initialise everything properly.
 	 * 
 	 * @param 	bindingRestrictions
 	 * 			List of BindingRestrictions necessary for the internal PartPicker

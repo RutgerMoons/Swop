@@ -28,41 +28,28 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
  * A text-based user interface to interact with the system.
  * 
  */
-public class ClientCommunication{
+public class ClientCommunication implements IClientCommunication{
 
 	private Scanner inputReader;
 	public ClientCommunication() {
 		this.inputReader = new Scanner(System.in);
 	}
 
-	/**
-	 * Ask if the user wants to advance the assemblyline.
-	 * @return
-	 * 			A String that equals either "Y" (for yes) or "N" (for no).
-	 */
-
+	@Override
 	public boolean askAdvance() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want advance the assemblyLine? Y/N",
 				expected).equals("Y");
 	}
 
-	/**
-	 * Ask the user if he wants to continue.
-	 * @return
-	 * 			A String that equals either "Y" (for yes) or "N" (for no).
-	 */
-
+	@Override
 	public boolean askContinue() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("Y", "N"));
 		return askQuestionLoop("Do you want to continue? Y/N", expected)
 				.equals("Y");
 	}
 
-	/**
-	 * Ask the user for a deadline.
-	 */
-
+	@Override
 	public int askDeadline() {
 		int days = askNumber("How many days until the deadline is reached?");
 		while(days<0){
@@ -78,12 +65,7 @@ public class ClientCommunication{
 		return days*Clock.MINUTESINADAY + minutes;
 	}
 
-	/**
-	 * Ask if the user is finished.
-	 * @return
-	 * 			A String that equals either "Y" (for yes) or "N" (for no).
-	 */
-
+	@Override
 	public String askFinished() {
 		return askQuestion("Press enter when you're finished");
 	}
@@ -91,8 +73,10 @@ public class ClientCommunication{
 	/**
 	 * Ask a question for which the answer is expected to be an integer.
 	 * 
-	 * @param question
-	 * @return An integer which represents the users's answer.
+	 * @param 	question
+	 * 			Question needed to be asked
+	 * 
+	 * @return 	An integer which represents the users answer.
 	 */
 	private int askNumber(String question) {
 		while (true) {
@@ -104,11 +88,12 @@ public class ClientCommunication{
 	}
 
 	/**
-	 * Ask the question, give the answer of the user
+	 * Ask the question, give the answer of the user.
 	 * 
-	 * @param question
-	 *            the question the user has to answer
-	 * @return answer of the user
+	 * @param 	question
+	 *          the question the user has to answer
+	 * 
+	 * @return 	answer of the user
 	 */
 	private String askQuestion(String question) {
 		System.out.println(question);
@@ -118,13 +103,15 @@ public class ClientCommunication{
 
 	/**
 	 * Keep asking the same question, until a valid (expected) response is given
-	 * by the user note: inputReader is only constructed once
+	 * by the user.
 	 * 
-	 * @param question
-	 *            the question the user has to answer
-	 * @param expected
-	 *            possible answers
-	 * @return answer of the user, this answer is an expected one
+	 * @param 	question
+	 *          the question the user has to answer
+	 * 
+	 * @param 	expected
+	 *          possible answers
+	 *          
+	 * @return 	answer of the user, this answer is an expected one
 	 */
 	private String askQuestionLoop(String question, ArrayList<String> expected) {
 		while (true) {
@@ -137,13 +124,7 @@ public class ClientCommunication{
 		}
 	}
 
-	/**
-	 * Choose the car model the user wants to order.
-	 * @param catalogue
-	 * 			A Set which contains Strings that represent the names of all possible car models that can be ordered.
-	 * @return
-	 */
-
+	@Override
 	public String chooseModel(Set<String> catalogue) {
 		ArrayList<String> catalogueInString = new ArrayList<String>();
 
@@ -157,10 +138,7 @@ public class ClientCommunication{
 				catalogueInString);
 	}
 
-	/**
-	 * Lets the user choose an order out of all his pending/completed orders.
-	 */
-
+	@Override
 	public Optional<IOrder> chooseOrder(List<IOrder> pendingOrders, List<IOrder> completedOrders) {
 		ArrayList<String> orderString = new ArrayList<String>();
 		orderString.add(0, "Pending Orders:" );
@@ -198,10 +176,7 @@ public class ClientCommunication{
 		return Optional.absent();
 	}
 
-	/**
-	 * Lets the user choose a CarOption when he is putting his model together.
-	 */
-
+	@Override
 	public Optional<VehicleOption> choosePart(List<VehicleOption> parts) {
 		ArrayList<String> partsString = new ArrayList<String>();
 		partsString.add(0, "Possible parts:");
@@ -214,10 +189,7 @@ public class ClientCommunication{
 				partsString.add(i + ".Select Nothing" );
 			}
 		}
-
-
 		show(partsString);
-
 
 		int partNumber = askNumber("Which Part Number do you choose?")-1;
 		if (partNumber >=0  && partNumber < parts.size()) {
@@ -228,15 +200,9 @@ public class ClientCommunication{
 			invalidAnswerPrompt();
 			return choosePart(parts);
 		}
-
 	}
 
-	/**
-	 * Let the user indicate which role he fulfills.
-	 * @return
-	 * 			A String that represents which role the user fulfills.
-	 */
-
+	@Override
 	public String chooseRole() {
 		ArrayList<String> expected = new ArrayList<>(Arrays.asList("manager",
 				"garageholder", "worker", "custom car shop manager"));
@@ -244,15 +210,7 @@ public class ClientCommunication{
 				"What's your role: manager, garageholder, worker or custom car shop manager?", expected);
 	}
 
-	/**
-	 * Let the user indicate which task he wants to perform.
-	 * @param tasksAtWorkbench
-	 * 			ArrayList that contains Strings. Each String represents the description of one of the tasks.
-	 * @return
-	 * 			A strictly positive integer.
-	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
-	 */
-
+	@Override
 	public ITask chooseTask(List<ITask> tasksAtWorkbench) {
 		ArrayList<String> tasksString = new ArrayList<String>();
 		tasksString.add(0, "Tasks:");
@@ -270,21 +228,9 @@ public class ClientCommunication{
 			invalidAnswerPrompt();
 			return chooseTask(tasksAtWorkbench);
 		}
-
-
 	}
 
-	/**
-	 * Let the user indicate which workbench he's working at.
-	 * @param numberOfWorkbenches
-	 * 			Integer that represents how many workbenches the user can choose from.
-	 * @param workbenches
-	 * 			ArrayList that contains Strings. Each String represents the name of one of the workbenches.
-	 * @return
-	 * 			A strictly positive integer. 
-	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
-	 */
-
+	@Override
 	public int chooseWorkBench(int numberOfWorkBenches,
 			ArrayList<String> workbenches) {
 		ArrayList<String> workBenchNames = new ArrayList<>();
@@ -304,21 +250,12 @@ public class ClientCommunication{
 		}
 	}
 
-	/**
-	 * Let the user indicate how much time has passed.
-	 * @return
-	 * 			An integer representing the elapsed time (in minutes).
-	 */
-
+	@Override
 	public int getElapsedTime() {
 		return askNumber("How much time has passed? (minutes, type a negative number if this is the start of the day)");
 	}
 
-	/**
-	 * presents the user with all of his possible use cases 
-	 * and the user indicates which use case to perform
-	 */
-
+	@Override
 	public int getFlowControllerIndex(List<String> accessRights) {
 		System.out.println("Options:");
 		int i = 1;
@@ -335,11 +272,7 @@ public class ClientCommunication{
 		return index;
 	}
 
-	/**
-	 * Asks the user to enter an integer 0 < integer <= maxValue
-	 * If the answer isn't valid, the system informs the user and repeats the question,
-	 * until a valid answer is given.
-	 */
+	@Override
 	public int getIndex(int maxValue) {
 		int answer = askNumber("Please enter an integer greater than 0 and lesser than or equal to " + Integer.toString(maxValue));
 		while (answer <= 0 || answer > maxValue) {
@@ -349,12 +282,7 @@ public class ClientCommunication{
 		return answer;
 	}
 
-	/**
-	 * Get the users' name.
-	 * @return
-	 * 			A String that represents the user's name.
-	 */
-
+	@Override
 	public String getName() {
 		String answer = "";
 		while ((answer = askQuestion("Hello user, what's your name?")) == null
@@ -364,12 +292,7 @@ public class ClientCommunication{
 		return answer;
 	}
 
-	/**
-	 * Let the user indicate how many cars he wants to order.
-	 * @return
-	 * 			a positive integer representing the quantity
-	 */
-
+	@Override
 	public int getQuantity() {
 		int quantity = askNumber("How many cars do you want to order?");
 		while (quantity <= 0) {
@@ -379,27 +302,18 @@ public class ClientCommunication{
 		return quantity;
 	}
 
-	/**
-	 * Notify the user that the answer he has given is not a valid answer.
-	 */
-
+	@Override
 	public void invalidAnswerPrompt() {
 		show(new ArrayList<String>(
 				Arrays.asList("Sorry, that's not a valid response")));
 	}
 
-	/**
-	 * Notify the user that the answer he has given is not a valid user.
-	 */
-
+	@Override
 	public void invalidUserPrompt() {
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
 	}
 
-	/**
-	 * log the current user out
-	 */
-
+	@Override
 	public void logout() {
 		System.out.println("Session finished correctly.");
 	}
@@ -415,9 +329,8 @@ public class ClientCommunication{
 			System.out.println(message.get(i));
 		}
 	}
-	/**
-	 * Show the user the currently used Scheduling Algorithm and all the possible Scheduling Algorithms
-	 */
+	
+	@Override
 	public void showAlgorithms(String current, List<String> possible) {
 		List<String> currentAlgorithm = new ArrayList<String>();
 		currentAlgorithm.add("Current algorithm: " + current );
@@ -425,16 +338,12 @@ public class ClientCommunication{
 		this.showAlgorithms(possible);
 	}
 
-	/**
-	 * Notify the user that the scheduling algorithm was successfully switched.
-	 */
+	@Override
 	public void showAlgorithmSwitched(String schedulingAlgorithmType) {
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + schedulingAlgorithmType));
 	}
 
-	/**
-	 * Notify the user that the scheduling algorithm was successfully switched using the given batch.
-	 */
+	@Override
 	public void showAlgorithmSwitched(String schedulingAlgorithmType, List<VehicleOption> vehicleOptionsChosenForBatch) {
 		String batchToString = "";
 		for (VehicleOption o : vehicleOptionsChosenForBatch) {
@@ -445,17 +354,8 @@ public class ClientCommunication{
 				" with batch: " + batchToString));
 	}
 
-	/**
-	 * Show the user the assemblyline.
-	 * @param assemblyline
-	 * 			A String representing the assemblyline.
-	 * 			The String contains all the workbenches in the assemblyline 
-	 * 			and all the tasks at each workbench (with indication whether the task has been completed), 
-	 * 			each of them separated by a comma.
-	 * @param tense
-	 * 			String that indicates whether the other parameter is a current or future assemblyline.
-	 */
 
+	@Override
 	public void showAssemblyLine(IAssemblyLine assemblyLine) {
 		ArrayList<String> assemblyLineStrings = new ArrayList<String>();
 		assemblyLineStrings.add(assemblyLine.getState().toString() );
@@ -498,26 +398,7 @@ public class ClientCommunication{
 		return pendingTaskList;
 	}
 
-	/**
-	 * Show the user which benches are keeping the assemblyline from advancing.
-	 * @param notCompletedBenches
-	 * 			A list of integers. Each integer represents the number of a workbench that is blocking the assemblyline.
-	 */
-
-	public void showBlockingBenches(ArrayList<Integer> notCompletedBenches) {
-		show(new ArrayList<String>(
-				Arrays.asList("AssemblyLine can't be advanced because of workbench "
-						+ notCompletedBenches.toString())));
-	}
-
-	/**
-	 * Show the user the task he has chosen.
-	 * @param chosenTask
-	 * 			A String that represents the task. 
-	 * 			This String contains the task description, "Required actions:", and all the actions required.
-	 * 			Each of these elements are separated by a comma.
-	 */
-
+	@Override
 	public void showChosenTask(ITask chosenTask) {
 		ArrayList<String> taskStrings = new ArrayList<String>();
 		taskStrings.add("Your task: ");
@@ -532,14 +413,7 @@ public class ClientCommunication{
 		show(taskStrings);
 	}
 
-	/**
-	 * Show the user's completed orders.
-	 * @param pendingOrders
-	 * 			An ArrayList of Strings.
-	 * 			Each String in this ArrayList represents an order. 
-	 * 			It contains the quantity and the name of the model, separated by comma's.
-	 */
-
+	@Override
 	public void showCompletedOrders(List<IOrder> completedOrders) {
 		List<String> completedOrdersList = new ArrayList<String>();
 		if (!completedOrders.isEmpty()) {
@@ -553,18 +427,12 @@ public class ClientCommunication{
 					Arrays.asList("You have no completed Orders")));
 	}
 
-	/**
-	 * Show a custom order with the given estimated completion time.
-	 */
-
+	@Override
 	public void showCustomOrder(ImmutableClock time) {
 		show(new ArrayList<String>(Arrays.asList("Estimated completion time: " + time)));
 	}
 
-	/**
-	 * Show the given custom tasks and let the user choose one.
-	 */
-
+	@Override
 	public IVehicle showSpecificCustomTasks(List<IVehicle> vehicles) {
 		ArrayList<String> customString = new ArrayList<String>();
 		customString.add(0, "Possible tasks:");
@@ -585,34 +453,18 @@ public class ClientCommunication{
 		}
 	}
 
-	/**
-	 * Notify the user that the carModel he has put togehther is not a valid model.
-	 */
-
+	@Override
 	public void showInvalidModel() {
 		show(new ArrayList<String>(
 				Arrays.asList("You created an invalid model, try again!")));
 	}
 
-	/**
-	 * Shows the user there are no specification batches to switch the scheduling algorithm to.
-	 */
+	@Override
 	public void showNoBatchesAvailable() {
 		show(new ArrayList<String>(Arrays.asList("No batches available")));
 	}
 
-	/**
-	 * Show the user the order he is about to place.
-	 * @param quantity
-	 * 			An integer representing the quantity of cars the user is about to order.
-	 * @param realModel 
-	 * @param chosenParts
-	 * 			A String representing the name of the vehicleModel the user is about to order.
-	 * @param estimatedTime
-	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
-	 * 			If the estimated completion time == -1, the completion time can't be shown.
-	 */
-
+	@Override
 	public void showOrder(int quantity, VehicleSpecification model, List<VehicleOption> chosenParts,
 			ImmutableClock estimatedTime) {
 
@@ -620,6 +472,7 @@ public class ClientCommunication{
 		show(Arrays.asList("Estimated time of completion :" + estimatedTime.toString() ));
 	}
 
+	@Override
 	public void showOrder(int quantity, VehicleSpecification realModel, List<VehicleOption> chosenParts){
 		show(new ArrayList<String>(Arrays.asList("Your order:", quantity + " "
 				+ realModel.toString()  )));
@@ -630,10 +483,8 @@ public class ClientCommunication{
 		}
 		show(chosenPartsInString);
 	}
-	/**
-	 * Show the details of the given order.
-	 */
 
+	@Override
 	public void showOrderDetails(IOrder order) {
 		List<String> orderDetails = new ArrayList<>();
 		orderDetails.add("Orderdetails:");
@@ -661,14 +512,7 @@ public class ClientCommunication{
 		show(orderDetails);
 	}
 
-	/**
-	 * Show the user's pending orders.
-	 * @param pendingOrders
-	 * 			An ArrayList of Strings.
-	 * 			Each String in this ArrayList represents an order. 
-	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
-	 */
-
+	@Override
 	public void showPendingOrders(List<IOrder> pendingOrders) {
 		List<String> pendingOrdersList = new ArrayList<String>();
 		if (!pendingOrders.isEmpty()) {
@@ -682,15 +526,13 @@ public class ClientCommunication{
 					Arrays.asList("You have no pending Orders")));
 	}
 
-	/**
-	 * Notify the user that all the tasks at the workbench he's working on are completed.
-	 */
-
+	@Override
 	public void showWorkBenchCompleted() {
 		show(new ArrayList<String>(
 				Arrays.asList("All the tasks at this workbench are completed")));
 	}
 
+	@Override
 	public IAssemblyLine chooseAssemblyLine(List<IAssemblyLine> allAssemblyLines) {
 		List<String> strings = new ArrayList<>();
 
@@ -711,6 +553,7 @@ public class ClientCommunication{
 
 	}
 
+	@Override
 	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches) {
 		List<String> strings = new ArrayList<>();
 
@@ -730,6 +573,7 @@ public class ClientCommunication{
 		}
 	}
 
+	@Override
 	public String showCustomTasks(Set<String> customTasks) {
 		ArrayList<String> customString = new ArrayList<String>();
 		customString.add(0, "Possible tasks:");
@@ -750,14 +594,17 @@ public class ClientCommunication{
 		}
 	}
 
+	@Override
 	public void showAverageDays(int averageDays) {
 		show(Arrays.asList("Average vehicles produced: " + averageDays));
 	}
 
+	@Override
 	public void showMedianDays(int medianDays) {
 		show(Arrays.asList("Median vehicles produced: " + medianDays));
 	}
 
+	@Override
 	public void showDetailsDays(List<Integer> detailedDays) {
 		List<String> details = new ArrayList<>();
 		details.add("Details of the last " + detailedDays.size() + " days:");
@@ -768,16 +615,19 @@ public class ClientCommunication{
 
 	}
 
+	@Override
 	public void showAverageDelays(int averageDelays) {
 		show(Arrays.asList("Average delays: " + averageDelays));
 
 	}
 
+	@Override
 	public void showMedianDelays(int medianDelays) {
 		show(Arrays.asList("Median delays: " + medianDelays));
 
 	}
 
+	@Override
 	public void showDetailedDelays(List<Delay> detailedDelays) {
 		List<String> details = new ArrayList<>();
 		details.add("Details of the last " + detailedDelays.size() + " delays:");
@@ -787,6 +637,7 @@ public class ClientCommunication{
 		show(details);
 	}
 
+	@Override
 	public void showAlgorithms(List<String> possible) {
 		List<String> showAlgorithms = new ArrayList<String>();
 		List<String> modifiedList = this.indexList(possible);
@@ -796,6 +647,7 @@ public class ClientCommunication{
 
 	}
 
+	@Override
 	public List<String> indexList(List<String> listToBeIndexed){
 		List<String> finalResult = new ArrayList<String>();
 		int index  = 1;
@@ -806,6 +658,7 @@ public class ClientCommunication{
 		return finalResult;
 	}
 
+	@Override
 	public void showBatches(Set<Set<VehicleOption>> batches) {
 		List<String> sets = new ArrayList<String>();
 		sets.add(0, "Possible Batches:");
@@ -823,6 +676,7 @@ public class ClientCommunication{
 		this.show(sets);
 	}
 
+	@Override
 	public AssemblyLineState chooseStatus(List<AssemblyLineState> states, AssemblyLineState assemblyLineState) {
 		showStatus(assemblyLineState);
 		
@@ -838,6 +692,7 @@ public class ClientCommunication{
 		
 	}
 
+	@Override
 	public void showStatus(AssemblyLineState assemblyLineState) {
 		AssemblyLineState[] states = AssemblyLineState.values();
 		List<String> strings = new ArrayList<String>();

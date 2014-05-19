@@ -2,7 +2,7 @@ package controller;
 
 import com.google.common.base.Optional;
 
-import view.ClientCommunication;
+import view.IClientCommunication;
 import domain.facade.Facade;
 import domain.order.order.IOrder;
 import domain.users.AccessRight;
@@ -25,7 +25,7 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 	 * 			The Facade this UseCaseFlowcontroller uses to access the domain logic.
 	 */
 	public ShowOrderDetailsFlowController(AccessRight accessRight,
-			ClientCommunication clientCommunication, Facade facade) {
+			IClientCommunication clientCommunication, Facade facade) {
 		super(accessRight, clientCommunication, facade);
 	}
 
