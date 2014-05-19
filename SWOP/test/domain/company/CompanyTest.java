@@ -506,5 +506,4 @@ public class CompanyTest {
 		
 		return assemblyLines;
 	}
-
 }

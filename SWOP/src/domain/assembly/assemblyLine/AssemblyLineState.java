@@ -20,6 +20,16 @@ public enum AssemblyLineState {
 		public String toString() {
 			return "The assemblyLine is broken";
 		}
+	}, IDLE {
+		@Override
+		public String toString() {
+			return "The assemblyLine is operational (idle)";
+		}
+	}, FINISHED {
+		@Override
+		public String toString() {
+			return "The assemblyLine is operational (finished)";
+		}
 	};
 	
 	@Override

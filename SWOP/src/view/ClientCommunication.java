@@ -586,7 +586,7 @@ public class ClientCommunication implements IClientCommunication{
 
 		int customNumber = askNumber("Which Task do you choose?") -1;
 		if (customNumber >=0 && customNumber < customTasks.size()) {
-			return customString.get(customNumber+1).substring(	//TODO check of het werkt
+			return customString.get(customNumber+1).substring(	
 					customString.get(customNumber+1).indexOf(".") + 1);
 		} else {
 			invalidAnswerPrompt();

@@ -34,8 +34,7 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 
 /**
- * This is the class where the program starts running.
- * 
+ * A class responsible for the main program.
  */
 public class AssemAssist {
 
