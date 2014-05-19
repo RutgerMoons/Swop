@@ -278,33 +278,115 @@ public interface IClientCommunication {
 	 * @param 	workbenches
 	 * 			List with all the available workbenches
 	 * 
-	 * @return	The chosen 
+	 * @return	The chosen WorkBench
 	 */
 	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches);
 
+	/**
+	 * Shows all the Tasks that can be applied for a CustomOrder.
+	 * 
+	 * @param 	customTasks
+	 * 			Set with the names of all Tasks 
+	 * 
+	 * @return
+	 * 			The chosen task
+	 */
 	public String showCustomTasks(Set<String> customTasks);
 
+	/**
+	 * Show the average of produced Vehicles in a day.
+	 * 
+	 * @param 	averageDays
+	 * 			The value 
+	 */
 	public void showAverageDays(int averageDays);
 
+	/**
+	 * Show the median of produced Vehicles in a day.
+	 * 
+	 * @param 	medianDays
+	 * 			The value
+	 */
 	public void showMedianDays(int medianDays);
 
+	/**
+	 * Show some days in details.
+	 * 
+	 * @param 	detailedDays
+	 * 			A list with all the details, meaning the value for each day
+	 */
 	public void showDetailsDays(List<Integer> detailedDays);
 
+	/**
+	 * Show the average of Delays.
+	 * 
+	 * @param 	averageDelays
+	 * 			The value 
+	 */
 	public void showAverageDelays(int averageDelays);
 
+	/**
+	 * Show the median of Delays.
+	 * 
+	 * @param 	medianDelays
+	 * 			The value
+	 */
 	public void showMedianDelays(int medianDelays);
 
+	/**
+	 * Show the latest Delays in detail.
+	 * 
+	 * @param 	detailedDelays
+	 * 			A list with all the Delays
+	 */
 	public void showDetailedDelays(List<Delay> detailedDelays);
 
+	/**
+	 * Show all possible SchedulingAlgorithms.
+	 * 
+	 * @param 	possible
+	 * 			A list with the names of the possible Scheduling Algorithms
+	 */
 	public void showAlgorithms(List<String> possible);
 
+	/**
+	 * Method to index a given list.
+	 * 
+	 * @param 	listToBeIndexed
+	 * 			List that needs to be indexed
+	 * 
+	 * @return	returns the same list but then indexed
+	 */
 	public List<String> indexList(List<String> listToBeIndexed);
 
+	/**
+	 * Show all the options for SchedulingAlgorithmBatch.
+	 * 
+	 * @param 	batches
+	 * 			A powerset with all the possible sets of VehicleOptions
+	 */
 	public void showBatches(Set<Set<VehicleOption>> batches);
 
+	/**
+	 * Let the user choose the new AssemblyLineState for an AssemblyLine.
+	 * 
+	 * @param 	states
+	 * 			The possible states
+	 * 
+	 * @param 	assemblyLineState
+	 * 			The current state of an AssemblyLine
+	 * 
+	 * @return	The chosen AssemblyLineState
+	 */
 	public AssemblyLineState chooseStatus(List<AssemblyLineState> states,
 			AssemblyLineState assemblyLineState);
 
+	/**
+	 * Show the current state of the AssemblyLine.
+	 * 
+	 * @param 	assemblyLineState
+	 * 			The state of the AssemblyLine
+	 */
 	public void showStatus(AssemblyLineState assemblyLineState);
 
 }
