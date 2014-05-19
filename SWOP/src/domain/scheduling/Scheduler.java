@@ -115,9 +115,6 @@ public class Scheduler implements ObservesClock {
 	 * 
 	 * @param 	currentTime
 	 * 			The new value for the current time
-	 * 
-	 * @throws 	IllegalArgumentException
-	 * 			Exception is thrown when currentTime is null
 	 */
 	@Override
 	public void advanceTime(ImmutableClock currentTime) {}

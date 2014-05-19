@@ -18,7 +18,6 @@ import com.google.common.base.Optional;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.facade.Facade;
 import domain.job.job.IJob;
@@ -137,7 +136,7 @@ public class SchedulingAlgorithmTest {
 		ImmutableClock deadline = new ImmutableClock(10, 800);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob job = new Job(customOrder);
-		scheduler.addJobToAlgorithm(job);;
+		scheduler.addJobToAlgorithm(job, new ArrayList<Optional<IJob>>());;
 	}
 	
 	@Test
@@ -149,7 +148,7 @@ public class SchedulingAlgorithmTest {
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
-		scheduler.addJobToAlgorithm(job);
+		scheduler.addJobToAlgorithm(job, new ArrayList<Optional<IJob>>());
 	}
 	
 	@Test
@@ -180,7 +179,7 @@ public class SchedulingAlgorithmTest {
 		scheduler.advanceTime(new ImmutableClock(0,540));
 	}
 	
-	@Test (expected = IllegalArgumentException.class)
+	@Test
 	public void advanceTimeTest2(){
 		scheduler.advanceTime(null);
 	}
@@ -204,7 +203,7 @@ public class SchedulingAlgorithmTest {
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
-		scheduler.addJobToAlgorithm(job);
+		scheduler.addJobToAlgorithm(job, new ArrayList<Optional<IJob>>());
 		assertEquals(180, job.getOrder().getEstimatedTime().getMinutes());
 	}
 	
@@ -220,12 +219,12 @@ public class SchedulingAlgorithmTest {
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); // 420 minuten op de band
 		IJob job1 = new Job(order1);
 		IJob job2 = new Job(order1);
-		try {
-			scheduler.addJobToAlgorithm(job1);
-			scheduler.addJobToAlgorithm(job2);
-			Optional<IJob> job = scheduler.retrieveNextJob();
+		//try {
+			scheduler.addJobToAlgorithm(job1, new ArrayList<Optional<IJob>>());
+			scheduler.addJobToAlgorithm(job2, new ArrayList<Optional<IJob>>());
+			Optional<IJob> job = scheduler.retrieveNextJob(new ArrayList<Optional<IJob>>());
 			assertEquals(job1, job.get());
-		} catch (NoSuitableJobFoundException e1) {}
+		//} catch (NoSuitableJobFoundException e1) {}
 	}
 	
 	/*
