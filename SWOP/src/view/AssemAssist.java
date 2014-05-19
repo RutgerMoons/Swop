@@ -38,13 +38,13 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
  * 
  */
 public class AssemAssist {
-	
+
 	private static Facade facade;
 	private static Company company;
 	private static ArrayList<UseCaseFlowController> flowControllers;
 	private static UserFlowController userFlowController;
 	private static IClientCommunication clientCommunication;
-	
+
 
 	/**
 	 * Initializes all data structures that the program needs from the start.
@@ -67,19 +67,19 @@ public class AssemAssist {
 				customCatalogue.addModel(model, customModel);
 			}
 		}
-		
+
 		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
 		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
-		
+
 		catalogue.initializeCatalogue(filler.getInitialModels());
 		Clock clock = new Clock(360);
 		clock.advanceTime(360);
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
-		
+
 		//TODO clockobserver
 		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);
-		
+
 		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
 		clientCommunication = new ClientCommunication();
 		facade = new Facade(company);
@@ -90,28 +90,28 @@ public class AssemAssist {
 
 	private static List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
 		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
-		
+
 		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
 		for(WorkBenchType type: WorkBenchType.values()){
 			timeAtWorkBench.put(type, 60);
 		}
 		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench, new HashSet<VehicleOption>());
-		
-		
+
+
 		Set<VehicleSpecification> specifications = new HashSet<>();
 		specifications.add(catalogue.getCatalogue().get("model A"));
 		specifications.add(catalogue.getCatalogue().get("model B"));
 		specifications.add(customSpecification);
 		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
-		
-		
+
+
 		specifications = new HashSet<>();
 		specifications.add(catalogue.getCatalogue().get("model A"));
 		specifications.add(catalogue.getCatalogue().get("model B"));
 		specifications.add(catalogue.getCatalogue().get("model C"));
 		specifications.add(customSpecification);
 		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
-		
+
 		specifications = new HashSet<>();
 		specifications.add(catalogue.getCatalogue().get("model A"));
 		specifications.add(catalogue.getCatalogue().get("model B"));
@@ -120,61 +120,45 @@ public class AssemAssist {
 		specifications.add(catalogue.getCatalogue().get("model Y"));
 		specifications.add(customSpecification);
 		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
-		
-		Set<String> responsibilities = new HashSet<>();
-		responsibilities.add("Body");
-		responsibilities.add("Color");
-		WorkBench body1 = new WorkBench(responsibilities, WorkBenchType.BODY);
-		WorkBench body2 = new WorkBench(responsibilities, WorkBenchType.BODY);
-		WorkBench body3 = new WorkBench(responsibilities, WorkBenchType.BODY);
-		
-		responsibilities = new HashSet<>();
-		responsibilities.add("Engine");
-		responsibilities.add("Gearbox");
-		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
-		WorkBench drivetrain2 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
-		WorkBench drivetrain3 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
-		
-		responsibilities = new HashSet<>();
-		responsibilities.add("Seat");
-		responsibilities.add("Airco");
-		responsibilities.add("Spoiler");
-		responsibilities.add("Wheel");
-		WorkBench accessories1 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
-		WorkBench accessories2 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
-		WorkBench accessories3 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
-		
-		responsibilities = new HashSet<>();
-		responsibilities.add("Storage");
-		responsibilities.add("Protection");
-		WorkBench cargo = new WorkBench(responsibilities, WorkBenchType.CARGO);
-		
-		responsibilities = new HashSet<>();
-		responsibilities.add("Certification");
-		WorkBench certificiation = new WorkBench(responsibilities, WorkBenchType.CERTIFICATION);
-		
+
+		WorkBench body1 = new WorkBench( WorkBenchType.BODY);
+		WorkBench body2 = new WorkBench( WorkBenchType.BODY);
+		WorkBench body3 = new WorkBench( WorkBenchType.BODY);
+
+		WorkBench drivetrain1 = new WorkBench( WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain2 = new WorkBench( WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain3 = new WorkBench( WorkBenchType.DRIVETRAIN);
+
+		WorkBench accessories1 = new WorkBench( WorkBenchType.ACCESSORIES);
+		WorkBench accessories2 = new WorkBench( WorkBenchType.ACCESSORIES);
+		WorkBench accessories3 = new WorkBench( WorkBenchType.ACCESSORIES);
+
+		WorkBench cargo = new WorkBench( WorkBenchType.CARGO);
+
+		WorkBench certificiation = new WorkBench( WorkBenchType.CERTIFICATION);
+
 		line1.addWorkBench(body1);
 		line1.addWorkBench(drivetrain1);
 		line1.addWorkBench(accessories1);
-		
+
 		line2.addWorkBench(body2);
 		line2.addWorkBench(drivetrain2);
 		line2.addWorkBench(accessories2);
-		
+
 		line3.addWorkBench(body3);
 		line3.addWorkBench(cargo);
 		line3.addWorkBench(drivetrain3);
 		line3.addWorkBench(accessories3);
 		line3.addWorkBench(certificiation);
-		
+
 		assemblyLines.add(line1);
 		assemblyLines.add(line2);
 		assemblyLines.add(line3);
-		
+
 		line1.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		line2.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		line3.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
-		
+
 		return assemblyLines;
 	}
 
