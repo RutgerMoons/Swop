@@ -43,15 +43,13 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Scenario that test the output for the use case: Adapt Scheduling Algorithm.
+ * Scenario that tests the output for the use case: Adapt Scheduling Algorithm.
  *
  */
 public class AdaptSchedulingAlgorithmScenario {
 
 	private Facade facade;
 	private Company company;
-	private Set<BindingRestriction> bindingRestrictions;
-	private Set<OptionalRestriction> optionalRestrictions;
 	
 	/**
 	 * Initialize a Facade and a Company together with all the attributes they need.
@@ -60,11 +58,121 @@ public class AdaptSchedulingAlgorithmScenario {
 	public void initialize(){
 		this.initializeCompany();
 		facade = new Facade(company);
-		AccessRight accessRight = AccessRight.SWITCH_SCHEDULING_ALGORITHM;
+		facade.createAndAddUser("jef", "manager");
+		facade.login("jef");
+	}
+	
+	/**
+	 * Test the use case (switching to the fifo algorithm):
+	 * 		1. the system shows the available algorithms
+	 * 		2. the fifo algorithm is selected, so the system applies this new algorithm
+	 */
+	@Test
+	public void testUseCaseToFifo() {
+		//initially, the selected algorithm should already be the fifo algorithm
+		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("fifo"));
+		
+		//change the algorithm to the batch algorithm, so later on it's clear the algorithm was changed to fifo
+		List<VehicleOption> batchList= new ArrayList<>();
+		SchedulingAlgorithmCreatorBatch batch = new SchedulingAlgorithmCreatorBatch(batchList);
+		facade.switchToSchedulingAlgorithm(batch);
+		assertNotNull(facade);
+		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("batch"));
+		
+		//test the use case (switching to the fifo algorithm)
+		//1.the system shows the availiable algorithms
+		//	--> we want "Batch" and "Fifo" to be returned in the list we get from the Facade
+		List<String> possible = facade.getPossibleSchedulingAlgorithms();
+		assertEquals(2,possible.size());
+		assertTrue(possible.contains("Batch"));
+		assertTrue(possible.contains("Fifo"));
+		
+		//2.the fifo algorithm is selected
+		//	--> we want the current scheduling algorithm to be the fifo algorithm
+		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();
+		facade.switchToSchedulingAlgorithm(fifo);
+		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("fifo"));
+		assertNotNull(facade);
+	}
+	
+	/**
+	 * Test the alternate flow (switching to the batch algorithm):
+	 * 		1. the system shows a list of the sets of vehicle options for which more than 3 orders are pending in the production queue. 
+	 * 			a)there are no sets available
+	 * 			b)the system gives the sets of options
+	 * 		2. (only if in step 1 'b' applies) one of the sets from the previous sets is selected, and the algorithm is changed to batch
+	 */
+	@Test
+	public void testUseCaseToBatch(){
+		//initially, the selected algorithm should be the fifo algorithm
+		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("fifo"));
+		
+		//test the use case (switching to the fifo algorithm)
+		//1. get the sets  of vehicle options
+		//		a) there are no sets available
+		//			--> this is what's expected, because there are no pending orders yet
+		Set<Set<VehicleOption>> batches = facade.getAllVehicleOptionsInPendingOrders();
+		assertTrue(batches.isEmpty());
+		
+		//make it so that 3 pendingorders are in the system with one VehicleOption that's the same
+		VehicleOption option = new VehicleOption("black", VehicleOptionCategory.COLOR);
+		VehicleSpecification specification = company.getVehicleSpecificationFromCatalogue("model A");
+		
+		//1
+		company.createNewVehicle(specification);
+		
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.BODY));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.SEATS));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
+		company.addPartToModel(option);
+		
+		company.processOrder(1);
+		
+		//2
+		company.createNewVehicle(specification);
+		
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.BODY));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.SEATS));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
+		company.addPartToModel(option);
+		
+		company.processOrder(1);
+		
+		//3
+		company.createNewVehicle(specification);
+		
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.BODY));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.SEATS));
+		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
+		company.addPartToModel(option);
+		
+		company.processOrder(1);
+		
+		//		b)the system gives the sets of options
+		//			--> in this case, it'll be one set with one VehicleOption
+		Set<Set<VehicleOption>> batchOptions = facade.getAllVehicleOptionsInPendingOrders();
+		List<Set<VehicleOption>> batchOptionsList = new ArrayList<Set<VehicleOption>>(batchOptions);
+		assertEquals(1,batchOptions.size());
+		assertTrue(batchOptionsList.get(0).contains(option));
+		
+		//2.the batch algorithm is selected
+		//	--> we want the current scheduling algorithm to be the batch algorithm
+		List<VehicleOption> batchList = new ArrayList<VehicleOption>(batchOptionsList.get(0));
+		SchedulingAlgorithmCreatorBatch batch = new SchedulingAlgorithmCreatorBatch(batchList);
+		facade.switchToSchedulingAlgorithm(batch);
+		assertNotNull(facade);
+		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("batch"));
 	}
 	
 	private void initializeCompany(){
-		this.initializeRestrictions();
+		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
+		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
 
 		CustomVehicleCatalogue customCatalogue = new CustomVehicleCatalogue();
 		CustomVehicleCatalogueFiller customCarModelFiller = new CustomVehicleCatalogueFiller();
@@ -84,44 +192,10 @@ public class AdaptSchedulingAlgorithmScenario {
 		clock.advanceTime(360);
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
-		
-		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);
+		ImmutableClock immutableClock = new ImmutableClock(0, 0);
+		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, immutableClock, catalogue);
 		
 		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
-	}
-	
-	private void initializeRestrictions(){
-		bindingRestrictions = new HashSet<>();
-		optionalRestrictions = new HashSet<>();
-		
-		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("platform truck", VehicleOptionCategory.BODY), new VehicleOption("heavy duty", VehicleOptionCategory.WHEEL)));
-		
-		Set<VehicleOption> parts = new HashSet<>();
-		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		
-		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
-		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
-		
-		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
-		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
-	
-		parts.add(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
-		
-		parts.add(new VehicleOption("leather white", VehicleOptionCategory.SEATS));
-		parts.add(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
-		
-		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
-		
-		parts.add(new VehicleOption("winter", VehicleOptionCategory.WHEEL));
-		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
-		
-		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
-		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 	}
 	
 	private List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
@@ -131,7 +205,8 @@ public class AdaptSchedulingAlgorithmScenario {
 		for(WorkBenchType type: WorkBenchType.values()){
 			timeAtWorkBench.put(type, 60);
 		}
-		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench);
+		Set<VehicleOption> obligatory = new HashSet<>();
+		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench,obligatory);
 		
 		
 		Set<VehicleSpecification> specifications = new HashSet<>();
@@ -160,34 +235,34 @@ public class AdaptSchedulingAlgorithmScenario {
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("Body");
 		responsibilities.add("Color");
-		WorkBench body1 = new WorkBench(responsibilities, WorkBenchType.BODY);
-		WorkBench body2 = new WorkBench(responsibilities, WorkBenchType.BODY);
-		WorkBench body3 = new WorkBench(responsibilities, WorkBenchType.BODY);
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		WorkBench body2 = new WorkBench(WorkBenchType.BODY);
+		WorkBench body3 = new WorkBench(WorkBenchType.BODY);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Engine");
 		responsibilities.add("Gearbox");
-		WorkBench drivetrain1 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
-		WorkBench drivetrain2 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
-		WorkBench drivetrain3 = new WorkBench(responsibilities, WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain1 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain2 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain3 = new WorkBench(WorkBenchType.DRIVETRAIN);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Seat");
 		responsibilities.add("Airco");
 		responsibilities.add("Spoiler");
 		responsibilities.add("Wheel");
-		WorkBench accessories1 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
-		WorkBench accessories2 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
-		WorkBench accessories3 = new WorkBench(responsibilities, WorkBenchType.ACCESSORIES);
+		WorkBench accessories1 = new WorkBench(WorkBenchType.ACCESSORIES);
+		WorkBench accessories2 = new WorkBench(WorkBenchType.ACCESSORIES);
+		WorkBench accessories3 = new WorkBench(WorkBenchType.ACCESSORIES);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Storage");
 		responsibilities.add("Protection");
-		WorkBench cargo = new WorkBench(responsibilities, WorkBenchType.CARGO);
+		WorkBench cargo = new WorkBench(WorkBenchType.CARGO);
 		
 		responsibilities = new HashSet<>();
 		responsibilities.add("Certification");
-		WorkBench certificiation = new WorkBench(responsibilities, WorkBenchType.CERTIFICATION);
+		WorkBench certificiation = new WorkBench(WorkBenchType.CERTIFICATION);
 		
 		line1.addWorkBench(body1);
 		line1.addWorkBench(drivetrain1);
@@ -212,40 +287,5 @@ public class AdaptSchedulingAlgorithmScenario {
 		line3.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		
 		return assemblyLines;
-	}
-	
-	/**
-	 * Test the use case (switching to the fifo algorithm):
-	 * 		1. the system shows the available algorithms
-	 * 		2. the fifo algorithm is selected, so the system applies this new algorithm
-	 */
-	@Test
-	public void testUseCaseToFifo() {
-		//initially, the sleected algorithm should already be the fifo algorithm
-		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("fifo"));
-		
-		//change the algorithm to the batch algorithm, so later on it's clear the algorithm was changed to fifo
-		List batchList= new ArrayList();
-		SchedulingAlgorithmCreatorBatch batch = new SchedulingAlgorithmCreatorBatch(batchList);
-		facade.switchToSchedulingAlgorithm(batch);
-		assertNotNull(facade);
-		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("batch"));
-		
-		//test the use case (switching to the fifo algorithm)
-		//1.the system shows the availiable algorithms
-		List<String> possible = facade.getPossibleSchedulingAlgorithms();
-		
-		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();
-		facade.switchToSchedulingAlgorithm(fifo);
-		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("fifo"));
-		assertNotNull(facade);
-	}
-	
-	/**
-	 * 
-	 */
-	@Test
-	public void testUseCaseToBatch(){
-		
 	}
 }
