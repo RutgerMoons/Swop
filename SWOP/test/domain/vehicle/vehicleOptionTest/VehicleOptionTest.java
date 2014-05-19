@@ -28,6 +28,11 @@ public class VehicleOptionTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidArgument2() {
+		new VehicleOption(null, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidArgument3() {
 		new VehicleOption("", VehicleOptionCategory.AIRCO);
 	}
 	
@@ -66,7 +71,7 @@ public class VehicleOptionTest {
 		assertEquals("Color", new VehicleOption("manual", VehicleOptionCategory.COLOR).getTaskDescription());
 		assertEquals("Engine", new VehicleOption("manual", VehicleOptionCategory.ENGINE).getTaskDescription());
 		assertEquals("Gearbox", new VehicleOption("manual", VehicleOptionCategory.GEARBOX).getTaskDescription());
-		assertEquals("Seat", new VehicleOption("manual", VehicleOptionCategory.SEATS).getTaskDescription());
+		assertEquals("Seats", new VehicleOption("manual", VehicleOptionCategory.SEATS).getTaskDescription());
 		assertEquals("Spoiler", new VehicleOption("manual", VehicleOptionCategory.SPOILER).getTaskDescription());
 		assertEquals("Wheel", new VehicleOption("manual", VehicleOptionCategory.WHEEL).getTaskDescription());
 	}

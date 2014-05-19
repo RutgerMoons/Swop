@@ -144,7 +144,7 @@ public class Company {
 	 * 			Thrown when one of the arguments is null
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock time){
-		if(assemblyLine==null || workbench==null || task==null || clock==null){
+		if(assemblyLine==null || workbench==null || task==null || time==null){
 			throw new IllegalArgumentException();
 		}
 		int currentAmountOfMinutesAtScheduler = this.workloadDivider.completeChosenTaskAtChosenWorkBench(

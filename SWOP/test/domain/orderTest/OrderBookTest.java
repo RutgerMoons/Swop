@@ -130,6 +130,14 @@ public class OrderBookTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test4(){
+		StandardOrder order = new StandardOrder("mario", model1, 1, new ImmutableClock(0, 0));
+		order.completeCar();
+		orderBook.updateOrderBook(order);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test5(){
+		
 		orderBook.updateOrderBook(null);
 	}
 	
@@ -167,4 +175,10 @@ public class OrderBookTest {
 		orderBook.updateCompletedOrder(null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddIllegalOrder(){
+		StandardOrder order = new StandardOrder("mario", model1, 1, new ImmutableClock(0, 0));
+		order.completeCar();
+		orderBook.addOrder(order);
+	}
 }

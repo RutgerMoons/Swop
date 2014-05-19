@@ -15,6 +15,10 @@ public class LogHistoryDaysTest {
 		history = new LogHistoryDays(amountOfDays);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalConstructor(){
+		new LogHistoryDays(-1);
+	}
 	@Test
 	public void shiftTest1(){
 		for(int i = 0; i < 4;i++){

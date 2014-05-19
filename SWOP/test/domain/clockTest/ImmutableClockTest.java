@@ -1,6 +1,7 @@
 package domain.clockTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -9,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.clock.ImmutableClock;
+import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class ImmutableClockTest {
 
@@ -110,11 +112,24 @@ public class ImmutableClockTest {
 	@Test
 	public void equalsTest1(){
 		ImmutableClock clock = new ImmutableClock(1,1);
-		assertTrue(clock.equals(clock));
-		ImmutableClock clock1 = new ImmutableClock(1,2);
-		assertFalse(clock.equals(clock1));
-		ImmutableClock clock3 = new ImmutableClock(1,1);
-		assertTrue(clock.equals(clock3));
+		assertEquals(clock, clock);
+		assertEquals(clock.hashCode(), clock.hashCode());
+		assertNotEquals(clock, null);
+		assertNotEquals(clock, VehicleOptionCategory.AIRCO);
+		
+		ImmutableClock clock2 = new ImmutableClock(0, 1);
+		assertNotEquals(clock, clock2);
+		assertNotEquals(clock.hashCode(), clock2.hashCode());
+		
+		clock2 = new ImmutableClock(1, 2);
+		assertNotEquals(clock, clock2);
+		assertNotEquals(clock.hashCode(), clock2.hashCode());
+		
+		clock2 = new ImmutableClock(1, 1);
+		assertEquals(clock, clock2);
+		assertEquals(clock.hashCode(), clock2.hashCode());
+		
+		
 	}
 	
 	@Test

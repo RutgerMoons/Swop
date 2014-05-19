@@ -1,6 +1,7 @@
 package domain.orderTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -130,10 +131,15 @@ public class CustomOrderTest {
 		String line = System.lineSeparator();
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		
+		assertEquals("2 Spoiler: low"+line+ "Deadline: 5 days and 0 hours and 20 minutes" + line, order1.toString());
+		
 		order1.setEstimatedTime(new ImmutableClock(1, 100));
 		assertEquals(
 				"2 Spoiler: low"+line+ "Deadline: 5 days and 0 hours and 20 minutes" + line+" Estimated completion time: 1 days and 1 hours and 40 minutes",
 				order1.toString());
+		order1.completeCar();
+		order1.completeCar();
+		assertEquals("2 Spoiler: low"+line, order1.toString());
 	}
 	
 	@Test
@@ -204,5 +210,52 @@ public class CustomOrderTest {
 	public void testGetVehicleSpecification(){
 		CustomOrder order = new CustomOrder("jos", model, 1, orderTime, deadline);
 		assertEquals("custom", order.getVehicleSpecification().getDescription());
+	}
+	
+	@Test
+	public void testEquals(){
+		CustomOrder order = new CustomOrder("jos", model, 1, orderTime, deadline);
+		assertEquals(order, order);
+		assertEquals(order.hashCode(), order.hashCode());
+		
+		assertNotEquals(order, VehicleOptionCategory.AIRCO);
+		assertNotEquals(order, null);
+		
+		
+		CustomOrder order2 = new CustomOrder("jos", model, 1, orderTime, new ImmutableClock(10, 10));
+		assertNotEquals(order, order2);
+		assertNotEquals(order.hashCode(), order2.hashCode());
+		
+		order2.setDeadline(order.getDeadline());
+		order2.setEstimatedTime(new ImmutableClock(10, 10));
+		assertNotEquals(order, order2);
+		assertNotEquals(order.hashCode(), order2.hashCode());
+		
+		order.setEstimatedTime(new ImmutableClock(10, 9));
+		assertNotEquals(order, order2);
+		assertNotEquals(order.hashCode(), order2.hashCode());
+		
+		order.setEstimatedTime(new ImmutableClock(10, 10));
+		
+		CustomOrder order3 = new CustomOrder("jos", model, 2, new ImmutableClock(20, 20), new ImmutableClock(10, 10));
+		order3.setDeadline(order2.getDeadline());
+		order3.setEstimatedTime(order2.getEstimatedTime());
+		assertNotEquals(order, order3);
+		assertNotEquals(order.hashCode(), order3.hashCode());
+		
+		order3 = new CustomOrder("jos", model, 2, orderTime, deadline);
+		order3.completeCar();
+		order3.setDeadline(order2.getDeadline());
+		order3.setEstimatedTime(order2.getEstimatedTime());
+		assertNotEquals(order, order3);
+		assertNotEquals(order.hashCode(), order3.hashCode());
+		
+		
+		order3 = new CustomOrder("jos", model, 1, orderTime, deadline);
+		order3.setDeadline(order.getDeadline());
+		order3.setEstimatedTime(order.getEstimatedTime());
+		assertEquals(order, order3);
+		assertEquals(order.hashCode(), order3.hashCode());
+		
 	}
 }
