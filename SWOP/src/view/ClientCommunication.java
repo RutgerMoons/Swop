@@ -308,6 +308,7 @@ public class ClientCommunication implements IClientCommunication{
 				Arrays.asList("Sorry, that's not a valid response")));
 	}
 
+
 	@Override
 	public void invalidUserPrompt() {
 		show(new ArrayList<String>(Arrays.asList("You don't have any rights")));
@@ -329,7 +330,7 @@ public class ClientCommunication implements IClientCommunication{
 			System.out.println(message.get(i));
 		}
 	}
-	
+
 	@Override
 	public void showAlgorithms(String current, List<String> possible) {
 		List<String> currentAlgorithm = new ArrayList<String>();
@@ -353,7 +354,6 @@ public class ClientCommunication implements IClientCommunication{
 		show(Arrays.asList("Scheduling algorithm succesfully changed to: " + schedulingAlgorithmType + 
 				" with batch: " + batchToString));
 	}
-
 
 	@Override
 	public void showAssemblyLine(IAssemblyLine assemblyLine) {
@@ -491,7 +491,7 @@ public class ClientCommunication implements IClientCommunication{
 		orderDetails.add(order.getQuantity() + " "
 				+ order.getDescription());
 
-		String carDetails = "Chosen carOptions: ";
+		String carDetails = "Chosen vehicle options: ";
 		for (VehicleOptionCategory category : order.getDescription()
 				.getVehicleOptions().keySet()) {
 			carDetails += order.getDescription().getVehicleOptions()

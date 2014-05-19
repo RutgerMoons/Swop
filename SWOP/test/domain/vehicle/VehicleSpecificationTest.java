@@ -1,6 +1,8 @@
 package domain.vehicle;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.assembly.workBench.WorkBenchType;
-import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -47,7 +48,10 @@ public class VehicleSpecificationTest {
 		timeAtWorkBench.put(WorkBenchType.BODY, 60);
 		timeAtWorkBench.put(WorkBenchType.CARGO, 60);
 		timeAtWorkBench.put(WorkBenchType.CERTIFICATION, 120);
-		template = new VehicleSpecification("model", parts, timeAtWorkBench);
+		Set<VehicleOption> options = new HashSet<>();
+		options.add(new VehicleOption("Cargo", VehicleOptionCategory.CARGO));
+		options.add(new VehicleOption("Certification", VehicleOptionCategory.CERTIFICATION));
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, options);
 	}
 
 	@Test
@@ -63,22 +67,27 @@ public class VehicleSpecificationTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testInvalidConstructor(){
-		new VehicleSpecification(null, null, null);
+		new VehicleSpecification(null, null, null, null);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testInvalidConstructor2(){
-		new VehicleSpecification("", null, null);
+		new VehicleSpecification("", null, null, null);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testInvalidConstructor3(){
-		new VehicleSpecification("test", null, new HashMap<WorkBenchType, Integer>());
+		new VehicleSpecification("test", null, new HashMap<WorkBenchType, Integer>(), null);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testInvalidConstructor4(){
-		new VehicleSpecification("test", new HashSet<VehicleOption>(), null);
+		new VehicleSpecification("test", new HashSet<VehicleOption>(), null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testInvalidConstructor5(){
+		new VehicleSpecification("test", null, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 	}
 	
 	@Test
@@ -96,11 +105,11 @@ public class VehicleSpecificationTest {
 		assertNotEquals(template, null);
 		assertNotEquals(template, VehicleOptionCategory.AIRCO);
 		
-		VehicleSpecification specification1 = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification specification1 = new VehicleSpecification("test", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		assertNotEquals(template, specification1);
 		assertNotEquals(template.hashCode(), specification1.hashCode());
 		
-		VehicleSpecification specification2 = new VehicleSpecification("model", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification specification2 = new VehicleSpecification("model", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		assertNotEquals(template, specification2);
 		assertNotEquals(template.hashCode(), specification2.hashCode());
 		
@@ -127,12 +136,20 @@ public class VehicleSpecificationTest {
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		
-		VehicleSpecification specification3 = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification specification3 = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		assertNotEquals(template, specification3);
 		assertNotEquals(template.hashCode(), specification3.hashCode());
 		
-		VehicleSpecification specification4 = new VehicleSpecification("model", parts, template.getTimeAtWorkBench());
+		VehicleSpecification specification4 = new VehicleSpecification("model", parts, template.getTimeAtWorkBench(), new HashSet<VehicleOption>());
 		assertEquals(template, specification4);
 		assertEquals(template.hashCode(), specification4.hashCode());
+	}
+	
+	
+	@Test
+	public void testObligatory(){
+		assertEquals(2, template.getObligatoryVehicleOptions().size());
+		assertTrue(template.getObligatoryVehicleOptions().containsValue(new VehicleOption("Cargo", VehicleOptionCategory.CARGO)));
+		assertTrue(template.getObligatoryVehicleOptions().containsValue(new VehicleOption("Certification", VehicleOptionCategory.CERTIFICATION)));
 	}
 }

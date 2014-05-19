@@ -45,14 +45,14 @@ public class OrderBookTest {
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		
-		VehicleSpecification specification = new VehicleSpecification("test", parts, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification specification = new VehicleSpecification("test", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		model1 = new Vehicle(specification);
 		
 		Set<VehicleOption> parts2 = new HashSet<>();
 		parts2.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		parts2.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		parts2.add(new VehicleOption("6 Speed Manual", VehicleOptionCategory.GEARBOX));
-		VehicleSpecification specification2 = new VehicleSpecification("test", parts2, new HashMap<WorkBenchType, Integer>());
+		VehicleSpecification specification2 = new VehicleSpecification("test", parts2, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		model2 = new Vehicle(specification2);
 }
 

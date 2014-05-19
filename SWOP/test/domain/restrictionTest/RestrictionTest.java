@@ -34,7 +34,7 @@ public class RestrictionTest {
 		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
 		
 		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
-		catalogue.addModel(new VehicleSpecification("model A", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>()));
+		catalogue.addModel(new VehicleSpecification("model A", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>()));
 		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
 		
 		Set<VehicleOption> parts = new HashSet<>();
@@ -59,7 +59,10 @@ public class RestrictionTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		Set<VehicleOption> obligatory = new HashSet<VehicleOption>();
+		obligatory.add(new VehicleOption("Cargo", VehicleOptionCategory.CARGO));
+		obligatory.add(new VehicleOption("Certification", VehicleOptionCategory.CERTIFICATION));
+		VehicleSpecification template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), obligatory);
 		picker.setNewModel(template);
 		
 	}
@@ -69,6 +72,8 @@ public class RestrictionTest {
 		assertNotNull(picker.getBindingRestrictions());
 		assertNotNull(picker.getOptionalRestrictions());
 		assertNotNull(picker.getVehicleSpecificationCatalogue());
+		assertTrue(picker.getModel().getVehicleOptions().containsValue(new VehicleOption("Cargo", VehicleOptionCategory.CARGO)));
+		assertTrue(picker.getModel().getVehicleOptions().containsValue(new VehicleOption("Certification", VehicleOptionCategory.CERTIFICATION)));
 	}
 
 	@Test

@@ -273,21 +273,21 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 	 * Returns a powerset with all the VehicleOptions or sets of 
 	 * VehicleOptions that occur in three or more pending Orders.
 	 */
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
 		HashSet<VehicleOption> set = new HashSet<>();
 		ArrayList<IJob> jobs = new ArrayList<>();
 		for (AssemblyLine assemblyLine : this.assemblyLines) {
 			jobs.addAll(assemblyLine.getStandardJobs());
 		}
 
-		// get all the CarOptions that occur in the pending orders
+		// get all the VehicleOptions that occur in the pending orders
 		for (IJob job : jobs) {
 			for (VehicleOption o : job.getVehicleOptions()) {
 				set.add(o);
 			}
 		}
 
-		// get all the CarOptions that occur in the pending orders 3 or more times
+		// get all the VehicleOptions that occur in the pending orders 3 or more times
 		HashSet<VehicleOption> threeOrMoreTimes = new HashSet<>();
 		for (VehicleOption option : set) {
 			int counter = 0;
@@ -301,7 +301,7 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 			}
 		} 
 
-		// get all the sets of CarOptions that occur in the pending orders 3 or more times
+		// get all the sets of VehicleOptions that occur in the pending orders 3 or more times
 		Set<Set<VehicleOption>> toReturn = new HashSet<Set<VehicleOption>>();
 		Set<Set<VehicleOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
 		for (Set<VehicleOption> subset : powerSet) {

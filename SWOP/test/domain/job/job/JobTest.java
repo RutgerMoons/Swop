@@ -38,7 +38,7 @@ public class JobTest {
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		Map<WorkBenchType, Integer> time = new HashMap<WorkBenchType, Integer>();
 		time.put(WorkBenchType.ACCESSORIES, 10);
-		VehicleSpecification template = new VehicleSpecification("model", parts, time);
+		VehicleSpecification template = new VehicleSpecification("model", parts, time, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));

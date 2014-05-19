@@ -18,7 +18,6 @@ import com.google.common.base.Optional;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.facade.Facade;
 import domain.job.job.IJob;
@@ -230,7 +229,7 @@ public class SchedulingAlgorithmTest {
 	
 	/*
 	@Test
-	public void getAllCarOptionsInPendingOrdersTest() {
+	public void getAllVehicleOptionsInPendingOrdersTest() {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
 		VehicleSpecification template = new VehicleSpecification("model", parts, this.timeAtWorkBench);
@@ -254,7 +253,7 @@ public class SchedulingAlgorithmTest {
 			line.convertStandardOrderToJob(order);
 		} catch (UnmodifiableException e) { }
 		
-		Set<Set<VehicleOption>> powerSet = line.getAllCarOptionsInPendingOrders();
+		Set<Set<VehicleOption>> powerSet = line.getAllVehicleOptionsInPendingOrders();
 		assertEquals(127, powerSet.size());
 	}
 	*/
@@ -270,3 +269,4 @@ public class SchedulingAlgorithmTest {
 	}
 	*/
 } 
+>>>>>>> branch 'master' of https://github.com/RutgerMoons/Swop.git

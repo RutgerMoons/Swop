@@ -55,7 +55,7 @@ public class ImmutableOrderTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>());
+		template = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		model.addVehicleOption(new VehicleOption("sedan", VehicleOptionCategory.BODY));

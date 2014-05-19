@@ -76,10 +76,10 @@ public class Scheduler implements ObservesClock {
 	 * 			A list of WorkBenchTypes representing all the types the AssemblyLine consists off
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 			Thrown when one or both parameters are null or when workBenchTypes is empty
+	 * 			Thrown when one or both parameters are null
 	 */
 	public void switchToAlgorithm(SchedulingAlgorithmCreator creator, List<WorkBenchType> workBenchTypes) {
-		if( creator == null || workBenchTypes == null || workBenchTypes.isEmpty()){
+		if( creator == null || workBenchTypes == null){
 			throw new IllegalArgumentException();
 		}
 		else{
@@ -155,7 +155,7 @@ public class Scheduler implements ObservesClock {
 	 * Returns a powerset with all the VehicleOptions or 
 	 * sets of VehicleOptions that occur in three or more pending Orders.
 	 */
-	public Set<Set<VehicleOption>> getAllCarOptionsInPendingOrders() {
+	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
 		HashSet<VehicleOption> set = new HashSet<>();
 		List<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
 

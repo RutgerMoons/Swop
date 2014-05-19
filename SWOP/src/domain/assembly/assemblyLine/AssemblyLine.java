@@ -330,7 +330,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	@Override
 	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
 		return Collections.unmodifiableSet(this.scheduler
-				.getAllCarOptionsInPendingOrders());
+				.getAllVehicleOptionsInPendingOrders());
 	}
 
 	/**
