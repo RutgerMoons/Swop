@@ -8,7 +8,6 @@ import java.util.Map;
 import domain.assembly.workBench.WorkBenchType;
 import domain.exception.AlreadyInMapException;
 import domain.exception.NotImplementedException;
-import domain.exception.UnmodifiableException;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
