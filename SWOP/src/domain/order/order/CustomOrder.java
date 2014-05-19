@@ -163,16 +163,11 @@ public class CustomOrder implements IOrder {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((deadline == null) ? 0 : deadline.hashCode());
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
-		result = prime * result
-				+ ((estimatedTime == null) ? 0 : estimatedTime.hashCode());
-		result = prime * result
-				+ ((garageholder == null) ? 0 : garageholder.hashCode());
-		result = prime * result
-				+ ((orderTime == null) ? 0 : orderTime.hashCode());
+		result = prime * result	+  deadline.hashCode();
+		result = prime * result	+  description.hashCode();
+		result = prime * result	+ ((estimatedTime == null) ? 0 : estimatedTime.hashCode());
+		result = prime * result	+ garageholder.hashCode();
+		result = prime * result	+  orderTime.hashCode();
 		result = prime * result + pendingCars;
 		result = prime * result + quantity;
 		return result;
@@ -191,30 +186,18 @@ public class CustomOrder implements IOrder {
 			return false;
 		}
 
-		if (deadline == null) {
-			if (other.getDeadline() != null)
-				return false;
-		} else if (!deadline.equals(other.getDeadline()))
+		if (!deadline.equals(other.getDeadline()))
 			return false;
-		if (description == null) {
-			if (other.getDescription() != null)
-				return false;
-		} else if (!description.equals(other.getDescription()))
+		if (!description.equals(other.getDescription()))
 			return false;
 		if (estimatedTime == null) {
 			if (other.getEstimatedTime() != null)
 				return false;
 		} else if (!estimatedTime.equals(other.getEstimatedTime()))
 			return false;
-		if (garageholder == null) {
-			if (other.getGarageHolder() != null)
-				return false;
-		} else if (!garageholder.equals(other.getGarageHolder()))
+		if (!garageholder.equals(other.getGarageHolder()))
 			return false;
-		if (orderTime == null) {
-			if (other.getOrderTime() != null)
-				return false;
-		} else if (!orderTime.equals(other.getOrderTime()))
+		if (!orderTime.equals(other.getOrderTime()))
 			return false;
 		if (pendingCars != other.getPendingCars())
 			return false;
