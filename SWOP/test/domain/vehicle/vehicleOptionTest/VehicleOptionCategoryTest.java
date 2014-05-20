@@ -21,7 +21,7 @@ public class VehicleOptionCategoryTest {
 		assertEquals("Airco", VehicleOptionCategory.AIRCO.toString());
 		assertEquals("Body", VehicleOptionCategory.BODY.toString());
 		assertEquals("Gearbox", VehicleOptionCategory.GEARBOX.toString());
-		assertEquals("Seat", VehicleOptionCategory.SEATS.toString());
+		assertEquals("Seats", VehicleOptionCategory.SEATS.toString());
 		assertEquals("Color", VehicleOptionCategory.COLOR.toString());
 		assertEquals("Engine", VehicleOptionCategory.ENGINE.toString());
 		assertEquals("Wheel", VehicleOptionCategory.WHEEL.toString());

@@ -54,4 +54,8 @@ public class AssemblyLineStateObserverTest {
 		observer.updateAssemblyLineState(null, null);
 	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void testUpdateIllegalOrder2(){
+		observer.updateAssemblyLineState(AssemblyLineState.BROKEN, null);
+	}
 }

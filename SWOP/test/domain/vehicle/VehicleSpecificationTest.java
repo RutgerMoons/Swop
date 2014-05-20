@@ -137,12 +137,9 @@ public class VehicleSpecificationTest {
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		
 		VehicleSpecification specification3 = new VehicleSpecification("model", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
-		assertNotEquals(template, specification3);
-		assertNotEquals(template.hashCode(), specification3.hashCode());
+		assertEquals(template, specification3);
+		assertEquals(template.hashCode(), specification3.hashCode());
 		
-		VehicleSpecification specification4 = new VehicleSpecification("model", parts, template.getTimeAtWorkBench(), new HashSet<VehicleOption>());
-		assertEquals(template, specification4);
-		assertEquals(template.hashCode(), specification4.hashCode());
 	}
 	
 	

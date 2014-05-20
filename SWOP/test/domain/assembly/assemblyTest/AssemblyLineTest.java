@@ -101,6 +101,21 @@ public class AssemblyLineTest{
 	public void TestInvalidConstructor(){
 		new AssemblyLine(null, new ImmutableClock(0, 240), null, null);
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestInvalidConstructor2(){
+		new AssemblyLine(new ClockObserver(), null, null, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestInvalidConstructor3(){
+		new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 240), null, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void TestInvalidConstructor4(){
+		new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 240), AssemblyLineState.BROKEN	, null);
+	}
 
 	@Test
 	public void addWorkBenchTest(){
@@ -447,6 +462,6 @@ public class AssemblyLineTest{
 		assertEquals(line, line2);
 		assertEquals(line.hashCode(), line2.hashCode());
 
-
+		
 	}
 }

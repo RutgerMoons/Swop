@@ -121,7 +121,6 @@ public class VehicleSpecification {
 		int result = 1;
 		result = prime * result + description.hashCode();
 		result = prime * result + parts.hashCode();
-		result = prime * result + timeAtWorkBench.hashCode();
 		return result;
 	}
 
@@ -137,8 +136,6 @@ public class VehicleSpecification {
 		if (!description.equals(other.description))
 			return false;
 		if (!parts.equals(other.parts))
-			return false;
-		if (!timeAtWorkBench.equals(other.timeAtWorkBench))
 			return false;
 		return true;
 	}

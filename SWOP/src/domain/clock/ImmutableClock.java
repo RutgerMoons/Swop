@@ -123,8 +123,6 @@ public class ImmutableClock implements Comparable<ImmutableClock> {
 		if (getClass() != obj.getClass())
 			return false;
 		ImmutableClock other = (ImmutableClock) obj;
-		if (MINUTESINADAY != other.MINUTESINADAY)
-			return false;
 		if (days != other.days)
 			return false;
 		if (minutes != other.minutes)

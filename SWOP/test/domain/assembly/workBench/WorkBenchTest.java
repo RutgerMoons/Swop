@@ -233,7 +233,7 @@ public class WorkBenchTest {
 		assertNotEquals(workBench.hashCode(), bench.hashCode());
 		
 		IJob job = new Job(new StandardOrder("Jef", model, 1, clock));
-		ITask task = new Task("Body");
+		ITask task = new Task(VehicleOptionCategory.AIRCO.toString());
 		IAction action = new Action("test");
 		task.addAction(action);
 		job.addTask(task);

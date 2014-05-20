@@ -25,6 +25,16 @@ public class ClockTest {
 		assertTrue(clock.getMinutes() == 0);
 	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalConstructor1(){
+		new Clock(-1);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalConstructor2(){
+		new Clock(2000);
+	}
+	
 	@Test
 	public void testMethods() {
 		clock.advanceTime(360);

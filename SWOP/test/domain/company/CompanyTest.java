@@ -23,6 +23,7 @@ import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.job.task.ITask;
+import domain.job.task.Task;
 import domain.observer.observers.ClockObserver;
 import domain.order.order.CustomOrder;
 import domain.order.order.IOrder;
@@ -66,6 +67,33 @@ public class CompanyTest {
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
+	public void test2() {
+		new Company(new HashSet<BindingRestriction>(), null, null, null, null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test3() {
+		new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), null, null, null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test4() {
+		new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), new CustomVehicleCatalogue(), null, null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test5() {
+		new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), new CustomVehicleCatalogue(), new VehicleSpecificationCatalogue(), null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test6() {
+		new Company(new HashSet<BindingRestriction>(), new HashSet<OptionalRestriction>(), new CustomVehicleCatalogue(), new VehicleSpecificationCatalogue(), new ArrayList<AssemblyLine>(), null);
+	}
+	
+	
+	
+	@Test (expected = IllegalArgumentException.class)
 	public void testAddPartToModel(){
 		company.addPartToModel(null);
 	}
@@ -76,8 +104,51 @@ public class CompanyTest {
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
+	public void testCompleteChosenTaskAtWorkBench2(){
+		IAssemblyLine a = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.BROKEN, new HashSet<VehicleSpecification>());
+		
+		company.completeChosenTaskAtChosenWorkBench(a, null, null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testCompleteChosenTaskAtWorkBench3(){
+		IAssemblyLine a = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.BROKEN, new HashSet<VehicleSpecification>());
+		IWorkBench bench = new WorkBench(WorkBenchType.ACCESSORIES);
+		company.completeChosenTaskAtChosenWorkBench(a, bench, null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testCompleteChosenTaskAtWorkBench4(){
+		IAssemblyLine a = new AssemblyLine(new ClockObserver(), new ImmutableClock(0, 0), AssemblyLineState.BROKEN, new HashSet<VehicleSpecification>());
+		IWorkBench bench = new WorkBench(WorkBenchType.ACCESSORIES);
+		company.completeChosenTaskAtChosenWorkBench(a, bench, new Task("blabla"), null);
+	}
+	
+	@Test
+	public void testCompleteChosenTaskAtWorkBench5(){
+		IAssemblyLine a = company.getAssemblyLines().get(0);
+		IWorkBench bench = new WorkBench(WorkBenchType.ACCESSORIES);
+		company.completeChosenTaskAtChosenWorkBench(a, bench, new Task("blabla"), new ImmutableClock(0, 0));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
 	public void testCreateAndAddUser(){
 		company.createAndAddUser("", "");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testCreateAndAddUser2(){
+		company.createAndAddUser(null, "");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testCreateAndAddUser3(){
+		company.createAndAddUser("a", "");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testCreateAndAddUser4(){
+		company.createAndAddUser("a", null);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -99,6 +170,11 @@ public class CompanyTest {
 		company.getVehicleSpecificationFromCatalogue(null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetVehicleSpecificationFromCatalogue2(){
+		company.getVehicleSpecificationFromCatalogue("");
+	}
+	
 	@Test
 	public void testGetCurrentSchedulingAlgorithm(){
 		assertEquals("Fifo", company.getCurrentSchedulingAlgorithm());
@@ -107,6 +183,11 @@ public class CompanyTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void testLogin(){
 		company.login(null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testLogin2(){
+		company.login("");
 	}
 	
 	@Test
@@ -137,6 +218,11 @@ public class CompanyTest {
 		company.getVehicleSpecification(null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetIllegalVehicleSpecification2(){
+		company.getVehicleSpecification("");
+	}
+	
 	@Test
 	public void testGetVehicleSpecifications(){
 		assertTrue(company.getVehicleSpecifications().contains("model A"));
@@ -154,6 +240,11 @@ public class CompanyTest {
 		company.getCompletedOrders(null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetIllegalCompletedOrders2(){
+		company.getCompletedOrders("");
+	}
+
 	@Test
 	public void testGetCustomTasksDescription(){
 		assertNotNull(company.getCustomTasksDescription());
@@ -177,6 +268,11 @@ public class CompanyTest {
 		company.getPendingOrders(null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetPendingOrdersIllegal2(){
+		company.getPendingOrders("");
+	}
+	
 	@Test
 	public void testGetSpecificCustomTasks(){
 		assertNotNull(company.getSpecificCustomTasks("spraying car bodies"));
@@ -186,7 +282,11 @@ public class CompanyTest {
 	public void testGetIllegalSpecificCustomTasks(){
 		company.getSpecificCustomTasks(null);
 	}
-	
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetIllegalSpecificCustomTasks2(){
+		company.getSpecificCustomTasks("");
+	}
 	@Test
 	public void testGetAverageDays(){
 		assertEquals(0, company.getAverageDays());
@@ -199,6 +299,14 @@ public class CompanyTest {
 	
 	@Test
 	public void testGetDetailedDays(){
+		company.startNewDay();
+		assertNotNull(company.getDetailedDays());
+	}
+	
+	@Test
+	public void testGetDetailedDays2(){
+		company.startNewDay();
+		company.startNewDay();
 		company.startNewDay();
 		assertNotNull(company.getDetailedDays());
 	}
@@ -270,9 +378,15 @@ public class CompanyTest {
 		company.changeState(null, null, null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testChangeIllegalState2(){
+		company.changeState(company.getAssemblyLines().get(0), null, null);
+	}
 	
-	
-	
+	@Test (expected = IllegalArgumentException.class)
+	public void testChangeIllegalState3(){
+		company.changeState(company.getAssemblyLines().get(0), AssemblyLineState.BROKEN, null);
+	}
 	
 	@Test
 	public void testAddAndCompleteAndProcessAndPendingAndAssemblyLines(){
@@ -392,5 +506,4 @@ public class CompanyTest {
 		
 		return assemblyLines;
 	}
-
 }

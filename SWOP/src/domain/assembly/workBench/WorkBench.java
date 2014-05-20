@@ -94,7 +94,7 @@ public class WorkBench implements IWorkBench {
 
 	@Override
 	public void chooseTasksOutOfJob() {
-		if (getCurrentJob() == null || !getCurrentJob().isPresent()) {
+		if (!getCurrentJob().isPresent()) {
 			setCurrentTasks(new ArrayList<ITask>());
 			return;
 		}

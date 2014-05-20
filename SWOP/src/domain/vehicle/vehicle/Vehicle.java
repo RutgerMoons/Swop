@@ -50,8 +50,7 @@ public class Vehicle implements IVehicle {
 	public void addVehicleOption(VehicleOption part) {
 		if (part == null)
 			throw new IllegalArgumentException();
-		if (vehicleOptions.containsKey(part.getType())
-				&& !vehicleOptions.get(part.getType()).equals(part))
+		if (vehicleOptions.containsKey(part.getType()))
 			throw new AlreadyInMapException();
 		vehicleOptions.put(part.getType(), part);
 	}
