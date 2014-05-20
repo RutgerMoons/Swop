@@ -115,31 +115,7 @@ public class AdaptSchedulingAlgorithmScenario {
 		VehicleOption option = new VehicleOption("black", VehicleOptionCategory.COLOR);
 		VehicleSpecification specification = facade.getVehicleSpecificationFromCatalogue("model A");
 		
-		//1
-		facade.createNewVehicle(specification);
-		
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.BODY));
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.SEATS));
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
-		facade.addPartToVehicle(option);
-		
-		facade.processOrder(1);
-		
-		//2
-		facade.createNewVehicle(specification);
-		
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.BODY));
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.SEATS));
-		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
-		facade.addPartToVehicle(option);
-		
-		facade.processOrder(1);
-		
-		//3
+		//create 5 cars and process it
 		facade.createNewVehicle(specification);
 		
 		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.BODY));
