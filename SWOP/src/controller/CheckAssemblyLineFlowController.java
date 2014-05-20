@@ -31,7 +31,7 @@ public class CheckAssemblyLineFlowController extends UseCaseFlowController{
 
 	
 	@Override
-	public void executeUseCase() throws IllegalArgumentException,UnmodifiableException {
+	public void executeUseCase(){
 		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
 		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
 		this.clientCommunication.showAssemblyLine(chosenAssemblyLine);		

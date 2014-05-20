@@ -1,9 +1,10 @@
 package controllerTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,13 +14,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Multimap;
-
-import view.ClientCommunication;
 import view.CustomVehicleCatalogueFiller;
 import view.VehicleSpecificationCatalogueFiller;
-import controller.AdaptSchedulingAlgorithmFlowController;
-import controller.OrderFlowController;
+
+import com.google.common.collect.Multimap;
+
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.workBench.WorkBench;
@@ -31,10 +30,8 @@ import domain.facade.Facade;
 import domain.observer.observers.ClockObserver;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.restriction.PartPicker;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
-import domain.users.AccessRight;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
