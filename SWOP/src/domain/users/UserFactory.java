@@ -20,11 +20,12 @@ public class UserFactory {
 	 * 			The role of the new User
 	 * 
 	 * @throws	IllegalArgumentException
-	 * 			Thrown when the role is null or when the given role doesn't exist.
+	 * 			Thrown when one of the parameters or both are null 
+	 * 			or userName is empty
 	 */
 	public User createUser(String userName, String role)
 			throws IllegalArgumentException {
-		if (role == null) {
+		if (role == null || userName == null || userName.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
 		switch (role) {
