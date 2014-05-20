@@ -55,6 +55,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			int minutes = total%Clock.MINUTESINADAY;
 
 			job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
+			return;
 		}
 		List<Optional<IJob>> previousJobs = new ArrayList<>(jobsOnAssemblyLine);
 		int totalProductionTime = 0;

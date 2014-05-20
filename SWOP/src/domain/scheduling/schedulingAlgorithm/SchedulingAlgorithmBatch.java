@@ -83,6 +83,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			int minutes = total%Clock.MINUTESINADAY;
 
 			job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes)); 
+			return;
 		}
 		List<Optional<IJob>> previousJobs = jobsOnAssemblyLine;
 		int totalProductionTime = 0;
