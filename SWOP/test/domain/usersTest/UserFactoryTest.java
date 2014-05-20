@@ -40,13 +40,34 @@ public class UserFactoryTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidRole1() {
+	public void invalidRoleTest1() {
 		factory.createUser("bla", null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testInvalidRole2() {
+	public void invalidRoleTest2() {
 		factory.createUser("bla", "bla");
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidRoleTest3(){
+		factory.createUser(null, "worker");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidRoleTest4(){
+		factory.createUser(null, "");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidRoleTest5(){
+		factory.createUser(null, null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidRoleTest7(){
+		factory.createUser("bla", "");
+	}
+	
 
 }
