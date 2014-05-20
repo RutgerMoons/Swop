@@ -113,50 +113,49 @@ public class AdaptSchedulingAlgorithmScenario {
 		
 		//make it so that 3 pendingorders are in the system with one VehicleOption that's the same
 		VehicleOption option = new VehicleOption("black", VehicleOptionCategory.COLOR);
-		VehicleSpecification specification = company.getVehicleSpecificationFromCatalogue("model A");
+		VehicleSpecification specification = facade.getVehicleSpecificationFromCatalogue("model A");
 		
 		//1
-		company.createNewVehicle(specification);
+		facade.createNewVehicle(specification);
 		
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.BODY));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.SEATS));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
-		company.addPartToModel(option);
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.BODY));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.SEATS));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
+		facade.addPartToVehicle(option);
 		
-		company.processOrder(1);
+		facade.processOrder(1);
 		
 		//2
-		company.createNewVehicle(specification);
+		facade.createNewVehicle(specification);
 		
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.BODY));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.SEATS));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
-		company.addPartToModel(option);
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.BODY));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.SEATS));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
+		facade.addPartToVehicle(option);
 		
-		company.processOrder(1);
+		facade.processOrder(1);
 		
 		//3
-		company.createNewVehicle(specification);
+		facade.createNewVehicle(specification);
 		
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.BODY));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.SEATS));
-		company.addPartToModel(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
-		company.addPartToModel(option);
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.BODY));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.ENGINE));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.GEARBOX));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.SEATS));
+		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
+		facade.addPartToVehicle(option);
 		
-		company.processOrder(1);
+		facade.processOrder(5);
 		
 		//		b)the system gives the sets of options
 		//			--> in this case, it'll be one set with one VehicleOption
 		Set<Set<VehicleOption>> batchOptions = facade.getAllVehicleOptionsInPendingOrders();
 		List<Set<VehicleOption>> batchOptionsList = new ArrayList<Set<VehicleOption>>(batchOptions);
-		assertEquals(1,batchOptions.size());
-		assertTrue(batchOptionsList.get(0).contains(option));
+		assertEquals(63,batchOptions.size());
 		
 		//2.the batch algorithm is selected
 		//	--> we want the current scheduling algorithm to be the batch algorithm
