@@ -88,6 +88,16 @@ public class WorkloadDividerTest {
 
 	@Test (expected = IllegalArgumentException.class)
 	public void testConstructorException1() {
+		new WorkloadDivider(new ArrayList<AssemblyLine>(), null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructorException2() {
+		new WorkloadDivider(new ArrayList<AssemblyLine>(), new OrderBookObserver(), null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructorException3() {
 		new WorkloadDivider(null, null, null);
 	}
 
@@ -111,6 +121,11 @@ public class WorkloadDividerTest {
 		assertEquals("Fifo", workloadDivider.getCurrentSchedulingAlgorithm());
 	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void testSwitchToSchedulingAlgorithmError(){
+		workloadDivider.switchToSchedulingAlgorithm(null);
+	}
+	
 	@Test
 	public void testGetAssemblyLines() {
 		assertEquals(2, workloadDivider.getAssemblyLines().size());
@@ -436,5 +451,32 @@ public class WorkloadDividerTest {
 		
 		workloadDivider.changeState(null, AssemblyLineState.BROKEN, new ClockObserver(), new ImmutableClock(0, 0));
 		assertEquals(AssemblyLineState.MAINTENANCE, line.getState());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testChangeState2(){
+		workloadDivider.changeState(null, AssemblyLineState.BROKEN);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testChangeState3(){
+		workloadDivider.changeState(workloadDivider.getAssemblyLines().get(0), null);
+	}
+	
+	@Test
+	public void testStartNewDay(){
+		workloadDivider.getAssemblyLines().get(0).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		workloadDivider.getAssemblyLines().get(1).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+
+		workloadDivider.getAssemblyLines().get(0).addWorkBench(body1);
+		workloadDivider.getAssemblyLines().get(1).addWorkBench(body1);
+		
+		IAssemblyLine line = workloadDivider.getAssemblyLines().get(0);
+		workloadDivider.changeState(line, AssemblyLineState.BROKEN, new ClockObserver(), new ImmutableClock(0, 0));
+		
+		workloadDivider.startNewDay(new ImmutableClock(100, 100));
+		assertEquals(AssemblyLineState.OPERATIONAL, line.getState());
 	}
 }
