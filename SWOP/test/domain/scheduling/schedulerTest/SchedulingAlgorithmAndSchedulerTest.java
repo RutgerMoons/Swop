@@ -57,7 +57,6 @@ public class SchedulingAlgorithmAndSchedulerTest {
 	public void initialize() {
 		//facade = new Facade(bindingRestrictions, optionalRestrictions);
 		//clientCommunication = new ClientCommunication();
-		int amount = 3;
 		clock = new ClockObserver();
 		scheduler = new Scheduler(clock, new ImmutableClock(0,600));
 		workBenchTypes = new ArrayList<>();
