@@ -12,14 +12,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import view.IClientCommunication;
 
 import com.google.common.base.Optional;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.NotImplementedException;
-import domain.facade.Facade;
 import domain.job.job.IJob;
 import domain.job.job.Job;
 import domain.observer.observers.ClockObserver;
@@ -28,7 +25,6 @@ import domain.order.order.StandardOrder;
 import domain.order.order.UnmodifiableOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.restriction.PartPicker;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
@@ -48,7 +44,6 @@ public class SchedulingAlgorithmAndSchedulerTest {
 	private VehicleSpecification template;
 	private Set<BindingRestriction> bindingRestrictions;
 	private Set<OptionalRestriction> optionalRestrictions;
-	private PartPicker picker;
 	private HashMap<WorkBenchType, Integer> timeAtWorkBench;
 	private List<WorkBenchType> workBenchTypes;
 	
@@ -108,8 +103,6 @@ public class SchedulingAlgorithmAndSchedulerTest {
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
 		VehicleSpecification template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		catalogue.addModel(template);
-		
-		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
 	}
 	
 	@Test
@@ -129,7 +122,7 @@ public class SchedulingAlgorithmAndSchedulerTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorSATestNull() {
-		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(null);
+		new SchedulingAlgorithmFifo(null);
 	}
 	
 	@Test
