@@ -42,7 +42,7 @@ public class SchedulingAlgorithmFifoTest {
 	private VehicleSpecification template;
 
 	@Test
-	public void addCustomOrderTest1() throws AlreadyInMapException{
+	public void addCustomOrderTest1() {
 		CustomVehicle customModel = new CustomVehicle();
 		ImmutableClock ordertime = new ImmutableClock(2, 30);
 		ImmutableClock deadline = new ImmutableClock(5, 30);
@@ -130,7 +130,7 @@ public class SchedulingAlgorithmFifoTest {
 	}
 	
 	@Test
-	public void retrieveNextJobTest() throws NoSuitableJobFoundException, NotImplementedException{
+	public void retrieveNextJobTest() {
 		Set<VehicleOption> parts = new HashSet<>();
 		template = new VehicleSpecification("model", parts, 60);
 		model = new Vehicle(template);

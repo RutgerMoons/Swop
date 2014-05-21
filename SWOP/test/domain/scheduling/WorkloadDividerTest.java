@@ -27,7 +27,7 @@ public class WorkloadDividerTest {
 	
 	@Before
 	public void testConstructor2() {
-		Clock clock = new Clock();
+		Clock clock = new Clock(360);
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
 		ImmutableClock currentTime = clock.getImmutableClock();

@@ -30,13 +30,13 @@ import domain.vehicle.vehicleOption.VehicleOption;
  * order is completed. Each AssemblyLine has a scheduler.
  */
 public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
-		ObservableAssemblyLineState {
+ObservableAssemblyLineState {
 
 	private List<IWorkBench> workbenches;
 	private List<AssemblyLineObserver> observers;
 	private Scheduler scheduler;
 	private AssemblyLineState assemblyLineState;
-	private Set<VehicleSpecification> responsibilities;
+	private Set<VehicleSpecification> templatesAbleToAssemble;
 	private List<AssemblyLineStateObserver> assemblyLineStateObservers;
 
 	/**
@@ -51,14 +51,17 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	 * @param	assemblyLineState
 	 * 			The state the AssemblyLine has when it's initialised
 	 * 
+	 * @param	templates
+	 * 			The VehicleSpecificatons that can be assembled on this AssemblyLine
+	 * 
 	 * @throws 	IllegalArgumentException
 	 *          Thrown when one or both of the parameters are null
 	 */
 	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock,
 			AssemblyLineState assemblyLineState,
-			Set<VehicleSpecification> responsiblities) {
+			Set<VehicleSpecification> templates) {
 		if (clockObserver == null || clock == null || assemblyLineState == null
-				|| responsiblities == null) {
+				|| templates == null) {
 			throw new IllegalArgumentException();
 		}
 		workbenches = new ArrayList<IWorkBench>();
@@ -66,7 +69,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 		assemblyLineStateObservers = new ArrayList<AssemblyLineStateObserver>();
 		this.scheduler = new Scheduler(clockObserver, clock);
 		this.assemblyLineState = assemblyLineState;
-		this.responsibilities = responsiblities;
+		this.templatesAbleToAssemble = templates;
 	}
 
 	/**
@@ -184,7 +187,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 		this.workbenches.get(indexOfFurthestEmptyWorkBench).setCurrentJob(
 				jobToMove);
 		this.workbenches.get(indexOfFurthestEmptyWorkBench)
-				.chooseTasksOutOfJob();
+		.chooseTasksOutOfJob();
 	}
 
 	/**
@@ -224,8 +227,9 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	public boolean canAdvance() {
 		List<IWorkBench> workBenches = getWorkBenches();
 		for (int i = 0; i < workBenches.size(); i++)
-			if (!workBenches.get(i).isCompleted())
+			if (!workBenches.get(i).isCompleted()) {
 				return false;
+			}
 		return true;
 	}
 
@@ -287,7 +291,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 	/**
 	 * Get the IWorkBenches that are assigned to this AssemblyLine.
 	 * 
-	 * @return An unmodifiable list of IWorkBenches.
+	 * @return 	An unmodifiable list of IWorkBenches.
 	 */
 	@Override
 	public List<IWorkBench> getWorkBenches() {
@@ -399,7 +403,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 
 	@Override
 	public Set<VehicleSpecification> getResponsibilities() {
-		return Collections.unmodifiableSet(responsibilities);
+		return Collections.unmodifiableSet(templatesAbleToAssemble);
 	}
 
 	@Override
@@ -407,7 +411,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + assemblyLineState.hashCode();
-		result = prime * result + responsibilities.hashCode();
+		result = prime * result + templatesAbleToAssemble.hashCode();
 		result = prime * result + workbenches.hashCode();
 		return result;
 	}
@@ -426,7 +430,7 @@ public class AssemblyLine implements IAssemblyLine, ObservableAssemblyLine,
 		}
 		if (assemblyLineState != other.getState())
 			return false;
-		if (!responsibilities.equals(other.getResponsibilities()))
+		if (!templatesAbleToAssemble.equals(other.getResponsibilities()))
 			return false;
 		if (!workbenches.equals(other.getWorkBenches()))
 			return false;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import view.IClientCommunication;
 import domain.assembly.assemblyLine.IAssemblyLine;
-import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
