@@ -17,7 +17,6 @@ import domain.assembly.assemblyLine.AssemblyLine;
 import domain.clock.ImmutableClock;
 import domain.exception.AlreadyInMapException;
 import domain.exception.UnmodifiableException;
-import domain.exception.NoSuitableJobFoundException;
 import domain.exception.NotImplementedException;
 import domain.job.job.IJob;
 import domain.job.job.Job;
@@ -27,7 +26,6 @@ import domain.order.OrderBook;
 import domain.order.order.CustomOrder;
 import domain.order.order.IOrder;
 import domain.order.order.StandardOrder;
-import domain.scheduling.SchedulingAlgorithmType;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
@@ -86,7 +84,7 @@ public class SchedulingAlgorithmFifoTest {
 	}
 
 	@Test
-	public void getEstimatedTimeInMinutesTest1() throws UnmodifiableException, NotImplementedException{
+	public void getEstimatedTimeInMinutesTest1() {
 		ClockObserver obs = new ClockObserver();
 		AssemblyLine ass = new AssemblyLine(obs, new ImmutableClock(2, 360));
 		ass.switchToFifo();
@@ -174,13 +172,13 @@ public class SchedulingAlgorithmFifoTest {
 		assertEquals(job5, newJob4.get());
 	}
 	
-	@Test (expected = NoSuitableJobFoundException.class)
-	public void retrieveNextJobTest2() throws NoSuitableJobFoundException, NotImplementedException{
-		algorithm.retrieveNext(4545, new ImmutableClock(2,3));
-	}
+//	@Test (expected = NoSuitableJobFoundException.class)
+//	public void retrieveNextJobTest2() throws NoSuitableJobFoundException, NotImplementedException{
+//		algorithm.retrieveNext(4545, new ImmutableClock(2,3));
+//	}
 	
 	@Test
-	public void startNewDayTest() throws NotImplementedException, UnmodifiableException{
+	public void startNewDayTest() {
 		ClockObserver obs = new ClockObserver();
 		AssemblyLine ass = new AssemblyLine(obs, new ImmutableClock(2, 360));
 		ass.switchToFifo();

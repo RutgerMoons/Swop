@@ -107,8 +107,8 @@ public class SchedulingAlgorithmTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		
-		VehicleSpecification template = new VehicleSpecification("model", parts, timeAtWorkBench);
+		Set<VehicleOption> set = new HashSet<VehicleOption>();
+		VehicleSpecification template = new VehicleSpecification("model", parts, timeAtWorkBench, set);
 		catalogue.addModel(template);
 		
 		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
@@ -142,7 +142,8 @@ public class SchedulingAlgorithmTest {
 	@Test
 	public void addStandardJobTest(){
 		Set<VehicleOption> parts = new HashSet<>();
-		template = new VehicleSpecification("model", parts, timeAtWorkBench);
+		Set<VehicleOption> set = new HashSet<VehicleOption>();
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, set);
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(2, 360); 
 		int quantity =5;
@@ -195,9 +196,10 @@ public class SchedulingAlgorithmTest {
 	}
 	
 	@Test
-	public void getEstimatedTimeInMinutes() throws NotImplementedException{
+	public void getEstimatedTimeInMinutes() {
 		Set<VehicleOption> parts = new HashSet<>();
-		template = new VehicleSpecification("model", parts, this.timeAtWorkBench);
+		Set<VehicleOption> set = new HashSet<VehicleOption>();
+		template = new VehicleSpecification("model", parts, this.timeAtWorkBench,set);
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(2, 360); 
 		int quantity =5;
@@ -208,11 +210,12 @@ public class SchedulingAlgorithmTest {
 	}
 	
 	@Test
-	public void retrieveNextJobTest() throws NotImplementedException{
+	public void retrieveNextJobTest() {
 		// Standard job not containing necessary parts of list.
 		Set<VehicleOption> parts = new HashSet<>();
 		assertNotNull(this.timeAtWorkBench);
-		template = new VehicleSpecification("model", parts, this.timeAtWorkBench);
+		Set<VehicleOption> set = new HashSet<VehicleOption>();
+		template = new VehicleSpecification("model", parts, this.timeAtWorkBench, set);
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(0, 660); // om 6 uur op dag 2
 		int quantity =5;
@@ -269,4 +272,3 @@ public class SchedulingAlgorithmTest {
 	}
 	*/
 } 
->>>>>>> branch 'master' of https://github.com/RutgerMoons/Swop.git
