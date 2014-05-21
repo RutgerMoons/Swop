@@ -13,6 +13,7 @@ import domain.assembly.workBench.IWorkBench;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.exception.RoleNotYetAssignedException;
+import domain.exception.TimeToStartNewDayException;
 import domain.job.task.ITask;
 import domain.log.Logger;
 import domain.observer.observers.AssemblyLineObserver;
@@ -147,12 +148,17 @@ public class Company {
 		if(assemblyLine==null || workbench==null || task==null || time==null){
 			throw new IllegalArgumentException();
 		}
-		int currentAmountOfMinutesAtScheduler = this.workloadDivider.completeChosenTaskAtChosenWorkBench(
+		try {
+			int currentAmountOfMinutesAtScheduler = this.workloadDivider.completeChosenTaskAtChosenWorkBench(
 																		assemblyLine, workbench, task, time);
-		int difference = currentAmountOfMinutesAtScheduler - this.clock.getMinutes();
-		if (difference > 0) {
-			clock.advanceTime(difference);
+			int difference = currentAmountOfMinutesAtScheduler - this.clock.getMinutes();
+			if (difference > 0) {
+				clock.advanceTime(difference);
+			}
+		} catch (TimeToStartNewDayException timeException) {
+			clock.startNewDay();
 		}
+		
 	}
 
 	/**

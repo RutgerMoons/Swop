@@ -11,6 +11,8 @@ import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
+import domain.exception.NoMoreJobsInTimeException;
+import domain.exception.NoMoreJobsToScheduleException;
 import domain.job.job.IJob;
 import domain.job.task.ITask;
 import domain.observer.observable.ObservableAssemblyLine;
@@ -144,10 +146,39 @@ ObservableAssemblyLineState {
 		}
 
 		ArrayList<Optional<IJob>> jobsOnAssemblyLine = getCurrentJobsOnAssemblyLine();
-		Optional<IJob> nextJob = this.scheduler
-				.retrieveNextJob(jobsOnAssemblyLine);
-		this.workbenches.get(0).setCurrentJob(nextJob);
-		this.workbenches.get(0).chooseTasksOutOfJob();
+		try {
+			Optional<IJob> nextJob = this.scheduler.retrieveNextJob(jobsOnAssemblyLine);
+			this.workbenches.get(0).setCurrentJob(nextJob);
+			this.workbenches.get(0).chooseTasksOutOfJob();
+		} catch (NoMoreJobsInTimeException noTime) {
+			boolean assemblyLineCompleted = true;
+			for (IWorkBench workBench : this.workbenches) {
+				if (workBench.getCurrentJob().isPresent()) {
+					assemblyLineCompleted = false;
+				}
+			}
+			if (assemblyLineCompleted) {
+				this.setState(AssemblyLineState.FINISHED);
+			} else {
+				Optional<IJob> nextJob = Optional.absent();
+				this.workbenches.get(0).setCurrentJob(nextJob);
+				this.workbenches.get(0).chooseTasksOutOfJob();
+			}
+		} catch (NoMoreJobsToScheduleException noJobs) {
+			boolean assemblyLineCompleted = true;
+			for (IWorkBench workBench : this.workbenches) {
+				if (workBench.getCurrentJob().isPresent()) {
+					assemblyLineCompleted = false;
+				}
+			}
+			if (assemblyLineCompleted) {
+				this.setState(AssemblyLineState.IDLE);
+			} else {
+				Optional<IJob> nextJob = Optional.absent();
+				this.workbenches.get(0).setCurrentJob(nextJob);
+				this.workbenches.get(0).chooseTasksOutOfJob();
+			}
+		}
 	}
 
 	private ArrayList<Optional<IJob>> getCurrentJobsOnAssemblyLine() {
@@ -388,6 +419,9 @@ ObservableAssemblyLineState {
 			if (wb.equals(workbench)) {
 				wb.completeChosenTaskAtChosenWorkBench(task);
 				this.scheduler.advanceInternalClock(elapsed);
+				if (canAdvance()) {
+					advance();
+				}
 				return this.scheduler.getTotalMinutesOfInternalClock();
 			}
 		}

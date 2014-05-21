@@ -10,6 +10,8 @@ import com.google.common.base.Optional;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
+import domain.exception.NoMoreJobsInTimeException;
+import domain.exception.NoMoreJobsToScheduleException;
 import domain.job.job.IJob;
 
 /**
@@ -49,7 +51,6 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		}
 
 		if(customJobs.contains(job)) {
-
 			job.getOrder().setEstimatedTime(job.getOrder().getDeadline());
 			return;
 		}
@@ -96,12 +97,16 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 
 	@Override
-	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
-			ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
+	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime, 
+					ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
+		// if there are no jobs to schedule, throw a new NoMoreJobsToScheduleException
+		if (this.customJobs.size() == 0 || this.jobsStartOfDay.size() == 0 || this.standardJobs.size() == 0) {
+			throw new NoMoreJobsToScheduleException();
+		}
 		/* 
 		 * step 0: check if jobsStartOfDay contains any jobs..
 		 * step 1: check if you have to force some custom jobs
-		 * step 2: check if you can put the first car on the assemblyLine
+		 * step 2: check if you can put the first vehicle on the assemblyLine
 		 * step 3: check if custom job can be put on the assemblyLine
 		 */
 		//Step 0:
@@ -132,7 +137,8 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 			customJobs.remove(jobWithHighestWorkBenchIndex);
 			return jobWithHighestWorkBenchIndex;
 		}
-		return Optional.absent();
+		// there are no jobs that can be scheduled in time: 
+		throw new NoMoreJobsInTimeException();
 	}
 
 
