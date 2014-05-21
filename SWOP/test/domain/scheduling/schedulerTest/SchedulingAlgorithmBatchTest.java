@@ -158,7 +158,7 @@ public class SchedulingAlgorithmBatchTest {
 		scheduler.addJobToAlgorithm(sJob1,list);
 		
 		assertEquals(new ImmutableClock(0, 540), bJob1.getOrder().getEstimatedTime());
-		assertEquals(new ImmutableClock(0, 720), sJob1.getOrder().getEstimatedTime());
+		assertEquals(new ImmutableClock(0, 600), sJob1.getOrder().getEstimatedTime());
 		assertEquals(new ImmutableClock(10,800), cJob1.getOrder().getEstimatedTime());
 		
 	}
