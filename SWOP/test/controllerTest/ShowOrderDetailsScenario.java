@@ -1,130 +1,272 @@
 package controllerTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collection;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import view.ClientCommunication;
+import view.CustomVehicleCatalogueFiller;
 import view.IClientCommunication;
-import controller.OrderFlowController;
-import controller.ShowOrderDetailsFlowController;
-import domain.exception.UnmodifiableException;
+import view.VehicleSpecificationCatalogueFiller;
+
+import com.google.common.collect.Multimap;
+
+import domain.assembly.assemblyLine.AssemblyLine;
+import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.workBench.WorkBench;
+import domain.assembly.workBench.WorkBenchType;
+import domain.clock.Clock;
+import domain.clock.ImmutableClock;
+import domain.company.Company;
 import domain.facade.Facade;
+import domain.observer.observers.ClockObserver;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.restriction.PartPicker;
-import domain.users.AccessRight;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.catalogue.CustomVehicleCatalogue;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
+import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
-@RunWith(Parameterized.class)
 public class ShowOrderDetailsScenario {
 
+
 	private Facade facade;
-	private PartPicker picker;
-	private Set<BindingRestriction> bindingRestrictions;
-	private Set<OptionalRestriction> optionalRestrictions;
-	private IClientCommunication clientCommunication;
-	private OrderFlowController order;
-	private ShowOrderDetailsFlowController controller;
-	
-	public ShowOrderDetailsScenario(IClientCommunication ui) {
-		this.clientCommunication = ui;
-	}
-
+	private IClientCommunication communication;
 	@Before
-	public void initialize(){
-		this.initializeRestrictions();
+	public void initialize(){		
+		Company company = this.initializeCompany();
+		facade = new Facade(company);
+		facade.createAndAddUser("jef", "garageholder");
+		facade.login("jef");
 
-		facade = new Facade(bindingRestrictions, optionalRestrictions);
+		communication = new ClientCommunication();
 	}
 
-	public void initializeRestrictions(){
-		bindingRestrictions = new HashSet<>();
-		optionalRestrictions = new HashSet<>();
-		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
-
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
-
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
-
-		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
-
-		Set<VehicleOption> parts = new HashSet<>();
-		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-
-		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
-		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
-
-		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
-		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
-
-		parts.add(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
-
-		parts.add(new VehicleOption("leather white", VehicleOptionCategory.SEATS));
-		parts.add(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
-
-		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
-
-		parts.add(new VehicleOption("winter", VehicleOptionCategory.WHEEL));
-		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
-
-		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
-		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
-		picker.setNewModel(template);
-	}
-
+	/**
+	 * Test the use case of showing the order details.
+	 * 		1. We order a new vehicle
+	 * 		2. We check the order details of the recently ordered order
+	 */
 	@Test
-	public void showOrderDetails() throws IllegalArgumentException, UnmodifiableException{
-		//placement of an order
-		facade.createAndAddUser("Mario", "garageholder");
-		String s = System.lineSeparator();
-		String input1 = "Y" + s // step 2, user wants to place an order
-				+ "model A" + s // step 4, user chooses a car model
-				+ "1" + s // step 6 completing of ordering form
-				+ "1" + s // step 6 completing of ordering form
-				+ "1" + s // step 6 completing of ordering form
-				+ "1" + s // step 6 completing of ordering form
-				+ "1" + s // step 6 completing of ordering form
-				+ "1" + s // step 6 completing of ordering form
-				+ "1" + s
-				+ "5" + s
-				+ "Y" + s // approvement of order step 6
-				+ "N" + s; // end of flow
-		InputStream in1 = new ByteArrayInputStream(input1.getBytes());
-		System.setIn(in1);
-		clientCommunication = new ClientCommunication();
-		AccessRight accessRight = AccessRight.ORDER;
-		order = new OrderFlowController(accessRight, clientCommunication, facade);
-		order.placeNewOrder();
-		controller = new ShowOrderDetailsFlowController(AccessRight.SHOWDETAILS, clientCommunication, facade);
-		controller.checkOrderDetails();
-		System.out.println("details");
-		String detail = "5 model A Estimated completion time: 0 days and 5 hours and 50 minutes";
-		assertTrue(facade.getOrderDetails(detail).contains("Orderdetails:"));
-		assertTrue(facade.getOrderDetails(detail).contains("5 model A"));
-		assertTrue(facade.getOrderDetails(detail).contains("Order Time: day 0, 0 hours, 0 minutes."));
-		assertTrue(facade.getOrderDetails(detail).contains("(Expected) Completion Time: day 0, 5 hours, 50 minutes."));
+	public void test(){
+		//We know the program didn't add any order, so the lists are empty.
+		assertTrue(facade.getPendingOrders().isEmpty());
+		assertTrue(facade.getCompletedOrders().isEmpty());
 
+		//We check if the initialization has been done correctly.
+		assertEquals(5, facade.getVehicleSpecifications().size());
+
+		//We want to create a vehicle from "model A", so we get it from "model A".
+		VehicleSpecification specification = facade.getVehicleSpecificationFromCatalogue("model A");
+
+		//We create a new vehicle on the basis of "model A".
+		facade.createNewVehicle(specification);
+
+		Set<String> allParts = new HashSet<>();
+		//Then we add the necessary options to the vehicle, so it is ready to be ordered.
+		for(VehicleOption option: getOptions()){
+			facade.addPartToVehicle(option);
+			allParts.add(option.toString());
+		}
+
+		//We want 3 vehicles to be manufactured.
+		int quantity = 3;
+
+		//We process the order with our quantity.
+		ImmutableClock clock = facade.processOrder(quantity);
+
+		//The order is divided over the 3 assembly lines, so 1 vehicle on each line. 
+		//We know that model A needs 50 minutes at a workbench and it has to be 
+		//assembled at 3 workbenches. So it needs 150 minutes to be assembled.
+		assertEquals(new ImmutableClock(0, 150), clock);
+
+		//We check if the pending orders isn't empty, because we just ordered one.
+		assertFalse(facade.getPendingOrders().isEmpty());
+
+		//The completed orders must be empty, because no order is completed.
+		assertTrue(facade.getCompletedOrders().isEmpty());
+
+		//We know we ordered just 1 order, so the only order available in pending orders is ours.
+		//We check if the model is build according to "model A", because we chose that one.
+		assertEquals("model A", facade.getPendingOrders().get(0).getVehicleSpecification().getDescription());
+
+		//We set the outputstream of the clientcommunication to a specific outputstream,
+		//so we can see what the output is.
+		ByteArrayOutputStream myout = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(myout));
+
+		//We show the orderdetails of our recent ordered order.
+		communication.showOrderDetails(facade.getPendingOrders().get(0));
+
+		
+		/*
+		 * This is the structure of the output:
+		 * 
+		 * Orderdetails:
+		 * 3 model A
+		 * Chosen vehicle options: Body: sedan Seats: leather black Gearbox: 5 speed manual  Wheel: sports Color: red Engine: performance 2.5l V6 
+		 * Order Time: day 0, 6 hours, 0 minutes.
+		 * (Expected) Completion Time: day 0, 2 hours, 30 minutes.
+		 */
+		
+		String result = myout.toString();
+		assertTrue(result.contains("Orderdetails:"));
+		assertTrue(result.contains("Chosen vehicle options:"));
+		assertTrue(result.contains("Order Time: day 0, 6 hours, 0 minutes."));
+		assertTrue(result.contains("(Expected) Completion Time: day 0, 2 hours, 30 minutes."));
+
+		//We check if all the parts are in the result.
+		for(String str: allParts){
+			assertTrue(result.contains(str));
+		}
+	
 	}
 
-	@Parameterized.Parameters
-	public static Collection<Object[]> primeNumbers() {
-		return Arrays.asList(new Object[][] { { new ClientCommunication() } });
+
+
+	private List<VehicleOption> getOptions(){
+		List<VehicleOption> options = new ArrayList<>();
+		for (VehicleOptionCategory type : facade.getVehicleOptionCategory()) {
+			List<VehicleOption> parts = facade.getRemainingVehicleOptions(type);
+			if(parts!=null && !parts.isEmpty()){
+				options.add(parts.get(0));
+			}
+		}
+		return options;
 	}
 
+
+	private Company initializeCompany(){
+		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
+		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
+
+		CustomVehicleCatalogue customCatalogue = new CustomVehicleCatalogue();
+		CustomVehicleCatalogueFiller customCarModelFiller = new CustomVehicleCatalogueFiller();
+		Multimap<String, CustomVehicle> customModels = customCarModelFiller
+				.getInitialModels();
+		for (String model : customModels.keySet()) {
+			for (CustomVehicle customModel : customModels.get(model)) {
+				customCatalogue.addModel(model, customModel);
+			}
+		}
+
+		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
+		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
+
+		catalogue.initializeCatalogue(filler.getInitialModels());
+		Clock clock = new Clock(360);
+		clock.advanceTime(360);
+		ClockObserver clockObserver = new ClockObserver();
+		clock.attachObserver(clockObserver);
+		ImmutableClock immutableClock = new ImmutableClock(0, 0);
+		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, immutableClock, catalogue);
+
+		return new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
+	}
+
+	private List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
+		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
+
+		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		for(WorkBenchType type: WorkBenchType.values()){
+			timeAtWorkBench.put(type, 60);
+		}
+		Set<VehicleOption> obligatory = new HashSet<>();
+		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench,obligatory);
+
+
+		Set<VehicleSpecification> specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(customSpecification);
+		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+
+
+		specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(catalogue.getCatalogue().get("model C"));
+		specifications.add(customSpecification);
+		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+
+		specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(catalogue.getCatalogue().get("model C"));
+		specifications.add(catalogue.getCatalogue().get("model X"));
+		specifications.add(catalogue.getCatalogue().get("model Y"));
+		specifications.add(customSpecification);
+		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		WorkBench body2 = new WorkBench(WorkBenchType.BODY);
+		WorkBench body3 = new WorkBench(WorkBenchType.BODY);
+
+		responsibilities = new HashSet<>();
+		responsibilities.add("Engine");
+		responsibilities.add("Gearbox");
+		WorkBench drivetrain1 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain2 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain3 = new WorkBench(WorkBenchType.DRIVETRAIN);
+
+		responsibilities = new HashSet<>();
+		responsibilities.add("Seat");
+		responsibilities.add("Airco");
+		responsibilities.add("Spoiler");
+		responsibilities.add("Wheel");
+		WorkBench accessories1 = new WorkBench(WorkBenchType.ACCESSORIES);
+		WorkBench accessories2 = new WorkBench(WorkBenchType.ACCESSORIES);
+		WorkBench accessories3 = new WorkBench(WorkBenchType.ACCESSORIES);
+
+		responsibilities = new HashSet<>();
+		responsibilities.add("Storage");
+		responsibilities.add("Protection");
+		WorkBench cargo = new WorkBench(WorkBenchType.CARGO);
+
+		responsibilities = new HashSet<>();
+		responsibilities.add("Certification");
+		WorkBench certificiation = new WorkBench(WorkBenchType.CERTIFICATION);
+
+		line1.addWorkBench(body1);
+		line1.addWorkBench(drivetrain1);
+		line1.addWorkBench(accessories1);
+
+		line2.addWorkBench(body2);
+		line2.addWorkBench(drivetrain2);
+		line2.addWorkBench(accessories2);
+
+		line3.addWorkBench(body3);
+		line3.addWorkBench(cargo);
+		line3.addWorkBench(drivetrain3);
+		line3.addWorkBench(accessories3);
+		line3.addWorkBench(certificiation);
+
+		assemblyLines.add(line1);
+		assemblyLines.add(line2);
+		assemblyLines.add(line3);
+
+		line1.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		line2.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		line3.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+
+		return assemblyLines;
+	}
 }
