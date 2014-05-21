@@ -44,14 +44,13 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 public class CustomOrderScenario {
 
 	private Facade facade;
-	private Company company;
 	
 	/**
 	 * Initialize a Facade and a Company together with all the attributes they need.
 	 */
 	@Before
 	public void initialize(){
-		this.initializeCompany();
+		Company company = this.initializeCompany();
 		facade = new Facade(company);
 		facade.createAndAddUser("jef", "custom car shop manager");
 		facade.login("jef");
@@ -115,7 +114,7 @@ public class CustomOrderScenario {
 		assertEquals(time.toString(),"day 1, 2 hours, 3 minutes.");
 	}
 	
-	private void initializeCompany(){
+	private Company initializeCompany(){
 		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
 		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
 
@@ -140,7 +139,7 @@ public class CustomOrderScenario {
 		ImmutableClock immutableClock = new ImmutableClock(0, 0);
 		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, immutableClock, catalogue);
 		
-		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
+		return new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
 	}
 	
 	private List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {

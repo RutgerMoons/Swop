@@ -1,31 +1,40 @@
 package controllerTest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import view.ClientCommunication;
-import view.IClientCommunication;
-import controller.OrderFlowController;
-import domain.exception.UnmodifiableException;
+import view.CustomVehicleCatalogueFiller;
+import view.VehicleSpecificationCatalogueFiller;
+
+import com.google.common.collect.Multimap;
+
+import domain.assembly.assemblyLine.AssemblyLine;
+import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.workBench.WorkBench;
+import domain.assembly.workBench.WorkBenchType;
+import domain.clock.Clock;
+import domain.clock.ImmutableClock;
+import domain.company.Company;
 import domain.facade.Facade;
+import domain.observer.observers.ClockObserver;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.restriction.PartPicker;
-import domain.users.AccessRight;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.catalogue.CustomVehicleCatalogue;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
+import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -33,227 +42,207 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
  * Scenario test for checking use case 4.1.
  * 
  */
-@RunWith(Parameterized.class)
 public class OrderNewCarScenario {
 
 	private Facade facade;
-	private IClientCommunication ui;
-	private OrderFlowController controller;
-	private PartPicker picker;
-	private Set<BindingRestriction> bindingRestrictions;
-	private Set<OptionalRestriction> optionalRestrictions;
-	
-	public OrderNewCarScenario(IClientCommunication ui) {
-		this.ui = ui;
-	}
 	
 	@Before
-	public void initialize(){
-		this.initializeRestrictions();
-		facade = new Facade(bindingRestrictions, optionalRestrictions);
-		AccessRight accessRight = AccessRight.ORDER;
-		controller = new OrderFlowController(accessRight, ui, facade);
+	public void initialize(){		
+		Company company = this.initializeCompany();
+		facade = new Facade(company);
+		facade.createAndAddUser("jef", "custom car shop manager");
+		facade.login("jef");
 	}
 	
-	public void initializeRestrictions(){
-		bindingRestrictions = new HashSet<>();
-		optionalRestrictions = new HashSet<>();
-		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
+	/**
+	 * Test the use case to order a new car.
+	 * 		1. You get a list of possible vehicle specifications
+	 * 		2. You choose one of them
+	 * 		3. You create a new vehicle and add vehicle options to it
+	 * 		4. You choose how many vehicles there must be ordered
+	 * 		5. The system processes the order and gives you the estimated time of completion
+	 * 
+	 */
+	@Test
+	public void test(){
 		
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
+		//We know the program didn't add any order, so the lists are empty.
+		assertTrue(facade.getPendingOrders().isEmpty());
+		assertTrue(facade.getCompletedOrders().isEmpty());
 		
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
+		//We check if the initialization has been done correctly.
+		assertEquals(5, facade.getVehicleSpecifications().size());
+			
+		//We want to create a vehicle from "model A", so we get it from "model A".
+		VehicleSpecification specification = facade.getVehicleSpecificationFromCatalogue("model A");
 		
-		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
+		//We create a new vehicle on the basis of "model A".
+		facade.createNewVehicle(specification);
 		
-		Set<VehicleOption> parts = new HashSet<>();
-		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		//Then we add the necessary options to the vehicle, so it is ready to be ordered.
+		for(VehicleOption option: getOptions()){
+			facade.addPartToVehicle(option);
+		}
 		
-		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
-		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
+		//We want 3 vehicles to be manufactured.
+		int quantity = 3;
 		
-		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
-		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
+		//We process the order with our quantity.
+		ImmutableClock clock = facade.processOrder(quantity);
+		
+		//The order is divided over the 3 assembly lines, so 1 vehicle on each line. 
+		//We know that model A needs 50 minutes at a workbench and it has to be 
+		//assembled at 3 workbenches. So it needs 150 minutes to be assembled.
+		assertEquals(new ImmutableClock(0, 150), clock);
+		
+		//We check if the pending orders isn't empty, because we just ordered one.
+		assertFalse(facade.getPendingOrders().isEmpty());
+		
+		//The completed orders must be empty, because no order is completed.
+		assertTrue(facade.getCompletedOrders().isEmpty());
+		
+		//We know we ordered just 1 order, so the only order available in pending orders is ours.
+		//We check if the model is build according to "model A", because we chose that one.
+		assertEquals("model A", facade.getPendingOrders().get(0).getVehicleSpecification().getDescription());
+		
+		
+		
+	}
+
 	
-		parts.add(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
-		
-		parts.add(new VehicleOption("leather white", VehicleOptionCategory.SEATS));
-		parts.add(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
-		
-		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
-		
-		parts.add(new VehicleOption("winter", VehicleOptionCategory.WHEEL));
-		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
-		
-		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
-		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
-		picker.setNewModel(template);
+	private List<VehicleOption> getOptions(){
+		List<VehicleOption> options = new ArrayList<>();
+		for (VehicleOptionCategory type : facade.getVehicleOptionCategory()) {
+			List<VehicleOption> parts = facade.getRemainingVehicleOptions(type);
+			if(parts!=null && !parts.isEmpty()){
+				options.add(parts.get(0));
+			}
+		}
+		return options;
 	}
+	
+	
+	
+	
+	
+	
+	private Company initializeCompany(){
+		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
+		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
 
-	@Test
-	public void TestUseCaseAcceptOrder() {
-		facade.createAndAddUser("Luigi", "garageholder");		
-		String s = System.lineSeparator();
-		String input1 = "Y" + s // step 2, user wants to place an order
-						+ "model A" + s // step 4, user chooses a car model
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s
-						+ "1" + s
-						+ "Y" + s // approvement of order step 6
-						+ "N" + s; // end of flow
-		InputStream in1 = new ByteArrayInputStream(input1.getBytes());
-		System.setIn(in1);
-		ByteArrayOutputStream myout = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(myout));
-		ui = new ClientCommunication();
-		AccessRight accessRight = AccessRight.ORDER;
-		controller = new OrderFlowController(accessRight, ui, facade);
-		try {
-			controller.executeUseCase();
-		} catch (IllegalArgumentException e1) {
-		} catch (UnmodifiableException e1) {
-		}		
-		String output = myout.toString();
-		assertTrue(output.contains("You have no pending Orders"));
-		assertTrue(output.contains("You have no completed Orders"));
-		assertTrue(output.contains("Do you want to continue? Y/N"));
-		assertTrue(output.contains("Possible models:"));
-		assertTrue(output.contains("model A"));
-		assertTrue(output.contains("model B"));
-		assertTrue(output.contains("model C"));
-		assertTrue(output.contains("Which model do you want to order?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.SEATS: vinyl grey"));
-		assertTrue(output.contains("2.SEATS: leather white"));
-		assertTrue(output.contains("3.SEATS: leather black"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.BODY: sedan"));
-		assertTrue(output.contains("2.BODY: break"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.GEARBOX: 5 speed automatic"));
-		assertTrue(output.contains("2.GEARBOX: 6 speed manual"));
-		assertTrue(output.contains("3.GEARBOX: 5 speed manual"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.COLOR: black"));
-		assertTrue(output.contains("2.COLOR: blue"));
-		assertTrue(output.contains(".COLOR: white"));
-		assertTrue(output.contains(".COLOR: red"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.ENGINE: standard 2l V4"));
-		assertTrue(output.contains("2.ENGINE: performance 2.5l V6"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.WHEEL: sports"));
-		assertTrue(output.contains("2.WHEEL: winter"));
-		assertTrue(output.contains("3.WHEEL: comfort"));
-		assertTrue(output.contains("Which Part Number do you choose?" ));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.AIRCO: manual"));
-		assertTrue(output.contains("2.Select nothing"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("How many cars do you want to order?"));
-		assertTrue(output.contains("Your order:" +s+"1 model A" +s+s+"Your chosen parts:"+s+s+"SEATS: vinyl grey" +s+"BODY: sedan"
-				+s+"GEARBOX: 5 speed automatic" +s+"COLOR: black" +s +"ENGINE: standard 2l V4"+s+"WHEEL: sports" 
-				+ s + "AIRCO: manual" +s+s+"Do you want to continue? Y/N"+s+"Your order:" +s
-				+ "1 model A Estimated completion time: day 0, 2 hours, 30 minutes."+s +s+ "Your chosen parts:" +s+
-				s+ "SEATS: vinyl grey" +s+ "BODY: sedan" + s + "GEARBOX: 5 speed automatic"+s+"COLOR: black" + 
-				s + "ENGINE: standard 2l V4" +s + "WHEEL: sports" +s + "AIRCO: manual"+s+s ));
+		CustomVehicleCatalogue customCatalogue = new CustomVehicleCatalogue();
+		CustomVehicleCatalogueFiller customCarModelFiller = new CustomVehicleCatalogueFiller();
+		Multimap<String, CustomVehicle> customModels = customCarModelFiller
+				.getInitialModels();
+		for (String model : customModels.keySet()) {
+			for (CustomVehicle customModel : customModels.get(model)) {
+				customCatalogue.addModel(model, customModel);
+			}
+		}
+		
+		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
+		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
+		
+		catalogue.initializeCatalogue(filler.getInitialModels());
+		Clock clock = new Clock(360);
+		clock.advanceTime(360);
+		ClockObserver clockObserver = new ClockObserver();
+		clock.attachObserver(clockObserver);
+		ImmutableClock immutableClock = new ImmutableClock(0, 0);
+		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, immutableClock, catalogue);
+		
+		return new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
 	}
-
-	@Test
-	public void useCaseTestDeclineOrder() {
-		facade.createAndAddUser("mario", "garageholder");		
-		String s = System.lineSeparator();
-		String input2 = "Y" + s // step 2, user wants to place an order
-						+ "model A" + s // step 4, user chooses a car model
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s
-						+ "1" + s
-						+ "N" + s // approvement of order step 6
-						+ "N" + s; // end of flow
-		InputStream in2 = new ByteArrayInputStream(input2.getBytes());
-		System.setIn(in2);
-		ByteArrayOutputStream myout = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(myout));
-		ui = new ClientCommunication();
-		AccessRight accessRight = AccessRight.ORDER;
-		controller = new OrderFlowController(accessRight, ui, facade);
-		try {
-			controller.executeUseCase();
-		} catch (IllegalArgumentException e1) {
-			System.out.println("here");
-		} catch (UnmodifiableException e1) {
-			System.out.println("here");
-		}		
-		String output = myout.toString();
-		assertTrue(output.contains("You have no pending Orders"));
-		assertTrue(output.contains("You have no pending Orders"));
-		assertTrue(output.contains("You have no completed Orders"));
-		assertTrue(output.contains("Do you want to continue? Y/N"));
-		assertTrue(output.contains("Possible models:"));
-		assertTrue(output.contains("model A"));
-		assertTrue(output.contains("model B"));
-		assertTrue(output.contains("model C"));
-		assertTrue(output.contains("Which model do you want to order?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.SEATS: vinyl grey"));
-		assertTrue(output.contains("2.SEATS: leather white"));
-		assertTrue(output.contains("3.SEATS: leather black"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.BODY: sedan"));
-		assertTrue(output.contains("2.BODY: break"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.GEARBOX: 5 speed automatic"));
-		assertTrue(output.contains("2.GEARBOX: 6 speed manual"));
-		assertTrue(output.contains("3.GEARBOX: 5 speed manual"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.COLOR: black"));
-		assertTrue(output.contains("2.COLOR: blue"));
-		assertTrue(output.contains(".COLOR: white"));
-		assertTrue(output.contains(".COLOR: red"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.ENGINE: standard 2l V4"));
-		assertTrue(output.contains("2.ENGINE: performance 2.5l V6"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.WHEEL: sports"));
-		assertTrue(output.contains("2.WHEEL: winter"));
-		assertTrue(output.contains("3.WHEEL: comfort"));
-		assertTrue(output.contains("Which Part Number do you choose?" ));
-		assertTrue(output.contains("Possible parts:"));
-		assertTrue(output.contains("1.AIRCO: manual"));
-		assertTrue(output.contains("2.Select nothing"));
-		assertTrue(output.contains("Which Part Number do you choose?"));
-		assertTrue(output.contains("How many cars do you want to order?"));
-		assertTrue(output.contains("Your order:" +s+"1 model A" +s+s+"Your chosen parts:"+s+s+"SEATS: vinyl grey" +s+"BODY: sedan"
-				+s+"GEARBOX: 5 speed automatic" +s+"COLOR: black" +s +"ENGINE: standard 2l V4"+s+"WHEEL: sports" 
-				+ s + "AIRCO: manual" +s+s+"Do you want to continue? Y/N"+s));
+	
+	private List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
+		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
+		
+		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		for(WorkBenchType type: WorkBenchType.values()){
+			timeAtWorkBench.put(type, 60);
+		}
+		Set<VehicleOption> obligatory = new HashSet<>();
+		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench,obligatory);
+		
+		
+		Set<VehicleSpecification> specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(customSpecification);
+		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		
+		
+		specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(catalogue.getCatalogue().get("model C"));
+		specifications.add(customSpecification);
+		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		
+		specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(catalogue.getCatalogue().get("model C"));
+		specifications.add(catalogue.getCatalogue().get("model X"));
+		specifications.add(catalogue.getCatalogue().get("model Y"));
+		specifications.add(customSpecification);
+		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		WorkBench body2 = new WorkBench(WorkBenchType.BODY);
+		WorkBench body3 = new WorkBench(WorkBenchType.BODY);
+		
+		responsibilities = new HashSet<>();
+		responsibilities.add("Engine");
+		responsibilities.add("Gearbox");
+		WorkBench drivetrain1 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain2 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain3 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		
+		responsibilities = new HashSet<>();
+		responsibilities.add("Seat");
+		responsibilities.add("Airco");
+		responsibilities.add("Spoiler");
+		responsibilities.add("Wheel");
+		WorkBench accessories1 = new WorkBench(WorkBenchType.ACCESSORIES);
+		WorkBench accessories2 = new WorkBench(WorkBenchType.ACCESSORIES);
+		WorkBench accessories3 = new WorkBench(WorkBenchType.ACCESSORIES);
+		
+		responsibilities = new HashSet<>();
+		responsibilities.add("Storage");
+		responsibilities.add("Protection");
+		WorkBench cargo = new WorkBench(WorkBenchType.CARGO);
+		
+		responsibilities = new HashSet<>();
+		responsibilities.add("Certification");
+		WorkBench certificiation = new WorkBench(WorkBenchType.CERTIFICATION);
+		
+		line1.addWorkBench(body1);
+		line1.addWorkBench(drivetrain1);
+		line1.addWorkBench(accessories1);
+		
+		line2.addWorkBench(body2);
+		line2.addWorkBench(drivetrain2);
+		line2.addWorkBench(accessories2);
+		
+		line3.addWorkBench(body3);
+		line3.addWorkBench(cargo);
+		line3.addWorkBench(drivetrain3);
+		line3.addWorkBench(accessories3);
+		line3.addWorkBench(certificiation);
+		
+		assemblyLines.add(line1);
+		assemblyLines.add(line2);
+		assemblyLines.add(line3);
+		
+		line1.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		line2.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		line3.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		
+		return assemblyLines;
 	}
-
-	@Parameterized.Parameters
-	public static Collection<Object[]> primeNumbers() {
-		return Arrays.asList(new Object[][] { { new ClientCommunication() } });
-	}
-
+	
 }
