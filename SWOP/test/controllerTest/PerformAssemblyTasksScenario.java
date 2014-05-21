@@ -1,176 +1,317 @@
 package controllerTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import view.ClientCommunication;
-import view.IClientCommunication;
-import controller.AssembleFlowController;
-import controller.OrderFlowController;
-import domain.exception.UnmodifiableException;
-import domain.exception.NoSuitableJobFoundException;
+import view.CustomVehicleCatalogueFiller;
+import view.VehicleSpecificationCatalogueFiller;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Multimap;
+
+import domain.assembly.assemblyLine.AssemblyLine;
+import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
+import domain.assembly.workBench.WorkBench;
+import domain.assembly.workBench.WorkBenchType;
+import domain.clock.Clock;
+import domain.clock.ImmutableClock;
+import domain.company.Company;
 import domain.facade.Facade;
+import domain.observer.observers.ClockObserver;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.restriction.PartPicker;
-import domain.users.AccessRight;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.catalogue.CustomVehicleCatalogue;
+import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
+import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
+
 /**
- * Scenario test for checking use case 4.3
+ * Scenario that tests the output for the use case: Perform Assembly Tasks.
  *
  */
-@RunWith(Parameterized.class)
 public class PerformAssemblyTasksScenario {
 	
-	private IClientCommunication clientCommunication;
-	private AssembleFlowController controller;
-	private OrderFlowController order;
-	private PartPicker picker;
-	private Set<BindingRestriction> bindingRestrictions;
-	private Set<OptionalRestriction> optionalRestrictions;
 	private Facade facade;
-
-	public PerformAssemblyTasksScenario(IClientCommunication ui) {
-		this.clientCommunication = ui;
-	}
-
+	private Company company;
+	
+	/**
+	 * Initialize a Facade and a Company together with all the attributes they need.
+	 */
 	@Before
 	public void initialize() {
-		this.initializeRestrictions();
-		facade = new Facade(bindingRestrictions, optionalRestrictions);
-		AccessRight accessRight = AccessRight.ASSEMBLE;
-		controller = new AssembleFlowController(accessRight, clientCommunication, facade);
-		order = new OrderFlowController(AccessRight.ORDER, clientCommunication, facade);
+		this.initializeCompany();
+		facade = new Facade(company);
+		this.placeOrder();
+		facade.createAndAddUser("jef", "worker");
+		facade.login("jef");
 	}
-	
+
+	/**
+	 * Test the use case:
+	 * 		1. show all assemblyLines and choose an assemblyLine
+	 * 		2. show all workbench for this chosen assemblyLine and choose a workbench
+	 * 		3. show all tasks on the chosen workbench and choose a task
+	 * 		4. execute the chosen task and notify the Facade
+	 */
 	@Test
-	public void PerformUseCase() throws UnmodifiableException, NoSuitableJobFoundException{
-		//placement of an order
-		facade.createAndAddUser("Mario", "garageholder");
-		String s = System.lineSeparator();
-		String input1 = "Y" + s // step 2, user wants to place an order
-						+ "model A" + s // step 4, user chooses a car model
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s // step 6 completing of ordering form
-						+ "1" + s
-						+ "1" + s
-						+ "Y" + s // approvement of order step 6
-						+ "N" + s; // end of flow
-		InputStream in1 = new ByteArrayInputStream(input1.getBytes());
-		System.setIn(in1);
-		clientCommunication = new ClientCommunication();
-		AccessRight accessRight = AccessRight.ORDER;
-		order = new OrderFlowController(accessRight, clientCommunication, facade);
-		order.placeNewOrder();
+	public void PerformUseCase(){
+		//get a List of all the assembly lines
+		//-->there should be 3 assembly lines
+		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
+		assertEquals(3,allAssemblyLines.size());
 		
-		// working at a workbench
-		facade.createAndAddUser("Luigi", "worker");
+		//each assembly line with the right specifications (which models can be built on that particular line)
+		IAssemblyLine assemblyLine1 = allAssemblyLines.get(0);
+		IAssemblyLine assemblyLine2 = allAssemblyLines.get(1);
+		IAssemblyLine assemblyLine3 = allAssemblyLines.get(2);
+		VehicleSpecification modelA = facade.getVehicleSpecificationFromCatalogue("model A");
+		VehicleSpecification modelB = facade.getVehicleSpecificationFromCatalogue("model B");
+		VehicleSpecification modelC = facade.getVehicleSpecificationFromCatalogue("model C");
+		VehicleSpecification modelX = facade.getVehicleSpecificationFromCatalogue("model X");
+		VehicleSpecification modelY = facade.getVehicleSpecificationFromCatalogue("model Y");
 		
-		assertTrue("car body".equalsIgnoreCase(facade.getWorkBenches().get(0)));
-		assertTrue("drivetrain".equalsIgnoreCase(facade.getWorkBenches().get(1)));
-		assertTrue("accessories".equalsIgnoreCase(facade.getWorkBenches().get(2)));
-		// Worker wants to work at the first workbench
-		assertTrue(facade.getTasksOfChosenWorkBench(0).contains(
-				"Paint,Required actions: 1.Put on black color"));
-		assertTrue(facade.getTasksOfChosenWorkBench(0).
-				contains("Assembly,Required actions: 1.Put on sedan body"));
+		assertTrue(assemblyLine1.getResponsibilities().contains(modelA));
+		assertTrue(assemblyLine1.getResponsibilities().contains(modelB));
 		
-		// Worker has completed the first task at his workbench. 40 minutes has elapsed
-		int time = 40;
-		facade.completeChosenTaskAtChosenWorkBench(0, 0, time);
-		// assemblyLine will advance if needed		
-	}
-	
-	
-	
-	@Test
-	public void PerformUseCaseAlternateFlow(){
-		String s = System.lineSeparator();
-		ByteArrayOutputStream myout = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(myout));
-		String input = "1" // The workbench the worker is residing at, step 2
-						+ s 
-						+ "N" // Worker does not choose to continue, step 8a
-						+ s;
-		InputStream in = new ByteArrayInputStream(input.getBytes());
-		System.setIn(in);
-		clientCommunication = new ClientCommunication();
-		controller = new AssembleFlowController(AccessRight.ASSEMBLE, clientCommunication, facade);
-		controller.executeUseCase();
-		String output = myout.toString();
-		assertEquals(
-				"Workbenches:"+ s //Status of the workbenches, step 1
-				+ "1: car body" + s 
-				+ "2: drivetrain" + s 
-				+ "3: accessories" + s + s 
-				+ "What's the number of the workbench you're currently residing at?" + s //Step 1
-				+ "All the tasks at this workbench are completed" + s + s // step 7, updated vieuw of the workbench
-				+ "Do you want to continue? Y/N" + s, // step 8
-				output);
-		// flow stops here
+		assertTrue(assemblyLine2.getResponsibilities().contains(modelA));
+		assertTrue(assemblyLine2.getResponsibilities().contains(modelB));
+		assertTrue(assemblyLine2.getResponsibilities().contains(modelC));
+		
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelA));
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelB));
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelC));
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelX));
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelY));
+		
+		//choose an assembly line
+		IAssemblyLine chosenAssemblyLine = assemblyLine1;
+		
+		//get the workbenches from the assemblyline
+		//--> there should be 3 workbenches
+		List<IWorkBench> allWorkbenches = chosenAssemblyLine.getWorkBenches();
+		assertEquals(3,allWorkbenches.size());
+		
+		//each workbench woth the right type
+		IWorkBench workBench1 = allWorkbenches.get(0);
+		IWorkBench workBench2 = allWorkbenches.get(1);
+		IWorkBench workBench3 = allWorkbenches.get(2);
+		
+		assertEquals(WorkBenchType.BODY,workBench1.getWorkbenchType());
+		assertEquals(WorkBenchType.DRIVETRAIN,workBench2.getWorkbenchType());
+		assertEquals(WorkBenchType.ACCESSORIES,workBench3.getWorkbenchType());
+		
+		//choose a workbench
+		IWorkBench chosenWorkbench = workBench1;
+		
+		//theworkbench should have a job from which it can complete tasks
+		assertTrue(chosenWorkbench.getCurrentJob().isPresent());
+		
+		//there should be two tasks to complete at this workbench (body and color), which are not complete
+		assertEquals(2,chosenWorkbench.getCurrentTasks().size());
+		assertTrue(chosenWorkbench.getCurrentTasks().get(0).getTaskDescription().equalsIgnoreCase("body") || chosenWorkbench.getCurrentTasks().get(0).getTaskDescription().equalsIgnoreCase("color"));
+		assertTrue(chosenWorkbench.getCurrentTasks().get(1).getTaskDescription().equalsIgnoreCase("body") || chosenWorkbench.getCurrentTasks().get(1).getTaskDescription().equalsIgnoreCase("color"));
+		assertFalse(chosenWorkbench.getCurrentTasks().get(0).isCompleted());
+		assertFalse(chosenWorkbench.getCurrentTasks().get(1).isCompleted());
+		
+		//complete one of the tasks
+		facade.completeChosenTaskAtChosenWorkBench(assemblyLine1, chosenWorkbench, chosenWorkbench.getCurrentTasks().get(0), new ImmutableClock(0, 0));
+		
+		//now there should be only one task left
+		assertTrue(chosenWorkbench.getCurrentTasks().get(0).isCompleted());
 	}
 	
 
-	public void initializeRestrictions(){
-		bindingRestrictions = new HashSet<>();
-		optionalRestrictions = new HashSet<>();
-		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
-		
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
-		
-		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
-		
-		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
-		
-		Set<VehicleOption> parts = new HashSet<>();
-		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		
-		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
-		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
-		
-		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
-		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
+//	public void initializeRestrictions(){
+//		bindingRestrictions = new HashSet<>();
+//		optionalRestrictions = new HashSet<>();
+//		optionalRestrictions.add(new OptionalRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), VehicleOptionCategory.SPOILER, false));
+//		
+//		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE)));
+//		bindingRestrictions.add(new BindingRestriction(new VehicleOption("sport", VehicleOptionCategory.BODY), new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE)));
+//		
+//		bindingRestrictions.add(new BindingRestriction(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE), new VehicleOption("manual", VehicleOptionCategory.AIRCO)));
+//		
+//		picker = new PartPicker(bindingRestrictions, optionalRestrictions);
+//		
+//		Set<VehicleOption> parts = new HashSet<>();
+//		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+//		
+//		parts.add(new VehicleOption("black", VehicleOptionCategory.COLOR));
+//		parts.add(new VehicleOption("white", VehicleOptionCategory.COLOR));
+//		
+//		parts.add(new VehicleOption("performance 2.5l V6", VehicleOptionCategory.ENGINE));
+//		parts.add(new VehicleOption("ultra 3l V8", VehicleOptionCategory.ENGINE));
+//	
+//		parts.add(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
+//		
+//		parts.add(new VehicleOption("leather white", VehicleOptionCategory.SEATS));
+//		parts.add(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+//		
+//		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+//		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
+//		
+//		parts.add(new VehicleOption("winter", VehicleOptionCategory.WHEEL));
+//		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
+//		
+//		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
+//		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
+//		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
+//		picker.setNewModel(template);
+//	}
+//
+//	}
 	
-		parts.add(new VehicleOption("6 speed manual", VehicleOptionCategory.GEARBOX));
+	private void placeOrder(){
+		facade.createAndAddUser("jos", "garageholder");
+		facade.login("jos");
+
+		VehicleOption option = new VehicleOption("black", VehicleOptionCategory.COLOR);
+		VehicleSpecification specification = facade.getVehicleSpecificationFromCatalogue("model A");
 		
-		parts.add(new VehicleOption("leather white", VehicleOptionCategory.SEATS));
-		parts.add(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		facade.createNewVehicle(specification);
 		
-		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		parts.add(new VehicleOption("automatic", VehicleOptionCategory.AIRCO));
+		facade.addPartToVehicle(new VehicleOption("bodyType", VehicleOptionCategory.BODY));
+		facade.addPartToVehicle(new VehicleOption("engineType", VehicleOptionCategory.ENGINE));
+		facade.addPartToVehicle(new VehicleOption("gearboxType", VehicleOptionCategory.GEARBOX));
+		facade.addPartToVehicle(new VehicleOption("seatsType", VehicleOptionCategory.SEATS));
+		facade.addPartToVehicle(new VehicleOption("wheelType", VehicleOptionCategory.WHEEL));
+		facade.addPartToVehicle(option);
 		
-		parts.add(new VehicleOption("winter", VehicleOptionCategory.WHEEL));
-		parts.add(new VehicleOption("sports", VehicleOptionCategory.WHEEL));
+		facade.processOrder(5);
 		
-		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
-		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		VehicleSpecification template = new VehicleSpecification("model", parts, 60);
-		picker.setNewModel(template);
+		facade.logout();
 	}
 
-	@Parameterized.Parameters
-	public static Collection<Object[]> primeNumbers() {
-		return Arrays.asList(new Object[][] { { new ClientCommunication() } });
+	private void initializeCompany(){
+		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
+		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
+
+		CustomVehicleCatalogue customCatalogue = new CustomVehicleCatalogue();
+		CustomVehicleCatalogueFiller customCarModelFiller = new CustomVehicleCatalogueFiller();
+		Multimap<String, CustomVehicle> customModels = customCarModelFiller
+				.getInitialModels();
+		for (String model : customModels.keySet()) {
+			for (CustomVehicle customModel : customModels.get(model)) {
+				customCatalogue.addModel(model, customModel);
+			}
+		}
+		
+		VehicleSpecificationCatalogue catalogue = new VehicleSpecificationCatalogue();
+		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
+		
+		catalogue.initializeCatalogue(filler.getInitialModels());
+		Clock clock = new Clock(360);
+		clock.advanceTime(360);
+		ClockObserver clockObserver = new ClockObserver();
+		clock.attachObserver(clockObserver);
+		ImmutableClock immutableClock = new ImmutableClock(0, 0);
+		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, immutableClock, catalogue);
+		
+		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
+	}
+	
+	private List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
+		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
+		
+		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		for(WorkBenchType type: WorkBenchType.values()){
+			timeAtWorkBench.put(type, 60);
+		}
+		Set<VehicleOption> obligatory = new HashSet<>();
+		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench,obligatory);
+		
+		
+		Set<VehicleSpecification> specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(customSpecification);
+		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		
+		
+		specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(catalogue.getCatalogue().get("model C"));
+		specifications.add(customSpecification);
+		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		
+		specifications = new HashSet<>();
+		specifications.add(catalogue.getCatalogue().get("model A"));
+		specifications.add(catalogue.getCatalogue().get("model B"));
+		specifications.add(catalogue.getCatalogue().get("model C"));
+		specifications.add(catalogue.getCatalogue().get("model X"));
+		specifications.add(catalogue.getCatalogue().get("model Y"));
+		specifications.add(customSpecification);
+		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
+		
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		WorkBench body2 = new WorkBench(WorkBenchType.BODY);
+		WorkBench body3 = new WorkBench(WorkBenchType.BODY);
+		
+		responsibilities = new HashSet<>();
+		responsibilities.add("Engine");
+		responsibilities.add("Gearbox");
+		WorkBench drivetrain1 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain2 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		WorkBench drivetrain3 = new WorkBench(WorkBenchType.DRIVETRAIN);
+		
+		responsibilities = new HashSet<>();
+		responsibilities.add("Seat");
+		responsibilities.add("Airco");
+		responsibilities.add("Spoiler");
+		responsibilities.add("Wheel");
+		WorkBench accessories1 = new WorkBench(WorkBenchType.ACCESSORIES);
+		WorkBench accessories2 = new WorkBench(WorkBenchType.ACCESSORIES);
+		WorkBench accessories3 = new WorkBench(WorkBenchType.ACCESSORIES);
+		
+		responsibilities = new HashSet<>();
+		responsibilities.add("Storage");
+		responsibilities.add("Protection");
+		WorkBench cargo = new WorkBench(WorkBenchType.CARGO);
+		
+		responsibilities = new HashSet<>();
+		responsibilities.add("Certification");
+		WorkBench certificiation = new WorkBench(WorkBenchType.CERTIFICATION);
+		
+		line1.addWorkBench(body1);
+		line1.addWorkBench(drivetrain1);
+		line1.addWorkBench(accessories1);
+		
+		line2.addWorkBench(body2);
+		line2.addWorkBench(drivetrain2);
+		line2.addWorkBench(accessories2);
+		
+		line3.addWorkBench(body3);
+		line3.addWorkBench(cargo);
+		line3.addWorkBench(drivetrain3);
+		line3.addWorkBench(accessories3);
+		line3.addWorkBench(certificiation);
+		
+		assemblyLines.add(line1);
+		assemblyLines.add(line2);
+		assemblyLines.add(line3);
+		
+		line1.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		line2.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		line3.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		
+		return assemblyLines;
 	}
 }
