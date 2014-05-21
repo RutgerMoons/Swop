@@ -50,7 +50,7 @@ public class OrderNewCarScenario {
 	public void initialize(){		
 		Company company = this.initializeCompany();
 		facade = new Facade(company);
-		facade.createAndAddUser("jef", "custom car shop manager");
+		facade.createAndAddUser("jef", "garageholder");
 		facade.login("jef");
 	}
 	
