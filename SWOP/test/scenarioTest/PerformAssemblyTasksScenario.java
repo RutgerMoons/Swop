@@ -1,4 +1,4 @@
-package controllerTest;
+package scenarioTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -21,6 +21,8 @@ import com.google.common.collect.Multimap;
 
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
@@ -39,95 +41,122 @@ import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- * Scenario test for checking use case 4.1.
- * 
+ * Scenario that tests the output for the use case: Perform Assembly Tasks.
+ *
  */
-public class OrderNewCarScenario {
-
-	private Facade facade;
+public class PerformAssemblyTasksScenario {
 	
-	@Before
-	public void initialize(){		
-		Company company = this.initializeCompany();
-		facade = new Facade(company);
-		facade.createAndAddUser("jef", "garageholder");
-		facade.login("jef");
-	}
+	private Facade facade;
+	private Company company;
 	
 	/**
-	 * Test the use case to order a new car.
-	 * 		1. You get a list of possible vehicle specifications
-	 * 		2. You choose one of them
-	 * 		3. You create a new vehicle and add vehicle options to it
-	 * 		4. You choose how many vehicles there must be ordered
-	 * 		5. The system processes the order and gives you the estimated time of completion
-	 * 
+	 * Initialize a Facade and a Company together with all the attributes they need.
 	 */
-	@Test
-	public void test(){
-		
-		//We know the program didn't add any order, so the lists are empty.
-		assertTrue(facade.getPendingOrders().isEmpty());
-		assertTrue(facade.getCompletedOrders().isEmpty());
-		
-		//We check if the initialization has been done correctly.
-		assertEquals(5, facade.getVehicleSpecifications().size());
-			
-		//We want to create a vehicle from "model A", so we get it from "model A".
-		VehicleSpecification specification = facade.getVehicleSpecificationFromCatalogue("model A");
-		
-		//We create a new vehicle on the basis of "model A".
-		facade.createNewVehicle(specification);
-		
-		//Then we add the necessary options to the vehicle, so it is ready to be ordered.
-		for(VehicleOption option: getOptions()){
-			facade.addPartToVehicle(option);
-		}
-		
-		//We want 3 vehicles to be manufactured.
-		int quantity = 3;
-		
-		//We process the order with our quantity.
-		ImmutableClock clock = facade.processOrder(quantity);
-		
-		//The order is divided over the 3 assembly lines, so 1 vehicle on each line. 
-		//We know that model A needs 50 minutes at a workbench and it has to be 
-		//assembled at 3 workbenches. So it needs 150 minutes to be assembled. 
-		//(it is 510, because the day starts at 6 'o clock (360)).
-		assertEquals(new ImmutableClock(0, 510), clock);
-		
-		//We check if the pending orders isn't empty, because we just ordered one.
-		assertFalse(facade.getPendingOrders().isEmpty());
-		
-		//The completed orders must be empty, because no order is completed.
-		assertTrue(facade.getCompletedOrders().isEmpty());
-		
-		//We know we ordered just 1 order, so the only order available in pending orders is ours.
-		//We check if the model is build according to "model A", because we chose that one.
-		assertEquals("model A", facade.getPendingOrders().get(0).getVehicleSpecification().getDescription());
-		
-		
-		
+	@Before
+	public void initialize() {
+		this.initializeCompany();
+		facade = new Facade(company);
+		this.placeOrder();
+		facade.createAndAddUser("jef", "worker");
+		facade.login("jef");
 	}
 
-	
-	private List<VehicleOption> getOptions(){
-		List<VehicleOption> options = new ArrayList<>();
-		for (VehicleOptionCategory type : facade.getVehicleOptionCategory()) {
-			List<VehicleOption> parts = facade.getRemainingVehicleOptions(type);
-			if(parts!=null && !parts.isEmpty()){
-				options.add(parts.get(0));
-			}
-		}
-		return options;
+	/**
+	 * Test the use case:
+	 * 		1. show all assemblyLines and choose an assemblyLine
+	 * 		2. show all workbench for this chosen assemblyLine and choose a workbench
+	 * 		3. show all tasks on the chosen workbench and choose a task
+	 * 		4. execute the chosen task and notify the Facade
+	 */
+	@Test
+	public void PerformUseCase(){
+		//get a List of all the assembly lines
+		//-->there should be 3 assembly lines
+		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
+		assertEquals(3,allAssemblyLines.size());
+		
+		//each assembly line with the right specifications (which models can be built on that particular line)
+		IAssemblyLine assemblyLine1 = allAssemblyLines.get(0);
+		IAssemblyLine assemblyLine2 = allAssemblyLines.get(1);
+		IAssemblyLine assemblyLine3 = allAssemblyLines.get(2);
+		VehicleSpecification modelA = facade.getVehicleSpecificationFromCatalogue("model A");
+		VehicleSpecification modelB = facade.getVehicleSpecificationFromCatalogue("model B");
+		VehicleSpecification modelC = facade.getVehicleSpecificationFromCatalogue("model C");
+		VehicleSpecification modelX = facade.getVehicleSpecificationFromCatalogue("model X");
+		VehicleSpecification modelY = facade.getVehicleSpecificationFromCatalogue("model Y");
+		
+		assertTrue(assemblyLine1.getResponsibilities().contains(modelA));
+		assertTrue(assemblyLine1.getResponsibilities().contains(modelB));
+		
+		assertTrue(assemblyLine2.getResponsibilities().contains(modelA));
+		assertTrue(assemblyLine2.getResponsibilities().contains(modelB));
+		assertTrue(assemblyLine2.getResponsibilities().contains(modelC));
+		
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelA));
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelB));
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelC));
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelX));
+		assertTrue(assemblyLine3.getResponsibilities().contains(modelY));
+		
+		//choose an assembly line
+		IAssemblyLine chosenAssemblyLine = assemblyLine1;
+		
+		//get the workbenches from the assemblyline
+		//--> there should be 3 workbenches
+		List<IWorkBench> allWorkbenches = chosenAssemblyLine.getWorkBenches();
+		assertEquals(3,allWorkbenches.size());
+		
+		//each workbench woth the right type
+		IWorkBench workBench1 = allWorkbenches.get(0);
+		IWorkBench workBench2 = allWorkbenches.get(1);
+		IWorkBench workBench3 = allWorkbenches.get(2);
+		
+		assertEquals(WorkBenchType.BODY,workBench1.getWorkbenchType());
+		assertEquals(WorkBenchType.DRIVETRAIN,workBench2.getWorkbenchType());
+		assertEquals(WorkBenchType.ACCESSORIES,workBench3.getWorkbenchType());
+		
+		//choose a workbench
+		IWorkBench chosenWorkbench = workBench1;
+		
+		//theworkbench should have a job from which it can complete tasks
+		assertTrue(chosenWorkbench.getCurrentJob().isPresent());
+		
+		//there should be two tasks to complete at this workbench (body and color), which are not complete
+		assertEquals(2,chosenWorkbench.getCurrentTasks().size());
+		assertTrue(chosenWorkbench.getCurrentTasks().get(0).getTaskDescription().equalsIgnoreCase("body") || chosenWorkbench.getCurrentTasks().get(0).getTaskDescription().equalsIgnoreCase("color"));
+		assertTrue(chosenWorkbench.getCurrentTasks().get(1).getTaskDescription().equalsIgnoreCase("body") || chosenWorkbench.getCurrentTasks().get(1).getTaskDescription().equalsIgnoreCase("color"));
+		assertFalse(chosenWorkbench.getCurrentTasks().get(0).isCompleted());
+		assertFalse(chosenWorkbench.getCurrentTasks().get(1).isCompleted());
+		
+		//complete one of the tasks
+		facade.completeChosenTaskAtChosenWorkBench(assemblyLine1, chosenWorkbench, chosenWorkbench.getCurrentTasks().get(0), new ImmutableClock(0, 0));
+		
+		//now there should be only one task left
+		assertTrue(chosenWorkbench.getCurrentTasks().get(0).isCompleted());
 	}
 	
-	
-	
-	
-	
-	
-	private Company initializeCompany(){
+	private void placeOrder(){
+		facade.createAndAddUser("jos", "garageholder");
+		facade.login("jos");
+
+		VehicleOption option = new VehicleOption("black", VehicleOptionCategory.COLOR);
+		VehicleSpecification specification = facade.getVehicleSpecificationFromCatalogue("model A");
+		
+		facade.createNewVehicle(specification);
+		
+		facade.addPartToVehicle(new VehicleOption("bodyType", VehicleOptionCategory.BODY));
+		facade.addPartToVehicle(new VehicleOption("engineType", VehicleOptionCategory.ENGINE));
+		facade.addPartToVehicle(new VehicleOption("gearboxType", VehicleOptionCategory.GEARBOX));
+		facade.addPartToVehicle(new VehicleOption("seatsType", VehicleOptionCategory.SEATS));
+		facade.addPartToVehicle(new VehicleOption("wheelType", VehicleOptionCategory.WHEEL));
+		facade.addPartToVehicle(option);
+		
+		facade.processOrder(5);
+		
+		facade.logout();
+	}
+
+	private void initializeCompany(){
 		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
 		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
 
@@ -152,7 +181,7 @@ public class OrderNewCarScenario {
 		ImmutableClock immutableClock = new ImmutableClock(0, 0);
 		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, immutableClock, catalogue);
 		
-		return new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
+		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
 	}
 	
 	private List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
@@ -245,5 +274,4 @@ public class OrderNewCarScenario {
 		
 		return assemblyLines;
 	}
-	
 }
