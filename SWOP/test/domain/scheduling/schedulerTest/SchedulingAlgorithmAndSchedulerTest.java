@@ -25,10 +25,12 @@ import domain.job.job.Job;
 import domain.observer.observers.ClockObserver;
 import domain.order.order.CustomOrder;
 import domain.order.order.StandardOrder;
+import domain.order.order.UnmodifiableOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.restriction.PartPicker;
 import domain.scheduling.Scheduler;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
@@ -38,10 +40,8 @@ import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
-public class SchedulingAlgorithmTest {
+public class SchedulingAlgorithmAndSchedulerTest {
 
-	private Facade facade;
-	private IClientCommunication clientCommunication;
 	private Scheduler scheduler;
 	private ClockObserver clock;
 	private Vehicle model;
@@ -57,10 +57,9 @@ public class SchedulingAlgorithmTest {
 	public void initialize() {
 		//facade = new Facade(bindingRestrictions, optionalRestrictions);
 		//clientCommunication = new ClientCommunication();
-		int amount = 3;
 		clock = new ClockObserver();
 		scheduler = new Scheduler(clock, new ImmutableClock(0,600));
-		List<WorkBenchType> workBenchTypes = new ArrayList<>();
+		workBenchTypes = new ArrayList<>();
 		workBenchTypes.add(WorkBenchType.BODY);
 		workBenchTypes.add(WorkBenchType.CARGO);
 		workBenchTypes.add(WorkBenchType.ACCESSORIES);
@@ -107,8 +106,7 @@ public class SchedulingAlgorithmTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		
-		VehicleSpecification template = new VehicleSpecification("model", parts, timeAtWorkBench);
+		VehicleSpecification template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		catalogue.addModel(template);
 		
 		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
@@ -129,6 +127,11 @@ public class SchedulingAlgorithmTest {
 		scheduler = new Scheduler(clock,null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void constructorSATestNull() {
+		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(null);
+	}
+	
 	@Test
 	public void addCustomJobTest(){
 		CustomVehicle customModel = new CustomVehicle();
@@ -139,16 +142,53 @@ public class SchedulingAlgorithmTest {
 		scheduler.addJobToAlgorithm(job, new ArrayList<Optional<IJob>>());;
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void addCustomJobNullTest(){
+		scheduler.addJobToAlgorithm(null, new ArrayList<Optional<IJob>>());;
+	}
+	
 	@Test
 	public void addStandardJobTest(){
 		Set<VehicleOption> parts = new HashSet<>();
-		template = new VehicleSpecification("model", parts, timeAtWorkBench);
+		Set<VehicleOption> set = new HashSet<VehicleOption>();
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, set);
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(2, 360); 
 		int quantity =5;
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
 		scheduler.addJobToAlgorithm(job, new ArrayList<Optional<IJob>>());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void addUnmodifiableJobTest(){
+		Set<VehicleOption> parts = new HashSet<>();
+		Set<VehicleOption> set = new HashSet<VehicleOption>();
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, set);
+		model = new Vehicle(template);
+		ImmutableClock ordertime1 = new ImmutableClock(2, 360); 
+		int quantity =5;
+		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
+		UnmodifiableOrder order2 = new UnmodifiableOrder(order1);
+		IJob job = new Job(order2);
+		scheduler.addJobToAlgorithm(job, new ArrayList<Optional<IJob>>());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void addStandardJobTestNullJob() {
+		scheduler.addJobToAlgorithm(null, new ArrayList<Optional<IJob>>());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void addStandardJobTestNull2Job() {
+		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(new ArrayList<WorkBenchType>());
+		fifo.addStandardJob(null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void addCustomJobTestNullJob() {
+		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(new ArrayList<WorkBenchType>());
+		fifo.addCustomJob(null);
 	}
 	
 	@Test
@@ -195,9 +235,9 @@ public class SchedulingAlgorithmTest {
 	}
 	
 	@Test
-	public void getEstimatedTimeInMinutes() throws NotImplementedException{
+	public void getEstimatedTimeInMinutes() {
 		Set<VehicleOption> parts = new HashSet<>();
-		template = new VehicleSpecification("model", parts, this.timeAtWorkBench);
+		template = new VehicleSpecification("model", parts, this.timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(2, 360); 
 		int quantity =5;
@@ -208,11 +248,11 @@ public class SchedulingAlgorithmTest {
 	}
 	
 	@Test
-	public void retrieveNextJobTest() throws NotImplementedException{
+	public void retrieveNextJobTest() {
 		// Standard job not containing necessary parts of list.
 		Set<VehicleOption> parts = new HashSet<>();
 		assertNotNull(this.timeAtWorkBench);
-		template = new VehicleSpecification("model", parts, this.timeAtWorkBench);
+		template = new VehicleSpecification("model", parts, this.timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(0, 660); // om 6 uur op dag 2
 		int quantity =5;
@@ -225,6 +265,66 @@ public class SchedulingAlgorithmTest {
 			Optional<IJob> job = scheduler.retrieveNextJob(new ArrayList<Optional<IJob>>());
 			assertEquals(job1, job.get());
 		//} catch (NoSuitableJobFoundException e1) {}
+	}
+	
+	@Test
+	public void addWorkBenchTest() {
+		ArrayList<WorkBenchType> types = new ArrayList<WorkBenchType>();
+		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(types);
+		assertEquals(0, types.size());
+		fifo.addWorkBenchType(WorkBenchType.CERTIFICATION);
+		assertEquals(1, types.size());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void addWorkBenchNullTest() {
+		ArrayList<WorkBenchType> types = new ArrayList<WorkBenchType>();
+		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(types);
+		assertEquals(0, types.size());
+		fifo.addWorkBenchType(null);
+	}
+	
+	@Test
+	public void removeUnscheduledJobsTest() {
+		ArrayList<WorkBenchType> types = new ArrayList<WorkBenchType>();
+		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(types);
+		assertEquals(0, fifo.removeUnscheduledJobs().size());
+		
+		Set<VehicleOption> parts = new HashSet<>();
+		assertNotNull(this.timeAtWorkBench);
+		template = new VehicleSpecification("model", parts, this.timeAtWorkBench, new HashSet<VehicleOption>());
+		model = new Vehicle(template);
+		ImmutableClock ordertime1 = new ImmutableClock(0, 660); // om 6 uur op dag 2
+		int quantity =5;
+		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); // 420 minuten op de band
+		IJob job1 = new Job(order1);
+		
+		CustomVehicle customModel = new CustomVehicle();
+		ImmutableClock ordertime = new ImmutableClock(0, 0);
+		ImmutableClock deadline = new ImmutableClock(10, 800);
+		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
+		IJob job2 = new Job(customOrder);
+		
+		fifo.addStandardJob(job1);
+		fifo.addCustomJob(job2);
+		
+		assertEquals(2, fifo.removeUnscheduledJobs().size());
+	}
+	
+	@Test
+	public void getCustomJobsTest() {
+		ArrayList<WorkBenchType> types = new ArrayList<WorkBenchType>();
+		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(types);
+		
+		CustomVehicle customModel = new CustomVehicle();
+		ImmutableClock ordertime = new ImmutableClock(0, 0);
+		ImmutableClock deadline = new ImmutableClock(10, 800);
+		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
+		IJob job2 = new Job(customOrder);
+		
+		fifo.addCustomJob(job2);
+		
+		assertEquals(1, fifo.getCustomJobs().size());
 	}
 	
 	/*
@@ -269,4 +369,3 @@ public class SchedulingAlgorithmTest {
 	}
 	*/
 } 
->>>>>>> branch 'master' of https://github.com/RutgerMoons/Swop.git
