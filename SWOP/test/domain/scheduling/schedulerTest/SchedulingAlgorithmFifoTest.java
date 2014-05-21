@@ -115,6 +115,7 @@ public class SchedulingAlgorithmFifoTest {
 		ImmutableClock ordertime1 = new ImmutableClock(0, 600); // om 10.10 uur op dag 0
 		StandardOrder order1 = new StandardOrder("Luigi", model, 1, ordertime1); // 420 minuten op de band
 		IJob job = new Job(order1);
+		
 		ArrayList<Optional<IJob>> list = new ArrayList<Optional<IJob>>();
 		Optional<IJob> job3 = Optional.absent();
 		list.add(job3);

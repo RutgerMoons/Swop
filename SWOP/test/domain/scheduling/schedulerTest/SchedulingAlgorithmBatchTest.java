@@ -128,6 +128,7 @@ public class SchedulingAlgorithmBatchTest {
 		Set<VehicleOption> parts = new HashSet<>();
 		template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
+		model.addVehicleOption(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		ImmutableClock ordertime1 = new ImmutableClock(0, 360); // om 6 uur op dag 2
 		StandardOrder order1 = new StandardOrder("Luigi", model, 1, ordertime1); // 420 minuten op de band
 		IJob sJob1 = new Job(order1);
@@ -149,16 +150,17 @@ public class SchedulingAlgorithmBatchTest {
 		parts2.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		template = new VehicleSpecification("model", parts2, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
+		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		ImmutableClock ordertime2 = new ImmutableClock(0, 360); // om 7 uur op dag 2
 		StandardOrder order2 = new StandardOrder("Luigi", model, 1, ordertime2); // 420 minuten op de band
 		IJob bJob1 = new Job(order2);
 		scheduler.addJobToAlgorithm(bJob1, list);
 		scheduler.addJobToAlgorithm(sJob1,list);
 		
-		
-		assertEquals(new ImmutableClock(2, 700), sJob1.getOrder().getEstimatedTime());
+		assertEquals(new ImmutableClock(0, 540), bJob1.getOrder().getEstimatedTime());
+		assertEquals(new ImmutableClock(0, 720), sJob1.getOrder().getEstimatedTime());
 		assertEquals(new ImmutableClock(10,800), cJob1.getOrder().getEstimatedTime());
-		assertEquals(new ImmutableClock(0, 520), bJob1.getOrder().getEstimatedTime());
+		
 	}
 
 	@Test (expected = IllegalArgumentException.class)
