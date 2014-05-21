@@ -87,7 +87,7 @@ public abstract class SchedulingAlgorithm {
 	protected void addToList(Optional<IJob> job, List<Optional<IJob>> list) {
 		list.add(0, job);
 		if (list.size() > this.workBenchTypes.size()) {
-			list.remove(this.workBenchTypes.size() - 1);
+			list.remove(this.workBenchTypes.size());
 		}
 	}
 	

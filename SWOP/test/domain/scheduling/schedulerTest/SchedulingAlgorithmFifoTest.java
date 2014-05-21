@@ -49,7 +49,7 @@ public class SchedulingAlgorithmFifoTest {
 		scheduler = new Scheduler(clock, new ImmutableClock(0,600));
 		workBenchTypes = new ArrayList<>();
 		workBenchTypes.add(WorkBenchType.BODY);
-		workBenchTypes.add(WorkBenchType.CARGO);
+		workBenchTypes.add(WorkBenchType.DRIVETRAIN);
 		workBenchTypes.add(WorkBenchType.ACCESSORIES);
 		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();
 		scheduler.switchToAlgorithm(fifo, workBenchTypes);
@@ -111,7 +111,7 @@ public class SchedulingAlgorithmFifoTest {
 		Set<VehicleOption> parts = new HashSet<>();
 		template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
-		ImmutableClock ordertime1 = new ImmutableClock(0, 610); // om 10.10 uur op dag 0
+		ImmutableClock ordertime1 = new ImmutableClock(0, 600); // om 10.10 uur op dag 0
 		StandardOrder order1 = new StandardOrder("Luigi", model, 1, ordertime1); // 420 minuten op de band
 		IJob job = new Job(order1);
 		ArrayList<Optional<IJob>> list = new ArrayList<Optional<IJob>>();
@@ -126,9 +126,9 @@ public class SchedulingAlgorithmFifoTest {
 		IJob job2 = new Job(customOrder);
 		scheduler.addJobToAlgorithm(job2,list);
 		
-		//assertEquals(new UnmodifiableClock(2, 780), order1.getEstimatedTime());
-		assertEquals(new ImmutableClock(8, 440), job2.getOrder().getEstimatedTime());
-		assertEquals(new ImmutableClock(2,780), job.getOrder().getEstimatedTime());
+		
+		assertEquals(new ImmutableClock(0, 780), job.getOrder().getEstimatedTime());
+		assertEquals(new ImmutableClock(10,800), job2.getOrder().getEstimatedTime());
 	}
 
 	@Test (expected = IllegalArgumentException.class)
