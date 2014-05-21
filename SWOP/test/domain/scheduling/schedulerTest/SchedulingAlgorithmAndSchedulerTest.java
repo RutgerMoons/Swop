@@ -12,7 +12,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import com.google.common.base.Optional;
 
 import domain.assembly.workBench.WorkBenchType;
@@ -207,6 +206,23 @@ public class SchedulingAlgorithmAndSchedulerTest {
 		scheduler.switchToAlgorithm(batch, workBenchTypes);
 	}
 	
+	@Test 
+	public void switchToAlgorithm(){
+		ClockObserver observer = new ClockObserver();
+		Scheduler schedul = new Scheduler(observer, new ImmutableClock(0,360));
+		schedul.switchToAlgorithm(new SchedulingAlgorithmCreatorFifo(), workBenchTypes);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void switchToAlgorithmError1(){
+		scheduler.switchToAlgorithm(null, workBenchTypes);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void switchToAlgorithmError2(){
+		scheduler.switchToAlgorithm(new SchedulingAlgorithmCreatorFifo(), null);
+	}
+	
 	@Test
 	public void advanceTimeTest(){
 		scheduler.advanceTime(new ImmutableClock(0,540));
@@ -260,6 +276,11 @@ public class SchedulingAlgorithmAndSchedulerTest {
 		//} catch (NoSuitableJobFoundException e1) {}
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void retrieveNextJobTestError(){
+		scheduler.retrieveNextJob(null);
+	}
+	
 	@Test
 	public void addWorkBenchTest() {
 		ArrayList<WorkBenchType> types = new ArrayList<WorkBenchType>();
@@ -302,6 +323,7 @@ public class SchedulingAlgorithmAndSchedulerTest {
 		fifo.addCustomJob(job2);
 		
 		assertEquals(2, fifo.removeUnscheduledJobs().size());
+		assertEquals(0, scheduler.removeUnscheduledJobs().size());
 	}
 	
 	@Test
@@ -320,45 +342,47 @@ public class SchedulingAlgorithmAndSchedulerTest {
 		assertEquals(1, fifo.getCustomJobs().size());
 	}
 	
-	/*
 	@Test
-	public void getAllVehicleOptionsInPendingOrdersTest() {
-		Set<VehicleOption> parts = new HashSet<>();
-		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
-		VehicleSpecification template = new VehicleSpecification("model", parts, this.timeAtWorkBench);
-		model = new Vehicle(template);
-
-		try {
-			model.addCarPart(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-			model.addCarPart(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
-			model.addCarPart(new VehicleOption("red",  VehicleOptionCategory.COLOR));
-			model.addCarPart(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
-			model.addCarPart(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
-			model.addCarPart(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
-			model.addCarPart(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
-		} catch (AlreadyInMapException e) {}
-		Clock c = new Clock();
-		AssemblyLine line = new AssemblyLine(clock, c.getImmutableClock(), AssemblyLineState.OPERATIONAL);
-		line.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
-			
-		StandardOrder order = new StandardOrder("Luigi", this.model, 5, c.getImmutableClock());
-		try {
-			line.convertStandardOrderToJob(order);
-		} catch (UnmodifiableException e) { }
-		
-		Set<Set<VehicleOption>> powerSet = line.getAllVehicleOptionsInPendingOrders();
-		assertEquals(127, powerSet.size());
+	public void getCurrentSchedulingAlgorithmTest(){
+		assertEquals("Fifo", scheduler.getCurrentSchedulingAlgorithm());
+		ClockObserver obs = new ClockObserver();
+		Scheduler schedule = new Scheduler(obs, new ImmutableClock(0, 360));
+		assertEquals("No scheduling algorithm used at the moment.", schedule.getCurrentSchedulingAlgorithm());
 	}
-	*/
 	
-	/*@Test
-	public void getCurrentSchedulingAlgorithmAsStringTest() {
-		assertTrue(scheduler.getCurrentSchedulingAlgorithm()("fifo"));
-		this.facade.switchToBatch(Collections.EMPTY_LIST);
-		assertTrue(facade.getCurrentSchedulingAlgorithmAsString().equalsIgnoreCase("batch"));
-		assertEquals(2, facade.getPossibleSchedulingAlgorithms().size());
-		assertTrue(facade.getPossibleSchedulingAlgorithms().contains("Fifo"));
-		assertTrue(facade.getPossibleSchedulingAlgorithms().contains("Batch"));
+	@Test
+	public void getStandardJobsTest(){
+		assertNotNull(scheduler.getStandardJobs());
 	}
-	*/
+	
+	@Test
+	public void advanceInternalClockTest(){
+		scheduler.advanceInternalClock(new ImmutableClock(0, 50));
+		assertEquals(650, scheduler.getTotalMinutesOfInternalClock());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void advanceInternalClockTestError(){
+		scheduler.advanceInternalClock(null);
+	}
+	
+	@Test
+	public void addWorkBenchTypeTest(){
+		scheduler.addWorkBenchType(WorkBenchType.CARGO);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void addWorkBenchTypeTestError1(){
+		scheduler.addWorkBenchType(null);
+	}
+	
+	@Test (expected = IllegalStateException.class)
+	public void addWorkBenchTypeTestError2(){
+		ClockObserver observer = new ClockObserver();
+		Scheduler schedule = new Scheduler(observer, new ImmutableClock(0, 400));
+		schedule.addWorkBenchType(WorkBenchType.CARGO);
+	}
+	
+	
+	
 } 
