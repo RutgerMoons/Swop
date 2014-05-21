@@ -28,7 +28,6 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 /**
  * A class to initialize all data at the start of the program. 
  * It initializes the AssemblyLines and it simulates a production day. 
- *
  */
 public class DataInitializer {
 
