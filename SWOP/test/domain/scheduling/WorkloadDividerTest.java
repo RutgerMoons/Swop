@@ -220,5 +220,10 @@ public class WorkloadDividerTest {
 	public void testProcessOrderException() {
 		workloadDivider.processNewOrder(null);
 	}
+	
+	@Test
+	public void testCompleteChosenTaskAtChosenWorkBench(){
+		
+	}
 
 }
