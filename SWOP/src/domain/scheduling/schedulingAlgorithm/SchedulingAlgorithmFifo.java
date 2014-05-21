@@ -100,7 +100,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime, 
 					ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		// if there are no jobs to schedule, throw a new NoMoreJobsToScheduleException
-		if (this.customJobs.size() == 0 || this.jobsStartOfDay.size() == 0 || this.standardJobs.size() == 0) {
+		if (this.customJobs.size() == 0 && this.jobsStartOfDay.size() == 0 && this.standardJobs.size() == 0) {
 			throw new NoMoreJobsToScheduleException();
 		}
 		/* 

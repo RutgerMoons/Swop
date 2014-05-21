@@ -1,10 +1,8 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
@@ -13,19 +11,13 @@ import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
 import domain.assembly.assemblyLine.AssemblyLine;
-import domain.assembly.assemblyLine.AssemblyLineState;
-import domain.assembly.workBench.WorkBench;
-import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
-import domain.clock.ImmutableClock;
 import domain.company.Company;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.observer.observers.ClockObserver;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
-import domain.vehicle.VehicleSpecification;
 import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
@@ -75,88 +67,19 @@ public class AssemAssist {
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
 		
-		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);
-
+		DataInitializer initializer = new DataInitializer();
+		
+		
+		List<AssemblyLine> assemblyLines = initializer.getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);
+		
 		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
 		clientCommunication = new ClientCommunication();
 		facade = new Facade(company);
 		FlowControllerFactory flowControllerFactory = new FlowControllerFactory(clientCommunication, facade);
 		flowControllers = flowControllerFactory.createFlowControllers();
 		userFlowController = new UserFlowController(clientCommunication, facade, flowControllers);
-	}
-
-	private static List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
-		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();
-
-		Map<WorkBenchType, Integer> timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
-		for(WorkBenchType type: WorkBenchType.values()){
-			timeAtWorkBench.put(type, 60);
-		}
-		VehicleSpecification customSpecification = new VehicleSpecification("custom", new HashSet<VehicleOption>(), timeAtWorkBench, new HashSet<VehicleOption>());
-
-
-		Set<VehicleSpecification> specifications = new HashSet<>();
-		specifications.add(catalogue.getCatalogue().get("model A"));
-		specifications.add(catalogue.getCatalogue().get("model B"));
-		specifications.add(customSpecification);
-		AssemblyLine line1 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
-
-
-		specifications = new HashSet<>();
-		specifications.add(catalogue.getCatalogue().get("model A"));
-		specifications.add(catalogue.getCatalogue().get("model B"));
-		specifications.add(catalogue.getCatalogue().get("model C"));
-		specifications.add(customSpecification);
-		AssemblyLine line2 = new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
-
-		specifications = new HashSet<>();
-		specifications.add(catalogue.getCatalogue().get("model A"));
-		specifications.add(catalogue.getCatalogue().get("model B"));
-		specifications.add(catalogue.getCatalogue().get("model C"));
-		specifications.add(catalogue.getCatalogue().get("model X"));
-		specifications.add(catalogue.getCatalogue().get("model Y"));
-		specifications.add(customSpecification);
-		AssemblyLine line3= new AssemblyLine(clockObserver, clock, AssemblyLineState.OPERATIONAL, specifications);
-
-		WorkBench body1 = new WorkBench( WorkBenchType.BODY);
-		WorkBench body2 = new WorkBench( WorkBenchType.BODY);
-		WorkBench body3 = new WorkBench( WorkBenchType.BODY);
-
-		WorkBench drivetrain1 = new WorkBench( WorkBenchType.DRIVETRAIN);
-		WorkBench drivetrain2 = new WorkBench( WorkBenchType.DRIVETRAIN);
-		WorkBench drivetrain3 = new WorkBench( WorkBenchType.DRIVETRAIN);
-
-		WorkBench accessories1 = new WorkBench( WorkBenchType.ACCESSORIES);
-		WorkBench accessories2 = new WorkBench( WorkBenchType.ACCESSORIES);
-		WorkBench accessories3 = new WorkBench( WorkBenchType.ACCESSORIES);
-
-		WorkBench cargo = new WorkBench( WorkBenchType.CARGO);
-
-		WorkBench certificiation = new WorkBench( WorkBenchType.CERTIFICATION);
-
-		line1.addWorkBench(body1);
-		line1.addWorkBench(drivetrain1);
-		line1.addWorkBench(accessories1);
-
-		line2.addWorkBench(body2);
-		line2.addWorkBench(drivetrain2);
-		line2.addWorkBench(accessories2);
-
-		line3.addWorkBench(body3);
-		line3.addWorkBench(cargo);
-		line3.addWorkBench(drivetrain3);
-		line3.addWorkBench(accessories3);
-		line3.addWorkBench(certificiation);
-
-		assemblyLines.add(line1);
-		assemblyLines.add(line2);
-		assemblyLines.add(line3);
-
-		line1.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
-		line2.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
-		line3.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
-
-		return assemblyLines;
+		
+		initializer.initializeData(facade);
 	}
 
 	public static void main(String[] args) {

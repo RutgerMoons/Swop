@@ -21,7 +21,7 @@ public class ClockObserverTest {
 
 	@Test 
 	public void attachLoggerTest1(){
-		Logger logger = new Logger(3);
+		Logger logger = new Logger(3, new ImmutableClock(0, 0));
 		observer.attachLogger(logger);
 	}
 	
@@ -32,7 +32,7 @@ public class ClockObserverTest {
 	
 	@Test 
 	public void detachLoggerTest1(){
-		Logger logger = new Logger(3);
+		Logger logger = new Logger(3, new ImmutableClock(0, 0));
 		observer.attachLogger(logger);
 		observer.detachLogger(logger);
 	}
@@ -43,7 +43,7 @@ public class ClockObserverTest {
 	}	
 	@Test
 	public void advanceTimeTest(){
-		Logger logger = new Logger(3);
+		Logger logger = new Logger(3, new ImmutableClock(0, 0));
 		observer.attachLogger(logger);
 		observer.advanceTime(new ImmutableClock(1,100));
 		assertEquals(new ImmutableClock(1, 100), logger.getCurrentTime());
@@ -51,7 +51,7 @@ public class ClockObserverTest {
 	
 	@Test
 	public void startNewDayTest(){
-		Logger logger = new Logger(3);
+		Logger logger = new Logger(3, new ImmutableClock(0, 0));
 		observer.attachLogger(logger);
 		observer.startNewDay(new ImmutableClock(1,0));
 		assertEquals(new ImmutableClock(1, 0), logger.getCurrentTime());

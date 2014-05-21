@@ -324,7 +324,7 @@ public class FacadeTest {
 	
 	@Test
 	public void testGetAssemblyLineStates(){
-		assertEquals(3, facade.getAssemblyLineStates().size());
+		assertEquals(5, facade.getAssemblyLineStates().size());
 	}
 	
 	@Test

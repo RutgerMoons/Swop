@@ -92,7 +92,7 @@ public class Company {
 		this.userbook = new UserBook();
 		this.orderbook = new OrderBook();
 		amountOfDetailedHistory = 2;
-		this.log = new Logger(amountOfDetailedHistory);
+		this.log = new Logger(amountOfDetailedHistory, clock.getImmutableClock());
 		AssemblyLineObserver assemblyLineObserver = new AssemblyLineObserver();
 		assemblyLineObserver.attachLogger(log);
 		assemblyLineObserver.attachLogger(orderbook);
@@ -156,7 +156,7 @@ public class Company {
 				clock.advanceTime(difference);
 			}
 		} catch (TimeToStartNewDayException timeException) {
-			clock.startNewDay();
+			this.startNewDay();
 		}
 		
 	}
@@ -259,6 +259,7 @@ public class Company {
 	 */
 	public void startNewDay(){
 		this.clock.startNewDay();
+		this.workloadDivider.startNewDay(this.clock.getImmutableClock());
 	}
 
 	/**
