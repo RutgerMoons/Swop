@@ -25,7 +25,6 @@ import domain.vehicle.vehicleOption.VehicleOption;
 public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 
 	private PriorityQueue<IJob> batchJobs;
-	private ArrayList<Optional<IJob>> jobsStartOfDay;
 	private List<VehicleOption> vehicleOptions;
 
 	/**
