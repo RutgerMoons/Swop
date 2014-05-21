@@ -456,7 +456,7 @@ public class SchedulingAlgorithmBatchTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void creatorBatchTest() {
-		SchedulingAlgorithmCreatorBatch b = new SchedulingAlgorithmCreatorBatch(null);
+		new SchedulingAlgorithmCreatorBatch(null);
 	}
 
 }

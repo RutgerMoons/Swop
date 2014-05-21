@@ -17,6 +17,7 @@ import com.google.common.base.Optional;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
+import domain.exception.NoMoreJobsInTimeException;
 import domain.exception.NoMoreJobsToScheduleException;
 import domain.job.job.IJob;
 import domain.job.job.Job;
@@ -284,6 +285,31 @@ public class SchedulingAlgorithmFifoTest {
 		
 		Optional<IJob> newJob = algorithm.retrieveNext(1280, new ImmutableClock(1,420), list);
 		assertEquals(sJob1, newJob.get());
+	}
+	
+	@Test (expected = NoMoreJobsInTimeException.class)
+	public void retrieveNextTestError(){
+		CustomVehicle customModel3 = new CustomVehicle();
+		ImmutableClock ordertime3 = new ImmutableClock(1, 530);
+		ImmutableClock deadline3 = new ImmutableClock(2, 540);
+		CustomOrder customOrder3 = new CustomOrder("Mario", customModel3, 3, ordertime3, deadline3);
+		IJob job5= new Job(customOrder3);
+		algorithm.addCustomJob(job5);
+		
+		Optional<IJob> newJob = algorithm.retrieveNext(1020, new ImmutableClock(1,640), new ArrayList<Optional<IJob>>());
+		assertEquals(job5, newJob.get());
+		
+		CustomVehicle customModel4 = new CustomVehicle();
+		customModel4.addVehicleOption(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		ImmutableClock ordertime4 = new ImmutableClock(1, 530);
+		ImmutableClock deadline4 = new ImmutableClock(1, 900);
+		CustomOrder customOrder4 = new CustomOrder("Mario", customModel4, 3, ordertime4, deadline4);
+		IJob job6= new Job(customOrder4);
+		algorithm.addCustomJob(job6);
+		
+		algorithm.retrieveNext(20, new ImmutableClock(1,600), new ArrayList<Optional<IJob>>());
+		
+		
 	}
 	
 	
