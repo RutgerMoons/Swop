@@ -42,8 +42,6 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class SchedulingAlgorithmAndSchedulerTest {
 
-	private Facade facade;
-	private IClientCommunication clientCommunication;
 	private Scheduler scheduler;
 	private ClockObserver clock;
 	private Vehicle model;
@@ -62,7 +60,7 @@ public class SchedulingAlgorithmAndSchedulerTest {
 		int amount = 3;
 		clock = new ClockObserver();
 		scheduler = new Scheduler(clock, new ImmutableClock(0,600));
-		List<WorkBenchType> workBenchTypes = new ArrayList<>();
+		workBenchTypes = new ArrayList<>();
 		workBenchTypes.add(WorkBenchType.BODY);
 		workBenchTypes.add(WorkBenchType.CARGO);
 		workBenchTypes.add(WorkBenchType.ACCESSORIES);
