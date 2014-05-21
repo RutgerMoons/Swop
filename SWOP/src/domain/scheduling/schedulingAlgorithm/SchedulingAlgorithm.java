@@ -130,7 +130,6 @@ public abstract class SchedulingAlgorithm {
 					return Optional.fromNullable(job);
 				}
 			}
-
 			index--;
 		}
 		Optional<IJob> absentJob = Optional.absent();
