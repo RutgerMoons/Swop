@@ -158,7 +158,7 @@ public class SchedulingAlgorithmBatchTest {
 		scheduler.addJobToAlgorithm(sJob1,list);
 		
 		assertEquals(new ImmutableClock(0, 540), bJob1.getOrder().getEstimatedTime());
-		assertEquals(new ImmutableClock(0, 720), sJob1.getOrder().getEstimatedTime());
+		assertEquals(new ImmutableClock(0, 600), sJob1.getOrder().getEstimatedTime());
 		assertEquals(new ImmutableClock(10,800), cJob1.getOrder().getEstimatedTime());
 		
 	}
@@ -184,10 +184,16 @@ public class SchedulingAlgorithmBatchTest {
 		Set<VehicleOption> parts = new HashSet<>();
 		template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
-		ImmutableClock ordertime1 = new ImmutableClock(0, 420); 
-		StandardOrder order1 = new StandardOrder("Luigi", model, 1, ordertime1); 
+		model.addVehicleOption(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		ImmutableClock ordertime1 = new ImmutableClock(0, 360); // om 6 uur op dag 2
+		StandardOrder order1 = new StandardOrder("Luigi", model, 1, ordertime1); // 420 minuten op de band
 		IJob sJob1 = new Job(order1);
 		IJob sJob2 = new Job(order1);
+		
+		ArrayList<Optional<IJob>> list = new ArrayList<Optional<IJob>>();
+		Optional<IJob> job3 = Optional.absent();
+		list.add(job3);
+		
 		
 		algorithm.addStandardJob(sJob1);
 		algorithm.addStandardJob(sJob2);
@@ -203,37 +209,45 @@ public class SchedulingAlgorithmBatchTest {
 		// Stel algoritme zit op tijdstip dag 0 360 minuten
 		algorithm.startNewDay();
 		int minTillEndOfDay = 1320;
+		
 		Optional<IJob> job = algorithm.retrieveNext(minTillEndOfDay, new ImmutableClock(1,360), new ArrayList<Optional<IJob>>());
 		assertEquals(job2, job.get());
+		
 		Optional<IJob> newJob = algorithm.retrieveNext(1280, new ImmutableClock(1,420),new ArrayList<Optional<IJob>>());
 		assertEquals(sJob1, newJob.get());
+		
 		CustomVehicle customModel2 = new CustomVehicle();
 		ImmutableClock ordertime2 = new ImmutableClock(1, 430);
 		ImmutableClock deadline2 = new ImmutableClock(1, 540);
 		CustomOrder customOrder2 = new CustomOrder("Mario", customModel2, 1, ordertime2, deadline2);
 		IJob job4 = new Job(customOrder2);
 		algorithm.addCustomJob(job4);
+		
 		Optional<IJob> newJob2 = algorithm.retrieveNext(1220, new ImmutableClock(1,480),new ArrayList<Optional<IJob>>());
 		assertEquals(job4, newJob2.get());
+		
 		Optional<IJob> newJob3 = algorithm.retrieveNext(1160, new ImmutableClock(1,520), new ArrayList<Optional<IJob>>());
 		assertEquals(sJob2, newJob3.get());
+		
 		CustomVehicle customModel3 = new CustomVehicle();
 		ImmutableClock ordertime3 = new ImmutableClock(1, 530);
 		ImmutableClock deadline3 = new ImmutableClock(2, 540);
 		CustomOrder customOrder3 = new CustomOrder("Mario", customModel3, 3, ordertime3, deadline3);
 		IJob job5= new Job(customOrder3);
 		algorithm.addCustomJob(job5);
+		
 		Optional<IJob> newJob4 = algorithm.retrieveNext(1080, new ImmutableClock(1,580), new ArrayList<Optional<IJob>>());
 		assertEquals(job5, newJob4.get());
+		
 		Set<VehicleOption> parts2 = new HashSet<>();
 		parts2.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
 		template = new VehicleSpecification("model", parts2, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime4 = new ImmutableClock(2, 420); 
-		int quantity2 =5;
-		StandardOrder order4 = new StandardOrder("Luigi", model, quantity2, ordertime4);
+		StandardOrder order4 = new StandardOrder("Luigi", model, 1, ordertime4);
 		IJob job6 = new Job(order4);
 		algorithm.addStandardJob(job6);
+		
 		Optional<IJob> newJob5 = algorithm.retrieveNext(1020, new ImmutableClock(1,640), new ArrayList<Optional<IJob>>());
 		assertEquals(job6,newJob5.get());
 	}

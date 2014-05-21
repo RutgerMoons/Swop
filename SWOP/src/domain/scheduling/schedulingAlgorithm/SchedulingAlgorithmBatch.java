@@ -87,13 +87,10 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		int totalProductionTime = 0;
 		for (Iterator<IJob> iterator = batchJobs.iterator(); iterator.hasNext();) {
 			IJob j = iterator.next();
-			if (iterator.hasNext()) {
-				addToList(Optional.fromNullable(j), previousJobs);
-				totalProductionTime += this.getMaximum(previousJobs);			
-			}
-			else if(this.batchJobs.contains(job)){
-				addToList(Optional.fromNullable(j), previousJobs);
-				totalProductionTime += this.getMaximum(previousJobs);
+			addToList(Optional.fromNullable(j), previousJobs);
+			totalProductionTime += this.getMaximum(previousJobs);		
+			
+			if(this.batchJobs.contains(job)){
 				for(int i = 0; i< this.workBenchTypes.size() -1;i++){
 					Optional<IJob> absentJob = Optional.absent();
 					addToList(absentJob, previousJobs);

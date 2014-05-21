@@ -185,11 +185,12 @@ public class CustomOrder implements IOrder {
 		} catch (ClassCastException e){
 			return false;
 		}
-
-		if (!deadline.equals(other.getDeadline()))
-			return false;
 		if (!description.equals(other.getDescription()))
 			return false;
+		
+		if (!deadline.equals(other.getDeadline()))
+			return false;
+		
 		if (estimatedTime == null) {
 			if (other.getEstimatedTime() != null)
 				return false;

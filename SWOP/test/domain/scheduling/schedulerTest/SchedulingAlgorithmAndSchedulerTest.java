@@ -237,7 +237,7 @@ public class SchedulingAlgorithmAndSchedulerTest {
 		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1);
 		IJob job = new Job(order1);
 		scheduler.addJobToAlgorithm(job, new ArrayList<Optional<IJob>>());
-		assertEquals(180, job.getOrder().getEstimatedTime().getMinutes());
+		assertEquals(540, job.getOrder().getEstimatedTime().getMinutes());
 	}
 	
 	@Test
