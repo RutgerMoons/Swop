@@ -273,7 +273,7 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 					int timeOfInternalClock = line.completeChosenTaskAtChosenWorkBench(workbench, task, elapsed);
 					boolean allAssemblyLinesNotOperational = true;
 					for (AssemblyLine a : this.assemblyLines) {
-						if (a.getState() == AssemblyLineState.OPERATIONAL || a.getState() == AssemblyLineState.IDLE) {
+						if (a.getState().equals(AssemblyLineState.OPERATIONAL) || a.getState().equals(AssemblyLineState.IDLE)) {
 							allAssemblyLinesNotOperational = false;
 						}
 					}
@@ -397,7 +397,7 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 
 	private Optional<AssemblyLine> getModifiableAssemblyLine(IAssemblyLine assemblyLine){
 		for(AssemblyLine line: assemblyLines){
-			if(assemblyLine.equals(line)){
+			if(line.equals(assemblyLine)){
 				return Optional.fromNullable(line);
 			}
 		}
