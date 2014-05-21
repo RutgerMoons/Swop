@@ -83,6 +83,7 @@ ObservableAssemblyLineState {
 	 * @throws 	IllegalArgumentException
 	 *          Thrown when the parameter is null
 	 */
+	@Override
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
 			throw new IllegalArgumentException();
@@ -381,6 +382,7 @@ ObservableAssemblyLineState {
 	 * @param 	creator
 	 *          It's responsible for creating the correct SchedulingAlgorithm
 	 */
+	@Override
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
 		List<WorkBenchType> workBenchTypes = getWorkBenchTypes();
 		this.scheduler.switchToAlgorithm(creator, workBenchTypes);
@@ -437,6 +439,7 @@ ObservableAssemblyLineState {
 	/**
 	 * Returns an unmodifiable list containing all the pending StandardJobs.
 	 */
+	@Override
 	public List<IJob> getStandardJobs() {
 		return Collections.unmodifiableList(this.scheduler.getStandardJobs());
 	}
