@@ -77,7 +77,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			throw new IllegalArgumentException();
 		}
 
-		if(customJobs.contains(job)) {
+		if (customJobs.contains(job)) {
 			int total = job.getOrder().getDeadline().minus(currentTime);
 			int days = total/Clock.MINUTESINADAY;
 			int minutes = total%Clock.MINUTESINADAY;
