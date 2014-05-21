@@ -8,6 +8,8 @@ import java.util.Set;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.UnmodifiableWorkBench;
 import domain.exception.UnmodifiableException;
+import domain.job.job.IJob;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 /**
@@ -30,6 +32,10 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 		return this.assemblyLine.canAdvance();
 	}
 
+	public void addWorkBench(IWorkBench bench){
+		throw new UnmodifiableException();
+	}
+	
 	@Override
 	public List<IWorkBench> getBlockingWorkBenches() {
 		List<IWorkBench> unmodifiables = new ArrayList<>();
@@ -63,6 +69,16 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 		throw new UnmodifiableException();
 	}
 
+	@Override
+	public List<IJob> getStandardJobs(){
+		return this.assemblyLine.getStandardJobs();
+	}
+	
+	@Override
+	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator){
+		throw new UnmodifiableException();
+	}
+	
 	@Override
 	public String toString(){
 		return assemblyLine.toString();

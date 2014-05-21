@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import domain.assembly.workBench.IWorkBench;
+import domain.job.job.IJob;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicleOption.VehicleOption;
 /**
@@ -19,6 +21,17 @@ public interface IAssemblyLine {
 	 * have to be finished first.
 	 */
 	public boolean canAdvance();
+	
+	/**
+	 * Add a workbench to the assemblyLine.
+	 * 
+	 * @param 	bench
+	 *          The workbench you want to add
+	 * 
+	 * @throws 	IllegalArgumentException
+	 *          Thrown when the parameter is null
+	 */
+	public void addWorkBench(IWorkBench bench);
 	
 	/**
 	 * Method for retrieving the IWorkBenches with unfinished Tasks.
@@ -60,4 +73,18 @@ public interface IAssemblyLine {
 	 * Get a list of responsibilities, which indicate the vehicles that the assemblyline can process.  
 	 */
 	public Set<VehicleSpecification> getResponsibilities();
+	
+	/**
+	 * Returns an unmodifiable list containing all the pending StandardJobs.
+	 */
+	public List<IJob> getStandardJobs();
+	
+	/**
+	 * Method for asking the Scheduler to switch to the algorithm the given
+	 * creator can create.
+	 * 
+	 * @param 	creator
+	 *          It's responsible for creating the correct SchedulingAlgorithm
+	 */
+	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator);
 }

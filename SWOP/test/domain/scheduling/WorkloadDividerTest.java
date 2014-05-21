@@ -7,22 +7,29 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Optional;
+
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
+import domain.job.job.IJob;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
 import domain.observer.observers.OrderBookObserver;
+import domain.order.order.StandardOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
+import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
@@ -170,7 +177,44 @@ public class WorkloadDividerTest {
 		assertTrue(w.getMaintenanceUnmodifiableAssemblyLines().get(0).getState().equals(AssemblyLineState.MAINTENANCE));
 	}
 	
+	@Test
+	public void testProcessNewOrder(){
+		workloadDivider.getAssemblyLines().get(0).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		
+		workloadDivider.getAssemblyLines().get(0).addWorkBench(body1);
+		
+		Set<VehicleOption> parts = new HashSet<>();
+		VehicleOption part = new VehicleOption("sport", VehicleOptionCategory.BODY);
+		parts.add(part);
+		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
+		map.put(WorkBenchType.ACCESSORIES, 20);
+		map.put(WorkBenchType.BODY, 20);
+		map.put(WorkBenchType.DRIVETRAIN, 20);
+		VehicleSpecification template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
+		Vehicle vehicle = new Vehicle(template);
+		vehicle.addVehicleOption(part);
+		StandardOrder order = new StandardOrder("jef",vehicle,1,new ImmutableClock(0,0));
+		
+		
+		
+		workloadDivider.processNewOrder(order);
+		
+		Optional<IJob> optionalJob = workloadDivider.getAssemblyLines().get(0).getWorkBenches().get(0).getCurrentJob();
+		assertTrue(optionalJob.isPresent());
+		
+		IJob job = optionalJob.get();
+		assertTrue(job.getOrder().equals(order));
+		assertEquals("Body",job.getTasks().get(0).getTaskDescription());
+	}
 	
-	
+	@Test (expected = IllegalArgumentException.class)
+	public void testProcessOrderException() {
+		workloadDivider.processNewOrder(null);
+	}
 
 }
