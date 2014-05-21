@@ -452,5 +452,10 @@ public class SchedulingAlgorithmBatchTest {
 	public void toStringTest(){
 		assertEquals("Batch", algorithm.toString());
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void creatorBatchTest() {
+		SchedulingAlgorithmCreatorBatch b = new SchedulingAlgorithmCreatorBatch(null);
+	}
 
 }
