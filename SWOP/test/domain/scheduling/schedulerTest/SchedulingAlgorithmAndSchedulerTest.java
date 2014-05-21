@@ -59,10 +59,9 @@ public class SchedulingAlgorithmAndSchedulerTest {
 	public void initialize() {
 		//facade = new Facade(bindingRestrictions, optionalRestrictions);
 		//clientCommunication = new ClientCommunication();
-		int amount = 3;
 		clock = new ClockObserver();
 		scheduler = new Scheduler(clock, new ImmutableClock(0,600));
-		List<WorkBenchType> workBenchTypes = new ArrayList<>();
+		workBenchTypes = new ArrayList<>();
 		workBenchTypes.add(WorkBenchType.BODY);
 		workBenchTypes.add(WorkBenchType.CARGO);
 		workBenchTypes.add(WorkBenchType.ACCESSORIES);
