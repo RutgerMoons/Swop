@@ -11,7 +11,6 @@ import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.vehicleOption.VehicleOption;
 /**
  * A class representing an unmodifiable AssemblyLine. It implements IAssemblyLine but only
  * the getters are accessible.
@@ -53,11 +52,6 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 			unmodifiables.add(new UnmodifiableWorkBench(bench));
 		}
 		return Collections.unmodifiableList(unmodifiables);
-	}
-
-	@Override
-	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
-		return this.assemblyLine.getAllVehicleOptionsInPendingOrders();
 	}
 
 	@Override

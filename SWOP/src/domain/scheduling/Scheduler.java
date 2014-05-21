@@ -2,13 +2,10 @@ package domain.scheduling;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Set;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Sets;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
@@ -17,7 +14,6 @@ import domain.observer.observers.ClockObserver;
 import domain.observer.observes.ObservesClock;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
-import domain.vehicle.vehicleOption.VehicleOption;
 /**
  * A class representing the responsibility for maintaining a scheduling algorithm and shifts.
  * It also keeps track of current time by using a ClockObserver.
@@ -146,55 +142,6 @@ public class Scheduler implements ObservesClock {
 			return "No scheduling algorithm used at the moment.";
 		}
 		return this.schedulingAlgorithm.toString();
-	}
-
-	/**
-	 * Returns a powerset with all the VehicleOptions or 
-	 * sets of VehicleOptions that occur in three or more pending Orders.
-	 */
-	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
-		HashSet<VehicleOption> set = new HashSet<>();
-		List<IJob> jobs = this.schedulingAlgorithm.getStandardJobs();
-
-		// get all the VehicleOptions that occur in the pending orders
-		for (IJob job : jobs) {
-			for (VehicleOption o : job.getVehicleOptions()) {
-				set.add(o);
-			}
-		}
-
-		// get all the VehicleOptions that occur in the pending orders 3 or more times
-		HashSet<VehicleOption> threeOrMoreTimes = new HashSet<>();
-		for (VehicleOption option : set) {
-			int counter = 0;
-			for (IJob job : jobs) {
-				if (job.getOrder().getDescription().getVehicleOptions().values().contains(option)) {
-					counter++;
-				}
-			}
-			if (counter >= 3) {
-				threeOrMoreTimes.add(option);
-			}
-		} 
-
-		// get all the sets of VehicleOptions that occur in the pending orders 3 or more times
-		Set<Set<VehicleOption>> toReturn = new HashSet<Set<VehicleOption>>();
-		Set<Set<VehicleOption>> powerSet = Sets.powerSet(threeOrMoreTimes);
-		for (Set<VehicleOption> subset : powerSet) {
-			if (subset.size() <= 0) {
-				continue;
-			}
-			int counter = 0;
-			for (IJob job : jobs) {
-				if (job.getOrder().getDescription().getVehicleOptions().values().containsAll(subset)) {
-					counter++;
-				}
-			}
-			if (counter >= 3) {
-				toReturn.add(subset);
-			}
-		}
-		return Collections.unmodifiableSet(toReturn);
 	}
 
 	/**

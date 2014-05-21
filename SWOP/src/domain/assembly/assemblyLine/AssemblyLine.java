@@ -24,7 +24,6 @@ import domain.order.order.IOrder;
 import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * A class representing an assembly line. It contains the workbenches and the
@@ -367,12 +366,6 @@ ObservableAssemblyLineState {
 		for (AssemblyLineObserver observer : observers) {
 			observer.updateCompletedOrder(order);
 		}
-	}
-
-	@Override
-	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
-		return Collections.unmodifiableSet(this.scheduler
-				.getAllVehicleOptionsInPendingOrders());
 	}
 
 	/**

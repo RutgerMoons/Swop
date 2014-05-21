@@ -7,7 +7,6 @@ import domain.assembly.workBench.IWorkBench;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleSpecification;
-import domain.vehicle.vehicleOption.VehicleOption;
 /**
  * An interface representing an assembly line. An AssemblyLine 
  * is responsible for completing Jobs and advancing Jobs when a certain
@@ -46,12 +45,6 @@ public interface IAssemblyLine {
 	 * @return	An unmodifiable list of IWorkBenches
 	 */
 	public List<IWorkBench> getWorkBenches();
-	
-	/**
-	 * Returns a powerset with all the VehicleOptions or sets 
-	 * of VehicleOptions that occur in three or more pending Orders.
-	 */
-	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders();
 
 	/**
 	 * Returns the current state of the AssemblyLine.
