@@ -1,6 +1,6 @@
-package controllerTest;
+package scenarioTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +26,7 @@ import domain.clock.ImmutableClock;
 import domain.company.Company;
 import domain.facade.Facade;
 import domain.observer.observers.ClockObserver;
+import domain.order.Delay;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
@@ -33,88 +34,61 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
-import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
-import domain.vehicle.vehicleOption.VehicleOptionCategory;
+
 
 /**
- * Scenario that tests the output for the use case: Order Single Task.
+ * Scenario that tests the output for the use case: Check Production Statistics.
  *
  */
-public class CustomOrderScenario {
-
+public class CheckStatisticsScenario {
+	
 	private Facade facade;
+	private Company company;
 	
 	/**
 	 * Initialize a Facade and a Company together with all the attributes they need.
 	 */
 	@Before
 	public void initialize(){
-		Company company = this.initializeCompany();
+		this.initializeCompany();
 		facade = new Facade(company);
-		facade.createAndAddUser("jef", "custom car shop manager");
+		facade.createAndAddUser("jef", "manager");
 		facade.login("jef");
 	}
 	
 	/**
 	 * Test the use case:
-	 * 		1. the system returns the list of available tasks one of these tasks is chosen by the user
-	 * 		2. the system returns the options for the chosen task
-	 * 		3. the new order is processed and the system returns an estimated completion date
+	 * 		1. the system shows the available statistics
 	 */
 	@Test
-	public void customOrderTest(){
-		//1.all the available custom tasks are returned by the system
-		Set<String> allCustomTasks = facade.getCustomTasks();
-		assertTrue(allCustomTasks.contains("installing custom seats"));
-		assertTrue(allCustomTasks.contains("spraying car bodies"));
-		
-		//2.the task 'spraying car bodies' is chosen by the user, the system returns the options for this task
-		//		--> the List of IVehicles that is returned by the system should contain 6 IVehicles, one for each color-option the user will be offered
-		String customTaskSpraying = "spraying car bodies";
-
-		//check if  the List contains 6 IVehicles
-		List<IVehicle> specificVehiclesSpraying= facade.getCustomOptions(customTaskSpraying);
-		assertEquals(6,specificVehiclesSpraying.size());
-		
-		//check if all of the needed color-options were represented in the List returned by the system
-		List<String> specificTasksSpraying = new ArrayList<String>();
-		for(IVehicle customVehicle: specificVehiclesSpraying){
-			specificTasksSpraying.add(customVehicle.getVehicleOptions().get(VehicleOptionCategory.COLOR).getDescription());
-		}
-		assertTrue(specificTasksSpraying.contains("white"));
-		assertTrue(specificTasksSpraying.contains("black"));
-		assertTrue(specificTasksSpraying.contains("yellow"));
-		assertTrue(specificTasksSpraying.contains("red"));
-		assertTrue(specificTasksSpraying.contains("blue"));
-		assertTrue(specificTasksSpraying.contains("green"));
-		
-		//2.the task 'installing custom seats' is chosen by the user, the system returns the options for this task
-		//		--> the List of IVehicles that is returned by the system should contain 1 IVehicle, 
-		//		      one for each seats-option the user will be offered: in this case the only option the user has are custom seats
-		String customTaskInstalling = "installing custom seats";
-		
-		//check if the list contains 1 IVehicle
-		List<IVehicle> specificVehiclesInstalling = facade.getCustomOptions(customTaskInstalling);
-		assertEquals(1,specificVehiclesInstalling.size());
-		
-		//check if the needed seats-option was represented in the Lst returned by the system
-		List<String> specificTasksInstalling = new ArrayList<String>();
-		for(IVehicle customVehicle: specificVehiclesInstalling){
-			specificTasksInstalling.add(customVehicle.getVehicleOptions().get(VehicleOptionCategory.SEATS).getDescription());
-		}
-		assertTrue(specificTasksInstalling.contains("custom"));
-		
-		//3.the new order is processed and the estimated time is returned
-		IVehicle model = specificVehiclesInstalling.get(0);
-		ImmutableClock deadline = new ImmutableClock(1,123);
-		
-		//check if the estimated time is right
-		ImmutableClock time = facade.processCustomOrder(model, deadline);
-		assertEquals("day 1, 2 hours, 3 minutes.",time.toString());
+	public void noStatisticsAvailableTest(){
+		//get the average amount of vehicles produced in a day
+		assertEquals(0,facade.getAverageDays());
+		//get the median amount of vehicles produced in a day
+		assertEquals(0,facade.getMedianDays());
+		// get the amount of cars produced for a number amount of days
+		//	--> it'll be asked for 2 days, so the List should contain 2 values
+		List<Integer> detailedDays = facade.getDetailedDays();
+		assertEquals(2,detailedDays.size());
+		Integer zero = 0;
+		assertEquals(zero,detailedDays.get(0));
+		assertEquals(zero,detailedDays.get(1));
+		// get the average delay on an order
+		assertEquals(0,facade.getAverageDelays());
+		// get the median delay on an order
+		assertEquals(0,facade.getMedianDelays());
+		// The details of the latest delays.
+		//	--> the List should contain 2 values
+		List<Delay> detailedDelays = facade.getDetailedDelays();
+		assertEquals(2,detailedDelays.size());
+		Delay noDelay = new Delay(new ImmutableClock(0,0), new ImmutableClock(0,0));
+		int delay = noDelay.getDelay();
+		assertEquals(delay,detailedDelays.get(0).getDelay());
+		assertEquals(delay,detailedDelays.get(1).getDelay());
 	}
 	
-	private Company initializeCompany(){
+	private void initializeCompany(){
 		Set<BindingRestriction> bindingRestrictions = new HashSet<>();
 		Set<OptionalRestriction> optionalRestrictions = new HashSet<>();
 
@@ -139,7 +113,7 @@ public class CustomOrderScenario {
 		ImmutableClock immutableClock = new ImmutableClock(0, 0);
 		List<AssemblyLine> assemblyLines = getInitialAssemblyLines(clockObserver, immutableClock, catalogue);
 		
-		return new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
+		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
 	}
 	
 	private List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
@@ -232,5 +206,4 @@ public class CustomOrderScenario {
 		
 		return assemblyLines;
 	}
-	
 }

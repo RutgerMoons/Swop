@@ -1,10 +1,13 @@
 package domain.assembly.assemblyTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -134,5 +137,54 @@ public class UnmodifiableAssemblyLineTest {
 	public void testEquals(){
 		assertEquals(line, unmodifiable);
 		assertEquals(unmodifiable, line);
+	}
+	
+	@Test
+	public void testGetStandardJobs(){
+		Set<VehicleOption> parts = new HashSet<>();
+		parts.add(new VehicleOption("sport", VehicleOptionCategory.BODY));
+		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
+		map.put(WorkBenchType.ACCESSORIES, 20);
+		map.put(WorkBenchType.BODY, 20);
+		map.put(WorkBenchType.DRIVETRAIN, 20);
+		VehicleSpecification template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
+		Set<VehicleSpecification> specifications = new HashSet<VehicleSpecification>();
+		Vehicle model = new Vehicle(template);
+
+		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		model.addVehicleOption(new VehicleOption("sedan",  VehicleOptionCategory.BODY));
+		model.addVehicleOption(new VehicleOption("red",  VehicleOptionCategory.COLOR));
+		model.addVehicleOption(new VehicleOption("standard 2l 4 cilinders",  VehicleOptionCategory.ENGINE));
+		model.addVehicleOption(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
+		model.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
+		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
+		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0,240), AssemblyLineState.OPERATIONAL, specifications);
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		List<ITask> tasks = new ArrayList<>();
+		ITask task = new Task("Paint");
+		tasks.add(task);
+		WorkBench bench = new WorkBench(WorkBenchType.BODY);
+		line.addWorkBench(bench);
+		line.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		job.setTasks(tasks);
+
+
+		line.schedule(job);
+		UnmodifiableAssemblyLine u = new UnmodifiableAssemblyLine(line);
+		assertTrue(u.getStandardJobs().contains(job));
+	}
+	
+	@Test (expected = UnmodifiableException.class) 
+	public void switchToAlgorithmTest() {
+		UnmodifiableAssemblyLine u = new UnmodifiableAssemblyLine(line);
+		u.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+	}
+	
+	@Test (expected = UnmodifiableException.class) 
+	public void addWorkBenchTest() {
+		UnmodifiableAssemblyLine u = new UnmodifiableAssemblyLine(line);
+		WorkBench wb = new WorkBench(WorkBenchType.BODY);
+		u.addWorkBench(wb);
 	}
 }

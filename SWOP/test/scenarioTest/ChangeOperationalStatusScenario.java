@@ -1,4 +1,4 @@
-package controllerTest;
+package scenarioTest;
 
 import static org.junit.Assert.assertEquals;
 
