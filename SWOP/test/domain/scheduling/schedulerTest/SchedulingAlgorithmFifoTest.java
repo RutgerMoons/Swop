@@ -338,6 +338,4 @@ public class SchedulingAlgorithmFifoTest {
 	public void toStringTest(){
 		assertEquals("Fifo", algorithm.toString());
 	}
-	
-
 }
