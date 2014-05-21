@@ -85,9 +85,9 @@ public abstract class SchedulingAlgorithm {
 	 * The oldest Job in the list will be removed.
 	 */
 	protected void addToList(Optional<IJob> job, List<Optional<IJob>> list) {
-		list.add(job);
+		list.add(0, job);
 		if (list.size() > this.workBenchTypes.size()) {
-			list.remove(0);
+			list.remove(this.workBenchTypes.size());
 		}
 	}
 	
@@ -130,7 +130,6 @@ public abstract class SchedulingAlgorithm {
 					return Optional.fromNullable(job);
 				}
 			}
-
 			index--;
 		}
 		Optional<IJob> absentJob = Optional.absent();
@@ -255,6 +254,6 @@ public abstract class SchedulingAlgorithm {
 				throw new IllegalArgumentException();
 			}
 		};
-		job.acceptVisit(visitor);
+		job.getOrder().acceptVisit(visitor);
 	}
 }

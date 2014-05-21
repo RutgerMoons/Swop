@@ -16,6 +16,7 @@ import domain.assembly.assemblyLine.MaintenanceTimeManager;
 import domain.assembly.assemblyLine.UnmodifiableAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.clock.ImmutableClock;
+import domain.exception.TimeToStartNewDayException;
 import domain.job.action.Action;
 import domain.job.action.IAction;
 import domain.job.job.IJob;
@@ -254,15 +255,28 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when one or more of the given parameters is null
+	 * 
+	 * @throws	TimeToStartNewDayException
+	 * 			Thrown when all the assemblyLines are not Operational or Idle
 	 */
-	public int completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock elapsed) {
+	public int completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, ITask task, ImmutableClock elapsed) throws TimeToStartNewDayException {
 		if(assemblyLine == null || workbench == null || task == null || elapsed == null){
 			throw new IllegalArgumentException();
 		}
 		else{
 			for (AssemblyLine line : this.assemblyLines) {
 				if (line.equals(assemblyLine)) {
-					return line.completeChosenTaskAtChosenWorkBench(workbench, task, elapsed);
+					int timeOfInternalClock = line.completeChosenTaskAtChosenWorkBench(workbench, task, elapsed);
+					boolean allAssemblyLinesNotOperational = true;
+					for (AssemblyLine a : this.assemblyLines) {
+						if (a.getState() == AssemblyLineState.OPERATIONAL || a.getState() == AssemblyLineState.IDLE) {
+							allAssemblyLinesNotOperational = false;
+						}
+					}
+					if (allAssemblyLinesNotOperational) {
+						throw new TimeToStartNewDayException();
+					}
+					return timeOfInternalClock;
 				}
 			}
 			throw new IllegalStateException();

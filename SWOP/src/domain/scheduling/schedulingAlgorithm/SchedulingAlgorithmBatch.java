@@ -11,6 +11,8 @@ import com.google.common.base.Optional;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
+import domain.exception.NoMoreJobsInTimeException;
+import domain.exception.NoMoreJobsToScheduleException;
 import domain.job.job.IJob;
 import domain.job.jobComparator.JobComparatorOrderTime;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -78,11 +80,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		}
 
 		if (customJobs.contains(job)) {
-			int total = job.getOrder().getDeadline().minus(currentTime);
-			int days = total/Clock.MINUTESINADAY;
-			int minutes = total%Clock.MINUTESINADAY;
-
-			job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes)); 
+			job.getOrder().setEstimatedTime(job.getOrder().getDeadline()); 
 			return;
 		}
 		List<Optional<IJob>> previousJobs = jobsOnAssemblyLine;
@@ -123,9 +121,11 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 				}
 			}
 		}
-		int days = totalProductionTime/Clock.MINUTESINADAY;
-		int minutes = totalProductionTime%Clock.MINUTESINADAY;
-		job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
+		totalProductionTime += job.getOrder().getOrderTime().getTotalInMinutes();
+		int days = totalProductionTime / Clock.MINUTESINADAY;
+		int minutes = totalProductionTime % Clock.MINUTESINADAY;
+		ImmutableClock totalTime = new ImmutableClock(days, minutes);
+		job.getOrder().setEstimatedTime(totalTime);
 	}
 
 	@Override
@@ -156,10 +156,14 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	@Override
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
 			ArrayList<Optional<IJob>> jobsOnAssemblyLine) { 
+		// if there are no jobs to schedule, throw a new NoMoreJobsToScheduleException
+		if (this.customJobs.size() == 0 || this.jobsStartOfDay.size() == 0 || this.standardJobs.size() == 0) {
+			throw new NoMoreJobsToScheduleException();
+		}
 		/*
 		 * step 0: check in the beginning of the day if custom jobs can be executed
 		 * step 1: check if you have to force some custom jobs
-		 * step 2: check if you can put the first car on the assemblyLine
+		 * step 2: check if you can put the first vehicle on the assemblyLine
 		 * step 3: check if custom job can be put on the assemblyLine
 		 */
 		//Step 0:
@@ -195,7 +199,8 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 			customJobs.remove(jobWithHighestWorkBenchIndex);
 			return jobWithHighestWorkBenchIndex;
 		}
-		return Optional.absent();
+		// there are no jobs that can be scheduled in time: 
+		throw new NoMoreJobsInTimeException();
 	}
 
 	@Override
