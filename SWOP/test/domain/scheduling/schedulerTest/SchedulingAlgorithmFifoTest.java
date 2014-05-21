@@ -1,7 +1,6 @@
 package domain.scheduling.schedulerTest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import com.google.common.base.Optional;
 
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
+import domain.exception.NoMoreJobsToScheduleException;
 import domain.job.job.IJob;
 import domain.job.job.Job;
 import domain.job.jobComparator.JobComparatorDeadLine;
@@ -238,10 +238,9 @@ public class SchedulingAlgorithmFifoTest {
 		assertEquals(sJob1, newJob.get());
 	}
 	
-	@Test 
+	@Test (expected = NoMoreJobsToScheduleException.class)
 	public void retrieveNextTest4(){
-		Optional<IJob> saJob = algorithm.retrieveNext(1340, new ImmutableClock(1,360),new ArrayList<Optional<IJob>>());
-		assertFalse(saJob.isPresent());
+		algorithm.retrieveNext(1340, new ImmutableClock(1,360),new ArrayList<Optional<IJob>>());
 	}
 	
 	@Test
