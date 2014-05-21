@@ -49,7 +49,6 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		}
 
 		if(customJobs.contains(job)) {
-
 			job.getOrder().setEstimatedTime(job.getOrder().getDeadline());
 			return;
 		}
@@ -115,7 +114,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 		int currentTotalProductionTime = getCurrentTotalProductionTime(jobsOnAssemblyLine);
 		//Step 1:
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
-			customJobs.remove(toSchedule);
+			customJobs.remove(toSchedule.get());
 			Optional<IJob> toReturn = toSchedule;
 			return toReturn;
 		}

@@ -97,9 +97,11 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 					addToList(absentJob, previousJobs);
 					totalProductionTime += this.getMaximum(previousJobs);
 				}
-				int days = totalProductionTime/Clock.MINUTESINADAY;
-				int minutes = totalProductionTime%Clock.MINUTESINADAY;
+				totalProductionTime += job.getOrder().getOrderTime().getTotalInMinutes();
+				int days = totalProductionTime / Clock.MINUTESINADAY;
+				int minutes = totalProductionTime % Clock.MINUTESINADAY;
 				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
+				return;
 			}
 		}
 
