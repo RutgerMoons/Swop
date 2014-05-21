@@ -39,7 +39,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
 public class ChangeOperationalStatusScenario {
 
 	private Facade facade;
-
+	private Clock clock;
 	@Before
 	public void initialize(){		
 		Company company = this.initializeCompany();
@@ -71,6 +71,9 @@ public class ChangeOperationalStatusScenario {
 
 		//We check if the state of the assembly line is Broken. 
 		assertEquals(AssemblyLineState.BROKEN, assemblyLine.getState());
+		
+		//We check if the time is advanced
+		assertEquals(new ImmutableClock(1, 361), clock.getImmutableClock());
 	}
 
 
@@ -98,7 +101,7 @@ public class ChangeOperationalStatusScenario {
 		VehicleSpecificationCatalogueFiller filler = new VehicleSpecificationCatalogueFiller();
 
 		catalogue.initializeCatalogue(filler.getInitialModels());
-		Clock clock = new Clock(360);
+		clock = new Clock(360);
 		clock.advanceTime(360);
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
