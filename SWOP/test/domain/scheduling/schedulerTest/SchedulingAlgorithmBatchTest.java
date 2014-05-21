@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -14,23 +15,18 @@ import org.junit.Test;
 
 import com.google.common.base.Optional;
 
-import domain.assembly.assemblyLine.AssemblyLine;
-import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.workBench.WorkBenchType;
 import domain.clock.ImmutableClock;
-import domain.exception.AlreadyInMapException;
-import domain.exception.NoSuitableJobFoundException;
-import domain.exception.NotImplementedException;
-import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.job.job.Job;
 import domain.job.jobComparator.JobComparatorDeadLine;
 import domain.observer.observers.ClockObserver;
-import domain.order.OrderBook;
 import domain.order.order.CustomOrder;
 import domain.order.order.IOrder;
 import domain.order.order.StandardOrder;
+import domain.scheduling.Scheduler;
 import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmBatch;
-import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
+import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorBatch;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.CustomVehicle;
 import domain.vehicle.vehicle.Vehicle;
@@ -39,121 +35,138 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class SchedulingAlgorithmBatchTest {
 
-	private SchedulingAlgorithmBatch scheduling;
+	private SchedulingAlgorithmBatch algorithm;
 	private Vehicle model;
 	private VehicleSpecification template;
+	private HashMap<WorkBenchType, Integer> timeAtWorkBench;
+	private List<WorkBenchType> workBenchTypes;
+	private Scheduler scheduler;
 	private List<VehicleOption> list;
 
 	@Before
 	public void initialize() {
-		int amount = 3;
 		list = new ArrayList<VehicleOption>();
 		list.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		scheduling = new SchedulingAlgorithmBatch(list, amount);
+		
+		ClockObserver clock = new ClockObserver();
+		scheduler = new Scheduler(clock, new ImmutableClock(0,600));
+		workBenchTypes = new ArrayList<>();
+		workBenchTypes.add(WorkBenchType.BODY);
+		workBenchTypes.add(WorkBenchType.DRIVETRAIN);
+		workBenchTypes.add(WorkBenchType.ACCESSORIES);
+		SchedulingAlgorithmCreatorBatch batch = new SchedulingAlgorithmCreatorBatch(list);
+		scheduler.switchToAlgorithm(batch, workBenchTypes);
+		algorithm = new SchedulingAlgorithmBatch(list, workBenchTypes);
+		timeAtWorkBench = new HashMap<WorkBenchType, Integer>();
+		timeAtWorkBench.put(WorkBenchType.ACCESSORIES, 60);
+		timeAtWorkBench.put(WorkBenchType.BODY, 60);
+		timeAtWorkBench.put(WorkBenchType.CARGO, 0);
+		timeAtWorkBench.put(WorkBenchType.CERTIFICATION, 0);
+		timeAtWorkBench.put(WorkBenchType.DRIVETRAIN, 60);
 	}
 
 	@Test
 	public void constructorTest(){
-		assertNotNull(scheduling);
-		assertNotNull(scheduling.getCustomJobs());
-		assertNotNull(scheduling.getHistory());
-		assertNotNull(scheduling.getStandardJobs());
+		assertNotNull(algorithm);
+		assertNotNull(algorithm.getCustomJobs());
+		assertNotNull(algorithm.getStandardJobs());
 	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorTestError(){
-		scheduling = new SchedulingAlgorithmBatch(null, 3);
+		algorithm = new SchedulingAlgorithmBatch(null, workBenchTypes);
 	}
 
 	@Test
-	public void addCustomOrderTest1() throws AlreadyInMapException{
+	public void addCustomOrderTest1() {
 		CustomVehicle customModel = new CustomVehicle();
 		ImmutableClock ordertime = new ImmutableClock(2, 30);
 		ImmutableClock deadline = new ImmutableClock(5, 30);
 		CustomOrder order = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob job = new Job(order);
-		scheduling.addCustomJob(job);
-		assertEquals(1, scheduling.getCustomJobs().size());
-		assertEquals(0, scheduling.getStandardJobs().size());
+		algorithm.addCustomJob(job);
+		assertEquals(1, algorithm.getCustomJobs().size());
+		assertEquals(0, algorithm.getStandardJobs().size());
 
 	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void addCustomOrderTest2(){
-		scheduling.addCustomJob(null);
+		algorithm.addCustomJob(null);
 	}
 
 	@Test
-	public void addStandardJobTest1() throws NotImplementedException{
+	public void addStandardJobTest1() {
 		Set<VehicleOption> parts = new HashSet<>();
 		parts.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		assertEquals(1, parts.size());
-		template = new VehicleSpecification("model", parts, 60);
-		assertEquals(1, template.getVehicleOptions().size());
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
-		assertEquals(1, model.getVehicleSpecification().getVehicleOptions().size());
-		assertEquals(0, model.getVehicleOptions().size());
 		ImmutableClock ordertime = new ImmutableClock(2, 30);
 		IOrder order = new StandardOrder("mario", model, 3, ordertime);
 		IJob job = new Job(order);
-		scheduling.addStandardJob(job);
-		assertEquals(1,scheduling.getStandardJobs().size());
+		algorithm.addStandardJob(job);
+		assertEquals(1, algorithm.getStandardJobs().size());
 
 		Set<VehicleOption> parts2 = new HashSet<>();
-		template = new VehicleSpecification("model", parts2, 60);
+		template = new VehicleSpecification("model", parts2, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime2 = new ImmutableClock(2, 30);
 		IOrder order2 = new StandardOrder("mario", model, 3, ordertime2);
 		IJob job2 = new Job(order2);
-		scheduling.addStandardJob(job2);
-		assertEquals(2,scheduling.getStandardJobs().size());
+		algorithm.addStandardJob(job2);
+		assertEquals(2, algorithm.getStandardJobs().size());
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void addStandardJobTest2() throws NotImplementedException{
-		scheduling.addStandardJob(null);
+	public void addStandardJobTest2(){
+		algorithm.addStandardJob(null);
 	}
 
 	@Test
-	public void getEstimatedTimeInMinutesTest1() throws UnmodifiableException, NotImplementedException{
-		ClockObserver obs = new ClockObserver();
-		AssemblyLine ass = new AssemblyLine(obs, new ImmutableClock(2, 360), AssemblyLineState.OPERATIONAL);
-		ass.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+	public void getEstimatedTimeInMinutesTest1() {
 		// Standard job not containing necessary parts of list.
 		Set<VehicleOption> parts = new HashSet<>();
-		template = new VehicleSpecification("model", parts, 60);
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
-		ImmutableClock ordertime1 = new ImmutableClock(2, 360); // om 6 uur op dag 2
-		int quantity =5;
-		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); // 420 minuten op de band
-		OrderBook orderbook = new OrderBook();
-		orderbook.addOrder(order1, ordertime1);
+		model.addVehicleOption(new VehicleOption("black", VehicleOptionCategory.COLOR));
+		ImmutableClock ordertime1 = new ImmutableClock(0, 360); // om 6 uur op dag 2
+		StandardOrder order1 = new StandardOrder("Luigi", model, 1, ordertime1); // 420 minuten op de band
+		IJob sJob1 = new Job(order1);
+		ArrayList<Optional<IJob>> list = new ArrayList<Optional<IJob>>();
+		Optional<IJob> job3 = Optional.absent();
+		list.add(job3);
+		
+		
 		// Custom job
 		CustomVehicle customModel = new CustomVehicle();
 		ImmutableClock ordertime = new ImmutableClock(0, 0);
 		ImmutableClock deadline = new ImmutableClock(10, 800);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
-		try {
-			orderbook.addOrder(customOrder, ordertime);
-		} catch (NotImplementedException e) {}
+		IJob cJob1 = new Job(customOrder);
+		scheduler.addJobToAlgorithm(cJob1, list);
+		
 		// batch job
 		Set<VehicleOption> parts2 = new HashSet<>();
 		parts2.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		template = new VehicleSpecification("model", parts2, 60);
+		template = new VehicleSpecification("model", parts2, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
-		ImmutableClock ordertime2 = new ImmutableClock(2, 420); // om 7 uur op dag 2
-		int quantity2 =5;
-		StandardOrder order2 = new StandardOrder("Luigi", model, quantity2, ordertime2); // 420 minuten op de band
-		orderbook.addOrder(order2, ordertime2);
-		assertEquals(new ImmutableClock(8, 440), customOrder.getEstimatedTime());
-		assertEquals(new ImmutableClock(2,780), order1.getEstimatedTime());
-		assertEquals(new ImmutableClock(2, 840), order2.getEstimatedTime());
+		model.addVehicleOption(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
+		ImmutableClock ordertime2 = new ImmutableClock(0, 360); // om 7 uur op dag 2
+		StandardOrder order2 = new StandardOrder("Luigi", model, 1, ordertime2); // 420 minuten op de band
+		IJob bJob1 = new Job(order2);
+		scheduler.addJobToAlgorithm(bJob1, list);
+		scheduler.addJobToAlgorithm(sJob1,list);
+		
+		assertEquals(new ImmutableClock(0, 540), bJob1.getOrder().getEstimatedTime());
+		assertEquals(new ImmutableClock(0, 720), sJob1.getOrder().getEstimatedTime());
+		assertEquals(new ImmutableClock(10,800), cJob1.getOrder().getEstimatedTime());
+		
 	}
 
 	@Test (expected = IllegalArgumentException.class)
 	public void getEstimatedTimeInMinutesTest2(){
 		ImmutableClock clock = new ImmutableClock(0,500);
-		scheduling.setEstimatedTime(null, clock);
+		algorithm.setEstimatedTime(null, clock, new ArrayList<Optional<IJob>>());
 	}
 
 	@Test (expected = IllegalArgumentException.class)
@@ -163,75 +176,77 @@ public class SchedulingAlgorithmBatchTest {
 		ImmutableClock deadline = new ImmutableClock(5, 30);
 		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
 		IJob customJob = new Job(customOrder);
-		scheduling.setEstimatedTime(customJob, null);
+		algorithm.setEstimatedTime(customJob, null, new ArrayList<Optional<IJob>>());
 	}
 
 	@Test
-	public void retrieveNextJobTest() throws NoSuitableJobFoundException, NotImplementedException{
+	public void retrieveNextJobTest() {
 		Set<VehicleOption> parts = new HashSet<>();
-		template = new VehicleSpecification("model", parts, 60);
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(0, 420); 
-		int quantity =5;
-		StandardOrder order1 = new StandardOrder("Luigi", model, quantity, ordertime1); 
+		StandardOrder order1 = new StandardOrder("Luigi", model, 1, ordertime1); 
 		IJob sJob1 = new Job(order1);
 		IJob sJob2 = new Job(order1);
-		scheduling.addStandardJob(sJob1);
-		scheduling.addStandardJob(sJob2);
+		
+		algorithm.addStandardJob(sJob1);
+		algorithm.addStandardJob(sJob2);
+		
 		CustomVehicle customModel = new CustomVehicle();
 		ImmutableClock ordertime = new ImmutableClock(0, 360);
 		ImmutableClock deadline = new ImmutableClock(10, 800);
-		CustomOrder customOrder = new CustomOrder("Mario", customModel, 5, ordertime, deadline);
+		CustomOrder customOrder = new CustomOrder("Mario", customModel, 1, ordertime, deadline);
 		IJob job2 = new Job(customOrder);
-		scheduling.addCustomJob(job2);
+		
+		algorithm.addCustomJob(job2);
+		
 		// Stel algoritme zit op tijdstip dag 0 360 minuten
-		scheduling.startNewDay();
+		algorithm.startNewDay();
 		int minTillEndOfDay = 1320;
-		Optional<IJob> job = scheduling.retrieveNext(minTillEndOfDay, new ImmutableClock(1,360));
+		Optional<IJob> job = algorithm.retrieveNext(minTillEndOfDay, new ImmutableClock(1,360), new ArrayList<Optional<IJob>>());
 		assertEquals(job2, job.get());
-		Optional<IJob> newJob = scheduling.retrieveNext(1280, new ImmutableClock(1,420));
+		Optional<IJob> newJob = algorithm.retrieveNext(1280, new ImmutableClock(1,420),new ArrayList<Optional<IJob>>());
 		assertEquals(sJob1, newJob.get());
 		CustomVehicle customModel2 = new CustomVehicle();
 		ImmutableClock ordertime2 = new ImmutableClock(1, 430);
 		ImmutableClock deadline2 = new ImmutableClock(1, 540);
 		CustomOrder customOrder2 = new CustomOrder("Mario", customModel2, 1, ordertime2, deadline2);
 		IJob job4 = new Job(customOrder2);
-		scheduling.addCustomJob(job4);
-		Optional<IJob> newJob2 = scheduling.retrieveNext(1220, new ImmutableClock(1,480));
+		algorithm.addCustomJob(job4);
+		Optional<IJob> newJob2 = algorithm.retrieveNext(1220, new ImmutableClock(1,480),new ArrayList<Optional<IJob>>());
 		assertEquals(job4, newJob2.get());
-		Optional<IJob> newJob3 = scheduling.retrieveNext(1160, new ImmutableClock(1,520));
+		Optional<IJob> newJob3 = algorithm.retrieveNext(1160, new ImmutableClock(1,520), new ArrayList<Optional<IJob>>());
 		assertEquals(sJob2, newJob3.get());
 		CustomVehicle customModel3 = new CustomVehicle();
 		ImmutableClock ordertime3 = new ImmutableClock(1, 530);
 		ImmutableClock deadline3 = new ImmutableClock(2, 540);
 		CustomOrder customOrder3 = new CustomOrder("Mario", customModel3, 3, ordertime3, deadline3);
 		IJob job5= new Job(customOrder3);
-		scheduling.addCustomJob(job5);
-		Optional<IJob> newJob4 = scheduling.retrieveNext(1080, new ImmutableClock(1,580));
+		algorithm.addCustomJob(job5);
+		Optional<IJob> newJob4 = algorithm.retrieveNext(1080, new ImmutableClock(1,580), new ArrayList<Optional<IJob>>());
 		assertEquals(job5, newJob4.get());
 		Set<VehicleOption> parts2 = new HashSet<>();
 		parts2.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		template = new VehicleSpecification("model", parts2, 60);
+		template = new VehicleSpecification("model", parts2, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime4 = new ImmutableClock(2, 420); 
 		int quantity2 =5;
 		StandardOrder order4 = new StandardOrder("Luigi", model, quantity2, ordertime4);
 		IJob job6 = new Job(order4);
-		scheduling.addStandardJob(job6);
-		Optional<IJob> newJob5 = scheduling.retrieveNext(1020, new ImmutableClock(1,640));
+		algorithm.addStandardJob(job6);
+		Optional<IJob> newJob5 = algorithm.retrieveNext(1020, new ImmutableClock(1,640), new ArrayList<Optional<IJob>>());
 		assertEquals(job6,newJob5.get());
 	}
 	
-	@Test (expected = NoSuitableJobFoundException.class)
-	public void retrieveNextJobTest2() throws NoSuitableJobFoundException, NotImplementedException{
-		scheduling.retrieveNext(4545, new ImmutableClock(2,3));
-	}
-
 	@Test
-	public void startNewDayTest() throws NotImplementedException, UnmodifiableException{
-		ClockObserver obs = new ClockObserver();
-		AssemblyLine ass = new AssemblyLine(obs, new ImmutableClock(2, 360));
-		ass.switchToBatch(list);
+	public void startNewDayTest() {
+		Set<VehicleOption> parts = new HashSet<>();
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
+		model = new Vehicle(template);
+		ImmutableClock ordertime1 = new ImmutableClock(0, 600); // om 10.10 uur op dag 0
+		StandardOrder order1 = new StandardOrder("Luigi", model, 1, ordertime1); // 420 minuten op de band
+		IJob job = new Job(order1);
+		algorithm.addStandardJob(job);
 		CustomVehicle customModel = new CustomVehicle();
 		ImmutableClock ordertime = new ImmutableClock(0, 0);
 		ImmutableClock deadline = new ImmutableClock(10, 800);
@@ -242,20 +257,22 @@ public class SchedulingAlgorithmBatchTest {
 		IJob job1 = new Job(customOrder);
 		IJob job2 = new Job(customOrder2);
 		job2.setMinimalIndex(2);
-		scheduling.addCustomJob(job1);
-		scheduling.addCustomJob(job2);
-		assertEquals(2,scheduling.getCustomJobs().size());
-		scheduling.startNewDay();
+		algorithm.addCustomJob(job1);
+		algorithm.addCustomJob(job2);
+		assertEquals(2,algorithm.getCustomJobs().size());
+		algorithm.startNewDay();
+		// job2 komt terug want hiermee kan hij tijd besparen.
+		assertEquals(job2, algorithm.retrieveNext(1000, new ImmutableClock(1,360), new ArrayList<Optional<IJob>>()).get());
+		assertEquals(1,algorithm.getCustomJobs().size());
 	}
 
 	@Test
-	public void transformTest1() throws NotImplementedException{
+	public void transformTest1(){
 		PriorityQueue<IJob> jobs = new PriorityQueue<IJob>(10,new JobComparatorDeadLine());
 		ArrayList<IJob> standardJobs = new ArrayList<IJob>();
-		ArrayList<Optional<IJob>> history = new ArrayList<Optional<IJob>>();
 		// Standard job not containing necessary parts of list.
 		Set<VehicleOption> parts = new HashSet<>();
-		template = new VehicleSpecification("model", parts, 60);
+		template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(2, 360); // om 6 uur op dag 2
 		int quantity =5;
@@ -264,7 +281,7 @@ public class SchedulingAlgorithmBatchTest {
 		// batch job
 		Set<VehicleOption> parts2 = new HashSet<>();
 		parts2.add(new VehicleOption("manual", VehicleOptionCategory.AIRCO));
-		template = new VehicleSpecification("model", parts2, 60);
+		template = new VehicleSpecification("model", parts2, timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime2 = new ImmutableClock(2, 420); // om 7 uur op dag 2
 		int quantity2 =5;
@@ -272,44 +289,30 @@ public class SchedulingAlgorithmBatchTest {
 		IJob job2 = new Job(order2);
 		standardJobs.add(job1);
 		standardJobs.add(job2);
-		scheduling.transform(jobs, standardJobs, history);
+		algorithm.transform(jobs, standardJobs);
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void transformTest2Error() throws NotImplementedException{
-		scheduling.transform(null, null, null);
+	public void transformTest2Error() {
+		algorithm.transform(null, null);
 	}
 
 	@Test (expected = IllegalArgumentException.class)
-	public void transformTest3Error() throws NotImplementedException{
+	public void transformTest3Error() {
 		PriorityQueue<IJob> jobs = new PriorityQueue<IJob>(10,new JobComparatorDeadLine());
-		scheduling.transform(jobs, null, null);
+		algorithm.transform(jobs, null);
 	}
 
-	@Test (expected = IllegalArgumentException.class)
-	public void transformTest4Error() throws NotImplementedException{
+	@Test 
+	public void transformTest4() {
 		PriorityQueue<IJob> jobs = new PriorityQueue<IJob>(10,new JobComparatorDeadLine());
 		ArrayList<IJob> standardJobs = new ArrayList<IJob>();
-		scheduling.transform(jobs, standardJobs, null);
+		algorithm.transform(jobs, standardJobs);
+	}
+	
+	@Test
+	public void toStringTest(){
+		assertEquals("Batch", algorithm.toString());
 	}
 
-	@Test (expected = IllegalArgumentException.class)
-	public void transformTest5Error() throws NotImplementedException{
-		PriorityQueue<IJob> jobs = new PriorityQueue<IJob>(10,new JobComparatorDeadLine());
-		ArrayList<Optional<IJob>> history = new ArrayList<Optional<IJob>>();
-		scheduling.transform(jobs, null, history);
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void transformTest6Error() throws NotImplementedException{
-		ArrayList<IJob> standardJobs = new ArrayList<IJob>();
-		ArrayList<Optional<IJob>> history = new ArrayList<Optional<IJob>>();
-		scheduling.transform(null, standardJobs, history);
-	}
-
-	@Test (expected = IllegalArgumentException.class)
-	public void transformTest7Error() throws NotImplementedException{
-		ArrayList<IJob> standardJobs = new ArrayList<IJob>();
-		scheduling.transform(null, standardJobs, null);
-	}
 }

@@ -99,9 +99,11 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 					addToList(absentJob, previousJobs);
 					totalProductionTime += this.getMaximum(previousJobs);
 				}
-				int days = totalProductionTime/Clock.MINUTESINADAY;
-				int minutes = totalProductionTime%Clock.MINUTESINADAY;
+				totalProductionTime += job.getOrder().getOrderTime().getTotalInMinutes();
+				int days = totalProductionTime / Clock.MINUTESINADAY;
+				int minutes = totalProductionTime % Clock.MINUTESINADAY;
 				job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
+				return;
 			}
 		}
 
@@ -157,7 +159,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	public Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
 			ArrayList<Optional<IJob>> jobsOnAssemblyLine) { 
 		// if there are no jobs to schedule, throw a new NoMoreJobsToScheduleException
-		if (this.customJobs.size() == 0 || this.jobsStartOfDay.size() == 0 || this.standardJobs.size() == 0) {
+		if (this.customJobs.size() == 0 && this.jobsStartOfDay.size() == 0 && this.standardJobs.size() == 0 && this.batchJobs.size() == 0) {
 			throw new NoMoreJobsToScheduleException();
 		}
 		/*

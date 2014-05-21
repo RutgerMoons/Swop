@@ -32,7 +32,7 @@ public class AssemblyLineObserverTest {
 
 	@Test 
 	public void attachLoggerTest1(){
-		Logger logger = new Logger(3);
+		Logger logger = new Logger(3, new ImmutableClock(0, 0));
 		observer.attachLogger(logger);
 	}
 	
@@ -43,7 +43,7 @@ public class AssemblyLineObserverTest {
 	
 	@Test 
 	public void detachLoggerTest1(){
-		Logger logger = new Logger(3);
+		Logger logger = new Logger(3, new ImmutableClock(0, 0));
 		observer.attachLogger(logger);
 		observer.detachLogger(logger);
 	}
@@ -55,7 +55,7 @@ public class AssemblyLineObserverTest {
 	
 	@Test
 	public void updateCompletedOrderTest(){
-		Logger logger = new Logger(3);
+		Logger logger = new Logger(3, new ImmutableClock(0, 0));
 		logger.advanceTime(new ImmutableClock(1,200));
 		StandardOrder order = new StandardOrder("garageholder", new Vehicle(new VehicleSpecification("jos", new HashSet<VehicleOption>(), new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>())), 1, new ImmutableClock(0, 0));
 		book.addOrder(order);

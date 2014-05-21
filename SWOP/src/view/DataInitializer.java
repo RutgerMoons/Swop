@@ -30,7 +30,7 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
  * It initializes the AssemblyLines and it simulates a production day. 
  *
  */
-public class InitializeData {
+public class DataInitializer {
 
 	/**
 	 * Initializes the AssemblyLines.
@@ -131,8 +131,8 @@ public class InitializeData {
 		createNewVehicle(facade, "model A", 10);
 
 		while(!facade.getAssemblyLines().get(0).getState().equals(AssemblyLineState.IDLE)
-				&& !facade.getAssemblyLines().get(1).getState().equals(AssemblyLineState.IDLE)
-				&& !facade.getAssemblyLines().get(2).getState().equals(AssemblyLineState.IDLE)){
+				|| !facade.getAssemblyLines().get(1).getState().equals(AssemblyLineState.IDLE)
+				|| !facade.getAssemblyLines().get(2).getState().equals(AssemblyLineState.IDLE)){
 			for(IAssemblyLine assemblyLine: facade.getAssemblyLines()){
 				for(IWorkBench bench: assemblyLine.getWorkBenches()){
 					for(ITask task: bench.getCurrentTasks()){
@@ -154,10 +154,7 @@ public class InitializeData {
 		
 		createNewVehicle(facade, "model C", 1);
 		
-		
 		createNewVehicle(facade, "model X", 1);
-		
-		System.out.println("lala");
 	}
 
 

@@ -422,6 +422,7 @@ public class ClientCommunication implements IClientCommunication{
 				completedOrdersList.add(order.toString() );
 				completedOrdersList.add("\tcompletion time: " + order.getEstimatedTime().toString()  );
 			}
+			show(completedOrdersList);
 		} else
 			show(new ArrayList<String>(
 					Arrays.asList("You have no completed Orders")));
@@ -521,6 +522,7 @@ public class ClientCommunication implements IClientCommunication{
 				pendingOrdersList.add(order.toString() );
 				pendingOrdersList.add("\tEstimated completion time: " + order.getEstimatedTime().toString()  );
 			}
+			show(pendingOrdersList);
 		} else
 			show(new ArrayList<String>(
 					Arrays.asList("You have no pending Orders")));

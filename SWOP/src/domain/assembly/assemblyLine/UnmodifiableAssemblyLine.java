@@ -32,6 +32,7 @@ public class UnmodifiableAssemblyLine implements IAssemblyLine {
 		return this.assemblyLine.canAdvance();
 	}
 
+	@Override
 	public void addWorkBench(IWorkBench bench){
 		throw new UnmodifiableException();
 	}

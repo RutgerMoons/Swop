@@ -92,8 +92,9 @@ public class OrderNewCarScenario {
 		
 		//The order is divided over the 3 assembly lines, so 1 vehicle on each line. 
 		//We know that model A needs 50 minutes at a workbench and it has to be 
-		//assembled at 3 workbenches. So it needs 150 minutes to be assembled.
-		assertEquals(new ImmutableClock(0, 150), clock);
+		//assembled at 3 workbenches. So it needs 150 minutes to be assembled. 
+		//(it is 510, because the day starts at 6 'o clock (360)).
+		assertEquals(new ImmutableClock(0, 510), clock);
 		
 		//We check if the pending orders isn't empty, because we just ordered one.
 		assertFalse(facade.getPendingOrders().isEmpty());
