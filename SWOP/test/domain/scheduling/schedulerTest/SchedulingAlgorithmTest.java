@@ -107,8 +107,7 @@ public class SchedulingAlgorithmTest {
 		
 		parts.add(new VehicleOption("high", VehicleOptionCategory.SPOILER));
 		parts.add(new VehicleOption("low", VehicleOptionCategory.SPOILER));
-		Set<VehicleOption> set = new HashSet<VehicleOption>();
-		VehicleSpecification template = new VehicleSpecification("model", parts, timeAtWorkBench, set);
+		VehicleSpecification template = new VehicleSpecification("model", parts, timeAtWorkBench, new HashSet<VehicleOption>());
 		catalogue.addModel(template);
 		
 		picker = new PartPicker(catalogue, bindingRestrictions, optionalRestrictions);
@@ -198,8 +197,7 @@ public class SchedulingAlgorithmTest {
 	@Test
 	public void getEstimatedTimeInMinutes() {
 		Set<VehicleOption> parts = new HashSet<>();
-		Set<VehicleOption> set = new HashSet<VehicleOption>();
-		template = new VehicleSpecification("model", parts, this.timeAtWorkBench,set);
+		template = new VehicleSpecification("model", parts, this.timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(2, 360); 
 		int quantity =5;
@@ -214,8 +212,7 @@ public class SchedulingAlgorithmTest {
 		// Standard job not containing necessary parts of list.
 		Set<VehicleOption> parts = new HashSet<>();
 		assertNotNull(this.timeAtWorkBench);
-		Set<VehicleOption> set = new HashSet<VehicleOption>();
-		template = new VehicleSpecification("model", parts, this.timeAtWorkBench, set);
+		template = new VehicleSpecification("model", parts, this.timeAtWorkBench, new HashSet<VehicleOption>());
 		model = new Vehicle(template);
 		ImmutableClock ordertime1 = new ImmutableClock(0, 660); // om 6 uur op dag 2
 		int quantity =5;
