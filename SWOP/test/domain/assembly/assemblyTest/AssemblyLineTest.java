@@ -350,11 +350,6 @@ public class AssemblyLineTest{
 	}
 
 	@Test
-	public void testGetAllVehicleOptionsInPendingOrders(){
-		assertEquals(0, line.getAllVehicleOptionsInPendingOrders().size());
-	}
-
-	@Test
 	public void testGetAndSetState(){
 		assertEquals(AssemblyLineState.OPERATIONAL, line.getState());
 		line.setState(AssemblyLineState.BROKEN);

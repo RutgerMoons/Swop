@@ -111,11 +111,6 @@ public class UnmodifiableAssemblyLineTest {
 	}
 	
 	@Test
-	public void getAllVehicleOptionsInPendingOrders(){
-		assertEquals(line.getAllVehicleOptionsInPendingOrders(), unmodifiable.getAllVehicleOptionsInPendingOrders());
-	}
-	
-	@Test
 	public void testGetState(){
 		assertEquals(line.getState(), unmodifiable.getState());
 	}

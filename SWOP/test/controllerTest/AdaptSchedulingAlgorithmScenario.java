@@ -125,7 +125,7 @@ public class AdaptSchedulingAlgorithmScenario {
 		facade.addPartToVehicle(new VehicleOption("bla", VehicleOptionCategory.WHEEL));
 		facade.addPartToVehicle(option);
 		
-		facade.processOrder(5);
+		facade.processOrder(20);
 		
 		//		b)the system gives the sets of options
 		//			--> in this case, it'll be one set with one VehicleOption

@@ -29,7 +29,7 @@ public class ShiftTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void constructorTestError(){
-		Shift s = new Shift(-100, 5, -10);
+		new Shift(-100, 5, -10);
 	}
 	
 	@Test

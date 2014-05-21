@@ -28,6 +28,9 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	 * @param 	amountOfDetails
 	 * 			This number represents the degree of detail
 	 *
+	 * @param	currentTime
+	 * 			The current time
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Exception is thrown when amountOfDetails is smaller than 1
 	 */
