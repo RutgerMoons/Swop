@@ -18,6 +18,8 @@ import com.google.common.base.Optional;
 
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
+import domain.assembly.assemblyLine.IAssemblyLine;
+import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
@@ -222,8 +224,37 @@ public class WorkloadDividerTest {
 	}
 	
 	@Test
-	public void testCompleteChosenTaskAtChosenWorkBench(){
+	public void testGetBlockingWorkBenches(){
+
+		List<IWorkBench> noBlocking = workloadDivider.getBlockingWorkBenches(workloadDivider.getAssemblyLines().get(1));
+		assertTrue(noBlocking.isEmpty());
 		
+		workloadDivider.getAssemblyLines().get(0).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		workloadDivider.getAssemblyLines().get(1).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		
+		workloadDivider.getAssemblyLines().get(1).addWorkBench(body1);
+		
+		Set<VehicleOption> parts = new HashSet<>();
+		VehicleOption part = new VehicleOption("sport", VehicleOptionCategory.BODY);
+		parts.add(part);
+		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
+		map.put(WorkBenchType.ACCESSORIES, 20);
+		map.put(WorkBenchType.BODY, 20);
+		map.put(WorkBenchType.DRIVETRAIN, 20);
+		VehicleSpecification template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
+		Vehicle vehicle = new Vehicle(template);
+		vehicle.addVehicleOption(part);
+		StandardOrder order = new StandardOrder("jef",vehicle,1,new ImmutableClock(0,0));
+		
+		workloadDivider.processNewOrder(order);
+		
+		List<IWorkBench> firstBlocking = workloadDivider.getBlockingWorkBenches(workloadDivider.getAssemblyLines().get(1));
+		assertTrue(firstBlocking.contains(body1));
 	}
 
 }
