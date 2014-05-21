@@ -1,8 +1,6 @@
 package domain.scheduling;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +21,7 @@ import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
 import domain.clock.ImmutableClock;
+import domain.exception.TimeToStartNewDayException;
 import domain.job.job.IJob;
 import domain.observer.observers.AssemblyLineObserver;
 import domain.observer.observers.ClockObserver;
@@ -224,7 +223,15 @@ public class WorkloadDividerTest {
 	
 	@Test
 	public void testGetBlockingWorkBenches(){
-
+		OrderBookObserver orderBookObserver = new OrderBookObserver();
+		AssemblyLineObserver assemblyLineObserver = new AssemblyLineObserver();
+		List<AssemblyLine> listOfAssemblyLines = new ArrayList<>();
+		
+		WorkloadDivider emptyDivider = new WorkloadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver);
+		
+		List<IWorkBench> noLines = emptyDivider.getBlockingWorkBenches(null);
+		assertTrue(noLines.isEmpty());
+		
 		List<IWorkBench> noBlocking = workloadDivider.getBlockingWorkBenches(workloadDivider.getAssemblyLines().get(1));
 		assertTrue(noBlocking.isEmpty());
 		
@@ -255,5 +262,136 @@ public class WorkloadDividerTest {
 		List<IWorkBench> firstBlocking = workloadDivider.getBlockingWorkBenches(workloadDivider.getAssemblyLines().get(1));
 		assertTrue(firstBlocking.contains(body1));
 	}
-
+	
+	@Test
+	public void testCompleteChosenTaskAtChosenWorkbench(){
+		workloadDivider.getAssemblyLines().get(0).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		workloadDivider.getAssemblyLines().get(1).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		
+		workloadDivider.getAssemblyLines().get(1).addWorkBench(body1);
+		
+		Set<VehicleOption> parts = new HashSet<>();
+		VehicleOption part = new VehicleOption("sport", VehicleOptionCategory.BODY);
+		parts.add(part);
+		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
+		map.put(WorkBenchType.ACCESSORIES, 20);
+		map.put(WorkBenchType.BODY, 20);
+		map.put(WorkBenchType.DRIVETRAIN, 20);
+		VehicleSpecification template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
+		Vehicle vehicle = new Vehicle(template);
+		vehicle.addVehicleOption(part);
+		StandardOrder order = new StandardOrder("jef",vehicle,1,new ImmutableClock(0,0));
+		
+		workloadDivider.processNewOrder(order);
+		
+		try {
+			workloadDivider.completeChosenTaskAtChosenWorkBench(workloadDivider.getAssemblyLines().get(1), 
+					workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0), 
+					workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0).getCurrentTasks().get(0), 
+					new ImmutableClock(0, 0));
+		} catch (TimeToStartNewDayException e) {
+			//doesn't happen
+		}
+		assertTrue(workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0).getCurrentTasks().get(0).isCompleted());
+		
+	}
+	
+	@Test (expected = IllegalStateException.class)
+	public void testCompleteTaskexception(){
+		workloadDivider.getAssemblyLines().get(0).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		workloadDivider.getAssemblyLines().get(1).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		
+		workloadDivider.getAssemblyLines().get(1).addWorkBench(body1);
+		
+		Set<VehicleOption> parts = new HashSet<>();
+		VehicleOption part = new VehicleOption("sport", VehicleOptionCategory.BODY);
+		parts.add(part);
+		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
+		map.put(WorkBenchType.ACCESSORIES, 20);
+		map.put(WorkBenchType.BODY, 20);
+		map.put(WorkBenchType.DRIVETRAIN, 20);
+		VehicleSpecification template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
+		Vehicle vehicle = new Vehicle(template);
+		vehicle.addVehicleOption(part);
+		StandardOrder order = new StandardOrder("jef",vehicle,1,new ImmutableClock(0,0));
+		
+		workloadDivider.processNewOrder(order);
+		
+		OrderBookObserver orderBookObserver = new OrderBookObserver();
+		AssemblyLineObserver assemblyLineObserver = new AssemblyLineObserver();
+		List<AssemblyLine> listOfAssemblyLines = new ArrayList<>();
+		
+		WorkloadDivider emptyDivider = new WorkloadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver);
+		
+		try {
+			emptyDivider.completeChosenTaskAtChosenWorkBench(workloadDivider.getAssemblyLines().get(1), 
+					workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0), 
+					workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0).getCurrentTasks().get(0), 
+					new ImmutableClock(0, 0));
+		} catch (TimeToStartNewDayException e) {
+			// doesn't happen
+		}
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testCompleteTaskexception3(){
+		try {
+			workloadDivider.completeChosenTaskAtChosenWorkBench(null,null,null,null);
+		} catch (TimeToStartNewDayException e) {
+			// doesn't happen
+		}
+	}
+	
+	@Test (expected = TimeToStartNewDayException.class)
+	public void testCompleteTaskexception2(){
+		workloadDivider.getAssemblyLines().get(0).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		workloadDivider.getAssemblyLines().get(1).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		
+		Set<String> responsibilities = new HashSet<>();
+		responsibilities.add("Body");
+		responsibilities.add("Color");
+		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
+		
+		workloadDivider.getAssemblyLines().get(1).addWorkBench(body1);
+		
+		Set<VehicleOption> parts = new HashSet<>();
+		VehicleOption part = new VehicleOption("sport", VehicleOptionCategory.BODY);
+		VehicleOption part2 = new VehicleOption("bla", VehicleOptionCategory.ENGINE);
+		parts.add(part);
+		parts.add(part2);
+		Map<WorkBenchType, Integer> map = new HashMap<WorkBenchType, Integer>();
+		map.put(WorkBenchType.ACCESSORIES, 20);
+		map.put(WorkBenchType.BODY, 20);
+		map.put(WorkBenchType.DRIVETRAIN, 20);
+		VehicleSpecification template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
+		Vehicle vehicle = new Vehicle(template);
+		vehicle.addVehicleOption(part);
+		StandardOrder order = new StandardOrder("jef",vehicle,1,new ImmutableClock(0,0));
+		
+		workloadDivider.processNewOrder(order);
+		
+		workloadDivider.getAssemblyLines().get(0).setState(AssemblyLineState.FINISHED);
+		workloadDivider.getAssemblyLines().get(1).setState(AssemblyLineState.FINISHED);
+		
+		try {
+			workloadDivider.completeChosenTaskAtChosenWorkBench(workloadDivider.getAssemblyLines().get(1), 
+					workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0), 
+					workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0).getCurrentTasks().get(0), 
+					new ImmutableClock(0, 0));
+		} catch (TimeToStartNewDayException e) {
+			//doesn't happen
+		}
+	}
+	
+	
 }
