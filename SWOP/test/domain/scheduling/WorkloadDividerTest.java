@@ -18,7 +18,6 @@ import com.google.common.base.Optional;
 
 import domain.assembly.assemblyLine.AssemblyLine;
 import domain.assembly.assemblyLine.AssemblyLineState;
-import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
@@ -89,7 +88,7 @@ public class WorkloadDividerTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testConstructorException1() {
-		WorkloadDivider w = new WorkloadDivider(null, null, null);
+		new WorkloadDivider(null, null, null);
 	}
 	
 	@Test
