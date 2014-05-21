@@ -62,9 +62,14 @@ public class WorkloadDividerTest {
 		specifications.add(template2);
 		specifications.add(template3);
 		
-		AssemblyLine line1 = new AssemblyLine(clockObserver, currentTime, AssemblyLineState.OPERATIONAL, specifications);
 		ArrayList<AssemblyLine> lines = new ArrayList<>();
+		
+		AssemblyLine line2 = new AssemblyLine(clockObserver, currentTime, AssemblyLineState.BROKEN, specifications);
+		lines.add(line2);
+		
+		AssemblyLine line1 = new AssemblyLine(clockObserver, currentTime, AssemblyLineState.OPERATIONAL, specifications);
 		lines.add(line1);
+		
 		orderBookObserver = new OrderBookObserver();
 		assemblyLineObserver = new AssemblyLineObserver();
 		
@@ -107,7 +112,7 @@ public class WorkloadDividerTest {
 	
 	@Test
 	public void testGetAssemblyLines() {
-		assertEquals(1, workloadDivider.getAssemblyLines().size());
+		assertEquals(2, workloadDivider.getAssemblyLines().size());
 		
 		Clock clock = new Clock(360);
 		ClockObserver clockObserver = new ClockObserver();
@@ -180,13 +185,14 @@ public class WorkloadDividerTest {
 	@Test
 	public void testProcessNewOrder(){
 		workloadDivider.getAssemblyLines().get(0).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
+		workloadDivider.getAssemblyLines().get(1).switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorFifo());
 		
 		Set<String> responsibilities = new HashSet<>();
 		responsibilities.add("Body");
 		responsibilities.add("Color");
 		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
 		
-		workloadDivider.getAssemblyLines().get(0).addWorkBench(body1);
+		workloadDivider.getAssemblyLines().get(1).addWorkBench(body1);
 		
 		Set<VehicleOption> parts = new HashSet<>();
 		VehicleOption part = new VehicleOption("sport", VehicleOptionCategory.BODY);
@@ -200,11 +206,9 @@ public class WorkloadDividerTest {
 		vehicle.addVehicleOption(part);
 		StandardOrder order = new StandardOrder("jef",vehicle,1,new ImmutableClock(0,0));
 		
-		
-		
 		workloadDivider.processNewOrder(order);
 		
-		Optional<IJob> optionalJob = workloadDivider.getAssemblyLines().get(0).getWorkBenches().get(0).getCurrentJob();
+		Optional<IJob> optionalJob = workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0).getCurrentJob();		
 		assertTrue(optionalJob.isPresent());
 		
 		IJob job = optionalJob.get();
