@@ -27,6 +27,11 @@ public class ShiftTest {
 		assertNotNull(this.shift);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void constructorTestError(){
+		Shift s = new Shift(-100, 5, -10);
+	}
+	
 	@Test
 	public void setNewOvertimeTest(){
 		shift.setNewOvertime(300);

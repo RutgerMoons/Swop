@@ -63,7 +63,7 @@ public class Scheduler implements ObservesClock {
 	 */
 	public void addJobToAlgorithm(IJob job, ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		this.schedulingAlgorithm.addJobToAlgorithm(job);
-		schedulingAlgorithm.setEstimatedTime(job, internalClock, jobsOnAssemblyLine);
+		this.schedulingAlgorithm.setEstimatedTime(job, internalClock, jobsOnAssemblyLine);
 	}
 
 	/**

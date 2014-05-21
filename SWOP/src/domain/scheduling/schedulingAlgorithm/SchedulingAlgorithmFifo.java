@@ -50,11 +50,7 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 
 		if(customJobs.contains(job)) {
 
-			int total = job.getOrder().getDeadline().minus(currentTime);
-			int days = total/Clock.MINUTESINADAY;
-			int minutes = total%Clock.MINUTESINADAY;
-
-			job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
+			job.getOrder().setEstimatedTime(job.getOrder().getDeadline());
 			return;
 		}
 		List<Optional<IJob>> previousJobs = new ArrayList<>(jobsOnAssemblyLine);
@@ -75,9 +71,11 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 				}
 			}
 		}
-		int days = totalProductionTime/Clock.MINUTESINADAY;
-		int minutes = totalProductionTime%Clock.MINUTESINADAY;
-		job.getOrder().setEstimatedTime(new ImmutableClock(days, minutes));
+		totalProductionTime += job.getOrder().getOrderTime().getTotalInMinutes();
+		int days = totalProductionTime / Clock.MINUTESINADAY;
+		int minutes = totalProductionTime % Clock.MINUTESINADAY;
+		ImmutableClock totalTime = new ImmutableClock(days, minutes);
+		job.getOrder().setEstimatedTime(totalTime);
 	}
 
 	/**
