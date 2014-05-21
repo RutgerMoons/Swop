@@ -93,7 +93,7 @@ public class ShowOrderDetailsScenario {
 		//The order is divided over the 3 assembly lines, so 1 vehicle on each line. 
 		//We know that model A needs 50 minutes at a workbench and it has to be 
 		//assembled at 3 workbenches. So it needs 150 minutes to be assembled.
-		assertEquals(new ImmutableClock(0, 150), clock);
+		assertEquals(new ImmutableClock(0, 510), clock);
 
 		//We check if the pending orders isn't empty, because we just ordered one.
 		assertFalse(facade.getPendingOrders().isEmpty());
@@ -128,7 +128,7 @@ public class ShowOrderDetailsScenario {
 		assertTrue(result.contains("Orderdetails:"));
 		assertTrue(result.contains("Chosen vehicle options:"));
 		assertTrue(result.contains("Order Time: day 0, 6 hours, 0 minutes."));
-		assertTrue(result.contains("(Expected) Completion Time: day 0, 2 hours, 30 minutes."));
+		assertTrue(result.contains("(Expected) Completion Time: day 0, 8 hours, 30 minutes."));
 
 		//We check if all the parts are in the result.
 		for(String str: allParts){

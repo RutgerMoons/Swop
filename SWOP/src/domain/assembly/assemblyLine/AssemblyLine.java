@@ -251,7 +251,9 @@ ObservableAssemblyLineState {
 	 */
 	private void completeJob(IJob lastJob) {
 		lastJob.getOrder().completeCar();
-		updateCompletedOrder(lastJob.getOrder());
+		if(lastJob.getOrder().getPendingCars() == 0){
+			updateCompletedOrder(lastJob.getOrder());
+		}
 	}
 
 	@Override
@@ -278,6 +280,10 @@ ObservableAssemblyLineState {
 		if (job == null) {
 			throw new IllegalArgumentException();
 		}
+		if(assemblyLineState.equals(AssemblyLineState.IDLE)){
+			setState(AssemblyLineState.OPERATIONAL);
+		}
+		
 		job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
 		this.scheduler.addJobToAlgorithm(job,
 				this.getCurrentJobsOnAssemblyLine());

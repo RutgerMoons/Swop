@@ -1,10 +1,8 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
@@ -13,19 +11,13 @@ import controller.FlowControllerFactory;
 import controller.UseCaseFlowController;
 import controller.UserFlowController;
 import domain.assembly.assemblyLine.AssemblyLine;
-import domain.assembly.assemblyLine.AssemblyLineState;
-import domain.assembly.workBench.WorkBench;
-import domain.assembly.workBench.WorkBenchType;
 import domain.clock.Clock;
-import domain.clock.ImmutableClock;
 import domain.company.Company;
 import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.observer.observers.ClockObserver;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
-import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
-import domain.vehicle.VehicleSpecification;
 import domain.vehicle.catalogue.CustomVehicleCatalogue;
 import domain.vehicle.catalogue.VehicleSpecificationCatalogue;
 import domain.vehicle.vehicle.CustomVehicle;
@@ -75,7 +67,7 @@ public class AssemAssist {
 		ClockObserver clockObserver = new ClockObserver();
 		clock.attachObserver(clockObserver);
 		
-		InitializeData initializer = new InitializeData();
+		DataInitializer initializer = new DataInitializer();
 		
 		
 		List<AssemblyLine> assemblyLines = initializer.getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);

@@ -229,7 +229,7 @@ public class AssemblyLineTest{
 		AssemblyLineObserver observer = new AssemblyLineObserver();
 		line.attachObserver(observer);
 		ClockObserver clockObserver = new ClockObserver();
-		Logger logger = new Logger(2);
+		Logger logger = new Logger(2, new ImmutableClock(0, 0));
 		clockObserver.attachLogger(logger);
 		observer.attachLogger(logger);
 		ImmutableClock clock = new ImmutableClock(0,240);
@@ -276,6 +276,27 @@ public class AssemblyLineTest{
 
 		line.advance();
 
+		
+		for(IWorkBench bench : line.getWorkBenches()){
+			for(ITask task : bench.getCurrentTasks()){
+				for(IAction action: task.getActions()){
+					action.setCompleted(true);
+				}
+			}
+		}
+
+		line.advance();
+		
+		for(IWorkBench bench : line.getWorkBenches()){
+			for(ITask task : bench.getCurrentTasks()){
+				for(IAction action: task.getActions()){
+					action.setCompleted(true);
+				}
+			}
+		}
+
+		line.advance();
+		
 		clockObserver.startNewDay(new ImmutableClock(2, 360));
 		assertEquals(1, logger.averageDays());
 	}

@@ -31,12 +31,13 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	 * @throws 	IllegalArgumentException
 	 * 			Exception is thrown when amountOfDetails is smaller than 1
 	 */
-	public Logger(int amountOfDetails) {
-		if(amountOfDetails < 1 ){
+	public Logger(int amountOfDetails, ImmutableClock currentTime) {
+		if(amountOfDetails < 1 || currentTime == null){
 			throw new IllegalArgumentException();
 		}
 		this.logHistoryDays = new LogHistoryDays(amountOfDetails);
 		this.logHistoryDelays = new LogHistoryDelays(amountOfDetails);
+		this.currentTime = currentTime;
 	}
 
 	/**
