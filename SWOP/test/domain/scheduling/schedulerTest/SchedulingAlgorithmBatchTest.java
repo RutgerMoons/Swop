@@ -281,6 +281,7 @@ public class SchedulingAlgorithmBatchTest {
 		assertEquals(job5, newJob.get());
 		
 		CustomVehicle customModel4 = new CustomVehicle();
+		customModel4.addVehicleOption(new VehicleOption("black", VehicleOptionCategory.COLOR));
 		ImmutableClock ordertime4 = new ImmutableClock(1, 530);
 		ImmutableClock deadline4 = new ImmutableClock(1, 900);
 		CustomOrder customOrder4 = new CustomOrder("Mario", customModel4, 3, ordertime4, deadline4);
