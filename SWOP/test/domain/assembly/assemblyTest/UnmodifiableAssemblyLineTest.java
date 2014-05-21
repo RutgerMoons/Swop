@@ -28,8 +28,6 @@ import domain.job.task.Task;
 import domain.observer.observers.ClockObserver;
 import domain.order.order.IOrder;
 import domain.order.order.StandardOrder;
-import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithm;
-import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreatorFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
@@ -150,8 +148,6 @@ public class UnmodifiableAssemblyLineTest {
 		map.put(WorkBenchType.BODY, 20);
 		map.put(WorkBenchType.DRIVETRAIN, 20);
 		VehicleSpecification template = new VehicleSpecification("model", parts, map, new HashSet<VehicleOption>());
-		VehicleSpecification template2 = new VehicleSpecification("model B", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
-		VehicleSpecification template3 = new VehicleSpecification("model C", parts, new HashMap<WorkBenchType, Integer>(), new HashSet<VehicleOption>());
 		Set<VehicleSpecification> specifications = new HashSet<VehicleSpecification>();
 		Vehicle model = new Vehicle(template);
 
