@@ -176,7 +176,7 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 		int currentTotalProductionTime = getCurrentTotalProductionTime(jobsOnAssemblyLine);
 		//Step 1:
 		if (toSchedule != null && canAssembleJobInTime(toSchedule, currentTotalProductionTime, minutesTillEndOfDay)) {
-			customJobs.remove(toSchedule);
+			customJobs.remove(toSchedule.get());
 			Optional<IJob> toReturn = toSchedule;
 			return toReturn;
 		}
