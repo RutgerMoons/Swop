@@ -19,7 +19,6 @@ import domain.users.AccessRight;
 
 /**
  * A class representing the order of execution for the 'Perform Assembly Tasks' use case.
- *
  */
 public class AssembleFlowController extends UseCaseFlowController {
 
@@ -57,7 +56,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 			}
 		}
 		
-		//naar clientcommunication
+		//communicates it to clientCommunication
 		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
 		// choose workbench
 		IWorkBench bench = this.chooseWorkBench(chosenAssemblyLine);
@@ -76,17 +75,17 @@ public class AssembleFlowController extends UseCaseFlowController {
 	} 
 
 	/**
-	 * Get the workbench at which the user wants to perform tasks
+	 * Get the workbench at which the user wants to perform tasks.
 	 */
-	public IWorkBench chooseWorkBench(IAssemblyLine chosenAssemblyLine){
+	private IWorkBench chooseWorkBench(IAssemblyLine chosenAssemblyLine){
 		IWorkBench chosenWorkbench = clientCommunication.chooseWorkBench(chosenAssemblyLine.getWorkBenches());
 		return chosenWorkbench;
 	}
 
 	/**
-	 * Let the user choose and perform a task from the tasks at the workbench he has previously chosen
+	 * Let the user choose and perform a task from the tasks at the workbench he has previously chosen.
 	 */
-	public Optional<ITask> chooseTask(IWorkBench workBench){
+	private Optional<ITask> chooseTask(IWorkBench workBench){
 		List<ITask> tasksAtWorkbench = new ArrayList<ITask>(workBench.getCurrentTasks());
 		for(ITask task: workBench.getCurrentTasks()){
 			if(task.isCompleted()){
@@ -114,7 +113,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * Asks the user how much time he needed for completing the task and returns an
 	 * ImmutableClock
 	 */
-	public ImmutableClock retrieveElapsedTime(){
+	private ImmutableClock retrieveElapsedTime(){
 		int time = clientCommunication.getElapsedTime();
 		int days = time/Clock.MINUTESINADAY;
 		int minutes = time%Clock.MINUTESINADAY;

@@ -50,7 +50,7 @@ UseCaseFlowController {
 	
 	/**
 	 * Asks the user how much time he needed for completing the task and returns an
-	 * ImmutableClock
+	 * ImmutableClock.
 	 */
 	public ImmutableClock retrieveElapsedTime(){
 		int time = clientCommunication.getElapsedTime();

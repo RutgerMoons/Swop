@@ -4,8 +4,6 @@ import view.IClientCommunication;
 import domain.facade.Facade;
 import domain.users.AccessRight;
 
-
-
 /**
  * An abstract class representing the order of execution for a specific use case.
  */

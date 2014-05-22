@@ -15,7 +15,6 @@ import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
  * A class representing the order of execution for the 'Adapt scheduling algorithm' use case.
- *
  */
 public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowController {
 
@@ -49,14 +48,14 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 	private void showAlgorithms() {
 		// show current algorithm
 		// show possible algorithms
-		List<String> possible = facade.getPossibleSchedulingAlgorithms();
+		List<String> possible = this.getPossibleSchedulingAlgorithms();
 		this.clientCommunication.showAlgorithms(facade.getCurrentSchedulingAlgorithm(), possible);
 		chooseAlgorithm(possible);
 	}
 
 	/**
 	 * Lets the user pick the next Scheduling Algorithm and based on the choice
-	 * alters the flow.
+	 * the flow alters.
 	 */
 	private void chooseAlgorithm(List<String> possible) {
 		int index = clientCommunication.getIndex(possible.size()) - 1;
@@ -85,9 +84,6 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 	 */
 	private void chooseBatch() {
 		// present all possible batches
-		// let user pick from all the batches
-		// switch to batch with the chosen batch
-		
 		Set<Set<VehicleOption>> batches = facade.getAllVehicleOptionsInPendingOrders();
 		if (batches.size() <= 0) {
 			clientCommunication.showNoBatchesAvailable();
@@ -96,11 +92,23 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		
 	    ArrayList<Set<VehicleOption>> batchList = new ArrayList<>(batches);
 	    clientCommunication.showBatches(batches);
-		int index = clientCommunication.getIndex(batches.size()) - 1;
+	    // let user pick from all the batches
+	    int index = clientCommunication.getIndex(batches.size()) - 1;
 
 		ArrayList<VehicleOption> toSet = new ArrayList<VehicleOption>(batchList.get(index));
+		// switch to batch with the chosen batch
 		List<VehicleOption> unModifiableToSet = Collections.unmodifiableList(toSet);
 		facade.switchToSchedulingAlgorithm(new SchedulingAlgorithmCreatorBatch(toSet));
 		clientCommunication.showAlgorithmSwitched("Batch", unModifiableToSet);
+	}
+	
+	/**
+	 * Returns an immutable list of the possible scheduling algorithms.
+	 */
+	private List<String> getPossibleSchedulingAlgorithms() {
+		List<String> listOfAlgorithms = new ArrayList<String>();
+		listOfAlgorithms.add("Fifo");
+		listOfAlgorithms.add("Batch");
+		return Collections.unmodifiableList(listOfAlgorithms);
 	}
 }

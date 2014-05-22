@@ -38,8 +38,10 @@ public class OrderFlowController extends UseCaseFlowController {
 	}
 
 	/**
-	 * Execute the use case. This means showing the pending and completed orders of the
-	 * user and possibly obtaining a new order.
+	 * Execute the use case. 
+	 * 1. show user's pending orders
+	 * 2. show user's completed orders
+	 * 3. possibly obtaining a new order
 	 */
 	@Override
 	public void executeUseCase() {

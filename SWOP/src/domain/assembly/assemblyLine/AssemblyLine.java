@@ -192,7 +192,7 @@ ObservableAssemblyLineState {
 	/**
 	 * If the job has a production greater than 0 at that workBench it returns
 	 * true Else the workBench has no tasks from this job to complete, so it
-	 * returns false
+	 * returns false.
 	 */
 	private boolean workbenchHasToAssembleJob(IWorkBench workBench,
 			IJob jobToMove) {
@@ -200,7 +200,7 @@ ObservableAssemblyLineState {
 	}
 
 	/**
-	 * Sets the currentJob of this workBench to an absentJob
+	 * Sets the currentJob of this workBench to an absentJob.
 	 */
 	private void emptyWorkbench(int index) {
 		Optional<IJob> absentJob = Optional.absent();
@@ -211,7 +211,7 @@ ObservableAssemblyLineState {
 	/**
 	 * Empties the workBench at CurrentWorkBenchIndex, moves the job to the
 	 * workBench at indexOfFurthestEmptyWorkBench and this workBench chooses its
-	 * tasks out of the job
+	 * tasks out of the job.
 	 */
 	private void moveJobToWorkBench(int currentWorkBenchIndex,
 			int indexOfFurthestEmptyWorkBench, Optional<IJob> jobToMove) {

@@ -323,15 +323,6 @@ public class FacadeTest {
 	public void testGetAssemblyLineStates(){
 		assertEquals(3, facade.getAssemblyLineStates().size());
 	}
-	
-	@Test
-	public void testGetPossibleSchedulingAlgorithms(){
-		List<String> algorithms = new ArrayList<String>();
-		algorithms = facade.getPossibleSchedulingAlgorithms();
-		assertEquals(2,algorithms.size());
-		assertTrue(algorithms.contains("Batch"));
-		assertTrue(algorithms.contains("Fifo"));
-	}
 		
 	private static List<AssemblyLine> getInitialAssemblyLines(ClockObserver clockObserver, ImmutableClock clock, VehicleSpecificationCatalogue catalogue) {
 		List<AssemblyLine> assemblyLines = new ArrayList<AssemblyLine>();

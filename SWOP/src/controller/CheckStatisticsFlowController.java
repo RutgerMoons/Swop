@@ -29,6 +29,15 @@ public class CheckStatisticsFlowController extends UseCaseFlowController {
 		super(accessRight, clientCommunication, facade);
 	}
 
+	/**
+	 * Execute the use case in some steps
+	 * 1. show average of vehicles produced
+	 * 2. show median of vehicles produced
+	 * 3. show some details of some days
+	 * 4. show average of delays
+	 * 5. show median of delays
+	 * 6. show some details of some delays
+	 */
 	@Override
 	public void executeUseCase() throws IllegalArgumentException, UnmodifiableException {
 		// Show average amount of vehicles produced in a day

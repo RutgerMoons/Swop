@@ -32,6 +32,15 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 		super(accessRight, clientCommunication, facade);
 	}
 
+	/**
+	 * Execute the use case in some steps
+	 * 1. show all pending orders of the user
+	 * 2. show all completed orders of the user
+	 * 3. show all the custom tasks
+	 * 4. let the user order an custom order
+	 * 5. ask if the user is sure that he wants to order
+	 * 6. process the order or stop executing the use case
+	 */
 	@Override
 	public void executeUseCase() {
 		clientCommunication.showPendingOrders(facade.getPendingOrders());

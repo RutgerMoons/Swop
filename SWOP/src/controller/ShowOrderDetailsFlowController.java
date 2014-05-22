@@ -29,6 +29,11 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 		super(accessRight, clientCommunication, facade);
 	}
 
+	/**
+	 * Execute the use case in some steps
+	 * 1. show all pending and completed orders
+	 * 2. let user choose an order he want to look at in detail
+	 */
 	@Override
 	public void executeUseCase() {
 		Optional<IOrder> order = clientCommunication.chooseOrder(facade.getPendingOrders(), facade.getCompletedOrders());

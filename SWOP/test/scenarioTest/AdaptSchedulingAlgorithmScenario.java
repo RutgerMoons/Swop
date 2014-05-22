@@ -76,14 +76,6 @@ public class AdaptSchedulingAlgorithmScenario {
 		assertNotNull(facade);
 		assertTrue(this.facade.getCurrentSchedulingAlgorithm().equalsIgnoreCase("batch"));
 		
-		//test the use case (switching to the fifo algorithm)
-		//1.the system shows the availiable algorithms
-		//	--> we want "Batch" and "Fifo" to be returned in the list we get from the Facade
-		List<String> possible = facade.getPossibleSchedulingAlgorithms();
-		assertEquals(2,possible.size());
-		assertTrue(possible.contains("Batch"));
-		assertTrue(possible.contains("Fifo"));
-		
 		//2.the fifo algorithm is selected
 		//	--> we want the current scheduling algorithm to be the fifo algorithm
 		SchedulingAlgorithmCreatorFifo fifo = new SchedulingAlgorithmCreatorFifo();

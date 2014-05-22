@@ -355,14 +355,4 @@ public class Facade {
 		list.remove(AssemblyLineState.FINISHED);
 		return Collections.unmodifiableList(list);
 	}
-	
-	/**
-	 * Returns an immutable list of the possible scheduling algorithms.
-	 */
-	public List<String> getPossibleSchedulingAlgorithms() {
-		List<String> listOfAlgorithms = new ArrayList<String>();
-		listOfAlgorithms.add("Fifo");
-		listOfAlgorithms.add("Batch");
-		return Collections.unmodifiableList(listOfAlgorithms);
-	}
 }
