@@ -61,12 +61,17 @@ public class AssembleFlowController extends UseCaseFlowController {
 		IAssemblyLine chosenAssemblyLine = clientCommunication.chooseAssemblyLine(allAssemblyLines);
 		// choose workbench
 		IWorkBench bench = this.chooseWorkBench(chosenAssemblyLine);
-		// choose task
+		//complete tasks
+		completeTask(chosenAssemblyLine, bench);
+	}
+
+
+	private void completeTask(IAssemblyLine chosenAssemblyLine, IWorkBench bench) {
 		Optional<ITask> task = this.chooseTask(bench);
 		if (task.isPresent()){
 			ImmutableClock clock = this.retrieveElapsedTime();
 			facade.completeChosenTaskAtChosenWorkBench(chosenAssemblyLine, bench, task.get(), clock);
-			this.chooseTask(bench);
+			completeTask(chosenAssemblyLine, bench);
 		}
 		else {
 			this.executeUseCase();
