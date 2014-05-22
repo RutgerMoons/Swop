@@ -48,7 +48,7 @@ public class AssemblyLineObserver {
 	}
 
 	/**
-	 * Every subscribed object will be notified and receives the completed order.
+	 * Every subscribed object will be notified and receives the completed Order.
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the order is null
