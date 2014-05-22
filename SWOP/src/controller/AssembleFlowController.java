@@ -73,9 +73,6 @@ public class AssembleFlowController extends UseCaseFlowController {
 			facade.completeChosenTaskAtChosenWorkBench(chosenAssemblyLine, bench, task.get(), clock);
 			completeTask(chosenAssemblyLine, bench);
 		}
-		else {
-			this.executeUseCase();
-		}
 	} 
 
 	/**
@@ -98,9 +95,9 @@ public class AssembleFlowController extends UseCaseFlowController {
 		}
 		if(tasksAtWorkbench.isEmpty()){
 			clientCommunication.showWorkBenchCompleted();
-			if(clientCommunication.askContinue())
-				//executeUseCase();
-				return Optional.absent();
+			if(clientCommunication.askContinue()){
+				executeUseCase();
+			}
 		}
 		else{	
 			//choose ITask, not the index of the task
