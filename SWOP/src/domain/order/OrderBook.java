@@ -58,13 +58,15 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	 * 			have the given order
 	 */
 	public void updateOrderBook(IOrder order) {
-		if (order == null || order.getPendingCars()>0 || !this.pendingOrders.containsValue(order)) {
+		if (order == null || !this.pendingOrders.containsValue(order)) {
 			throw new IllegalArgumentException();
 		}
 
-		Collection<IOrder> pending = this.pendingOrders.get(order.getGarageHolder());
-		pending.remove(order);
-		this.completedOrders.put(order.getGarageHolder(), order);
+		if (order.getPendingCars() == 0){
+			Collection<IOrder> pending = this.pendingOrders.get(order.getGarageHolder());
+			pending.remove(order);
+			this.completedOrders.put(order.getGarageHolder(), order);
+		}
 	}
 
 	/**
