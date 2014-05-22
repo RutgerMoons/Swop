@@ -101,6 +101,7 @@ public class OrderFlowController extends UseCaseFlowController {
 				Optional<VehicleOption> part = clientCommunication.choosePart(parts);
 				if (part.isPresent()) {
 					facade.addPartToVehicle(part.get());
+					chosenParts.add(part.get());
 				}
 			}
 		}
