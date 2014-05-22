@@ -56,10 +56,10 @@ public class ClientCommunication implements IClientCommunication{
 			invalidAnswerPrompt();
 			days = askNumber("How many days until the deadline is reached?");
 		}
-		int minutes = askNumber("How many minutes on that day untill the deadline is reached?");
+		int minutes = askNumber("How many minutes on that day until the deadline is reached?");
 		while(minutes<0){
 			invalidAnswerPrompt();
-			minutes = askNumber("How many minutes on that day untill the deadline is reached?");
+			minutes = askNumber("How many minutes on that day until the deadline is reached?");
 		}
 
 		return days*Clock.MINUTESINADAY + minutes;
