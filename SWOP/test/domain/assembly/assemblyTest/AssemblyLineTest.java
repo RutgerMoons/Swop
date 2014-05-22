@@ -23,6 +23,7 @@ import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.workBench.IWorkBench;
 import domain.assembly.workBench.WorkBench;
 import domain.assembly.workBench.WorkBenchType;
+import domain.clock.Clock;
 import domain.clock.ImmutableClock;
 import domain.job.action.Action;
 import domain.job.action.IAction;
@@ -49,7 +50,7 @@ public class AssemblyLineTest{
 
 	private AssemblyLine line;
 	private Vehicle model;
-
+	private Clock clock;
 	@Before
 	public void initialize() {
 
@@ -76,7 +77,12 @@ public class AssemblyLineTest{
 		model.addVehicleOption(new VehicleOption("6 speed manual",  VehicleOptionCategory.GEARBOX));
 		model.addVehicleOption(new VehicleOption("leather black", VehicleOptionCategory.SEATS));
 		model.addVehicleOption(new VehicleOption("comfort", VehicleOptionCategory.WHEEL));
-		line = new AssemblyLine(new ClockObserver(), new ImmutableClock(0,240), AssemblyLineState.OPERATIONAL, specifications);
+		
+		
+		clock = new Clock(360);
+		ClockObserver observer = new ClockObserver();
+		clock.attachObserver(observer);
+		line = new AssemblyLine(observer, new ImmutableClock(0,240), AssemblyLineState.OPERATIONAL, specifications);
 
 		WorkBench body1 = new WorkBench(WorkBenchType.BODY);
 
@@ -479,5 +485,40 @@ public class AssemblyLineTest{
 		assertEquals(line.hashCode(), line2.hashCode());
 
 		
+	}
+	
+	@Test
+	public void testAdvance(){
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		IJob job2 = new Job(order);
+		List<ITask> tasks = new ArrayList<>();
+		ITask task = new Task(VehicleOptionCategory.COLOR.toString());
+		tasks.add(task);
+		job.setTasks(tasks);
+		job2.setTasks(tasks);
+		
+		line.schedule(job);
+		line.schedule(job2);
+		line.completeChosenTaskAtChosenWorkBench(line.getWorkBenches().get(0), task, new ImmutableClock(0, 1050));
+		line.advance();
+		
+		assertFalse(line.getWorkBenches().get(0).getCurrentJob().isPresent());
+	}
+	
+	@Test
+	public void testSchedule(){
+		IOrder order = new StandardOrder("jos", model, 1, new ImmutableClock(0, 0));
+		IJob job = new Job(order);
+		List<ITask> tasks = new ArrayList<>();
+		ITask task = new Task(VehicleOptionCategory.COLOR.toString());
+		tasks.add(task);
+		job.setTasks(tasks);
+		
+		line.setState(AssemblyLineState.IDLE);
+		
+		line.schedule(job);
+		
+		assertEquals(AssemblyLineState.OPERATIONAL, line.getState());
 	}
 }

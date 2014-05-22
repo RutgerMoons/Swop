@@ -122,7 +122,7 @@ ObservableAssemblyLineState {
 				IJob jobToMove = jobAtBench.get();
 				int indexOfFurthestEmptyWorkBench = getIndexOfFurthestEmptyWorkBench(i);
 				if (jobToMove.isCompleted()) {
-					if (indexOfFurthestEmptyWorkBench < 0) {
+					if (indexOfFurthestEmptyWorkBench < 0) {	//TODO de if is toch niet nodig? Want de job is completed, dus mag hij van de workbench af?
 						emptyWorkbench(i);
 						completeJob(jobToMove);
 					} else {
