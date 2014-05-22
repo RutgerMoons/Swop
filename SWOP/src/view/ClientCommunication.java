@@ -423,6 +423,7 @@ public class ClientCommunication implements IClientCommunication{
 				completedOrdersList.add(order.toString() );
 				completedOrdersList.add("\tcompletion time: " + order.getEstimatedTime().toString()  );
 			}
+			completedOrdersList.add("");
 			show(completedOrdersList);
 		} else
 			show(new ArrayList<String>(
@@ -498,7 +499,7 @@ public class ClientCommunication implements IClientCommunication{
 				.getVehicleOptions().keySet()) {
 			carDetails += order.getDescription().getVehicleOptions()
 					.get(category)
-					+ " ";
+					+ ", ";
 		}
 		orderDetails.add(carDetails);
 
@@ -511,6 +512,7 @@ public class ClientCommunication implements IClientCommunication{
 			orderDetails.add("(Expected) Completion Time: "
 					+ order.getEstimatedTime().toString());
 		}
+		orderDetails.add("");
 		show(orderDetails);
 	}
 
@@ -523,6 +525,7 @@ public class ClientCommunication implements IClientCommunication{
 				pendingOrdersList.add(order.toString() );
 				pendingOrdersList.add("\tEstimated completion time: " + order.getEstimatedTime().toString()  );
 			}
+			pendingOrdersList.add("");
 			show(pendingOrdersList);
 		} else
 			show(new ArrayList<String>(

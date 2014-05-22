@@ -356,7 +356,10 @@ public class Facade {
 	 * AssemblyLines.
 	 */
 	public List<AssemblyLineState> getAssemblyLineStates() {
-		return Collections.unmodifiableList(Arrays.asList(AssemblyLineState.values()));
+		List<AssemblyLineState> list = new ArrayList<AssemblyLineState>(Arrays.asList(AssemblyLineState.values()));
+		list.remove(AssemblyLineState.IDLE);
+		list.remove(AssemblyLineState.FINISHED);
+		return Collections.unmodifiableList(list);
 	}
 	
 	/**
