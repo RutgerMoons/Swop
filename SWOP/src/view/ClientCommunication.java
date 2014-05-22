@@ -685,6 +685,7 @@ public class ClientCommunication implements IClientCommunication{
 	@Override
 	public AssemblyLineState chooseStatus(List<AssemblyLineState> states, AssemblyLineState assemblyLineState) {
 		showStatus(assemblyLineState);
+		showPossibleStates(states);
 		
 		int customNumber = askNumber("Which operational state do you choose?") - 1;
 		
@@ -698,16 +699,20 @@ public class ClientCommunication implements IClientCommunication{
 		
 	}
 
-	@Override
-	public void showStatus(AssemblyLineState assemblyLineState) {
-		AssemblyLineState[] states = AssemblyLineState.values();
-		List<String> strings = new ArrayList<String>();
-		strings.add(0, "Possible States:");
+	private void showPossibleStates(List<AssemblyLineState> states) {
+		List<String> strings = new ArrayList<>();
+		strings.add("Possible States");
 		int i = 1;
 		for(AssemblyLineState state: states){
 			strings.add(i + ": " + state.toString());
 			i++;
 		}
+		show(strings);
+	}
+
+	@Override
+	public void showStatus(AssemblyLineState assemblyLineState) {
+		List<String> strings = new ArrayList<String>();
 		strings.add("Current status: " + assemblyLineState.toString());
 		
 		show(strings);
