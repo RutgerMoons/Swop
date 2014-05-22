@@ -358,9 +358,9 @@ public class ClientCommunication implements IClientCommunication{
 	@Override
 	public void showAssemblyLine(IAssemblyLine assemblyLine) {
 		ArrayList<String> assemblyLineStrings = new ArrayList<String>();
-		assemblyLineStrings.add(assemblyLine.getState().toString() );
-
 		assemblyLineStrings.add(0, "current assemblyline:");
+		assemblyLineStrings.add(assemblyLine.getState().toString() );
+		assemblyLineStrings.add("");
 
 		List<IWorkBench> allWorkbenches = assemblyLine.getWorkBenches();
 
@@ -370,6 +370,7 @@ public class ClientCommunication implements IClientCommunication{
 			assemblyLineStrings.addAll(getPendingTasks(workbench));
 			assemblyLineStrings.add("Completed Tasks: ");
 			assemblyLineStrings.addAll(getCompletedTasks(workbench));
+			assemblyLineStrings.add("");
 		}
 		show(assemblyLineStrings);
 	}
