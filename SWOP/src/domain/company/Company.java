@@ -53,8 +53,6 @@ public class Company {
 	private Logger log;
 	private Clock clock;
 	private WorkloadDivider workloadDivider;
-	private Set<BindingRestriction> bindingRestrictions;
-	private Set<OptionalRestriction> optionalRestrictions;
 	private int amountOfDetailedHistory;
 
 	/**
@@ -100,10 +98,8 @@ public class Company {
 		ClockObserver clockObserver = new ClockObserver();
 		this.clock.attachObserver(clockObserver);
 		clockObserver.attachLogger(log);
-		this.bindingRestrictions = bindingRestrictions;
-		this.optionalRestrictions = optionalRestrictions;
 		this.customCatalogue = customCatalogue;
-		this.partpicker = new PartPicker(vehicleSpecificationCatalogue, this.bindingRestrictions, this.optionalRestrictions);
+		this.partpicker = new PartPicker(vehicleSpecificationCatalogue, bindingRestrictions, optionalRestrictions);
 		OrderBookObserver orderBookObserver = new OrderBookObserver();
 		this.workloadDivider = new WorkloadDivider(listOfAssemblyLines, orderBookObserver, assemblyLineObserver);
 		orderbook.attachObserver(orderBookObserver);
