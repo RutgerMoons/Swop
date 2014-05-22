@@ -91,7 +91,7 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 */
 	public Optional<ITask> chooseTask(IWorkBench workBench){
 		List<ITask> tasksAtWorkbench = new ArrayList<ITask>(workBench.getCurrentTasks());
-		for(ITask task: tasksAtWorkbench){
+		for(ITask task: workBench.getCurrentTasks()){
 			if(task.isCompleted()){
 				tasksAtWorkbench.remove(task);
 			}

@@ -364,7 +364,6 @@ public class Facade {
 	
 	/**
 	 * Returns an immutable list of the possible scheduling algorithms.
-	 * @return
 	 */
 	public List<String> getPossibleSchedulingAlgorithms() {
 		List<String> listOfAlgorithms = new ArrayList<String>();
