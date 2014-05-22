@@ -158,7 +158,7 @@ public class ClientCommunication implements IClientCommunication{
 			if(askContinue()){
 
 				int partNumber = askNumber("Which Order do you choose?")-1;
-				if (partNumber >0  && partNumber < (orderString.size() - 2)) { 
+				if (partNumber >=0  && partNumber <= (pendingOrders.size() + completedOrders.size())) { 
 					if(partNumber<pendingOrders.size()){
 						return Optional.fromNullable(pendingOrders.get(partNumber));
 					}else {
