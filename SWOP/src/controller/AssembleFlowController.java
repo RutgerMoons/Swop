@@ -1,10 +1,12 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import view.IClientCommunication;
 
 import com.google.common.base.Optional;
 
-import view.IClientCommunication;
 import domain.assembly.assemblyLine.AssemblyLineState;
 import domain.assembly.assemblyLine.IAssemblyLine;
 import domain.assembly.workBench.IWorkBench;
@@ -83,7 +85,12 @@ public class AssembleFlowController extends UseCaseFlowController {
 	 * Let the user choose and perform a task from the tasks at the workbench he has previously chosen
 	 */
 	public Optional<ITask> chooseTask(IWorkBench workBench){
-		List<ITask> tasksAtWorkbench = workBench.getCurrentTasks();
+		List<ITask> tasksAtWorkbench = new ArrayList<ITask>(workBench.getCurrentTasks());
+		for(ITask task: tasksAtWorkbench){
+			if(task.isCompleted()){
+				tasksAtWorkbench.remove(task);
+			}
+		}
 		if(tasksAtWorkbench.isEmpty()){
 			clientCommunication.showWorkBenchCompleted();
 			if(clientCommunication.askContinue())
