@@ -122,7 +122,7 @@ ObservableAssemblyLineState {
 				IJob jobToMove = jobAtBench.get();
 				int indexOfFurthestEmptyWorkBench = getIndexOfFurthestEmptyWorkBench(i);
 				if (jobToMove.isCompleted()) {
-					if (indexOfFurthestEmptyWorkBench < 0) {	//TODO de if is toch niet nodig? Want de job is completed, dus mag hij van de workbench af?
+					if (indexOfFurthestEmptyWorkBench < 0) {	
 						emptyWorkbench(i);
 						completeJob(jobToMove);
 					} else {
@@ -251,9 +251,7 @@ ObservableAssemblyLineState {
 	 */
 	private void completeJob(IJob lastJob) {
 		lastJob.getOrder().completeCar();
-		if(lastJob.getOrder().getPendingCars() == 0){
-			updateCompletedOrder(lastJob.getOrder());
-		}
+		updateCompletedOrder(lastJob.getOrder());
 	}
 
 	@Override
@@ -283,7 +281,7 @@ ObservableAssemblyLineState {
 		if(assemblyLineState.equals(AssemblyLineState.IDLE)){
 			setState(AssemblyLineState.OPERATIONAL);
 		}
-		
+
 		job.setMinimalIndex(getMinimalIndexOfWorkbench(job));
 		this.scheduler.addJobToAlgorithm(job,
 				this.getCurrentJobsOnAssemblyLine());

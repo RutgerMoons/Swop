@@ -304,7 +304,7 @@ public class AssemblyLineTest{
 		line.advance();
 		
 		clockObserver.startNewDay(new ImmutableClock(2, 360));
-		assertEquals(1, logger.averageDays());
+		assertEquals(3, logger.averageDays());
 	}
 
 

@@ -26,7 +26,7 @@ public interface ObservableAssemblyLine {
 	public void detachObserver(AssemblyLineObserver observer);
 	
 	/**
-	 * Method that notifies all the subscribers when an order is completed and sends the current
+	 * Method that notifies all the subscribers when part of an Order is completed and sends the current
 	 * time to every subscriber.
 	 */
 	public void updateCompletedOrder(IOrder order);
