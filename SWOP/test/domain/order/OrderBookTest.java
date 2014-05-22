@@ -117,18 +117,6 @@ public class OrderBookTest {
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test3(){
-		OrderBookObserver o1 = new OrderBookObserver();
-		AssemblyLineObserver o2 = new AssemblyLineObserver();
-		new WorkloadDivider(new ArrayList<AssemblyLine>(), o1, o2);
-		orderBook.attachObserver(o1);
-		StandardOrder order = new StandardOrder("mario", model1, 5, new ImmutableClock(0, 0));
-		order.completeCar();
-		orderBook.addOrder(order);
-		orderBook.updateCompletedOrder(order);
-	}
-	
-	@Test (expected = IllegalArgumentException.class)
 	public void test4(){
 		StandardOrder order = new StandardOrder("mario", model1, 1, new ImmutableClock(0, 0));
 		order.completeCar();

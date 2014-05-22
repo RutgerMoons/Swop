@@ -3,6 +3,7 @@ package domain.company;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +26,6 @@ import domain.clock.ImmutableClock;
 import domain.job.task.ITask;
 import domain.job.task.Task;
 import domain.observer.observers.ClockObserver;
-import domain.order.order.CustomOrder;
 import domain.order.order.IOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -330,19 +330,23 @@ public class CompanyTest {
 	@Test
 	public void testAddOrder(){
 		CustomVehicle vehicle = new CustomVehicle();
-		CustomOrder order = new CustomOrder("jos", vehicle, 1, new ImmutableClock(0, 0), new ImmutableClock(0, 0));
-		
-		company.addOrder(order);
-		assertTrue(company.getPendingOrders("jos").contains(order));
+		company.createAndAddUser("jos", "custom car shop manager");
+		company.login("jos");
+		company.addOrder(vehicle, new ImmutableClock(0, 0));
+		assertFalse(company.getPendingOrders("jos").isEmpty());
 		
 	}
 	
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testAddIllegalOrder(){
-		company.addOrder(null);
+		company.addOrder(null, null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddIllegalOrder2(){
+		company.addOrder(new CustomVehicle(), null);
+	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testProcessIllegalOrder(){

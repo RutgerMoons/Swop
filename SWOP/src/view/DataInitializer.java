@@ -144,16 +144,20 @@ public class DataInitializer {
 		facade.startNewDay();
 		
 		createNewVehicle(facade, "model A", 3);
-		IVehicle vehicle = facade.getCustomOptions("spraying car bodies").get(0);
-		facade.processCustomOrder(vehicle, new ImmutableClock(1, 1000));
-		facade.processCustomOrder(vehicle, new ImmutableClock(2, 1000));
-		facade.processCustomOrder(vehicle, new ImmutableClock(3, 1000));
 		
 		createNewVehicle(facade, "model B", 1);
 		
 		createNewVehicle(facade, "model C", 1);
 		
 		createNewVehicle(facade, "model X", 1);
+		
+		facade.logout();
+		facade.createAndAddUser("jos", "custom car shop manager");
+		facade.login("jos");		
+		IVehicle vehicle = facade.getCustomOptions("spraying car bodies").get(0);
+		facade.processCustomOrder(vehicle, new ImmutableClock(1, 1000));
+		facade.processCustomOrder(vehicle, new ImmutableClock(2, 1000));
+		facade.processCustomOrder(vehicle, new ImmutableClock(3, 1000));
 	}
 
 

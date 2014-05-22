@@ -131,11 +131,11 @@ public class CustomOrderTest {
 		String line = System.lineSeparator();
 		CustomOrder order1 = new CustomOrder("Jan", model, 2, orderTime, deadline);
 		
-		assertEquals("2 Spoiler: low"+line+ "Deadline: 5 days and 0 hours and 20 minutes" + line, order1.toString());
+		assertEquals("2 Spoiler: low"+line+ "\tDeadline: 5 days and 0 hours and 20 minutes", order1.toString());
 		
 		order1.setEstimatedTime(new ImmutableClock(1, 100));
 		assertEquals(
-				"2 Spoiler: low"+line+ "Deadline: 5 days and 0 hours and 20 minutes" + line+" Estimated completion time: 1 days and 1 hours and 40 minutes",
+				"2 Spoiler: low"+line+ "\tDeadline: 5 days and 0 hours and 20 minutes",
 				order1.toString());
 		order1.completeCar();
 		order1.completeCar();

@@ -16,7 +16,6 @@ import domain.exception.RoleNotYetAssignedException;
 import domain.job.task.ITask;
 import domain.job.task.Task;
 import domain.order.Delay;
-import domain.order.order.CustomOrder;
 import domain.order.order.IOrder;
 import domain.order.order.UnmodifiableOrder;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
@@ -283,12 +282,7 @@ public class Facade {
 		for(VehicleOption option: model.getVehicleOptions().values()){
 			vehicle.addVehicleOption(option);
 		}
-
-		CustomOrder order = new CustomOrder(
-				company.getCurrentUser(), vehicle, 1,
-				company.getImmutableClock(), deadline);
-		company.addOrder(order);
-		return order.getEstimatedTime();
+		return company.addOrder(vehicle, deadline);
 	}
 
 	/**

@@ -448,17 +448,27 @@ public class Company {
 	/**
 	 * Method that adds the given Order to the OrderBook.
 	 * 
-	 * @param 	order
-	 * 			Order that needs to be added to the OrderBook
+	 * @param 	model
+	 * 			The vehicle the user wants to order
+	 * 
+	 * @param	deadline
+	 * 			The deadline of the custom order
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the order is null
 	 */
-	public void addOrder(CustomOrder order) {
-		if(order==null){
+	public ImmutableClock addOrder(CustomVehicle model, ImmutableClock deadline) {
+		if(model==null || deadline == null){
 			throw new IllegalArgumentException();
 		}
+		
+		ImmutableClock time = clock.getImmutableClock().getImmutableClockPlusExtraMinutes(deadline.getTotalInMinutes());
+		CustomOrder order = new CustomOrder(
+				getCurrentUser(), model, 1,
+				getImmutableClock(), time);
+		
 		orderbook.addOrder(order);
+		return order.getEstimatedTime();
 	}
 
 	/**

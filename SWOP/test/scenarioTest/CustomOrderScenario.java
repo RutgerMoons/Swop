@@ -111,7 +111,7 @@ public class CustomOrderScenario {
 		
 		//check if the estimated time is right
 		ImmutableClock time = facade.processCustomOrder(model, deadline);
-		assertEquals("day 1, 2 hours, 3 minutes.",time.toString());
+		assertEquals("day 1, 8 hours, 3 minutes.",time.toString());
 	}
 	
 	private Company initializeCompany(){

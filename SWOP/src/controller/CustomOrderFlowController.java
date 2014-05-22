@@ -34,6 +34,9 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 
 	@Override
 	public void executeUseCase() {
+		clientCommunication.showPendingOrders(facade.getPendingOrders());
+		clientCommunication.showCompletedOrders(facade.getCompletedOrders());
+		
 		String customTaskDescription = clientCommunication.showCustomTasks(facade.getCustomTasks());
 		List<IVehicle> vehicles = facade.getCustomOptions(customTaskDescription);
 		IVehicle model = clientCommunication.showSpecificCustomTasks(vehicles);

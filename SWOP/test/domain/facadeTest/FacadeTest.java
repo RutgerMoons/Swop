@@ -1,6 +1,7 @@
 package domain.facadeTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -31,7 +32,6 @@ import domain.exception.UnmodifiableException;
 import domain.facade.Facade;
 import domain.job.task.ITask;
 import domain.observer.observers.ClockObserver;
-import domain.order.order.CustomOrder;
 import domain.order.order.IOrder;
 import domain.restriction.BindingRestriction;
 import domain.restriction.OptionalRestriction;
@@ -145,11 +145,8 @@ public class FacadeTest {
 			custom.addVehicleOption(option);
 		}
 
-		CustomOrder order = new CustomOrder(
-				company.getCurrentUser(), custom, 1,
-				company.getImmutableClock(), time);
-		company.addOrder(order);
-		assertTrue(facade.getPendingOrders().contains(order));
+		company.addOrder(custom, time);
+		assertFalse(facade.getPendingOrders().isEmpty());
 	
 	}
 	
@@ -324,7 +321,7 @@ public class FacadeTest {
 	
 	@Test
 	public void testGetAssemblyLineStates(){
-		assertEquals(5, facade.getAssemblyLineStates().size());
+		assertEquals(3, facade.getAssemblyLineStates().size());
 	}
 	
 	@Test

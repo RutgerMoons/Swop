@@ -313,7 +313,7 @@ public class WorkloadDividerTest {
 		} catch (TimeToStartNewDayException e) {
 			//doesn't happen
 		}
-		assertTrue(workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0).getCurrentTasks().get(0).isCompleted());
+		assertTrue(workloadDivider.getAssemblyLines().get(1).getWorkBenches().get(0).getCurrentTasks().isEmpty());
 
 	}
 
