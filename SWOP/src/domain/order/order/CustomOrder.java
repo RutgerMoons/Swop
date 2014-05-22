@@ -217,12 +217,6 @@ public class CustomOrder implements IOrder {
 					+ this.getDeadline().getMinutes() / 60 + " hours and "
 					+ this.getDeadline().getMinutes() % 60 + " minutes"
 					+ line;
-			if(estimatedTime!=null){
-				orderInString += " Estimated completion time: "
-						+ this.getEstimatedTime().getDays() + " days and "
-						+ this.getEstimatedTime().getMinutes() / 60 + " hours and "
-						+ this.getEstimatedTime().getMinutes() % 60 + " minutes";
-			}
 		}
 		return orderInString;
 	}

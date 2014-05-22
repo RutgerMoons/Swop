@@ -44,7 +44,7 @@ public class OrderFlowController extends UseCaseFlowController {
 	@Override
 	public void executeUseCase() {
 		this.showOrders();
-		placeNewOrder();
+		this.placeNewOrder();
 	}
 
 	/**
