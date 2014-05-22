@@ -212,11 +212,10 @@ public class CustomOrder implements IOrder {
 		String line = System.lineSeparator();
 		String orderInString = this.getQuantity() + " " + this.getDescription() + line;
 		if (this.getPendingCars() > 0) {
-			orderInString+= "Deadline: "
+			orderInString+= "\tDeadline: "
 					+ this.getDeadline().getDays() + " days and "
 					+ this.getDeadline().getMinutes() / 60 + " hours and "
-					+ this.getDeadline().getMinutes() % 60 + " minutes"
-					+ line;
+					+ this.getDeadline().getMinutes() % 60 + " minutes";
 		}
 		return orderInString;
 	}
