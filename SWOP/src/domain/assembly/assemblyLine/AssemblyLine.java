@@ -205,6 +205,7 @@ ObservableAssemblyLineState {
 	private void emptyWorkbench(int index) {
 		Optional<IJob> absentJob = Optional.absent();
 		this.workbenches.get(index).setCurrentJob(absentJob);
+		this.workbenches.get(index).chooseTasksOutOfJob();
 	}
 
 	/**
