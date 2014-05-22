@@ -73,7 +73,6 @@ public class OrderFlowController extends UseCaseFlowController {
 			facade.createNewVehicle(realModel);
 
 			List<VehicleOption> chosenParts = createModel();
-
 			int quantity = clientCommunication.getQuantity();
 			clientCommunication.showOrder(quantity, realModel, chosenParts);
 			if (!this.clientCommunication.askContinue()) {
