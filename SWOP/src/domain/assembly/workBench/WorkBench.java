@@ -13,8 +13,7 @@ import domain.job.task.ITask;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
- *  A class representing a workbench. Each WorkBench has a WorkBenchType and it contains 
- *  a list with responsibilities and the Job it currently has to work on. 
+ *  A class representing a workbench. Each WorkBench has a WorkBenchType and the Job it currently has to work on. 
  *  Based on the current Job, the WorkBench retrieves all the Tasks it has to complete.
  */
 public class WorkBench implements IWorkBench {
@@ -26,15 +25,11 @@ public class WorkBench implements IWorkBench {
 	/**
 	 * Construct a new Workbench.
 	 * 
-	 * @param 	responsibilities
-	 *          A list of strings. The types of Tasks that have to be
-	 *          performed by this WorkBench.
-	 * 
-	 * @param 	workbenchType
-	 *          A name for this workbench
+	 * @param 	type
+	 *          The type of WorkBench this WorkBench belongs to
 	 * 
 	 * @throws 	IllegalArgumentException
-	 *          Thrown when workbenchName is null or empty or when the WorkBenchType is null
+	 *          Thrown when type is null
 	 */
 	public WorkBench(WorkBenchType type) {
 		if (type == null) {
@@ -83,7 +78,7 @@ public class WorkBench implements IWorkBench {
 	 *          A list of tasks
 	 *            
 	 * @throws 	IllegalArgumentException
-	 *          Thrown when currentTasks is null
+	 *          Thrown when list is null
 	 */
 	public void setCurrentTasks(List<ITask> list) {
 		if (list == null)

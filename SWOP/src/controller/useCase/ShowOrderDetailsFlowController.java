@@ -31,9 +31,10 @@ public class ShowOrderDetailsFlowController extends UseCaseFlowController{
 	}
 
 	/**
-	 * Execute the use case in some steps
-	 * 1. show all pending and completed orders
-	 * 2. let user choose an order he want to look at in detail
+	 * Execute the use case in some steps <br>
+	 * 1. show all pending and completed orders <br>
+	 * 2. let user choose an order he want to look at in detail <br>
+	 * 3. show the details of the chosen order <br>
 	 */
 	@Override
 	public void executeUseCase() {

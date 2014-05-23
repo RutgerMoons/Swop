@@ -11,8 +11,7 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * An interface representing a workbench. A WorkBench
- * is responsible for completing Task. Each WorkBench has a WorkBenchType and has
- * an amount of responsibilities.
+ * is responsible for completing Tasks. Each WorkBench has a WorkBenchType.
  */
 public interface IWorkBench {
 
@@ -30,8 +29,8 @@ public interface IWorkBench {
 	public Optional<IJob> getCurrentJob();
 	
 	/**
-	 * Get the list of responsibilities of this WorkBench. So the types of Tasks
-	 * that have to be performed by this workbench.
+	 * Get the list of responsibilities of this WorkBench. So the types of VehicleOptions
+	 * that have to be assembled at this WorkBench.
 	 * 
 	 * @return 	A list of responsibilities.
 	 */
@@ -53,19 +52,18 @@ public interface IWorkBench {
 	public boolean isCompleted();
 
 	/**
-	 * Allocate a new Job(Car) to this WorkBench.
+	 * Allocate a new Job to this WorkBench.
 	 * 
-	 * @param 	optional
+	 * @param 	job
 	 *          The job you want to allocate to the WorkBench
 	 *          
 	 * @throws 	IllegalArgumentException
 	 *          Thrown when the parameter is null
 	 */
-	public void setCurrentJob(Optional<IJob> retrieveNextJob);
+	public void setCurrentJob(Optional<IJob> job);
 
 	/**
-	 * Selects the Tasks that are valid for this Workbench. The description of
-	 * the Task is checked against the responsibilities from the Workbench.
+	 * Selects the Tasks that this Workbench can complete.
 	 */
 	public void chooseTasksOutOfJob();
 

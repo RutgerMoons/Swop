@@ -128,7 +128,7 @@ public class Company {
 	 * @param 	assemblyLine
 	 * 			The assemblyLine on which a certain task of a job is assembled
 	 * 
-	 * @param 	workBench
+	 * @param 	workbench
 	 *          The workbench on which a certain task of a job is assembled
 	 * 
 	 * @param 	task

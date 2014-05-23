@@ -13,7 +13,7 @@ public class UserFactory {
 	/**
 	 * Method to create the User given a name and a role. 
 	 * 
-	 * @param	name
+	 * @param	userName
 	 * 			The name of the new User
 	 * 
 	 * @param 	role

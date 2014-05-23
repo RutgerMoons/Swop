@@ -5,27 +5,47 @@ package domain.assembly.assemblyLine;
  */
 public enum AssemblyLineState {
 
+	/**
+	 * The AssemblyLine can process Vehicles.
+	 */
 	OPERATIONAL {
 		@Override
 		public String toString() {
 			return "The assemblyLine is operational";
 		}
-	}, MAINTENANCE {
+	},
+	/**
+	 * The AssemblyLine is under maintenance, so no new Vehicles can be processed.
+	 */
+	MAINTENANCE {
 		@Override
 		public String toString() {
 			return "The assemblyLine is under maintenance";
 		}
-	}, BROKEN {
+	}, 
+	/**
+	 * The AssemblyLine is broken and needs to be fixed before it can process Vehicles.
+	 * The Vehicles that are on the AssemblyLine are stuck at their WorkBenches.
+	 */
+	BROKEN {
 		@Override
 		public String toString() {
 			return "The assemblyLine is broken";
 		}
-	}, IDLE {
+	}, 
+	/**
+	 * The AssemblyLine is idle and waiting for new Vehicles to arrive.
+	 */
+	IDLE {
 		@Override
 		public String toString() {
 			return "The assemblyLine is operational (idle)";
 		}
-	}, FINISHED {
+	}, 
+	/**
+	 * The AssemblyLine is finished for the day. It can process Vehicles the next day.
+	 */
+	FINISHED {
 		@Override
 		public String toString() {
 			return "The assemblyLine is operational (finished)";

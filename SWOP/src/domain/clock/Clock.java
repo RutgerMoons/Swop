@@ -10,12 +10,21 @@ import domain.observer.observers.ClockObserver;
  */
 public class Clock implements ObservableClock {
 	
+	/**
+	 * This represents the amount of minutes in a day.
+	 */
 	public static final int MINUTESINADAY = 1440;
 	private final int MINUTESSTARTOFDAY;
 	private int minutes;
 	private int days;
 	private ArrayList<ClockObserver> observers;
 	
+	/**
+	 * Construct a new Clock.
+	 * 
+	 * @param 	minutesStartOfDay
+	 * 			Each working day starts at this point of time.
+	 */
 	public Clock(int minutesStartOfDay) {
 		observers = new ArrayList<ClockObserver>();
 		if (minutesStartOfDay < 0 || minutesStartOfDay >= MINUTESINADAY) {
@@ -25,7 +34,7 @@ public class Clock implements ObservableClock {
 	}
 	
 	/**
-	 * Get the amount of minutes of this day (in minutes).
+	 * Get the amount of minutes of this day.
 	 */
 	public int getMinutes(){
 		return minutes;
@@ -42,9 +51,9 @@ public class Clock implements ObservableClock {
 	 * 			An integer that represents how much the clock has to be advanced, expressed in minutes
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 			Thrown if elapsedTime is smaller than zero.
+	 * 			Thrown when elapsedTime is lesser than zero.
 	 */
-	public void advanceTime(int elapsedTime) throws IllegalArgumentException{
+	public void advanceTime(int elapsedTime){
 		if (elapsedTime < 0) {
 			throw new IllegalArgumentException("argument can't be negative");
 		}
@@ -92,9 +101,6 @@ public class Clock implements ObservableClock {
 		return new ImmutableClock(getDays(), getMinutes());
 	}
 	
-	/**
-	 * Add an observer to this clock's observers;
-	 */
 	@Override
 	public void attachObserver(ClockObserver observer) {
 		if (observer == null) {
@@ -103,9 +109,6 @@ public class Clock implements ObservableClock {
 		observers.add(observer);
 	}
 	
-	/**
-	 * Remove an observer from this clock's observers.
-	 */
 	@Override
 	public void detachObserver(ClockObserver observer) {
 		if (observer == null) {
@@ -114,9 +117,6 @@ public class Clock implements ObservableClock {
 		observers.remove(observer);
 	}
 	
-	/**
-	 * Notify the observers that the time has advanced.
-	 */
 	@Override
 	public void notifyObserversAdvanceTime() {
 		ImmutableClock currentTime = getImmutableClock();
@@ -125,9 +125,6 @@ public class Clock implements ObservableClock {
 		}
 	}
 	
-	/**
-	 * Notify the observers that a new day has started.
-	 */
 	@Override
 	public void notifyObserversStartNewDay() {
 		for (ClockObserver observer : observers) {

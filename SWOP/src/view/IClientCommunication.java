@@ -94,7 +94,7 @@ public interface IClientCommunication {
 	/**
 	 * Let the user indicate which workbench he's working at.
 	 * 
-	 * @param 	numberOfWorkbenches
+	 * @param 	numberOfWorkBenches
 	 * 			Integer that represents how many workbenches the user can choose from.
 	 * 
 	 * @param 	workbenches
@@ -178,7 +178,7 @@ public interface IClientCommunication {
 	/**
 	 * Show the user the AssemblyLine.
 	 * 
-	 * @param 	assemblyline
+	 * @param 	assemblyLine
 	 * 			The AssemblyLine needed to be shown		
 	 */
 	public void showAssemblyLine(IAssemblyLine assemblyLine);
