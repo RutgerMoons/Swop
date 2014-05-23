@@ -59,7 +59,6 @@ public interface IVehicle {
 	
 	/**
 	 * Get the VehicleSpecification where the IVehicle is built from.
-	 * 
 	 */
 	public VehicleSpecification getVehicleSpecification();
 	
@@ -75,7 +74,7 @@ public interface IVehicle {
 	public void setVehicleSpecification(VehicleSpecification template);
 
 	/**
-	 * Get a map of the times at each workbench.
+	 * Get a map of how long it has to be at each WorkBench.
 	 */
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
 }

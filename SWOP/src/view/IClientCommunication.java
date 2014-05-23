@@ -17,6 +17,10 @@ import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.IVehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 
+/**
+ * An interface describing every function needed to implement to communicate
+ * with the user.
+ */
 public interface IClientCommunication {
 
 	/**
@@ -38,7 +42,8 @@ public interface IClientCommunication {
 	/**
 	 * Ask the user for a deadline.
 	 * 
-	 * @return returns the amount of minutes until the deadline is reached
+	 * @return 	
+	 * 			The amount of minutes until the deadline is reached
 	 */
 	public int askDeadline();
 
@@ -51,28 +56,36 @@ public interface IClientCommunication {
 	public String askFinished();
 
 	/**
-	 * Choose the vehicle the user wants to order.
+	 * Lets the user choose the vehicle he wants to order.
 	 * 
 	 * @param 	catalogue
 	 * 			A Set which contains Strings that represent the names of all possible vehicles that can be ordered.
-	 * 
-	 * @return 	the name of the model the user chooses
 	 */
 	public String chooseModel(Set<String> catalogue);
 
 	/**
 	 * Lets the user choose an order out of all his pending/completed orders.
+	 * 
+	 * @param	pendingOrders
+	 * 			The pending orders of the user
+	 * 
+	 * @param	completedOrders 
+	 * 			The completed orders of the user
 	 */
 	public Optional<IOrder> chooseOrder(List<IOrder> pendingOrders,
 			List<IOrder> completedOrders);
 
 	/**
 	 * Lets the user choose a VehicleOption when he is putting his Vehicle together.
+	 * 
+	 * @param	parts
+	 * 			The list of VehicleOptions where the user can choose a VehicleOption from
+	 * 			
 	 */
 	public Optional<VehicleOption> choosePart(List<VehicleOption> parts);
 
 	/**
-	 * Let the user indicate which role he fulfills.
+	 * Lets the user indicate which role he fulfills.
 	 * 
 	 * @return
 	 * 			A String that represents which role the user fulfills.
@@ -80,19 +93,15 @@ public interface IClientCommunication {
 	public String chooseRole();
 
 	/**
-	 * Let the user indicate which task he wants to perform.
+	 * Lets the user choose the task he wants to perform.
 	 * 
 	 * @param 	tasksAtWorkbench
 	 * 			ArrayList that contains Tasks. 
-	 * 
-	 * @return
-	 * 			A strictly positive integer.
-	 * 			The integer 'n' that is returned indicates the user chooses the n'th element in the given list.
 	 */
 	public ITask chooseTask(List<ITask> tasksAtWorkbench);
 
 	/**
-	 * Let the user indicate which workbench he's working at.
+	 * Lets the user indicate which workbench he's working at.
 	 * 
 	 * @param 	numberOfWorkbenches
 	 * 			Integer that represents how many workbenches the user can choose from.
@@ -107,7 +116,7 @@ public interface IClientCommunication {
 			ArrayList<String> workbenches);
 
 	/**
-	 * Let the user indicate how much time has passed.
+	 * Lets the user indicate how much time has passed.
 	 * 
 	 * @return
 	 * 			An integer representing the elapsed time (in minutes).
@@ -117,6 +126,9 @@ public interface IClientCommunication {
 	/**
 	 * Presents the user with all of his possible use cases. The user
 	 * chooses which use case he wants to execute.
+	 * 
+	 * @param	accessRights
+	 * 			A list with all the user's access rights 
 	 */
 	public int getFlowControllerIndex(List<String> accessRights);
 
@@ -124,6 +136,9 @@ public interface IClientCommunication {
 	 * Asks the user to enter an integer between zero and the given maxValue.
 	 * If the answer isn't valid, the system informs the user and repeats the question,
 	 * until a valid answer is given.
+	 * 
+	 * @param	maxValue
+	 * 			The upper bound
 	 */
 	public int getIndex(int maxValue);
 
@@ -136,10 +151,10 @@ public interface IClientCommunication {
 	public String getName();
 
 	/**
-	 * Let the user indicate how many cars he wants to order.
+	 * Lets the user indicate how many cars he wants to order.
 	 * 
 	 * @return
-	 * 			a positive integer representing the quantity
+	 * 			A positive integer representing the quantity
 	 */
 	public int getQuantity();
 
@@ -154,23 +169,39 @@ public interface IClientCommunication {
 	public void invalidUserPrompt();
 
 	/**
-	 * Log the current user out.
+	 * Logs the current user out.
 	 */
 	public void logout();
 
 	/**
 	 * Show the user the currently used Scheduling Algorithm's name and 
 	 * the names of all the possible Scheduling Algorithms.
+	 * 
+	 * @param	current
+	 * 			The scheduling algorithm currently used by the AssemblyLines
+	 * 
+	 * @param	possible
+	 * 			A list with all the possible scheduling algorithms including the current 
+	 * 			scheduling algorithm
 	 */
 	public void showAlgorithms(String current, List<String> possible);
 
 	/**
 	 * Notify the user that the scheduling algorithm was successfully switched.
+	 * 
+	 * @param	schedulingAlgorithmType
+	 * 			The name of the scheduling algorithm the user has chosen
 	 */
 	public void showAlgorithmSwitched(String schedulingAlgorithmType);
 
 	/**
 	 * Notify the user that the scheduling algorithm was successfully switched using the given batch.
+	 * 
+	 * @param	schedulingAlgorithmType
+	 * 			The name of the scheduling algorithm the user has chosen
+	 * 
+	 * @param	vehicleOptionsChosenForBatch
+	 * 			The list of VehicleOptions who have priority in batch
 	 */
 	public void showAlgorithmSwitched(String schedulingAlgorithmType,
 			List<VehicleOption> vehicleOptionsChosenForBatch);
@@ -205,7 +236,10 @@ public interface IClientCommunication {
 	public void showCustomOrder(ImmutableClock time);
 
 	/**
-	 * Show the given custom tasks and let the user choose one.
+	 * Show the given custom tasks and lets the user choose one.
+	 * 
+	 * @param	vehicles
+	 * 			The list with all the possible custom tasks that can be performed on a Vehicle
 	 */
 	public IVehicle showSpecificCustomTasks(List<IVehicle> vehicles);
 
@@ -215,7 +249,7 @@ public interface IClientCommunication {
 	public void showInvalidModel();
 
 	/**
-	 * Shows the user there are no specification batches to switch the scheduling algorithm to.
+	 * Show the user there are no specification batches to switch the scheduling algorithm to.
 	 */
 	public void showNoBatchesAvailable();
 
@@ -229,32 +263,41 @@ public interface IClientCommunication {
 	 * 			The VehicleSpecification the user is about to order 
 	 * 
 	 * @param 	chosenParts
-	 * 			A list with all 
+	 * 			A list with all parts the user has chosen
 	 *
-	 * @param estimatedTime
+	 * @param 	estimatedTime
 	 * 			The estimated completion time, represented by two integers: the day and the time (in minutes).
 	 * 			If the estimated completion time == -1, the completion time can't be shown.
 	 */
 	public void showOrder(int quantity, VehicleSpecification model,
 			List<VehicleOption> chosenParts, ImmutableClock estimatedTime);
 
+	/**
+	 * Show the user everything he has chosen.
+	 * 
+	 * @param 	quantity
+	 * 			An integer representing the quantity of cars the user is about to order
+	 * 
+	 * @param 	model
+	 * 			The VehicleSpecification the user is about to order 
+	 * 
+	 * @param 	chosenParts
+	 * 			A list with all the parts the user has chosen
+	 */
 	public void showOrder(int quantity, VehicleSpecification realModel,
 			List<VehicleOption> chosenParts);
 
 	/**
 	 * Show the details of the given order.
 	 */
-
 	public void showOrderDetails(IOrder order);
 
 	/**
 	 * Show the user's pending orders.
-	 * @param pendingOrders
-	 * 			An ArrayList of Strings.
-	 * 			Each String in this ArrayList represents an order. 
-	 * 			It contains the quantity, the name of the model and the estimated time, all separated by comma's.
+	 * 
+	 * @param 	pendingOrders
+	 * 			Show the user's pending orders 
 	 */
-
 	public void showPendingOrders(List<IOrder> pendingOrders);
 
 	/**
@@ -263,22 +306,18 @@ public interface IClientCommunication {
 	public void showWorkBenchCompleted();
 
 	/**
-	 * Let user choose an AssemblyLine out of a list of AssemblyLines.
+	 * Lets the user choose an AssemblyLine out of a list of AssemblyLines.
 	 * 
 	 * @param 	allAssemblyLines
 	 * 			List with all the available assemblyLines.
-	 * 
-	 * @return	The chosen assemblyLine
 	 */
 	public IAssemblyLine chooseAssemblyLine(List<IAssemblyLine> allAssemblyLines);
 
 	/**
-	 * Let user choose a WorkBencch out of a list of WorkBenches.
+	 * Lets the user choose a WorkBench out of a list of WorkBenches.
 	 * 
 	 * @param 	workbenches
 	 * 			List with all the available workbenches
-	 * 
-	 * @return	The chosen WorkBench
 	 */
 	public IWorkBench chooseWorkBench(List<IWorkBench> workbenches);
 
@@ -287,9 +326,6 @@ public interface IClientCommunication {
 	 * 
 	 * @param 	customTasks
 	 * 			Set with the names of all Tasks 
-	 * 
-	 * @return
-	 * 			The chosen task
 	 */
 	public String showCustomTasks(Set<String> customTasks);
 
@@ -368,15 +404,13 @@ public interface IClientCommunication {
 	public void showBatches(Set<Set<VehicleOption>> batches);
 
 	/**
-	 * Let the user choose the new AssemblyLineState for an AssemblyLine.
+	 * Lets the user choose the new AssemblyLineState for an AssemblyLine.
 	 * 
 	 * @param 	states
 	 * 			The possible states
 	 * 
 	 * @param 	assemblyLineState
 	 * 			The current state of an AssemblyLine
-	 * 
-	 * @return	The chosen AssemblyLineState
 	 */
 	public AssemblyLineState chooseStatus(List<AssemblyLineState> states,
 			AssemblyLineState assemblyLineState);
@@ -388,5 +422,4 @@ public interface IClientCommunication {
 	 * 			The state of the AssemblyLine
 	 */
 	public void showStatus(AssemblyLineState assemblyLineState);
-
 }
