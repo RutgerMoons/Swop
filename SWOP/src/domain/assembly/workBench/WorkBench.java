@@ -16,7 +16,6 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
  *  A class representing a workbench. Each WorkBench has a WorkBenchType and it contains 
  *  a list with responsibilities and the Job it currently has to work on. 
  *  Based on the current Job, the WorkBench retrieves all the Tasks it has to complete.
- * 
  */
 public class WorkBench implements IWorkBench {
 

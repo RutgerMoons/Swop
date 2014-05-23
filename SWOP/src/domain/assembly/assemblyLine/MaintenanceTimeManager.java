@@ -12,6 +12,15 @@ public class MaintenanceTimeManager implements ObservesClock{
 	private final ImmutableClock finishTime;
 	private final int MAX_MAINTENANCE_TIME = 240;
 
+	/**
+	 * Constructs a manager for the maintenance of time.
+	 * 
+	 * @param 	line
+	 * 			The AssemblyLine it needs to manage
+	 * 
+	 * @param 	finishTime
+	 * 			The time when the maintenanceTimeManager is created
+	 */
 	public MaintenanceTimeManager(AssemblyLine line, ImmutableClock finishTime){
 		this.line = line;
 		ImmutableClock time = new ImmutableClock(finishTime.getDays(), finishTime.getMinutes() + this.MAX_MAINTENANCE_TIME);
