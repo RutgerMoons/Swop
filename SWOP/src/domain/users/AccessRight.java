@@ -1,8 +1,7 @@
 package domain.users;
 
 /**
- * A class representing an access right that might be necessary to perform some use case
- *
+ * A class representing an access right that might be necessary to perform a use case.
  */
 public enum AccessRight {
 	ORDER("Order a car"), ASSEMBLE("Perform assembly tasks"), 
