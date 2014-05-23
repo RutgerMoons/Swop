@@ -25,6 +25,9 @@ public class SchedulingAlgorithmFifo extends SchedulingAlgorithm {
 	 * 
 	 * @param 	workBenchTypes
 	 * 			A list of WorkBenchTypes representing all the types the AssemblyLine consists off
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the list is null
 	 */
 	public SchedulingAlgorithmFifo(List<WorkBenchType> workBenchTypes) {
 		super(workBenchTypes);

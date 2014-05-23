@@ -149,4 +149,9 @@ public class VehicleSpecificationTest {
 		assertTrue(template.getObligatoryVehicleOptions().containsValue(new VehicleOption("Cargo", VehicleOptionCategory.CARGO)));
 		assertTrue(template.getObligatoryVehicleOptions().containsValue(new VehicleOption("Certification", VehicleOptionCategory.CERTIFICATION)));
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalProductionTime(){
+		template.getProductionTime(null);
+	}
 }

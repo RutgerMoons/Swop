@@ -34,6 +34,7 @@ public class CustomVehicleCatalogue {
 		 * 
 		 * @param 	model
 		 * 			The model you want to add
+		 * 
 		 * @throws 	IllegalArgumentException
 		 *         	Thrown when the description is null or empty or the model is null
 		 */

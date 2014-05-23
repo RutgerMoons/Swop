@@ -59,6 +59,9 @@ public class Scheduler implements ObservesClock {
 	 * 
 	 * @param	jobsOnAssemblyLine
 	 * 			A list with all the Jobs currently on the AssemblyLine
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the given parameter is null
 	 */
 	public void addJobToAlgorithm(IJob job, ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		this.schedulingAlgorithm.addJobToAlgorithm(job);
@@ -69,7 +72,7 @@ public class Scheduler implements ObservesClock {
 	 * Switch the algorithm to a given other algorithm.
 	 * 	
 	 * @param 	creator
-	 * 			Creator used to create the other SchedulingAlgorithm to which is gonna be switched
+	 * 			Creator used to create the other SchedulingAlgorithm to which is going to be switched
 	 * 
 	 * @param 	workBenchTypes
 	 * 			A list of WorkBenchTypes representing all the types the AssemblyLine consists off
@@ -112,12 +115,6 @@ public class Scheduler implements ObservesClock {
 		return this.schedulingAlgorithm.retrieveNext(minutesTillEndOfDay, internalClock, jobsOnAssemblyLine);
 	}
 
-	/**
-	 * Method for updating the current time.
-	 * 
-	 * @param 	currentTime
-	 * 			The new value for the current time
-	 */
 	@Override
 	public void advanceTime(ImmutableClock currentTime) {}
 
@@ -172,6 +169,9 @@ public class Scheduler implements ObservesClock {
 	 * 
 	 * @param	elapsed
 	 * 			Advance the internal clock with this ImmutableClock
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	public void advanceInternalClock(ImmutableClock elapsed) {
 		if (elapsed == null) {
@@ -195,6 +195,9 @@ public class Scheduler implements ObservesClock {
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the given parameter is null
+	 * 
+	 * @throws	IllegalStateException
+	 * 			Thrown when the current schedulingAlgorithm is null
 	 */
 	public void addWorkBenchType(WorkBenchType type) {
 		if (type == null) {

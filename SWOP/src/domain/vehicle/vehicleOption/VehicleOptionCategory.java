@@ -66,7 +66,7 @@ public enum VehicleOptionCategory {
 
 	/**
 	 * Confirms if the VehicleOptionCategory is mandatory or optional by default.
-	 * @return	True if and only if the VehicleSpecification is optional by default.
+	 * @return	True if and only if the VehicleSpecification is optional by default
 	 */
 	public boolean isOptional() {
 		return optional;

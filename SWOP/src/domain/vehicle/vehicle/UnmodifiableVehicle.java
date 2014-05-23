@@ -22,6 +22,9 @@ public class UnmodifiableVehicle implements IVehicle {
 	 * 
 	 * @param	model
 	 * 			The mutable Vehicle.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when model is null	
 	 */
 	public UnmodifiableVehicle(IVehicle model){
 		if(model==null)

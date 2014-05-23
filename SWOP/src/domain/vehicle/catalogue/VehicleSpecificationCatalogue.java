@@ -50,7 +50,8 @@ public class VehicleSpecificationCatalogue {
 	 * Add a new specification to the VehicleSpecificationCatalogue.
 	 * 
 	 * @param 	specification
-	 *			The specification you want to add.
+	 *			The specification you want to add
+	 *
 	 * @throws 	IllegalArgumentException
 	 *			Thrown when the specification is null
 	 */

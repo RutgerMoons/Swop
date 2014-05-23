@@ -380,7 +380,7 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 	 * 			The ClockObserver that needs to be attached on the MaintenanceTimeManager that will be created
 	 * 
 	 * @param 	clock
-	 * 			The snapshot of the current time.
+	 * 			The snapshot of the current time
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when one or both parameters are null
@@ -408,10 +408,9 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 	 * Get the IWorkBenches which are blocking the AssemblyLine from advancing.
 	 * 
 	 * @param	assemblyLine
-	 * 			The AssemblyLine at which you want to retrieve the blockin WorkBenches
+	 * 			The AssemblyLine at which you want to retrieve the blocking WorkBenches
 	 * 
-	 * @return
-	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
+	 * @return	A list of indexes of the workbenches that are blocking the AssemblyLine from advancing
 	 */
 	public List<IWorkBench> getBlockingWorkBenches(IAssemblyLine assemblyLine) {
 		for (AssemblyLine line : this.assemblyLines) {
@@ -441,8 +440,14 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 	 * 
 	 * @param 	immutableClock
 	 * 			The current time
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the immutableClock is null
 	 */
 	public void startNewDay(ImmutableClock immutableClock) {
+		if(immutableClock==null){
+			throw new IllegalArgumentException();
+		}
 		for(AssemblyLine line: this.assemblyLines){
 			if(line.getState().equals(AssemblyLineState.BROKEN)){
 				line.setState(AssemblyLineState.OPERATIONAL);

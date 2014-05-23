@@ -90,6 +90,9 @@ public class UserBook {
 	 * 
 	 * @throws 	RoleNotYetAssignedException
 	 * 			Thrown when the given name has no role assigned to it yet
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the name is null
 	 */
 	public void login(String name) throws RoleNotYetAssignedException {
 		if (name == null) {

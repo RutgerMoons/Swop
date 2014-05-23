@@ -35,6 +35,9 @@ public class SchedulingAlgorithmBatch extends SchedulingAlgorithm {
 	 *  
 	 * @param 	workBenchTypes
 	 * 			A list of WorkBenchTypes representing all the types the AssemblyLine consists off
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the lists is null
 	 */
 	public SchedulingAlgorithmBatch(List<VehicleOption> vehicleOptions, List<WorkBenchType> workBenchTypes) {
 		super(workBenchTypes);

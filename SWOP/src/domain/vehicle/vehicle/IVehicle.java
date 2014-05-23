@@ -68,7 +68,7 @@ public interface IVehicle {
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the template is null
 	 * 
-	 *@throws	UnmodifiableException
+	 * @throws	UnmodifiableException
 	 * 			Thrown when it is an UnmodifiableVehicle
 	 */
 	public void setVehicleSpecification(VehicleSpecification template);

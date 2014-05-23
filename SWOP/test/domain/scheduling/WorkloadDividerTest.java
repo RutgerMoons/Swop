@@ -479,4 +479,9 @@ public class WorkloadDividerTest {
 		workloadDivider.startNewDay(new ImmutableClock(100, 100));
 		assertEquals(AssemblyLineState.OPERATIONAL, line.getState());
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void illegalStartNewDayTest(){
+		workloadDivider.startNewDay(null);
+	}
 }

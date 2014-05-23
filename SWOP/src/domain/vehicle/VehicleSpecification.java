@@ -146,8 +146,14 @@ public class VehicleSpecification {
 	 * 
 	 * @param 	workBenchType
 	 *        	used to determine the time this job will take to complete
+	 *        
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when workBenchType is null
 	 */
 	public int getProductionTime(WorkBenchType workBenchType) {
+		if(workBenchType == null){
+			throw new IllegalArgumentException();
+		}
 		if (getTimeAtWorkBench().containsKey(workBenchType)) {
 			return getTimeAtWorkBench().get(workBenchType);
 		} else
