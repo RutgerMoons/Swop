@@ -22,6 +22,9 @@ public class OrderBookObserver {
 	/**
 	 * This logger will be added to the notify list and is subscribed for every notification.
 	 * 
+	 * @param	logger
+	 * 			An ObservesOrderBook who wants to subscribe
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -35,6 +38,9 @@ public class OrderBookObserver {
 	/**
 	 * This logger is no longer subscribed and will no longer be notified.
 	 * 
+	 * @param	logger
+	 * 			An ObservesOrderBook who wants to unsubscribe
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -47,6 +53,9 @@ public class OrderBookObserver {
 	
 	/**
 	 * Every subscribed object will be notified and receives the new Order.
+	 * 
+	 * @param	order
+	 * 			The newly made Order
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the order is null

@@ -23,6 +23,9 @@ public class AssemblyLineObserver {
 	/**
 	 * This logger will be added to the notify list and is subscribed for every notification.
 	 * 
+	 * @param	logger
+	 * 			An ObservesAssemblyLine who wants to subscribe
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -36,6 +39,9 @@ public class AssemblyLineObserver {
 	/**
 	 * This logger is no longer subscribed and will no longer be notified.
 	 * 
+	 * @param	logger
+	 * 			An ObservesAssemblyLine who wants to unsubscribe
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -48,6 +54,9 @@ public class AssemblyLineObserver {
 
 	/**
 	 * Every subscribed object will be notified and receives the completed Order.
+	 * 
+	 * @param	order
+	 * 			The order from which a job is completed
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the order is null

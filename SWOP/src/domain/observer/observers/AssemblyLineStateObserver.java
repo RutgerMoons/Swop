@@ -23,6 +23,9 @@ private ArrayList<ObservesAssemblyLineState> loggers;
 	/**
 	 * This logger will be added to the notify list and is subscribed for every notification.
 	 * 
+	 * @param	logger
+	 * 			An ObservesAssemblyLineState who wants to subscribe
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -36,6 +39,9 @@ private ArrayList<ObservesAssemblyLineState> loggers;
 	/**
 	 * This logger is no longer subscribed and will no longer be notified.
 	 * 
+	 * @param	logger
+	 * 			An ObservesAssemblyLineState who wants to unsubscribe
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -48,6 +54,12 @@ private ArrayList<ObservesAssemblyLineState> loggers;
 	
 	/**
 	 * Every subscribed object will be notified ad receives the current and previous state of the AssemblyLine.
+	 * 
+	 * @param	previousState
+	 * 			The current state of the AssemblyLine
+	 * 
+	 * @param	currentState
+	 * 			The state the AssemblyLine will change to
 	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when one or both of the states is null

@@ -11,6 +11,9 @@ public interface ObservesAssemblyLineState {
 	/**
 	 * Receives the previous and the current state of an AssemblyLine each time its state changes.
 	 * 
+	 * @param	previousState
+	 * 			The current state of the AssemblyLine
+	 * 
 	 * @param	currentState
 	 * 			The state the AssemblyLine has changed to
 	 */
