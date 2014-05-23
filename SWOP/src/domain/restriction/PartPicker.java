@@ -44,8 +44,8 @@ public class PartPicker {
 	public PartPicker(VehicleSpecificationCatalogue catalogue, Set<BindingRestriction> bindingRestrictions,
 			Set<OptionalRestriction> optionalRestrictions) {
 		this.catalogue = catalogue;
-		setBindingRestrictions(bindingRestrictions);
-		setOptionalRestrictions(optionalRestrictions);
+		this.bindingRestrictions = bindingRestrictions;
+		this.optionalRestrictions = optionalRestrictions;
 	}
 
 	/**
@@ -74,12 +74,12 @@ public class PartPicker {
 	 * @throws 	AlreadyInMapException
 	 * 			Thrown when the Vehicle already contains a VehicleOption of the same type
 	 */
-	public void addCarPartToModel(VehicleOption part) throws AlreadyInMapException {
+	public void addCarPartToModel(VehicleOption part) {
 		model.addVehicleOption(part);
 	}
 
 	/**
-	 * Get the VehicleOptions of the given VehicleOptionCategory that can still be chosen for the Vehicle, that is being built.
+	 * Get the VehicleOptions of the given VehicleOptionCategory that can still be chosen for the Vehicle that is being built.
 	 * 
 	 * @param 	type
 	 * 			The VehicleOptionCategory of which the still available VehicleOptions will be returned
@@ -137,7 +137,7 @@ public class PartPicker {
 	 * @param 	type
 	 * 			The VehicleOptionCategory of which the still available VehicleOptions will be returned
 	 * 
-	 * @return  The still available VehicleOptions as a Collection.
+	 * @return  The still available VehicleOptions as a Collection
 	 */
 	private Collection<VehicleOption> checkBindingRestrictions(
 			VehicleOptionCategory type) {
@@ -167,6 +167,7 @@ public class PartPicker {
 	 * 
 	 * @param 	type
 	 * 			The VehicleOptionCategory of which you want to retrieve the remaining parts of
+	 * 
 	 * @param 	availableParts
 	 * 			The VehicleOptions that were previously selected to still be available
 	 *
@@ -206,6 +207,9 @@ public class PartPicker {
 
 	/**
 	 * Add a BindingRestriction that the PartPicker has to take into account.
+	 * 
+	 * @param	restriction
+	 * 			The restriction the PartPicker has to take into account
 	 */
 	public void addBindingRestriction(BindingRestriction restriction) {
 		bindingRestrictions.add(restriction);
@@ -214,6 +218,9 @@ public class PartPicker {
 
 	/**
 	 * Add an OptionalRestriction that the PartPicker has to take into account.
+	 * 
+	 * @param	restriction
+	 * 			The restriction the PartPicker has to take into account
 	 */
 	public void addOptionalRestriction(OptionalRestriction restriction) {
 		optionalRestrictions.add(restriction);
@@ -227,14 +234,6 @@ public class PartPicker {
 	}
 
 	/**
-	 * Set the BindingRestrictions the PartPicker has to take into account.
-	 */
-	public void setBindingRestrictions(
-			Set<BindingRestriction> bindingRestrictions) {
-		this.bindingRestrictions = bindingRestrictions;
-	}
-
-	/**
 	 * Get the OptionalRestrictions the PartPicker has to take into account.
 	 */
 	public Set<OptionalRestriction> getOptionalRestrictions() {
@@ -242,18 +241,13 @@ public class PartPicker {
 	}
 
 	/**
-	 * Set the OptionalRestrictions the PartPicker has to take into account.
-	 */
-	public void setOptionalRestrictions(
-			Set<OptionalRestriction> optionalRestrictions) {
-		this.optionalRestrictions = optionalRestrictions;
-	}
-
-	/**
-	 * Get the VehicleSpecification that belongs to the specificationName.
+	 * Get a specific VehicleSpecification.
+	 * 
+	 * @param	specificationName
+	 * 			The name of the specification where it belongs to
 	 * 
 	 * @throws	IllegalArgumentException
-	 * 			Thrown when there is no VehicleSpecification that belongs to the specificationName.
+	 * 			Thrown when there is no VehicleSpecification that belongs to the specificationName
 	 */
 	public VehicleSpecification getSpecification(String specificationName) {
 		VehicleSpecification specification = getVehicleSpecificationCatalogue().getCatalogue().get(specificationName);

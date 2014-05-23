@@ -90,9 +90,6 @@ public class StandardOrder implements IOrder {
 		return this.quantity;
 	}
 
-	/**
-	 * Set the given parameter as the description for this order.
-	 */
 	private void setDescription(IVehicle description2) {
 		if (description2 == null) {
 			throw new IllegalArgumentException();

@@ -59,8 +59,7 @@ public class OptionalRestriction{
 	 * Set if the restricted part has been chosen already.
 	 * 
 	 * @param 	restrictedPartAlreadyChosen
-	 * 			True if a VehicleOption of the VehicleOptionCategory of this restriction has already been chosen.
-	 * 			False otherwise.
+	 * 			True if a VehicleOption of the VehicleOptionCategory of this restriction has already been chosen, False otherwise
 	 */
 	public void setRestrictedPartAlreadyChosen(
 			Boolean restrictedPartAlreadyChosen) {

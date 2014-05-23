@@ -25,7 +25,7 @@ public interface IAction {
 	public void setCompleted(boolean isCompleted);
 	
 	/**
-	 * Get the description of the action
+	 * Get the description of the action.
 	 */
 	public String getDescription();
 	

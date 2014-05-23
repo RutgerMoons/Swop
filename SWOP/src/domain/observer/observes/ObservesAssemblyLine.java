@@ -8,7 +8,10 @@ import domain.order.order.IOrder;
  */
 public interface ObservesAssemblyLine {
 	/**
-	 * Every observing object will be notified that an Order is completed and receives this Order.
+	 * Every observing object will be notified that an Order is completed.
+	 * 
+	 * @param	order
+	 * 			The IOrder that is completed
 	 */
 	public void updateCompletedOrder(IOrder order);
 	

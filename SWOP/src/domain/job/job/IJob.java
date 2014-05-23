@@ -27,7 +27,7 @@ public interface IJob {
 	 * Allocate a new Order to this Job.
 	 * 
 	 * @param 	order
-	 * 			The new order.
+	 * 			The new order
 	 * 
 	 * @throws 	UnmodifiableException
 	 * 			Thrown when the IJob is unmodifiable
@@ -40,7 +40,7 @@ public interface IJob {
 	/**
 	 * Get the tasks that have to be completed before the Job is finished.
 	 * 
-	 * @return 	An immutable list of tasks
+	 * @return 	A list of tasks
 	 */
 	public List<ITask> getTasks();
 
@@ -49,7 +49,7 @@ public interface IJob {
 	 * finished.
 	 * 
 	 * @param	tasks
-	 * 			The new List of ITasks.
+	 * 			The new List of ITasks
 	 * 
 	 * @throws 	UnmodifiableException
 	 * 			Thrown when the IJob is an unmodifiable Job
@@ -63,7 +63,7 @@ public interface IJob {
 	 * Add a new task to the Job.
 	 * 
 	 * @param	task
-	 * 			The new task.
+	 * 			The new task
 	 * 
 	 * @throws 	UnmodifiableException 
 	 * 		 	Thrown when the IJob is an unmodifiable Job
@@ -77,7 +77,7 @@ public interface IJob {
 	 * Check if the Job(Car) is completed.
 	 * 
 	 * @return 	True if all Tasks are fully completed. False if one or more Tasks
-	 *         are not fully completed.
+	 *         are not fully completed
 	 */
 	public boolean isCompleted();
 
@@ -86,7 +86,7 @@ public interface IJob {
 	 * completed.
 	 * 
 	 * @param	index
-	 * 			The new index.
+	 * 			The new index
 	 */
 	public void setMinimalIndex(int index);
 
@@ -112,7 +112,7 @@ public interface IJob {
 	public VehicleSpecification getVehicleSpecification();
 
 	/**
-	 * Retrieving the production time to complete this Job at the given type of WorkBench.
+	 * Retrieve the production time to complete this Job at the given type of WorkBench.
 	 * 
 	 * @param	workBenchType 
 	 * 			It's used to determine the time this job will take to complete
@@ -130,7 +130,7 @@ public interface IJob {
 	 * Visit the order.
 	 * 
 	 * @param	visitor	
-	 * 			The IOrderVisitor that visits the IOrder.
+	 * 			The IOrderVisitor that visits the IOrder
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when visitor is null

@@ -23,7 +23,7 @@ public class UnmodifiableOrder implements IOrder {
 	 * Create an UnmodifiableOrder.
 	 * 
 	 * @param order
-	 * 			The mutable Order.
+	 * 			The mutable IOrder
 	 */
 	public UnmodifiableOrder(IOrder order){
 		if(order==null)

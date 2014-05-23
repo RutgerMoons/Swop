@@ -100,12 +100,12 @@ public interface IOrder {
 	public void completeCar();
 	
 	/**
-	 * @return	Collection of all the VehicleOptions of which the ordered IVehicles consist
+	 * Get all the VehicleOptions of which the ordered IVehicles consist.
 	 */
 	public Collection<VehicleOption> getVehicleOptions();
 	
 	/**
-	 * Get the time the specification has to spend on a >orkBench.
+	 * Get the time the specification has to spend on a WorkBench.
 	 */
 	public Map<WorkBenchType, Integer> getTimeAtWorkBench();
 

@@ -8,7 +8,10 @@ import domain.order.order.IOrder;
 public interface ObservesOrderBook {
 	
 	/**
-	 * Every observing object will be notified that a new Order is placed and receives the placed Order.
+	 * Every observing object will be notified that a new Order.
+	 * 
+	 * @param	order
+	 * 			The IOrder that has been placed recently
 	 */
 	public void processNewOrder(IOrder order);
 }

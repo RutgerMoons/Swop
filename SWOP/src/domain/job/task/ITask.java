@@ -22,7 +22,7 @@ public interface ITask {
 	 * Set the list of IActions that this ITask contains.
 	 * 
 	 * @param	actions
-	 * 			The new list of IActions.
+	 * 			The new list of IActions
 	 * 
 	 * @throws 	UnmodifiableException 
 	 * 		 	Thrown when the ITask is an unmodifiable Task
@@ -36,7 +36,7 @@ public interface ITask {
 	 * Add an IAction to this task.
 	 * 
 	 * @param	action
-	 * 			The new IAction.
+	 * 			The new IAction
 	 * 
 	 * @throws 	UnmodifiableException 
 	 * 		 	Thrown the ITask is an unmodifiable Task
@@ -50,7 +50,7 @@ public interface ITask {
 	 * Checks if the ITask is completed.
 	 * 
 	 * @return True if all IActions are completed. False if one or more IActions
-	 *         aren't completed.
+	 *         aren't completed
 	 */
 	public boolean isCompleted();
 	
@@ -63,7 +63,7 @@ public interface ITask {
 	 * Set the description of this task.
 	 * 
 	 * @param	taskDescription
-	 * 			The new description.
+	 * 			The new description
 	 * 
 	 * @throws 	UnmodifiableException 
 	 * 		 	Thrown when the ITask is an unmodifiable Task

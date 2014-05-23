@@ -59,9 +59,7 @@ public class CustomOrder implements IOrder {
 		setPendingCars(quantity);
 	}
 
-	/**
-	 * Set the given parameter as the garageholder for this order.
-	 */
+
 	private void setGarageholder(String garageholder){
 		if(garageholder == null || garageholder.isEmpty())
 			throw new IllegalArgumentException();
@@ -78,9 +76,6 @@ public class CustomOrder implements IOrder {
 		return pendingCars;
 	}
 
-	/**
-	 * Set the amount of pending cars for this order to the given quantity.
-	 */
 	private void setPendingCars(int quantity) {
 		if (quantity < 0) {
 			throw new IllegalArgumentException();
@@ -93,9 +88,7 @@ public class CustomOrder implements IOrder {
 		return quantity;
 	}
 
-	/**
-	 * Set the given parameter as the quantity for this order.
-	 */
+
 	private void setQuantity(int quantity) {
 		if (quantity <= 0) {
 			throw new IllegalArgumentException();
@@ -108,9 +101,7 @@ public class CustomOrder implements IOrder {
 		return description;
 	}
 
-	/**
-	 * Set the given parameter as the description for this order.
-	 */
+
 	private void setDescription(IVehicle description) {
 		if (description == null) {
 			throw new IllegalArgumentException();

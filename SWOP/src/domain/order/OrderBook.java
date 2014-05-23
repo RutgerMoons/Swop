@@ -75,7 +75,7 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	 * 			The IOrder you want to add to the OrderBook
 	 * 
 	 * @throws	IllegalArgumentException 
-	 * 			Thrown when the order doesn't have any pending cars.
+	 * 			Thrown when the order doesn't have any pending cars
 	 */
 	public void addOrder(IOrder order){
 		if(order.getPendingCars()<=0){

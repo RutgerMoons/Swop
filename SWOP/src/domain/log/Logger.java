@@ -85,7 +85,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	 * 			The order of the Job that just has been completed
 	 * 
 	 * @throws 	IllegalArgumentException 
-	 * 			Thrown when the parameter is null.
+	 * 			Thrown when the parameter is null
 	 */
 	@Override
 	public void updateCompletedOrder(IOrder order) {
@@ -118,7 +118,7 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	 * Method for computing the median of a collection of numbers.
 	 * 
 	 * @param 	list
-	 * 			The list of numbers of which the median will be calculated.
+	 * 			The list of numbers of which the median will be calculated
 	 * 
 	 */
 	private int median(List<Integer> list) {
