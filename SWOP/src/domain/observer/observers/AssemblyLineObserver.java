@@ -6,8 +6,7 @@ import domain.observer.observes.ObservesAssemblyLine;
 import domain.order.order.IOrder;
 
 /**
- * A class representing the possibility to attach and detach any object that implements the LogsAssemblyLine interface.
- * Every attached object will be notified when an order completed by the AssemblyLine(s) to which 
+ * A class representing an observer that notifies every subscriber when an order is completed by the AssemblyLine(s) to which 
  * this observer is attached.
  */
 public class AssemblyLineObserver {

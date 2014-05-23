@@ -1,6 +1,7 @@
 package domain.observer.observes;
 
 import domain.assembly.assemblyLine.AssemblyLineState;
+
 /**
  * An interface used as a gateway for addressing complex objects and notifying 
  * them in case of the state of an AssemblyLine changes.
