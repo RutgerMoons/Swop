@@ -10,11 +10,17 @@ public interface ObservesClock {
 
 	/**
 	 * Every observing object will be notified that the time has advanced.
+	 * 
+	 * @param	newDay
+	 *			The immutableClock that represents a clock that is updated with new current time.
 	 */
 	public void advanceTime(ImmutableClock currentTime);
 	
 	/**
 	 * Every observing object will be notified that a new day has started.
+	 * 
+	 * @param	newDay
+	 * 			The immutableClock that represents a clock that is updated with the start of the new day.
 	 */
 	public void startNewDay(ImmutableClock newDay);
 	
