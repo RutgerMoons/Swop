@@ -61,7 +61,7 @@ public class LogHistoryDays extends LogHistory {
 	}
 	
 	/**
-	 * Returns an unmodifiable list of the detailed history.
+	 * Returns a list of the detailed history.
 	 */
 	public List<Integer> getHistory() {
 		return Collections.unmodifiableList(this.history);

@@ -73,7 +73,7 @@ public class LogHistoryDelays extends LogHistory {
 	}
 	
 	/**
-	 * Returns an unmodifiable list of the detailed history.
+	 * Returns a list of the detailed history.
 	 */
 	public List<Delay> getHistory() {
 		return Collections.unmodifiableList(this.history);

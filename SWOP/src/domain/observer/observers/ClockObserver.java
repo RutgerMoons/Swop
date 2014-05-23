@@ -23,6 +23,9 @@ public class ClockObserver {
 	/**
 	 * This logger will be added to the notify list and is subscribed for every notification.
 	 * 
+	 * @param	logger
+	 * 			An ObservesClock who wants to subscribe
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -36,6 +39,9 @@ public class ClockObserver {
 	/**
 	 * This logger is no longer subscribed and will no longer be notified.
 	 * 
+	 * @param	logger
+	 * 			An ObservesClock who wants to unsubscribe
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -48,6 +54,9 @@ public class ClockObserver {
 	
 	/**
 	 * Every subscribed object will be notified and receives the current time.
+	 * 
+	 * @param	currentTime
+	 * 			The current time
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when currentTime is null
@@ -63,6 +72,9 @@ public class ClockObserver {
 
 	/**
 	 * Every subscribed object will be notified that a new day has started and receives the current time.
+	 * 
+	 * @param 	newDay
+	 * 			The current time on the new day
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when newDay is null
