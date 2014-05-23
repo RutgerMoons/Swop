@@ -17,7 +17,7 @@ public abstract class LogHistory {
 	 * 			The amount of detailed information this object should keep track off
 	 * 
 	 * @throws	IllegalArgumentException
-	 * 			Thrown when the parameter is smaller than 1.
+	 * 			Thrown when numberOfDetails is smaller than 1
 	 */
 	public LogHistory(int numberOfDetails) {
 		if( numberOfDetails <1 ){

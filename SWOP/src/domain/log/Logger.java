@@ -10,11 +10,11 @@ import domain.order.Delay;
 import domain.order.order.IOrder;
 
 /**
- * A class representing an object who keeps track of completed orders and their delays. 
+ * A class representing an object that keeps track of completed orders and their delays. 
  * It also keeps track of the amount of completed orders per day and the amount of delays. Moreover it
  * provides the methods to calculate the mean and median of all the accumulated data. 
  * Logger is subscribed on ObservesClock and on ObservesAssemblyLine and will be notified each time the Clock is 
- * changed and each time an Job rolls of the AssemblyLine. 
+ * changed and each time a Job is completed. 
  */
 public class Logger implements ObservesClock, ObservesAssemblyLine {
 
@@ -114,6 +114,13 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 		return median(completeDelays);
 	}
 
+	/**
+	 * Method for computing the median of a collection of numbers.
+	 * 
+	 * @param 	list
+	 * 			The list of numbers of which the median will be calculated.
+	 * 
+	 */
 	private int median(List<Integer> list) {
 		if(list.size() == 0){
 			return 0;
