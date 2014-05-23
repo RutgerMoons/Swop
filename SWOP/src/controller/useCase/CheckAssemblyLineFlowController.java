@@ -29,7 +29,11 @@ public class CheckAssemblyLineFlowController extends UseCaseFlowController{
 		super(accessRight, clientCommunication, facade);
 	}
 
-	
+	/**
+	 * Execute the use case in some steps <br>
+	 * 1. let the user choose an AssemblyLine <br>
+	 * 2. show the AssemblyLine to the user <br>
+	 */
 	@Override
 	public void executeUseCase(){
 		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();

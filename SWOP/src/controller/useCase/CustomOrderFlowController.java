@@ -34,13 +34,13 @@ public class CustomOrderFlowController extends UseCaseFlowController {
 	}
 
 	/**
-	 * Execute the use case in some steps
-	 * 1. show all pending orders of the user
-	 * 2. show all completed orders of the user
-	 * 3. show all the custom tasks
-	 * 4. let the user order an custom order
-	 * 5. ask if the user is sure that he wants to order
-	 * 6. process the order or stop executing the use case
+	 * Execute the use case in some steps <br>
+	 * 1. show all pending orders of the user <br>
+	 * 2. show all completed orders of the user <br>
+	 * 3. show all the possible custom tasks <br>
+	 * 4. let the user order a custom order <br>
+	 * 5. ask if the user is sure that he wants to order <br>
+	 * 6. process the order or stop executing the use case <br>
 	 */
 	@Override
 	public void executeUseCase() {

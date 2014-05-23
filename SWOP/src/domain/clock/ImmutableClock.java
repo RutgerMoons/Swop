@@ -16,7 +16,7 @@ public class ImmutableClock implements Comparable<ImmutableClock> {
 	 * 			The amount of days that has passed.
 	 * 
 	 * @param 	minutes
-	 * 			The amount of minutes that has passed in this current day.s
+	 * 			The amount of minutes that has passed in this current days
 	 */
 	public ImmutableClock(int days, int minutes) {
 		this.days = days;
@@ -38,8 +38,13 @@ public class ImmutableClock implements Comparable<ImmutableClock> {
 	}
 	
 	/**
+	 * Check if this clock is earlier than the given clock.
+	 * 
 	 * @return True if and only if this ImmutableClock has the earliest time stamp 
 	 * 		   or when both ImmutableClocks have the same time stamp
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the given clock is null
 	 */
 	public boolean isEarlierThan(ImmutableClock aClock) {
 		if (aClock == null) {
@@ -53,8 +58,11 @@ public class ImmutableClock implements Comparable<ImmutableClock> {
 	 * Returns the difference in time of this clock and the given ImmutableClock in minutes.
 	 * 
 	 * @return 0 if the given ImmutableClock is not earlier than this ImmutableClock
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the given clock is null
 	 */
-	public int minus(ImmutableClock aClock) throws IllegalArgumentException {
+	public int minus(ImmutableClock aClock) {
 		if (this.isEarlierThan(aClock)) {
 			return 0;
 		}
@@ -76,8 +84,14 @@ public class ImmutableClock implements Comparable<ImmutableClock> {
 	 * 			The amount of minutes that will be added
 	 * 
 	 * @return 	Returns the newly constructed ImmutableClock
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when extra is lesser than zero
 	 */
 	public ImmutableClock getImmutableClockPlusExtraMinutes(int extra) {
+		if(extra<0){
+			throw new IllegalArgumentException();
+		}
 		int days = getDays() + ((getMinutes() + extra) / MINUTESINADAY);
 		int minutes = (getMinutes() + extra) % MINUTESINADAY;
 		return new ImmutableClock(days, minutes);

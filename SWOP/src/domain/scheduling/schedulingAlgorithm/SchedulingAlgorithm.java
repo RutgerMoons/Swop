@@ -51,7 +51,7 @@ public abstract class SchedulingAlgorithm {
 	/**
 	 * The scheduling algorithm will add the given custom job to it's internal data structure.
 	 * 
-	 * @param	customJob
+	 * @param	customjob
 	 * 			The Job needed to be added
 	 * 
 	 * @throws 	IllegalArgumentException

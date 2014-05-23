@@ -41,11 +41,11 @@ public class AssembleFlowController extends UseCaseFlowController {
 
 
 	/**
-	 * Execute the use case in some steps
-	 * 1. show all assemblyLines and choose an assemblyLine
-	 * 2. show all workbench for this chosen assemblyLine and choose a workbench
-	 * 3. show all tasks on the chosen workbench and choose a task
-	 * 4. execute the chosen task and notify the Facade
+	 * Execute the use case in some steps <br>
+	 * 1. show all assemblyLines and choose an assemblyLine <br>
+	 * 2. show all workbench for this chosen assemblyLine and choose a workbench <br>
+	 * 3. show all tasks on the chosen workbench and choose a task <br>
+	 * 4. execute the chosen task and notify the Facade <br>
 	 */
 	@Override
 	public void executeUseCase(){

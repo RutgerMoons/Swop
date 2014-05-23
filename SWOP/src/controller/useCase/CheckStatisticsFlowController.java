@@ -31,13 +31,13 @@ public class CheckStatisticsFlowController extends UseCaseFlowController {
 	}
 
 	/**
-	 * Execute the use case in some steps
-	 * 1. show average of vehicles produced
-	 * 2. show median of vehicles produced
-	 * 3. show some details of some days
-	 * 4. show average of delays
-	 * 5. show median of delays
-	 * 6. show some details of some delays
+	 * Execute the use case in some steps <br>
+	 * 1. show average of vehicles produced <br>
+	 * 2. show median of vehicles produced <br>
+	 * 3. show some details of some days <br>
+	 * 4. show average of delays <br>
+	 * 5. show median of delays <br>
+	 * 6. show some details of some delays <br>
 	 */
 	@Override
 	public void executeUseCase() throws IllegalArgumentException, UnmodifiableException {

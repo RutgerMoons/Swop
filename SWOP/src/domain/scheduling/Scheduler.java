@@ -152,7 +152,7 @@ public class Scheduler implements ObservesClock {
 	}
 
 	/**
-	 * Returns an unmodifiable list containing all the Jobs in the current SchedulingAlgorithm.
+	 * Returns a list containing all the Jobs in the current SchedulingAlgorithm.
 	 */
 	public List<IJob> removeUnscheduledJobs() {
 		return Collections.unmodifiableList(schedulingAlgorithm.removeUnscheduledJobs());

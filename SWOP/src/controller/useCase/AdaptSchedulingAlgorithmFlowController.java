@@ -35,6 +35,12 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		super(accessRight, clientCommunication, facade);
 	}
 
+	/**
+	 * Execute the use case in some steps <br>
+	 * 1. show the possible scheduling algorithms <br>
+	 * 2. let the user choose one of them <br>
+	 * 3. update the scheduling algorithm <br>
+	 */
 	@Override
 	public void executeUseCase() throws IllegalArgumentException, UnmodifiableException {
 		if(this.clientCommunication.askContinue()) {
@@ -42,10 +48,7 @@ public class AdaptSchedulingAlgorithmFlowController  extends UseCaseFlowControll
 		}
 	}
 	
-	/**
-	 * Shows the currently used Scheduling Algorithm used and 
-	 * offers an overview of all the possible Scheduling Algorithms
-	 */
+	
 	private void showAlgorithms() {
 		// show current algorithm
 		// show possible algorithms

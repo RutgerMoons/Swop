@@ -24,7 +24,7 @@ public class UnmodifiableWorkBench implements IWorkBench {
 	private IWorkBench bench;
 	
 	/**
-	 * Create an Immutable WorkBench.
+	 * Create an Unmodifiable WorkBench.
 	 *  
 	 * @param 	bench
 	 * 			The mutable WorkBench.
