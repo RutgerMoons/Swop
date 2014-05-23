@@ -126,16 +126,16 @@ public class Company {
 	 * automatically advances the AssemblyLine if it can advance.
 	 * 
 	 * @param 	assemblyLine
-	 * 			The assemblyLine on which a certain task of a job is assembled
+	 * 			The AssemblyLine on which a certain Task of a Job is assembled
 	 * 
 	 * @param 	workbench
-	 *          The workbench on which a certain task of a job is assembled
+	 *          The WorkBench on which a certain Task of a Job is assembled
 	 * 
 	 * @param 	task
 	 *          The Task in the Job on the Workbench
 	 * 
 	 * @param 	time
-	 *          The time the clock has to be advanced
+	 *          The time the Clock has to be advanced
 	 *          
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when one of the arguments is null
@@ -146,7 +146,7 @@ public class Company {
 		}
 		try {
 			int currentAmountOfMinutesAtScheduler = this.workloadDivider.completeChosenTaskAtChosenWorkBench(
-																		assemblyLine, workbench, task, time);
+					assemblyLine, workbench, task, time);
 			int difference = currentAmountOfMinutesAtScheduler - this.clock.getMinutes();
 			if (difference > 0) {
 				clock.advanceTime(difference);
@@ -154,7 +154,7 @@ public class Company {
 		} catch (TimeToStartNewDayException timeException) {
 			this.startNewDay();
 		}
-		
+
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class Company {
 	}
 
 	/**
-	 * Create a new Vehicle that has to be created from scratch.
+	 * Create a new Vehicle that has to be built from scratch.
 	 * 
 	 * @param 	realModel
 	 *          The specification the PartPicker has to take into account when
@@ -195,6 +195,9 @@ public class Company {
 
 	/**
 	 * Returns a list with the AccessRights of the User that is currently logged in.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when there is no user logged in
 	 */
 	public List<AccessRight> getAccessRights() {
 		return Collections.unmodifiableList(this.userbook.getCurrentUser().getAccessRights());
@@ -225,7 +228,7 @@ public class Company {
 	}
 
 	/**
-	 * Login with a userName.
+	 * Login with a UserName.
 	 * 
 	 * @param 	userName
 	 * 			The name of the user
@@ -260,7 +263,10 @@ public class Company {
 
 	/**
 	 * Switches the scheduling algorithm based on the information
-	 * given in the ScedulingAlgoritmeCreator object.
+	 * given in the SchedulingAlgorithmCreator object.
+	 * 
+	 * @param	creator
+	 * 			The SchedulingAlgorithCreator of the SchedulingAlgorithm that has to be switched to
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the creator is null
@@ -273,7 +279,7 @@ public class Company {
 	}
 
 	/**
-	 * Get all the AssemblyLines.
+	 * Get all the AssemblyLines of this company.
 	 */
 	public List<IAssemblyLine> getAssemblyLines() {
 		return Collections.unmodifiableList(workloadDivider.getAssemblyLines());
@@ -297,7 +303,7 @@ public class Company {
 	}
 
 	/**
-	 * Get a set of all the VehicleSpecifications that the VehicleSpecificationCatalogue has.
+	 * Get a set of all the VehicleSpecifications that this Company can assemble.
 	 */
 	public Set<String> getVehicleSpecifications() {
 		return Collections.unmodifiableSet(partpicker.getVehicleSpecifications());
@@ -312,6 +318,9 @@ public class Company {
 
 	/**
 	 * Get a list of the completed Orders of the User that is currently logged in.
+	 * 
+	 * @param	name
+	 * 			The name of the user the completed orders belong to
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the name is null or is empty
@@ -348,6 +357,9 @@ public class Company {
 
 	/**
 	 * Get a list of pending Orders of the User that is currently logged in.
+	 * 
+	 * @param	name
+	 * 			The name of the user the completed orders belong to
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the name is null or is empty
@@ -392,7 +404,7 @@ public class Company {
 	/**
 	 * Get a list with how many Vehicles were produced for a certain amount of 
 	 * last days. This amount is decided by amountOfDetailedHistory, an 
-	 * attribute of the company.
+	 * attribute of the Company.
 	 */
 	public List<Integer> getDetailedDays(){
 		List<Integer> detailedList = new ArrayList<>();
@@ -421,7 +433,7 @@ public class Company {
 
 	/**
 	 * Get the list with the latest Delays. The size of this list
-	 * is decided by amountOfDetailedHistory, an attribute of the company.
+	 * is decided by amountOfDetailedHistory, an attribute of the Company.
 	 */
 	public List<Delay> getDetailedDelays(){
 		List<Delay> detailedList = new ArrayList<>();
@@ -451,18 +463,18 @@ public class Company {
 	 * 			The deadline of the custom order
 	 * 
 	 * @throws	IllegalArgumentException
-	 * 			Thrown when the order is null
+	 * 			Thrown when one of the arguments is null
 	 */
 	public ImmutableClock addOrder(CustomVehicle model, ImmutableClock deadline) {
 		if(model==null || deadline == null){
 			throw new IllegalArgumentException();
 		}
-		
+
 		ImmutableClock time = clock.getImmutableClock().getImmutableClockPlusExtraMinutes(deadline.getTotalInMinutes());
 		CustomOrder order = new CustomOrder(
 				getCurrentUser(), model, 1,
 				getImmutableClock(), time);
-		
+
 		orderbook.addOrder(order);
 		return order.getEstimatedTime();
 	}
@@ -509,7 +521,7 @@ public class Company {
 	 * 			This AssemblyLineState will be the new state of the given AssemblyLine
 	 * 
 	 * @param 	clock
-	 * 			The current time 
+	 * 			The time that has passed
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when one or more of the arguments are null

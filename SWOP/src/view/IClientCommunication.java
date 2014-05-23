@@ -278,7 +278,7 @@ public interface IClientCommunication {
 	 * @param 	quantity
 	 * 			An integer representing the quantity of cars the user is about to order
 	 * 
-	 * @param 	model
+	 * @param 	realModel
 	 * 			The VehicleSpecification the user is about to order 
 	 * 
 	 * @param 	chosenParts

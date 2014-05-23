@@ -21,7 +21,8 @@ public interface ITask {
 	/**
 	 * Set the list of IActions that this ITask contains.
 	 * 
-	 * @param	The new list of IActions.
+	 * @param	actions
+	 * 			The new list of IActions.
 	 * 
 	 * @throws 	UnmodifiableException 
 	 * 		 	Thrown when the ITask is an unmodifiable Task
@@ -61,7 +62,8 @@ public interface ITask {
 	/**
 	 * Set the description of this task.
 	 * 
-	 * @param	The new description.
+	 * @param	taskDescription
+	 * 			The new description.
 	 * 
 	 * @throws 	UnmodifiableException 
 	 * 		 	Thrown when the ITask is an unmodifiable Task

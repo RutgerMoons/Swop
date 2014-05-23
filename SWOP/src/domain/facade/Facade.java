@@ -57,6 +57,9 @@ public class Facade {
 	 * 
 	 * @param 	part
 	 * 			The VehicleOption you want to add to the model
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the part is null
 	 */
 	public void addPartToVehicle(VehicleOption part) {
 		VehicleOption option = new VehicleOption(part.getDescription(), part.getType());
@@ -78,24 +81,30 @@ public class Facade {
 	 *            
 	 * @param 	time
 	 *          The amount of minutes needed to complete the Task
+	 *          
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null
 	 */
 	public void completeChosenTaskAtChosenWorkBench(IAssemblyLine assemblyLine, IWorkBench workbench, 
 			ITask task, ImmutableClock time) {
 		Task modifiableTask = new Task(task.getTaskDescription());
 		modifiableTask.setActions(task.getActions());
-		
+
 		this.company.completeChosenTaskAtChosenWorkBench(assemblyLine, workbench, modifiableTask, time);
 	}
 
 	/**
-	 * Create a new User and put it in the UserBook. The method automatically
-	 * logs the newly created user in.
+	 * Create a new User and put it in the UserBook. The method does not automatically
+	 * log the newly created user in.
 	 * 
 	 * @param 	userName
 	 *          The newly chosen userName
 	 *            
 	 * @param 	role
 	 *          The role of the User
+	 *          
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null or is empty
 	 */
 	public void createAndAddUser(String userName, String role) {
 		this.company.createAndAddUser(userName, role);
@@ -107,6 +116,9 @@ public class Facade {
 	 * @param 	realModel
 	 *          The specification the PartPicker has to take into account when
 	 *          creating the Vehicle
+	 *          
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when realModel is null
 	 */
 	public void createNewVehicle(VehicleSpecification realModel) {
 		this.company.createNewVehicle(realModel);
@@ -114,6 +126,9 @@ public class Facade {
 
 	/**
 	 * Get the access rights of the User that is currently logged in.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when there is no user logged in
 	 */
 	public List<AccessRight> getAccessRights() {
 		return Collections.unmodifiableList(this.company.getAccessRights());
@@ -125,6 +140,9 @@ public class Facade {
 	 * @param 	specificationName
 	 * 			The name of the specification. This is needed to retrieve 
 	 * 			the associated VehicleSpecification.
+	 *
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the specificationName is null or is empty
 	 */
 	public VehicleSpecification getVehicleSpecificationFromCatalogue(String specificationName) {
 		return company.getVehicleSpecification(specificationName);
@@ -138,14 +156,17 @@ public class Facade {
 	}
 
 	/**
-	 * Get a set off all the VehicleOptionCategories that are available.
+	 * Get a list of all the VehicleOptionCategories that are available.
 	 */
 	public List<VehicleOptionCategory> getVehicleOptionCategory() {
 		return Collections.unmodifiableList(Arrays.asList(VehicleOptionCategory.values()));
 	}
 
 	/**
-	 * Get a list of the completed Orders of the User that is currently logged in. 
+	 * Get a list of the completed Orders of the User that is currently logged in.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when there is no user logged in
 	 */
 	public List<IOrder> getCompletedOrders() {
 		String name = company.getCurrentUser();
@@ -175,6 +196,9 @@ public class Facade {
 	 * 
 	 * @param 	type
 	 * 			The type of the VehicleOption that has to be selected 
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the type is null
 	 */
 	public List<VehicleOption> getRemainingVehicleOptions(VehicleOptionCategory type) {
 		return Collections.unmodifiableList(company.getStillAvailableVehicleOptions(type));
@@ -182,6 +206,9 @@ public class Facade {
 
 	/**
 	 * Get a list of pending Orders of the User that is currently logged in.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when there is no user logged in
 	 */
 	public List<IOrder> getPendingOrders() {
 		String name = company.getCurrentUser();
@@ -193,8 +220,14 @@ public class Facade {
 	}
 
 	/**
-	 * Get a list of Vehicle based on the given optionDescription.
-	 * The optionDescription can for example be "spraying car bodies" or "installing custom seats".
+	 * Get a list of Vehicles based on the given optionDescription.
+	 * 
+	 * 
+	 * @param	optionDescription
+	 * 			The optionDescription can for example be "spraying car bodies" or "installing custom seats"
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the taskDescription is null or is empty
 	 */
 	public List<IVehicle> getCustomOptions(String optionDescription) {
 		List<IVehicle> tasks = new ArrayList<>();
@@ -203,45 +236,45 @@ public class Facade {
 		}
 		return Collections.unmodifiableList(tasks);
 	}
-	
+
 	/**
 	 * Returns the average amount of Vehicles produced.
 	 */
 	public int getAverageDays(){
 		return company.getAverageDays();
 	}
-	
+
 	/**
 	 * Returns the median amount of Vehicles produced.
 	 */
 	public int getMedianDays(){
 		return company.getMedianDays();
 	}
-	
+
 	/**
-	 * Returns an unmodifiable list with how many Vehicles were produced for the last x days. This amount
+	 * Returns an list with how many Vehicles were produced for the last x days. This amount
 	 * x is decided when the company is initialised.
 	 */
 	public List<Integer> getDetailedDays(){
 		return Collections.unmodifiableList(company.getDetailedDays());
 	}
-	
+
 	/**
 	 * Returns the average amount of Delays when Vehicles were produced.
 	 */
 	public int getAverageDelays(){
 		return company.getAverageDelays();
 	}
-	
+
 	/**
 	 * Returns the median amount of Delays when Vehicles were produced.
 	 */
 	public int getMedianDelays(){
 		return company.getMedianDelays();
 	}
-	
+
 	/**
-	 * Returns an unmodifiable list with the latest Delays. The size of this list 
+	 * Returns an list with the latest Delays. The size of this list 
 	 * is decided when the company is initialised.
 	 */
 	public List<Delay> getDetailedDelays(){
@@ -249,13 +282,16 @@ public class Facade {
 	}
 
 	/**
-	 * Login with a userName.
+	 * Login with a UserName.
 	 * 
 	 * @param 	userName
 	 * 			The name of the user
 	 * 
 	 * @throws 	RoleNotYetAssignedException
 	 * 			Thrown when it's the first time that this user logs in
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the userName is null or is empty
 	 */
 	public void login(String userName) {
 		this.company.login(userName);
@@ -276,6 +312,9 @@ public class Facade {
 	 * 
 	 * @param 	deadline
 	 * 			The deadline of the CustomOrder
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null
 	 */
 	public ImmutableClock processCustomOrder(IVehicle model, ImmutableClock deadline){
 		CustomVehicle vehicle = new CustomVehicle();
@@ -290,6 +329,9 @@ public class Facade {
 	 * 
 	 * @param 	quantity
 	 * 			The amount of vehicles the user wants to order
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the quantity is less than or equal to zero
 	 */
 	public ImmutableClock processOrder(int quantity){
 		return company.processOrder(quantity);
@@ -304,14 +346,20 @@ public class Facade {
 
 	/**
 	 * Switches the scheduling algorithm based on the information
-	 * given in the ScedulingAlgoritmeCreator object.
+	 * given in the SchedulingAlgorithmCreator object.
+	 * 
+	 * @param	creator
+	 * 			The SchedulingAlgorithCreator of the SchedulingAlgorithm that has to be switched to
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the creator is null
 	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator) {
 		this.company.switchToSchedulingAlgorithm(creator);
 	}
 
 	/**
-	 * Returns a immutable powerset with all the VehicleOptions 
+	 * Returns a powerset with all the VehicleOptions 
 	 * or sets of VehicleOptions that occur in three or more pending Orders.
 	 */
 	public Set<Set<VehicleOption>> getAllVehicleOptionsInPendingOrders() {
@@ -319,7 +367,7 @@ public class Facade {
 	}
 
 	/**
-	 * Returns a list of unmodifiable AssemblyLines.
+	 * Returns a list of AssemblyLines.
 	 */
 	public List<IAssemblyLine> getAssemblyLines() {
 		ArrayList<IAssemblyLine> unmodifiables = new ArrayList<>();
@@ -333,21 +381,24 @@ public class Facade {
 	 * Changes the State of a given AssemblyLine to the given AssemblyLineState.
 	 * 
 	 * @param 	assemblyLine
-	 * 			The AssemblyLine which state needs to be changed by the user
+	 * 			The AssemblyLine which state needs to be changed
 	 * 
 	 * @param 	state
 	 * 			This AssemblyLineState will be the new state of the given AssemblyLine
 	 * 
 	 * @param 	clock
-	 * 			The current time 
+	 * 			The time that has passed
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one or more of the arguments are null
 	 */
 	public void changeState(IAssemblyLine assemblyLine, AssemblyLineState state, ImmutableClock clock) {
 		company.changeState(assemblyLine, state, clock);
 	}
 
 	/**
-	 * Returns an immutable list with the current AssemblyLineState of all the 
-	 * AssemblyLines.
+	 * Returns a list of the AssemblyLineStates that can be chosen.
+	 * The states are: Operational, Maintenance and Broken.
 	 */
 	public List<AssemblyLineState> getAssemblyLineStates() {
 		List<AssemblyLineState> list = new ArrayList<AssemblyLineState>(Arrays.asList(AssemblyLineState.values()));

@@ -70,8 +70,14 @@ public class UserBook {
 	
 	/**
 	 * Returns the current user.
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when there is no user logged in
 	 */
 	public User getCurrentUser() {
+		if(currentUser == null){
+			throw new IllegalArgumentException();
+		}
 		return currentUser;
 	}
 	
