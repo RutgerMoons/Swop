@@ -22,7 +22,7 @@ public class UserBook {
 	/**
 	 * Returns the User Book.
 	 * 
-	 * @return A  unmodifiable HashMap containing the values in the user book
+	 * @return A HashMap containing the values in the user book
 	 */
 	public Map<String, User> getUserBook() {
 		return Collections.unmodifiableMap(userBook);
@@ -48,8 +48,7 @@ public class UserBook {
 	
 	/**
 	 * Method for adding a new user to the UserBook. The method
-	 * checks if the user is a valid user. When the user is already in the UserBook,
-	 * nothing happens.
+	 * checks if the user is a valid user.
 	 * 
 	 * @param	user
 	 * 			The user you want to register to the UserBook
@@ -105,7 +104,7 @@ public class UserBook {
 	}
 	
 	/**
-	 * Logs the User out
+	 * Logs the User out.
 	 */
 	public void logout() {
 		this.currentUser = null;

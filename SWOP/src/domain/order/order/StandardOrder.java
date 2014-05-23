@@ -14,9 +14,9 @@ import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 
 /**
- * A class representing an order of a Vehicle.
- * It consists of a Vehicle, the garage holder who ordered the Vehicle, a quantity,
- * the time when you ordered it and the estimated time of completion.
+ * A class representing an order of vehicles.
+ * It consists of a Vehicle, the garage holder who ordered the vehicles, a quantity,
+ * the time when it was ordered and the estimated time of completion.
  */
 public class StandardOrder implements IOrder {
 
@@ -90,6 +90,9 @@ public class StandardOrder implements IOrder {
 		return this.quantity;
 	}
 
+	/**
+	 * Set the given parameter as the description for this order.
+	 */
 	private void setDescription(IVehicle description2) {
 		if (description2 == null) {
 			throw new IllegalArgumentException();

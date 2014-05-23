@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * 
  * A class representing the creation of a User based on a given name
  * and role. The newly created user is automatically granted his access rights.
  */

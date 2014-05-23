@@ -34,6 +34,9 @@ public class OrderBookObserver {
 	
 	/**
 	 * This logger is no longer subscribed and will no longer be notified.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			Thrown when the parameter is null
 	 */
 	public void detachLogger(ObservesOrderBook logger) {
 		if (logger == null) {
