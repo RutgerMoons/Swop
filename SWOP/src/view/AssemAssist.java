@@ -69,7 +69,6 @@ public class AssemAssist {
 		
 		DataInitializer initializer = new DataInitializer();
 		
-		
 		List<AssemblyLine> assemblyLines = initializer.getInitialAssemblyLines(clockObserver, clock.getImmutableClock(), catalogue);
 		
 		company = new Company(bindingRestrictions, optionalRestrictions, customCatalogue, catalogue, assemblyLines, clock);
@@ -99,7 +98,5 @@ public class AssemAssist {
 			}
 			userFlowController.logout();
 		} while (true);
-
 	}
-
 }

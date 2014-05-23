@@ -26,6 +26,9 @@ public interface IJob {
 	/**
 	 * Allocate a new Order to this Job.
 	 * 
+	 * @param 	order
+	 * 			The new order.
+	 * 
 	 * @throws 	UnmodifiableException
 	 * 			Thrown when the IJob is unmodifiable
 	 * 
@@ -45,6 +48,9 @@ public interface IJob {
 	 * Set a new list of tasks that have to be completed before the Job is
 	 * finished.
 	 * 
+	 * @param	tasks
+	 * 			The new List of ITasks.
+	 * 
 	 * @throws 	UnmodifiableException
 	 * 			Thrown when the IJob is an unmodifiable Job
 	 * 
@@ -55,6 +61,9 @@ public interface IJob {
 
 	/**
 	 * Add a new task to the Job.
+	 * 
+	 * @param	task
+	 * 			The new task.
 	 * 
 	 * @throws 	UnmodifiableException 
 	 * 		 	Thrown when the IJob is an unmodifiable Job
@@ -73,8 +82,11 @@ public interface IJob {
 	public boolean isCompleted();
 
 	/**
-	 * The given index represents the first WorkBench at which some Tasks of this Job need to be
+	 * Set a new index that represents the first WorkBench at which some Tasks of this Job need to be
 	 * completed.
+	 * 
+	 * @param	index
+	 * 			The new index.
 	 */
 	public void setMinimalIndex(int index);
 
@@ -116,6 +128,9 @@ public interface IJob {
 
 	/**
 	 * Visit the order.
+	 * 
+	 * @param	visitor	
+	 * 			The IOrderVisitor that visits the IOrder.
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when visitor is null

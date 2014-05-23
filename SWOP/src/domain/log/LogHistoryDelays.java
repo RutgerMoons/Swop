@@ -40,9 +40,6 @@ public class LogHistoryDelays extends LogHistory {
 		}
 	}
 
-	/**
-	 * Returns an unmodifiable list of the complete history.
-	 */
 	@Override
 	public List<Integer> getCompleteHistory() {
 		ArrayList<Integer> complete = new ArrayList<>();

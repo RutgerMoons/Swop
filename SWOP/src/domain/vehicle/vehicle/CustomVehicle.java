@@ -21,6 +21,7 @@ public class CustomVehicle implements IVehicle {
 	private HashMap<VehicleOptionCategory, VehicleOption> vehicleOptions;
 	private Map<WorkBenchType, Integer> timeAtWorkbench;
 	private VehicleSpecification specification;
+	
 	/**
 	 * Create a new CustomVehicle. 
 	 */
@@ -37,7 +38,7 @@ public class CustomVehicle implements IVehicle {
 	}
 
 	@Override
-	public void addVehicleOption(VehicleOption part) throws AlreadyInMapException {
+	public void addVehicleOption(VehicleOption part) {
 		if(part==null){
 			throw new IllegalArgumentException();
 		}

@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * A class representing to keeps track of all the completed Orders and offers a detailed view for 
+ * A class representing an object that keeps track of all the completed Orders and offers a detailed view for 
  * a certain amount of latest days. 
  */
 public class LogHistoryDays extends LogHistory {
@@ -41,15 +41,12 @@ public class LogHistoryDays extends LogHistory {
 	}
 	
 	/**
-	 * The amount of vehicle produced in a day is incremented with one
+	 * The amount of vehicles produced in a day is incremented with one.
 	 */
 	public void incrementAmountOfVehiclesProducedToday() {
 		this.vehiclesProducedToday++;
 	}
 
-	/**
-	 * Returns an unmodifiable list of the complete history.
-	 */
 	@Override
 	public List<Integer> getCompleteHistory() {
 		ArrayList<Integer> complete = new ArrayList<>();
