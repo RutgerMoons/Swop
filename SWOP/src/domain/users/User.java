@@ -41,7 +41,7 @@ public class User {
 	}
 
 	/**
-	 * Returns an unmodifiable list of the AccessRights.
+	 * Returns a list of the AccessRights.
 	 */
 	public List<AccessRight> getAccessRights() {
 		return Collections.unmodifiableList(accessRights);
