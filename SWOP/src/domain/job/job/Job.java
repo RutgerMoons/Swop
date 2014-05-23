@@ -29,7 +29,7 @@ public class Job implements IJob {
 	 *          The order on which the Job is based
 	 *            
 	 * @throws 	IllegalArgumentException
-	 *          Thrown when the given Order is null.
+	 *          Thrown when the given Order is null
 	 */
 	public Job(IOrder order) {
 		setOrder(order);

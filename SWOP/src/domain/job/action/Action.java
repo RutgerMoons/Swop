@@ -12,11 +12,11 @@ public class Action implements IAction {
 	/**
 	 * Construct a new Action.
 	 * 
-	 * @param description
-	 *            The description for the action
+	 * @param 	description
+	 *          The description for the action
 	 * 
-	 * @throws IllegalArgumentException
-	 *             Thrown when the description null or it's empty
+	 * @throws 	IllegalArgumentException
+	 *          Thrown when the description null or it's empty
 	 */
 	public Action(String description) {
 		this.setDescription(description);

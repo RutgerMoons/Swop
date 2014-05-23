@@ -3,7 +3,7 @@ package domain.observer.observes;
 import domain.clock.ImmutableClock;
 
 /**
- * An interface is used as a gateway for addressing complex objects and notifying 
+ * An interface used as a gateway for addressing complex objects and notifying 
  * them in case of a change in time by the observed Clock.
  */
 public interface ObservesClock {

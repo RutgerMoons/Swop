@@ -49,7 +49,7 @@ public interface IJob {
 	 * finished.
 	 * 
 	 * @param	tasks
-	 * 			The new List of ITasks.
+	 * 			The new list of ITasks.
 	 * 
 	 * @throws 	UnmodifiableException
 	 * 			Thrown when the IJob is an unmodifiable Job
@@ -86,7 +86,7 @@ public interface IJob {
 	 * completed.
 	 * 
 	 * @param	index
-	 * 			The new index.
+	 * 			The new index
 	 */
 	public void setMinimalIndex(int index);
 
@@ -130,7 +130,7 @@ public interface IJob {
 	 * Visit the order.
 	 * 
 	 * @param	visitor	
-	 * 			The IOrderVisitor that visits the IOrder.
+	 * 			The IOrderVisitor that visits the IOrder
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when visitor is null
