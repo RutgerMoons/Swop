@@ -15,7 +15,7 @@ import domain.vehicle.vehicleOption.VehicleOption;
 /**
  * A class representing a Single Task Order.
  * It consists of a CustomVehicle, the garage holder who ordered the CustomVehicle, a quantity,
- * the time when you ordered it, the deadline and the estimated time of completion.
+ * the time when it was ordered, the deadline and the estimated time of completion.
  *
  */
 public class CustomOrder implements IOrder {
@@ -31,22 +31,22 @@ public class CustomOrder implements IOrder {
 	 * Create a new CustomOrder.
 	 * 
 	 * @param 	garageholder
-	 * 			The garage holder that orders the CustomVehicle
+	 * 			The garage holder that ordered the CustomVehicle
 	 * 
 	 * @param 	description
 	 * 			The CustomVehicle that has to be created
 	 * 
 	 * @param 	quantity
-	 * 			How many CustomVehicles that have to be produced for this order
+	 * 			How many CustomVehicles have to be produced for this order
 	 * 
 	 * @param 	orderTime
-	 * 			The time when this order is placed
+	 * 			The time when this order was placed
 	 * 
 	 * @param 	deadline
 	 * 			The deadline of the order
 	 * 
 	 * @throws	IllegalArgumentException
-	 * 			Thrown when one of the the arguments is null, the garageholder is empty or the quantity is less than or equal to zero
+	 * 			Thrown when one of the the arguments is null, garageholder is empty or the quantity is less than or equal to zero
 	 */
 	public CustomOrder(String garageholder, CustomVehicle description,
 			int quantity, ImmutableClock orderTime,
@@ -59,6 +59,9 @@ public class CustomOrder implements IOrder {
 		setPendingCars(quantity);
 	}
 
+	/**
+	 * Set the given parameter as the garageholder for this order.
+	 */
 	private void setGarageholder(String garageholder){
 		if(garageholder == null || garageholder.isEmpty())
 			throw new IllegalArgumentException();
@@ -75,6 +78,9 @@ public class CustomOrder implements IOrder {
 		return pendingCars;
 	}
 
+	/**
+	 * Set the amount of pending cars for this order to the given quantity.
+	 */
 	private void setPendingCars(int quantity) {
 		if (quantity < 0) {
 			throw new IllegalArgumentException();
@@ -87,6 +93,9 @@ public class CustomOrder implements IOrder {
 		return quantity;
 	}
 
+	/**
+	 * Set the given parameter as the quantity for this order.
+	 */
 	private void setQuantity(int quantity) {
 		if (quantity <= 0) {
 			throw new IllegalArgumentException();
@@ -99,6 +108,9 @@ public class CustomOrder implements IOrder {
 		return description;
 	}
 
+	/**
+	 * Set the given parameter as the description for this order.
+	 */
 	private void setDescription(IVehicle description) {
 		if (description == null) {
 			throw new IllegalArgumentException();

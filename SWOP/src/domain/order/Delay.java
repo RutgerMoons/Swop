@@ -3,7 +3,7 @@ package domain.order;
 import domain.clock.ImmutableClock;
 
 /**
- * A class representing a delay between two points of time.
+ * A class representing a delay.
  */
 public class Delay {
 	

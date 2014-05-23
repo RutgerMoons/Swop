@@ -54,8 +54,7 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	 * 			The order that needs to be updated
 	 * 
 	 * @throws	IllegalArgumentException
-	 * 			Thrown when the order is null or the order isn't fully completed or the pendingOrders doesn't 
-	 * 			have the given order
+	 * 			Thrown when the order is null or the pendingOrders doesn't have the given order
 	 */
 	public void updateOrderBook(IOrder order) {
 		if (order == null || !this.pendingOrders.containsValue(order)) {
@@ -74,6 +73,9 @@ public class OrderBook implements ObservesAssemblyLine, ObservableOrderBook {
 	 * 
 	 * @param 	order
 	 * 			The IOrder you want to add to the OrderBook
+	 * 
+	 * @throws	IllegalArgumentException 
+	 * 			Thrown when the order doesn't have any pending cars.
 	 */
 	public void addOrder(IOrder order){
 		if(order.getPendingCars()<=0){
