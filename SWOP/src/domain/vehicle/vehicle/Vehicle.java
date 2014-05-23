@@ -12,7 +12,7 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * A class representing a vehicle, which consist of a set of VehicleOptions. The
- * vehicle is being built on the basis of a VehicleSpecification. A Vehicle also
+ * vehicle is being built on the base of a VehicleSpecification. A Vehicle also
  * keeps track of forcedOptionalTypes, which need to be forced into the Vehicle,
  * when it's being built.
  */

@@ -26,7 +26,6 @@ import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 /**
  * A text-based user interface to interact with the system.
- * 
  */
 public class ClientCommunication implements IClientCommunication{
 
@@ -106,12 +105,12 @@ public class ClientCommunication implements IClientCommunication{
 	 * by the user.
 	 * 
 	 * @param 	question
-	 *          the question the user has to answer
+	 *          The question the user has to answer
 	 * 
 	 * @param 	expected
-	 *          possible answers
+	 *          All the possible answers
 	 *          
-	 * @return 	answer of the user, this answer is an expected one
+	 * @return 	Answer of the user, this answer is an expected one
 	 */
 	private String askQuestionLoop(String question, ArrayList<String> expected) {
 		while (true) {
@@ -322,8 +321,8 @@ public class ClientCommunication implements IClientCommunication{
 	/**
 	 * Show message to the users.
 	 * 
-	 * @param message
-	 *            The message that has to be shown to the users.
+	 * @param 	message
+	 *          The message that has to be shown to the users
 	 */
 	private void show(List<String> message) {
 		for (int i = 0; i < message.size(); i++) {

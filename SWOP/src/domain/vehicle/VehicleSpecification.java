@@ -141,12 +141,11 @@ public class VehicleSpecification {
 	}
 
 	/**
+	 * Returns the amount of minutes to complete this VehicleSpecification at 
+	 * the given type of WorkBench.
 	 * 
 	 * @param 	workBenchType
 	 *        	used to determine the time this job will take to complete
-	 * 
-	 * @return 	The amount of minutes to complete this VehicleSpecification at
-	 *         	the given type of WorkBench
 	 */
 	public int getProductionTime(WorkBenchType workBenchType) {
 		if (getTimeAtWorkBench().containsKey(workBenchType)) {
