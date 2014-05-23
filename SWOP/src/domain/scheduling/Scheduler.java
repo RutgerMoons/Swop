@@ -30,13 +30,13 @@ public class Scheduler implements ObservesClock {
 	 * Constructs a scheduler and initializes the shifts.
 
 	 * @param 	clockObserver
-	 * 			The observer used to keep track of time.
+	 * 			The observer used to keep track of time
 	 * 
 	 * @param 	clock
-	 * 			The current time at initialization.
+	 * 			The current time at initialization
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 			Thrown when the clockObserver or the clock is null.
+	 * 			Thrown when the clockObserver or the clock is null
 	 */
 	public Scheduler(ClockObserver clockObserver, ImmutableClock clock) {
 		if (clockObserver == null || clock==null) {
@@ -56,6 +56,9 @@ public class Scheduler implements ObservesClock {
 	 * 
 	 * @param	job 
 	 * 			Job needed to be added to the currently used SchedulingAlgorithm
+	 * 
+	 * @param	jobsOnAssemblyLine
+	 * 			A list with all the Jobs currently on the AssemblyLine
 	 */
 	public void addJobToAlgorithm(IJob job, ArrayList<Optional<IJob>> jobsOnAssemblyLine) {
 		this.schedulingAlgorithm.addJobToAlgorithm(job);
@@ -93,6 +96,9 @@ public class Scheduler implements ObservesClock {
 	/**
 	 * Passes the next Job to the AssemblyLine.
 	 * 
+	 * @param	jobsOnAssemblyLine
+	 * 			The jobs currently scheduled on the AssemblyLine
+	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the given parameter is null
 	 */
@@ -120,6 +126,9 @@ public class Scheduler implements ObservesClock {
 	 * to the given clock and the schedulingAlgorithm will look for a time saving arrangement
 	 * for the custom jobs at the start of the day.
 	 * 
+	 * @param	newDay
+	 * 			The time at which the new day will start
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when the given parameter is null
 	 */
@@ -145,7 +154,7 @@ public class Scheduler implements ObservesClock {
 	}
 
 	/**
-	 * Returns an unmodifiable list containing all the pending standard Jobs ( in no specific order).
+	 * Returns a list containing all the pending standard Jobs ( in no specific order).
 	 */
 	public List<IJob> getStandardJobs() {
 		return Collections.unmodifiableList(this.schedulingAlgorithm.getStandardJobs());
@@ -160,6 +169,9 @@ public class Scheduler implements ObservesClock {
 
 	/**
 	 * Advances the internal Clock used by the Scheduler. 
+	 * 
+	 * @param	elapsed
+	 * 			Advance the internal clock with this ImmutableClock
 	 */
 	public void advanceInternalClock(ImmutableClock elapsed) {
 		if (elapsed == null) {

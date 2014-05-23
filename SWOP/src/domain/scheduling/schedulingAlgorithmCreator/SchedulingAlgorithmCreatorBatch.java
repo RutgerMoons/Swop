@@ -18,7 +18,7 @@ public class SchedulingAlgorithmCreatorBatch extends SchedulingAlgorithmCreator 
 	 * Constructs a creator for SchedulingAlgorithmBatch.
 	 * 
 	 * @param 	vehicleOptions
-	 * 			The list off VehicleOptions that will be prioritized by SchedulingAlgorithmBatch
+	 * 			The list of VehicleOptions that will be prioritized by SchedulingAlgorithmBatch
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the given parameter is null

@@ -406,7 +406,10 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 
 	/**
 	 * Get the IWorkBenches which are blocking the AssemblyLine from advancing.
-
+	 * 
+	 * @param	assemblyLine
+	 * 			The AssemblyLine at which you want to retrieve the blockin WorkBenches
+	 * 
 	 * @return
 	 * 			A list of indexes of the workbenches that are blocking the AssemblyLine from advancing.
 	 */
@@ -433,6 +436,12 @@ public class WorkloadDivider implements ObservesOrderBook, ObservesAssemblyLineS
 		}
 	}
 
+	/**
+	 * Updates the state of all AssemblyLines when a new day has started.
+	 * 
+	 * @param 	immutableClock
+	 * 			The current time
+	 */
 	public void startNewDay(ImmutableClock immutableClock) {
 		for(AssemblyLine line: this.assemblyLines){
 			if(line.getState().equals(AssemblyLineState.BROKEN)){
