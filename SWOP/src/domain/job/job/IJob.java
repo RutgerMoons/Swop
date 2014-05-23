@@ -49,7 +49,11 @@ public interface IJob {
 	 * finished.
 	 * 
 	 * @param	tasks
+<<<<<<< HEAD
 	 * 			The new List of ITasks
+=======
+	 * 			The new list of ITasks.
+>>>>>>> a2af1d3d03c2f3789f23ba67172ac7e243afb60c
 	 * 
 	 * @throws 	UnmodifiableException
 	 * 			Thrown when the IJob is an unmodifiable Job

@@ -49,13 +49,13 @@ public abstract class SchedulingAlgorithm {
 	}
 	
 	/**
-	 * The scheduling algorithm will add the given custom job to it's internal data structure.
+	 * The scheduling algorithm will add the given custom job to its internal data structure.
 	 * 
 	 * @param	customjob
 	 * 			The Job needed to be added
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 			Thrown when the job is null
+	 * 			Thrown when the customjob is null
 	 */
 	public void addCustomJob(IJob customjob) {
 		if (customjob == null) {
@@ -65,13 +65,13 @@ public abstract class SchedulingAlgorithm {
 	}
 	
 	/**
-	 * The scheduling algorithm will add the given standard Job to it's internal data structure.
+	 * The scheduling algorithm will add the given standard Job to its internal data structure.
 	 * 
 	 * @param	standardjob
 	 * 			The Job needed to be added
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 			Thrown when the Job is null
+	 * 			Thrown when the standardjob is null
 	 */
 	public void addStandardJob(IJob standardjob) {
 		if (standardjob == null) {
@@ -115,6 +115,15 @@ public abstract class SchedulingAlgorithm {
 	
 	/**
 	 * Calculates and returns the estimated time (at this moment) for the given Job.
+	 * 
+	 * @param 	job
+	 * 			The Job of which the estimated time needs to be set
+	 * 
+	 * @param	currentTime
+	 * 			The current time
+	 * 
+	 * @param	jobsOnAssemblyLine
+	 * 			The Jobs currently on the AssemblyLine
 	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when one or more of the parameters are null
@@ -163,6 +172,15 @@ public abstract class SchedulingAlgorithm {
 	/**
 	 * The scheduling algorithm tries to find the best Job in the circumstances to be scheduled at the current time.
 	 * This Job is returned, if no Job is found an error is thrown.
+	 * 
+	 * @param	minutesTillEndOfDay
+	 * 			The amount of minutes until the workday ends
+	 * 
+	 * @param	currentTime
+	 * 			The current time
+	 * 
+	 * @param	jobsOnAssemblyLine
+	 * 			The current Jobs on the AssemblyLine
 	 */
 	public abstract Optional<IJob> retrieveNext(int minutesTillEndOfDay, ImmutableClock currentTime,
 												ArrayList<Optional<IJob>> jobsOnAssemblyLine);
@@ -181,13 +199,19 @@ public abstract class SchedulingAlgorithm {
 	 * internal data structures with the given parameters. This method should be used when switching
 	 * from one scheduling algorithm to another one.
 	 * 
+	 * @param	customjobs
+	 * 			A collection of all the CustomJobs needed to be scheduled by the SchedulingAlgorithm
+	 * 
+	 * @param	standardjobs
+	 * 			A collection of all the StandardJobs needed to be scheduled by the SchedulingAlgorithm
+	 * 
 	 * @throws 	IllegalArgumentException
 	 * 			Thrown when one or more of the parameters are null
 	 */
 	public abstract void transform(PriorityQueue<IJob> customjobs, List<IJob> standardjobs);
 
 	/**
-	 * Returns all the Jobs the SchedulingAlgorithm has in an unmodifiable list.
+	 * Returns all the Jobs the SchedulingAlgorithm has in a list.
 	 */
 	public List<IJob> removeUnscheduledJobs() {
 		List<IJob> allJobs = new ArrayList<>();

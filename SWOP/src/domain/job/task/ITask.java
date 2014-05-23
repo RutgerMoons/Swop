@@ -6,7 +6,7 @@ import domain.exception.UnmodifiableException;
 import domain.job.action.IAction;
 
 /**
- * An interface used to represent an Task. An Task consists of an description and a
+ * An interface describing a task. A Task consists of an description and a
  *  list of IActions.
  */
 public interface ITask {
@@ -14,7 +14,7 @@ public interface ITask {
 	/**
 	 * Get all IActions that this ITask contains.
 	 * 
-	 * @return 	An unmodifiable list of Actions
+	 * @return 	An list of Actions
 	 */
 	public List<IAction> getActions();
 	

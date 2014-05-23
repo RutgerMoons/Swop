@@ -13,6 +13,12 @@ public class BindingRestriction{
 	/**
 	 * Create a new BindingRestriction between two VehicleOptions.
 	 * The restrictedPart is the part that surely has to be added to the Vehicle.
+	 * 
+	 * @param	chosenPart
+	 * 			The VehicleOption to which the restriction belongs to
+	 * 
+	 * @param	restrictedPart
+	 * 			The VehicleOption that belongs to the chosenPart
 	 */
 	public BindingRestriction(VehicleOption chosenPart, VehicleOption restrictedPart){
 		this.chosenPart = chosenPart;

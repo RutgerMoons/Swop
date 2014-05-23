@@ -52,7 +52,7 @@ public class PartPicker {
 	 * Creates a new Vehicle that will be built according to the VehicleSpecification, by this PartPicker.
 	 * 
 	 * @param 	template
-	 * 			The VehicleSpecification according to which this Vehicle will be built
+	 * 			The VehicleSpecification according to which the Vehicle will be built
 	 */
 	public void setNewModel(VehicleSpecification template) {
 		for (OptionalRestriction restriction : optionalRestrictions) {
