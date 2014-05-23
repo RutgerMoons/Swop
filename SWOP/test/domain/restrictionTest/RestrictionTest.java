@@ -196,4 +196,45 @@ public class RestrictionTest {
 	public void testGetIllegalSpecification(){
 		picker.getSpecification(null);
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalBindingRestriction1(){
+		new BindingRestriction(null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalBindingRestriction2(){
+		new BindingRestriction(new VehicleOption("test", VehicleOptionCategory.AIRCO), null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalOptionalRestriction1(){
+		new OptionalRestriction(null, null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalOptionalRestriction2(){
+		new OptionalRestriction(new VehicleOption("test", VehicleOptionCategory.AIRCO), null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalOptionalRestriction3(){
+		new OptionalRestriction(new VehicleOption("test", VehicleOptionCategory.AIRCO), VehicleOptionCategory.AIRCO, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalPartPicker1(){
+		new PartPicker(null, null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalPartPicker2(){
+		new PartPicker(new VehicleSpecificationCatalogue(), null, null);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalPartPicker3(){
+		new PartPicker(new VehicleSpecificationCatalogue(), new HashSet<BindingRestriction>(), null);
+	}
+	
 }

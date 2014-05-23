@@ -19,8 +19,14 @@ public class BindingRestriction{
 	 * 
 	 * @param	restrictedPart
 	 * 			The VehicleOption that belongs to the chosenPart
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments are null
 	 */
 	public BindingRestriction(VehicleOption chosenPart, VehicleOption restrictedPart){
+		if(chosenPart==null || restrictedPart ==null){
+			throw new IllegalArgumentException();
+		}
 		this.chosenPart = chosenPart;
 		this.restrictedPart = restrictedPart;
 	}

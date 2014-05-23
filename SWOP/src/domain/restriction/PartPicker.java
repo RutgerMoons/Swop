@@ -40,9 +40,15 @@ public class PartPicker {
 	 * 
 	 * @param 	optionalRestrictions
 	 * 			The OptionalRestrictions which this PartPicker takes into account
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null
 	 */
 	public PartPicker(VehicleSpecificationCatalogue catalogue, Set<BindingRestriction> bindingRestrictions,
 			Set<OptionalRestriction> optionalRestrictions) {
+		if(catalogue == null || bindingRestrictions == null || optionalRestrictions ==null){
+			throw new IllegalArgumentException();
+		}
 		this.catalogue = catalogue;
 		this.bindingRestrictions = bindingRestrictions;
 		this.optionalRestrictions = optionalRestrictions;
@@ -84,8 +90,7 @@ public class PartPicker {
 	 * @param 	type
 	 * 			The VehicleOptionCategory of which the still available VehicleOptions will be returned
 	 * 
-	 * @return
-	 * 			A Collection that contains the still available VehicleOptions of the given VehicleOptionCategory
+	 * @return	A Collection that contains the still available VehicleOptions of the given VehicleOptionCategory
 	 */
 	public List<VehicleOption> getStillAvailableCarParts(
 			VehicleOptionCategory type) {

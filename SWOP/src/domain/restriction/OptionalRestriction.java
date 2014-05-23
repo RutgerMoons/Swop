@@ -16,8 +16,24 @@ public class OptionalRestriction{
 
 	/**
 	 * Create a new OptionalRestriction between a VehicleOption and a VehicleOptionCategory.
+	 * 
+	 * @param	part
+	 * 			The part this restriction belongs to
+	 * 
+	 * @param	type
+	 * 			The type of VehicleOption this restriction belongs to
+	 * 
+	 * @param	optional
+	 * 			True if the type has to be optional, otherwise False
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one of the arguments is null
 	 */
 	public OptionalRestriction(VehicleOption part, VehicleOptionCategory type, Boolean optional){
+		if(part==null || type==null || optional==null){
+			throw new IllegalArgumentException();
+		}
+		
 		this.type = type;
 		this.optional = optional;
 		this.part = part;
