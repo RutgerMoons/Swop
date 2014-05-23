@@ -19,11 +19,15 @@ import domain.vehicle.vehicleOption.VehicleOption;
 public class UnmodifiableOrder implements IOrder {
 
 	IOrder order;
+	
 	/**
 	 * Create an UnmodifiableOrder.
 	 * 
-	 * @param order
+	 * @param 	order
 	 * 			The mutable IOrder
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the given parameter is null
 	 */
 	public UnmodifiableOrder(IOrder order){
 		if(order==null)

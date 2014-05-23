@@ -33,7 +33,7 @@ public abstract class LogHistory {
 	public abstract void shift();
 	
 	/**
-	 * Returns an unmodifiable list of the history.
+	 * Returns a list of the history.
 	 */
 	public abstract List<?> getCompleteHistory();
 }

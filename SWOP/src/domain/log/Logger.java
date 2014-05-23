@@ -162,14 +162,14 @@ public class Logger implements ObservesClock, ObservesAssemblyLine {
 	}
 
 	/**
-	 * Returns an unmodifiable list of all the detailed days.  
+	 * Returns a list of all the detailed days.  
 	 */
 	public List<Integer> getDetailedDays() {
 		return Collections.unmodifiableList(logHistoryDays.getHistory());
 	}
 
 	/**
-	 * Returns an unmodifiable list of all the detailed Delays. 
+	 * Returns a list of all the detailed Delays. 
 	 */
 	public List<Delay> getDetailedDelays() {
 		return Collections.unmodifiableList(logHistoryDelays.getHistory());

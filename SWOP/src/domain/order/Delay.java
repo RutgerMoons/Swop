@@ -19,6 +19,9 @@ public class Delay {
 	 * 
 	 * @param 	completed
 	 * 			The actual time something has been completed
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when one or both of the parameters is null
 	 */
 	public Delay(ImmutableClock estimated, ImmutableClock completed) {
 		if (estimated == null || completed == null) {
