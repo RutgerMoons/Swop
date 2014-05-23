@@ -22,6 +22,7 @@ import domain.job.job.UnmodifiableJob;
 import domain.job.task.ITask;
 import domain.job.task.Task;
 import domain.order.order.StandardOrder;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
@@ -119,5 +120,17 @@ public class UnmodifiableJobTest {
 	 @Test
 	 public void testGetTotalProductionTime(){
 		 assertEquals(job.getTotalProductionTime(), immutable.getTotalProductionTime());
+	 }
+	 
+	 @Test
+	 public void testVisitor(){
+		 List<WorkBenchType> types = new ArrayList<>();
+		 types.add(WorkBenchType.BODY);
+		 types.add(WorkBenchType.DRIVETRAIN);
+		 types.add(WorkBenchType.ACCESSORIES);
+		 SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(types);
+		 
+		 fifo.addJobToAlgorithm(immutable);
+		 assertTrue(fifo.getStandardJobs().contains(immutable));
 	 }
 }

@@ -24,13 +24,14 @@ import domain.job.job.Job;
 import domain.job.task.ITask;
 import domain.job.task.Task;
 import domain.order.order.StandardOrder;
+import domain.scheduling.schedulingAlgorithm.SchedulingAlgorithmFifo;
 import domain.vehicle.VehicleSpecification;
 import domain.vehicle.vehicle.Vehicle;
 import domain.vehicle.vehicleOption.VehicleOption;
 import domain.vehicle.vehicleOption.VehicleOptionCategory;
 
 public class JobTest {
-	
+
 	private Vehicle model;
 	@Before
 	public void initializeModel() throws AlreadyInMapException{
@@ -66,13 +67,13 @@ public class JobTest {
 		job.setOrder(order2);
 		assertEquals(order2, job.getOrder());
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void TestSetInvalidOrder(){
 		Job job = new Job(null);
 		assertEquals(null, job.getOrder());
 	}
-	
+
 	@Test
 	public void setTasks(){
 		List<ITask> tasks = new ArrayList<>();
@@ -81,7 +82,7 @@ public class JobTest {
 		job.setTasks(tasks);
 		assertEquals(tasks, job.getTasks());
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void setInvalidTasks(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -89,7 +90,7 @@ public class JobTest {
 		job.setTasks(null);
 		assertEquals(null, job.getTasks());
 	}
-	
+
 	@Test
 	public void TestAdd(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -99,7 +100,7 @@ public class JobTest {
 		job.addTask(task);
 		assertEquals(1, job.getTasks().size());
 	}
-	
+
 	@Test
 	public void TestTwoAdd(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -112,7 +113,7 @@ public class JobTest {
 		job.addTask(task2);
 		assertEquals(2, job.getTasks().size());
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void TestInvalidAdd(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -121,7 +122,7 @@ public class JobTest {
 		job.addTask(null);
 		assertEquals(1, job.getTasks().size());
 	}
-	
+
 	@Test
 	public void TestCompletedOneTask(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -135,7 +136,7 @@ public class JobTest {
 		action.setCompleted(true);
 		assertTrue(job.isCompleted());
 	}
-	
+
 	@Test
 	public void TestCompletedTwoTasks(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -143,22 +144,22 @@ public class JobTest {
 		Task task1 = new Task("Paint");
 		Task task2 = new Task("Paint");
 		assertTrue(job.isCompleted());
-		
+
 		Action action1 = new Action("Spray Colour");
 		task1.addAction(action1);
 		job.addTask(task1);
 		assertFalse(job.isCompleted());
 		action1.setCompleted(true);
-		
+
 		Action action2 = new Action("Spray Colour");
 		task2.addAction(action2);
 		job.addTask(task2);
-		
+
 		assertFalse(job.isCompleted());
 		action2.setCompleted(true);
 		assertTrue(job.isCompleted());
 	}
-	
+
 	@Test
 	public void TestEqualsAndHashCode(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -168,20 +169,20 @@ public class JobTest {
 		Job job2 = new Job(new StandardOrder("Jan", model, 1, new ImmutableClock(0,240)));
 		assertFalse(job.equals(job2));
 		job2 = new Job(order);
-		
+
 		List<ITask> tasks = new ArrayList<>();
 		tasks.add(new Task("blabla"));
 		job2.setTasks(tasks);
 		assertFalse(job.equals(job2));
 		assertNotEquals(job2.hashCode(), job.hashCode());
-		
+
 		job.setTasks(tasks);
 		assertTrue(job.equals(job2));
 		assertEquals(job2.hashCode(), job.hashCode());
-		
+
 		assertEquals(job, job);
 	}
-	
+
 	@Test
 	public void testIndex(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -189,21 +190,21 @@ public class JobTest {
 		job.setMinimalIndex(5);
 		assertEquals(5, job.getMinimalIndex());
 	}
-	
+
 	@Test
 	public void testGetVehicleOptions(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
 		Job job = new Job(order);
 		assertEquals(order.getDescription().getVehicleOptions().size(), job.getVehicleOptions().size());
 	}
-	
+
 	@Test
 	public void testGetVehicleSpecification(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
 		Job job = new Job(order);
 		assertEquals(order.getDescription().getVehicleSpecification(), job.getVehicleSpecification());
 	}
-	
+
 	@Test
 	public void testGetProductionTime(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
@@ -212,18 +213,33 @@ public class JobTest {
 		Integer actual = job.getProductionTime(WorkBenchType.ACCESSORIES);
 		assertEquals(expected, actual);
 	}
-	
+
 	@Test
 	public void testGetTotalProductionTime(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
 		Job job = new Job(order);
 		assertEquals(order.getProductionTime(), job.getTotalProductionTime());
 	}
-	
+
 	@Test (expected = IllegalArgumentException.class)
 	public void testAcceptVisit(){
 		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
 		Job job = new Job(order);
 		job.acceptVisit(null);
+	}
+
+	@Test
+	public void testVisitor(){
+		StandardOrder order = new StandardOrder("Jef", model, 1, new ImmutableClock(0,240));
+		Job job = new Job(order);
+		List<WorkBenchType> types = new ArrayList<>();
+		types.add(WorkBenchType.BODY);
+		types.add(WorkBenchType.DRIVETRAIN);
+		types.add(WorkBenchType.ACCESSORIES);
+		SchedulingAlgorithmFifo fifo = new SchedulingAlgorithmFifo(types);
+
+		fifo.addJobToAlgorithm(job);
+		assertTrue(fifo.getStandardJobs().contains(job));
+
 	}
 }
