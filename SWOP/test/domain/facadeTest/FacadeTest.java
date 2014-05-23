@@ -93,7 +93,7 @@ public class FacadeTest {
 		assertTrue(AR.contains(AccessRight.CHECKLINE));
 	}
 	
-	@Test (expected = NullPointerException.class)
+	@Test (expected = IllegalArgumentException.class)
 	public void getAccessRightsTestError() {
 		facade.getAccessRights();
 	}
@@ -118,7 +118,7 @@ public class FacadeTest {
 		assertEquals("test", company.getCurrentUser());
 	}
 	
-	@Test (expected=NullPointerException.class)
+	@Test (expected=IllegalArgumentException.class)
 	public void logout() {
 		facade.createAndAddUser("test", "worker");
 		facade.login("test");

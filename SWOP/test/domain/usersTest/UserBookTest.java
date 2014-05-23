@@ -61,8 +61,8 @@ public class UserBookTest {
 		book.login(null);
 	}
 	
-	@Test
-	public void testLogout() throws RoleNotYetAssignedException{
+	@Test (expected = IllegalArgumentException.class)
+	public void testLogout(){
 		book.addUser(new User("Stef", Arrays.asList(AccessRight.ORDER)));
 		book.login("Stef");
 		assertEquals("Stef", book.getCurrentUser().getName());

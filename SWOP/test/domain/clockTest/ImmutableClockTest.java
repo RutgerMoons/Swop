@@ -139,4 +139,9 @@ public class ImmutableClockTest {
 			
 	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalPlus(){
+		ImmutableClock clock = new ImmutableClock(2, 100);
+		clock.getImmutableClockPlusExtraMinutes(-1);
+	}
 }
