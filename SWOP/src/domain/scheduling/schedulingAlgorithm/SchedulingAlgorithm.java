@@ -254,6 +254,6 @@ public abstract class SchedulingAlgorithm {
 				throw new IllegalArgumentException();
 			}
 		};
-		job.getOrder().acceptVisit(visitor);
+		job.acceptVisit(visitor);
 	}
 }
