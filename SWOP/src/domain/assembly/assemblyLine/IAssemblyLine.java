@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import domain.assembly.workBench.IWorkBench;
+import domain.exception.UnmodifiableException;
 import domain.job.job.IJob;
 import domain.scheduling.schedulingAlgorithmCreator.SchedulingAlgorithmCreator;
 import domain.vehicle.VehicleSpecification;
@@ -29,6 +30,9 @@ public interface IAssemblyLine {
 	 * 
 	 * @throws 	IllegalArgumentException
 	 *          Thrown when the parameter is null
+	 * 
+	 * @throws	UnmodifiableException
+	 * 			Thrown when the AssemblyLine is an unmodifiable one
 	 */
 	public void addWorkBench(IWorkBench bench);
 	
@@ -63,12 +67,12 @@ public interface IAssemblyLine {
 	public void setState(AssemblyLineState state);
 	
 	/**
-	 * Get a list of responsibilities, which indicate the vehicles that the assemblyline can process.  
+	 * Get a list of responsibilities, which indicate the vehicles that the AssemblyLine can process.  
 	 */
 	public Set<VehicleSpecification> getResponsibilities();
 	
 	/**
-	 * Returns an unmodifiable list containing all the pending StandardJobs.
+	 * Returns an list containing all the pending StandardJobs of the AssemblyLine.
 	 */
 	public List<IJob> getStandardJobs();
 	
@@ -77,7 +81,7 @@ public interface IAssemblyLine {
 	 * creator can create.
 	 * 
 	 * @param 	creator
-	 *          It's responsible for creating the correct SchedulingAlgorithm
+	 *          Responsible for creating the correct SchedulingAlgorithm
 	 */
 	public void switchToSchedulingAlgorithm(SchedulingAlgorithmCreator creator);
 }

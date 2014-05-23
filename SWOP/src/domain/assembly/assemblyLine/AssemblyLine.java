@@ -44,7 +44,7 @@ ObservableAssemblyLineState {
 	 * Construct a new AssemblyLine. Initializes a scheduler.
 	 * 
 	 * @param 	clock
-	 *          The clock that has to be accessed by this AssemblyLine
+	 *          The snapshot of the clock that has to be accessed by this AssemblyLine
 	 *          
 	 * @param	clockObserver
 	 * 			The ClockObserver that has to be accessed by this AssemblyLine
@@ -52,7 +52,7 @@ ObservableAssemblyLineState {
 	 * @param	assemblyLineState
 	 * 			The state the AssemblyLine has when it's initialised
 	 * 
-	 * @param	templates
+	 * @param	responsibilities
 	 * 			The VehicleSpecificatons that can be assembled on this AssemblyLine
 	 * 
 	 * @throws 	IllegalArgumentException
@@ -60,9 +60,9 @@ ObservableAssemblyLineState {
 	 */
 	public AssemblyLine(ClockObserver clockObserver, ImmutableClock clock,
 			AssemblyLineState assemblyLineState,
-			Set<VehicleSpecification> templates) {
+			Set<VehicleSpecification> responsibilities) {
 		if (clockObserver == null || clock == null || assemblyLineState == null
-				|| templates == null) {
+				|| responsibilities == null) {
 			throw new IllegalArgumentException();
 		}
 		workbenches = new ArrayList<IWorkBench>();
@@ -70,18 +70,9 @@ ObservableAssemblyLineState {
 		assemblyLineStateObservers = new ArrayList<AssemblyLineStateObserver>();
 		this.scheduler = new Scheduler(clockObserver, clock);
 		this.assemblyLineState = assemblyLineState;
-		this.templatesAbleToAssemble = templates;
+		this.templatesAbleToAssemble = responsibilities;
 	}
 
-	/**
-	 * Add a workbench to the assemblyLine.
-	 * 
-	 * @param 	bench
-	 *          The workbench you want to add
-	 * 
-	 * @throws 	IllegalArgumentException
-	 *          Thrown when the parameter is null
-	 */
 	@Override
 	public void addWorkBench(IWorkBench bench) {
 		if (bench == null)
@@ -412,6 +403,12 @@ ObservableAssemblyLineState {
 	 * 
 	 * @param 	workbench
 	 *          The WorkBench at which an Task is completed and it needs to be matched
+	 *          
+	 * @param	task
+	 * 			The task that needs to be completed
+	 * 
+	 * @param	elapsed
+	 * 			The time that has been passed when executing this Task
 	 */
 	public int completeChosenTaskAtChosenWorkBench(IWorkBench workbench,
 			ITask task, ImmutableClock elapsed) {
@@ -472,6 +469,9 @@ ObservableAssemblyLineState {
 		return true;
 	}
 
+	/**
+	 * Returns a list containing all the Jobs in the current SchedulingAlgorithm.
+	 */
 	public List<IJob> removeUnscheduledJobs() {
 		return Collections.unmodifiableList(scheduler.removeUnscheduledJobs());
 	}

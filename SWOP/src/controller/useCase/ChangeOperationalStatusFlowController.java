@@ -33,10 +33,10 @@ UseCaseFlowController {
 	}
 
 	/**
-	 * Executes the use case meaning :
-	 * 1. show all AssemblyLines and let the user choose one
-	 * 2. show the status of the chosen AssemblyLine
-	 * 3. possibly change the AssemblyLineState of the chosen AssemblyLine
+	 * Execute the use case in some steps <br>
+	 * 1. show all AssemblyLines and let the user choose one <br>
+	 * 2. show the status of the chosen AssemblyLine <br>
+	 * 3. possibly change the AssemblyLineState of the chosen AssemblyLine <br>
 	 */
 	@Override
 	public void executeUseCase() {
@@ -49,11 +49,7 @@ UseCaseFlowController {
 		}
 	}
 	
-	/**
-	 * Asks the user how much time he needed for completing the task and returns an
-	 * ImmutableClock.
-	 */
-	public ImmutableClock retrieveElapsedTime(){
+	private ImmutableClock retrieveElapsedTime(){
 		int time = clientCommunication.getElapsedTime();
 		int days = time/Clock.MINUTESINADAY;
 		int minutes = time%Clock.MINUTESINADAY;

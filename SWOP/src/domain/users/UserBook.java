@@ -32,7 +32,14 @@ public class UserBook {
 	/**
 	 * Method for creating a new user given his name and role.
 	 * 
-	 * @pre UserBook does not contain the combination of name and role
+	 * @param	userName
+	 * 			The user's name
+	 * 
+	 * @param	role
+	 * 			The role the user performs
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when the user is already in the UserBook
 	 */
 	public void createUser(String userName, String role){
 		User user = this.factory.createUser(userName, role);
@@ -43,10 +50,20 @@ public class UserBook {
 	 * Method for adding a new user to the UserBook. The method
 	 * checks if the user is a valid user. When the user is already in the UserBook,
 	 * nothing happens.
+	 * 
+	 * @param	user
+	 * 			The user you want to register to the UserBook
+	 * 
+	 * @throws	IllegalArgumentException
+	 * 			Thrown when user is null or the user is already in the UserBook
 	 */
 	public void addUser(User user) {
-		if(user == null) throw new IllegalArgumentException("user can't be null");
-		else if(userBook.containsKey(user.getName())) throw new IllegalArgumentException("user is already registered in the userBook");
+		if(user == null){
+			throw new IllegalArgumentException("user can't be null");
+		}
+		else if(userBook.containsKey(user.getName())){
+			throw new IllegalArgumentException("user is already registered in the userBook");
+		}
 		else{
 			userBook.put(user.getName(), user);
 		}

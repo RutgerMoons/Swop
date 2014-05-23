@@ -39,10 +39,14 @@ public class OrderFlowController extends UseCaseFlowController {
 	}
 
 	/**
-	 * Execute the use case. 
-	 * 1. show user's pending orders
-	 * 2. show user's completed orders
-	 * 3. possibly obtaining a new order
+	 * Execute the use case in some steps <br>
+	 * 1. show the user's pending orders <br>
+	 * 2. show the user's completed orders <br>
+	 * 3. possibly obtaining a new order <br>
+	 * 3.1. choose the VehicleSpecification <br>
+	 * 3.2. choose the VehicleOptions for the new Vehicle <br>
+	 * 3.3. choose how many Vehicles there have to be ordered <br> 
+	 * 3.4. process the order or stop executing the use case <br>
 	 */
 	@Override
 	public void executeUseCase() {
@@ -50,11 +54,7 @@ public class OrderFlowController extends UseCaseFlowController {
 		this.placeNewOrder();
 	}
 
-	/**
-	 * Shows the user's current pending (with estimated time of completion) and
-	 * completed orders.
-	 */
-	public void showOrders() {
+	private void showOrders() {
 		List<IOrder> pendingOrders = facade.getPendingOrders();
 		this.clientCommunication.showPendingOrders(pendingOrders);
 		List<IOrder> completedOrders = facade.getCompletedOrders();
@@ -62,11 +62,7 @@ public class OrderFlowController extends UseCaseFlowController {
 
 	}
 
-	/**
-	 * Retrieves all the needed input of the user for processing an order. All
-	 * this information it gives to the facade.
-	 */
-	public void placeNewOrder(){
+	private void placeNewOrder(){
 		if (!this.clientCommunication.askContinue()) {
 			return;
 		} else {
