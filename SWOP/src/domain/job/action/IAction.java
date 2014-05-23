@@ -2,7 +2,7 @@ package domain.job.action;
 
 
 /**
- * An interface used to represent an Action. An Action consists of an description
+ * An interface used to represent an Action. An Action consists of a description
  * and a boolean for indicating if the Action is completed.
  */
 public interface IAction {
@@ -31,7 +31,7 @@ public interface IAction {
 	
 	
 	/**
-	 * Set the description of this action
+	 * Set the description of this action.
 	 * 
 	 * @throws 	IllegalArgumentException
 	 *          Thrown when the description is null or empty
