@@ -11,6 +11,9 @@ public interface ObservableClock {
 	 * The observer will be added to the notify list and is subscribed for
 	 * every notification.
 	 * 
+	 * @param	observer
+	 * 			The observer that needs to be attached
+	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the parameter is null
 	 */
@@ -18,6 +21,9 @@ public interface ObservableClock {
 	
 	/**
 	 * The observer will be no longer subscribed and will not be notified for future notifications.
+	 * 
+	 * @param	observer
+	 * 			The observer that needs to be detached
 	 * 
 	 * @throws	IllegalArgumentException
 	 * 			Thrown when the parameter is null
