@@ -50,10 +50,11 @@ public class AssembleFlowController extends UseCaseFlowController {
 	@Override
 	public void executeUseCase(){
 		//choose assembly Line
-		List<IAssemblyLine> allAssemblyLines = facade.getAssemblyLines();
+		List<IAssemblyLine> allAssemblyLines = new ArrayList<IAssemblyLine>(facade.getAssemblyLines());
 		for(IAssemblyLine assemblyLine: allAssemblyLines){
 			if(assemblyLine.getState().equals(AssemblyLineState.BROKEN) || assemblyLine.getState().equals(AssemblyLineState.IDLE)){
 				allAssemblyLines.remove(assemblyLine);
+				
 			}
 		}
 		
